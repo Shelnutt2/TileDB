@@ -294,7 +294,8 @@ void Writer::set_array(const Array* array) {
 }
 
 void Writer::reset_global_write_state() {
-  global_write_state_.reset(nullptr);
+  if (global_write_state_ != nullptr)
+    global_write_state_.reset(nullptr);
 }
 
 void Writer::set_array_schema(const ArraySchema* array_schema) {
