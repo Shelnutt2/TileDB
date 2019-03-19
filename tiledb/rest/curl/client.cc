@@ -350,8 +350,8 @@ tiledb::sm::Status submit_query_to_rest(
   STATS_FUNC_IN(serialization_submit_query_to_rest);
   // Serialize data to send
   struct MemoryStruct data = {nullptr, 0};
-  tiledb::sm::Status status =
-      query_serialize(query, serialization_type, &data.memory, (uint64_t*)&data.size);
+  tiledb::sm::Status status = query_serialize(
+      query, serialization_type, &data.memory, (uint64_t*)&data.size);
   if (!status.ok()) {
     if (data.memory != nullptr)
       delete[] data.memory;
@@ -407,8 +407,8 @@ tiledb::sm::Status finalize_query_to_rest(
   STATS_FUNC_IN(serialization_finalize_query_to_rest);
   // Serialize data to send
   struct MemoryStruct data = {nullptr, 0};
-  tiledb::sm::Status status =
-      query_serialize(query, serialization_type, &data.memory, (uint64_t*)&data.size);
+  tiledb::sm::Status status = query_serialize(
+      query, serialization_type, &data.memory, (uint64_t*)&data.size);
   if (!status.ok()) {
     if (data.memory != nullptr)
       delete[] data.memory;
