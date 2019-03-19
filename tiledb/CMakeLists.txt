@@ -352,9 +352,9 @@ target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
     Spdlog::Spdlog
     Zlib::Zlib
     Zstd::Zstd
-    Capnp::capnp
-    Capnp::capnp-json
-    Capnp::kj
+    CapnProto::capnp
+    CapnProto::capnp-json
+    CapnProto::kj
 )
 if (NOT WIN32)
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
