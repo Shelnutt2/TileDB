@@ -55,25 +55,25 @@
 #include <cstring>
 #include <string>
 
-namespace tiledb {
-namespace sm {
-
-#define RETURN_NOT_OK(s) \
-  do {                   \
-    Status _s = (s);     \
-    if (!_s.ok()) {      \
-      return _s;         \
-    }                    \
+#define RETURN_NOT_OK(s)         \
+  do {                           \
+    tiledb::sm::Status _s = (s); \
+    if (!_s.ok()) {              \
+      return _s;                 \
+    }                            \
   } while (false);
 
 #define RETURN_NOT_OK_ELSE(s, else_) \
   do {                               \
-    Status _s = (s);                 \
+    tiledb::sm::Status _s = (s);     \
     if (!_s.ok()) {                  \
       else_;                         \
       return _s;                     \
     }                                \
   } while (false);
+
+namespace tiledb {
+namespace sm {
 
 enum class StatusCode : char {
   Ok,
@@ -115,7 +115,8 @@ enum class StatusCode : char {
   ContextError,
   SubarrayError,
   SubarrayPartitionerError,
-  RTreeError
+  RTreeError,
+  RestError
 };
 
 class Status {
@@ -346,6 +347,11 @@ class Status {
   /** Return a RTreeError error class Status with a given message **/
   static Status RTreeError(const std::string& msg) {
     return Status(StatusCode::RTreeError, msg, -1);
+  }
+
+  /** Return a RestError error class Status with a given message **/
+  static Status RestError(const std::string& msg) {
+    return Status(StatusCode::RestError, msg, -1);
   }
 
   /** Returns true iff the status indicates success **/
