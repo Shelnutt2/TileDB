@@ -273,7 +273,7 @@ Status Query::check_var_attr_offsets(
   return Status::Ok();
 }
 
-Status Query::capnp(::Query::Builder* queryBuilder) const {
+Status Query::capnp(rest::capnp::Query::Builder* queryBuilder) const {
   STATS_FUNC_IN(serialization_query_capnp);
 
   queryBuilder->setType(query_type_str(this->type()));
@@ -281,11 +281,12 @@ Status Query::capnp(::Query::Builder* queryBuilder) const {
   queryBuilder->setStatus(query_status_str(this->status()));
 
   if (this->array_ != nullptr) {
-    ::Array::Builder arrayBuilder = queryBuilder->initArray();
+    rest::capnp::Array::Builder arrayBuilder = queryBuilder->initArray();
     this->array_->capnp(&arrayBuilder);
   }
 
-  ::DomainArray::Builder subarrayBuilder = queryBuilder->initSubarray();
+  rest::capnp::DomainArray::Builder subarrayBuilder =
+      queryBuilder->initSubarray();
   if (this->array_schema() != nullptr) {
     if (this->array_schema()->domain() == nullptr)
       return tiledb::sm::Status::Error(
@@ -377,8 +378,8 @@ Status Query::capnp(::Query::Builder* queryBuilder) const {
 
   std::vector<std::string> attributes = this->attributes();
 
-  Map<::capnp::Text, ::AttributeBuffer>::Builder attributeBuffersBuilder =
-      queryBuilder->initBuffers();
+  rest::capnp::Map<::capnp::Text, rest::capnp::AttributeBuffer>::Builder
+      attributeBuffersBuilder = queryBuilder->initBuffers();
   auto buffers = attributeBuffersBuilder.initEntries(attributes.size());
   // for (auto attribute_name : attributes) {
   for (uint64_t i = 0; i < attributes.size(); i++) {
@@ -393,9 +394,10 @@ Status Query::capnp(::Query::Builder* queryBuilder) const {
     const tiledb::sm::Attribute* attribute =
         this->array_schema()->attribute(attribute_name);
     if (attribute != nullptr) {
-      Map<capnp::Text, ::AttributeBuffer>::Entry::Builder entryBuilder =
-          buffers[i];
-      ::AttributeBuffer::Builder attributeBuffer = entryBuilder.initValue();
+      rest::capnp::Map<capnp::Text, rest::capnp::AttributeBuffer>::Entry::
+          Builder entryBuilder = buffers[i];
+      rest::capnp::AttributeBuffer::Builder attributeBuffer =
+          entryBuilder.initValue();
       entryBuilder.setKey(attribute_name);
       attributeBuffer.setType(datatype_str(attribute->type()));
       switch (attribute->type()) {
@@ -560,12 +562,13 @@ Status Query::capnp(::Query::Builder* queryBuilder) const {
 
   if (this->layout() == tiledb::sm::Layout::GLOBAL_ORDER &&
       this->type() == tiledb::sm::QueryType::WRITE) {
-    ::Writer::Builder writerBuilder = queryBuilder->initWriter();
+    rest::capnp::Writer::Builder writerBuilder = queryBuilder->initWriter();
     auto status = writer_.capnp(&writerBuilder);
     if (!status.ok())
       return status;
   } else if (this->type() == tiledb::sm::QueryType::READ) {
-    ::QueryReader::Builder queryReaderBuilder = queryBuilder->initReader();
+    rest::capnp::QueryReader::Builder queryReaderBuilder =
+        queryBuilder->initReader();
     auto status = reader_.capnp(&queryReaderBuilder);
     if (!status.ok())
       return status;
@@ -575,7 +578,7 @@ Status Query::capnp(::Query::Builder* queryBuilder) const {
   STATS_FUNC_OUT(serialization_query_capnp);
 }
 
-tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
+tiledb::sm::Status Query::from_capnp(rest::capnp::Query::Reader* query) {
   STATS_FUNC_IN(serialization_query_from_capnp);
   tiledb::sm::Status status;
 
@@ -614,7 +617,7 @@ tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
     status = this->set_subarray(nullptr);
   } else {
     // Set subarray
-    ::DomainArray::Reader subarrayReader = query->getSubarray();
+    rest::capnp::DomainArray::Reader subarrayReader = query->getSubarray();
     switch (array_schema()->domain()->type()) {
       case tiledb::sm::Datatype::INT8: {
         if (subarrayReader.hasInt8()) {
@@ -736,7 +739,8 @@ tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
   }
 
   if (query->hasBuffers()) {
-    Map<capnp::Text, ::AttributeBuffer>::Reader buffers = query->getBuffers();
+    rest::capnp::Map<capnp::Text, rest::capnp::AttributeBuffer>::Reader
+        buffers = query->getBuffers();
     for (auto bufferMap : buffers.getEntries()) {
       // empty key name means this object is empty, we should skip it.
       // Need to handle serialization better and no make empty objects
@@ -774,7 +778,7 @@ tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
             bufferMap.getKey().cStr(), &existingBuffer, &existingBufferSize);
       }
 
-      ::AttributeBuffer::Reader buffer = bufferMap.getValue();
+      rest::capnp::AttributeBuffer::Reader buffer = bufferMap.getValue();
       uint64_t type_size = tiledb::sm::datatype_size(attr->type());
       Datatype buffer_datatype = Datatype::ANY;
       status = datatype_enum(buffer.getType().cStr(), &buffer_datatype);
@@ -787,7 +791,8 @@ tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
             "datatype. " +
             datatype_str(attr->type()) + " != " + buffer.getType().cStr());
 
-      ::AttributeBuffer::Buffer::Reader bufferReader = buffer.getBuffer();
+      rest::capnp::AttributeBuffer::Buffer::Reader bufferReader =
+          buffer.getBuffer();
 
       switch (attr->type()) {
         case tiledb::sm::Datatype::INT8: {
@@ -1566,11 +1571,11 @@ tiledb::sm::Status Query::from_capnp(::Query::Reader* query) {
 
   // This has to come after set_subarray because they remove global write state
   if (this->type() == tiledb::sm::QueryType::WRITE && query->hasWriter()) {
-    ::Writer::Reader writerReader = query->getWriter();
+    rest::capnp::Writer::Reader writerReader = query->getWriter();
     status = writer_.from_capnp(&writerReader);
   } else if (
       this->type() == tiledb::sm::QueryType::READ && query->hasReader()) {
-    ::QueryReader::Reader queryReader = query->getReader();
+    rest::capnp::QueryReader::Reader queryReader = query->getReader();
     status = reader_.from_capnp(&queryReader);
   }
   if (!status.ok())

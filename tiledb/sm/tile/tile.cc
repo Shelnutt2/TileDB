@@ -124,13 +124,13 @@ Tile& Tile::operator=(Tile&& tile) {
 /*               API              */
 /* ****************************** */
 
-Status Tile::capnp(::Tile::Builder* tileBuilder) const {
+Status Tile::capnp(rest::capnp::Tile::Builder* tileBuilder) const {
   STATS_FUNC_IN(serialization_tile_capnp);
   tileBuilder->setType(datatype_str(this->type()));
   tileBuilder->setCellSize(this->cell_size());
   tileBuilder->setDimNum(this->dim_num());
 
-  ::Tile::Buffer::Builder bufferBuilder = tileBuilder->initBuffer();
+  rest::capnp::Tile::Buffer::Builder bufferBuilder = tileBuilder->initBuffer();
 
   if (this->buffer() != nullptr) {
     uint64_t type_size = datatype_size(this->type());
@@ -222,7 +222,7 @@ Status Tile::init(
   return Status::Ok();
 }
 
-Status Tile::from_capnp(::Tile::Reader* tileReader) {
+Status Tile::from_capnp(rest::capnp::Tile::Reader* tileReader) {
   STATS_FUNC_IN(serialization_tile_from_capnp);
   Status status = Status::Ok();
 
@@ -238,7 +238,7 @@ Status Tile::from_capnp(::Tile::Reader* tileReader) {
 
   if (tileReader->getBuffer().totalSize().wordCount > 0) {
     uint64_t type_size = datatype_size(this->type());
-    ::Tile::Buffer::Reader bufferReader = tileReader->getBuffer();
+    rest::capnp::Tile::Buffer::Reader bufferReader = tileReader->getBuffer();
     switch (this->type()) {
       case tiledb::sm::Datatype::INT8: {
         if (bufferReader.hasInt8()) {
