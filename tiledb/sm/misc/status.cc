@@ -210,6 +210,9 @@ std::string Status::code_to_string() const {
     case StatusCode::RTreeError:
       type = "[TileDB::RTree] Error";
       break;
+    case StatusCode::RestError:
+      type = "[TileDB::REST] Error";
+      break;
     default:
       type = "[TileDB::?] Error:";
   }
