@@ -104,9 +104,9 @@ const URI& FragmentMetadata::array_uri() const {
 }
 
 Status FragmentMetadata::capnp(
-    ::FragmentMetadata::Builder* fragmentMetadataBuilder) const {
+    rest::capnp::FragmentMetadata::Builder* fragmentMetadataBuilder) const {
   if (this->non_empty_domain_ != nullptr) {
-    ::DomainArray::Builder nonEmptyDomain =
+    rest::capnp::DomainArray::Builder nonEmptyDomain =
         fragmentMetadataBuilder->initNonEmptyDomain();
 
     fragmentMetadataBuilder->setTimestamp(this->timestamp());
@@ -178,7 +178,7 @@ Status FragmentMetadata::capnp(
   }
 
   if (!this->attribute_idx_map_.empty()) {
-    MapUInt32::Builder attributeIdxMapBuilder =
+    rest::capnp::MapUInt32::Builder attributeIdxMapBuilder =
         fragmentMetadataBuilder->initAttributeIdxMap();
     auto attributeIdxMapBuilderEntries =
         attributeIdxMapBuilder.initEntries(this->attribute_idx_map_.size());
@@ -192,7 +192,7 @@ Status FragmentMetadata::capnp(
   }
 
   if (!this->attribute_uri_map_.empty()) {
-    Map<capnp::Text, capnp::Text>::Builder attributeUriMapBuilder =
+    rest::capnp::Map<capnp::Text, capnp::Text>::Builder attributeUriMapBuilder =
         fragmentMetadataBuilder->initAttributeUriMap();
     auto attributeUriMapBuilderEntries =
         attributeUriMapBuilder.initEntries(this->attribute_uri_map_.size());
@@ -206,8 +206,9 @@ Status FragmentMetadata::capnp(
   }
 
   if (!this->attribute_var_uri_map_.empty()) {
-    Map<capnp::Text, capnp::Text>::Builder attributeVarUriMapBuilder =
-        fragmentMetadataBuilder->initAttributeVarUriMap();
+    rest::capnp::Map<capnp::Text, capnp::Text>::Builder
+        attributeVarUriMapBuilder =
+            fragmentMetadataBuilder->initAttributeVarUriMap();
     auto attributeVarUriMapBuilderEntries =
         attributeVarUriMapBuilder.initEntries(
             this->attribute_var_uri_map_.size());
@@ -221,8 +222,8 @@ Status FragmentMetadata::capnp(
   }
 
   if (this->bounding_coords_.size() > 0) {
-    ::FragmentMetadata::BoundingCoords::Builder boundingCoordsBuilder =
-        fragmentMetadataBuilder->initBoundingCoords();
+    rest::capnp::FragmentMetadata::BoundingCoords::Builder
+        boundingCoordsBuilder = fragmentMetadataBuilder->initBoundingCoords();
     switch (array_schema_->coords_type()) {
       case Datatype::INT8: {
         auto boundingCoordsLists =
@@ -679,10 +680,10 @@ const URI& FragmentMetadata::fragment_uri() const {
 }
 
 Status FragmentMetadata::from_capnp(
-    ::FragmentMetadata::Reader* fragmentMetadataReader) {
+    rest::capnp::FragmentMetadata::Reader* fragmentMetadataReader) {
   this->timestamp_ = fragmentMetadataReader->getTimestamp();
   void* non_empty_domain = nullptr;
-  ::DomainArray::Reader nonEmptyDomain =
+  rest::capnp::DomainArray::Reader nonEmptyDomain =
       fragmentMetadataReader->getNonEmptyDomain();
   switch (this->array_schema_->domain()->type()) {
     case Datatype::INT8: {
@@ -814,28 +815,28 @@ Status FragmentMetadata::from_capnp(
   // Free non_empty_domain because init function copies it
   std::free(non_empty_domain);
 
-  ::MapUInt32::Reader attributeIdxMapReader =
+  rest::capnp::MapUInt32::Reader attributeIdxMapReader =
       fragmentMetadataReader->getAttributeIdxMap();
   this->attribute_idx_map_.clear();
   for (auto it : attributeIdxMapReader.getEntries()) {
     this->attribute_idx_map_[it.getKey()] = it.getValue();
   }
 
-  ::Map<capnp::Text, capnp::Text>::Reader attributeUriMapReader =
+  rest::capnp::Map<capnp::Text, capnp::Text>::Reader attributeUriMapReader =
       fragmentMetadataReader->getAttributeUriMap();
   this->attribute_uri_map_.clear();
   for (auto it : attributeUriMapReader.getEntries()) {
     this->attribute_uri_map_[it.getKey()] = URI(it.getValue().cStr());
   }
 
-  ::Map<capnp::Text, capnp::Text>::Reader attributeVarUriMapReader =
+  rest::capnp::Map<capnp::Text, capnp::Text>::Reader attributeVarUriMapReader =
       fragmentMetadataReader->getAttributeVarUriMap();
   this->attribute_var_uri_map_.clear();
   for (auto it : attributeVarUriMapReader.getEntries()) {
     this->attribute_var_uri_map_[it.getKey()] = URI(it.getValue().cStr());
   }
 
-  ::FragmentMetadata::BoundingCoords::Reader boundingCoordsReader =
+  rest::capnp::FragmentMetadata::BoundingCoords::Reader boundingCoordsReader =
       fragmentMetadataReader->getBoundingCoords();
   switch (array_schema_->coords_type()) {
     case Datatype::INT8: {
