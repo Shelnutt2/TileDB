@@ -201,6 +201,9 @@ std::string Status::code_to_string() const {
     case StatusCode::ContextError:
       type = "[TileDB::Context] Error";
       break;
+    case StatusCode::RestError:
+      type = "[TileDB::REST] Error";
+      break;
     default:
       type = "[TileDB::?] Error:";
   }
