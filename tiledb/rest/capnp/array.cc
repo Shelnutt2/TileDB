@@ -35,6 +35,7 @@
 #include "tiledb/rest/capnp/array.h"
 #include "capnp/compat/json.h"
 #include "capnp/serialize.h"
+#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/sm/enums/array_type.h"
 #include "tiledb/sm/enums/compressor.h"
 #include "tiledb/sm/enums/datatype.h"
@@ -246,60 +247,12 @@ tiledb::sm::Status dimension_to_capnp(
     DomainArray::Builder domain = dimensionBuilder->initDomain();
     Dimension::TileExtent::Builder tile_extent =
         dimensionBuilder->initTileExtent();
-    switch (d->type()) {
-      case tiledb::sm::Datatype::INT8:
-        domain.setInt8(kj::arrayPtr(static_cast<int8_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setInt8(*static_cast<int8_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::UINT8:
-        domain.setUint8(kj::arrayPtr(static_cast<uint8_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setUint8(*static_cast<uint8_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::INT16:
-        domain.setInt16(kj::arrayPtr(static_cast<int16_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setInt16(*static_cast<int16_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::UINT16:
-        domain.setUint16(kj::arrayPtr(static_cast<uint16_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setUint16(*static_cast<uint16_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::INT32:
-        domain.setInt32(kj::arrayPtr(static_cast<int32_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setInt32(*static_cast<int32_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::UINT32:
-        domain.setUint32(kj::arrayPtr(static_cast<uint32_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setUint32(*static_cast<uint32_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::INT64:
-        domain.setInt64(kj::arrayPtr(static_cast<int64_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setInt64(*static_cast<int64_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::UINT64:
-        domain.setUint64(kj::arrayPtr(static_cast<uint64_t*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setUint64(*static_cast<uint64_t*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::FLOAT32:
-        domain.setFloat32(kj::arrayPtr(static_cast<float*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setFloat32(*static_cast<float*>(d->tile_extent()));
-        break;
-      case tiledb::sm::Datatype::FLOAT64:
-        domain.setFloat64(kj::arrayPtr(static_cast<double*>(d->domain()), 2));
-        if (d->tile_extent() != nullptr)
-          tile_extent.setFloat64(*static_cast<double*>(d->tile_extent()));
-        break;
-      default:
-        break;
-    }
+    RETURN_NOT_OK(
+        utils::set_capnp_array_ptr(domain, d->type(), d->domain(), 2));
+    if (d->tile_extent() != nullptr)
+      RETURN_NOT_OK(
+          utils::set_capnp_scalar(tile_extent, d->type(), d->tile_extent()));
+
     return tiledb::sm::Status::Ok();
   }
   return tiledb::sm::Status::Error("Dimension passed was null");

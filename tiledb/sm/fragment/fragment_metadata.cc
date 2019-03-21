@@ -32,6 +32,7 @@
  */
 
 #include "tiledb/sm/fragment/fragment_metadata.h"
+#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/sm/buffer/const_buffer.h"
 #include "tiledb/sm/misc/constants.h"
 #include "tiledb/sm/misc/logger.h"
@@ -115,71 +116,12 @@ Status FragmentMetadata::capnp(
         fragmentMetadataBuilder->initNonEmptyDomain();
 
     fragmentMetadataBuilder->setTimestamp(this->timestamp());
-    switch (this->array_schema_->domain()->type()) {
-      case Datatype::INT8: {
-        nonEmptyDomain.setInt8(kj::arrayPtr(
-            static_cast<const int8_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::UINT8: {
-        nonEmptyDomain.setUint8(kj::arrayPtr(
-            static_cast<const uint8_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::INT16: {
-        nonEmptyDomain.setInt16(kj::arrayPtr(
-            static_cast<const int16_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::UINT16: {
-        nonEmptyDomain.setUint16(kj::arrayPtr(
-            static_cast<const uint16_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::INT32: {
-        nonEmptyDomain.setInt32(kj::arrayPtr(
-            static_cast<const int32_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::UINT32: {
-        nonEmptyDomain.setUint32(kj::arrayPtr(
-            static_cast<const uint32_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::INT64: {
-        nonEmptyDomain.setInt64(kj::arrayPtr(
-            static_cast<const int64_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::UINT64: {
-        nonEmptyDomain.setUint64(kj::arrayPtr(
-            static_cast<const uint64_t*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::FLOAT32: {
-        nonEmptyDomain.setFloat32(kj::arrayPtr(
-            static_cast<const float*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      case Datatype::FLOAT64: {
-        nonEmptyDomain.setFloat64(kj::arrayPtr(
-            static_cast<const double*>(this->non_empty_domain()),
-            this->array_schema_->dim_num() * 2));
-        break;
-      }
-      default: {
-        return Status::Error("Unknown/Unsupported domain datatype in capnp");
-      }
-    }
+
+    RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
+        nonEmptyDomain,
+        array_schema_->domain()->type(),
+        non_empty_domain_,
+        array_schema_->dim_num() * 2));
   }
 
   if (!this->attribute_idx_map_.empty()) {
