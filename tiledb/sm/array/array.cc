@@ -432,7 +432,15 @@ Status Array::open(
   RETURN_NOT_OK(
       encryption_key_.set_key(encryption_type, encryption_key, key_length));
 
-  if (query_type == QueryType::READ) {
+  if (remote_) {
+    Config config = storage_manager_->config();
+    RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
+        &config,
+        rest_server_,
+        array_uri_.to_string(),
+        serialization_type_,
+        &array_schema_));
+  } else if (query_type == QueryType::READ) {
     timestamp_ = utils::time::timestamp_now_ms();
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(
         array_uri_,
