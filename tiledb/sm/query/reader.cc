@@ -31,6 +31,7 @@
  */
 
 #include "tiledb/sm/query/reader.h"
+#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/sm/misc/comparators.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/parallel_functions.h"
@@ -144,73 +145,11 @@ Status Reader::capnp(
     if (this->read_state_.cur_subarray_partition_ != nullptr) {
       rest::capnp::DomainArray::Builder curSubarrayPartitionBuilder =
           readStateBuilder.initCurSubarrayPartition();
-      // Allocate subarray
-      switch (coords_type) {
-        case Datatype::INT8: {
-          curSubarrayPartitionBuilder.setInt8(kj::arrayPtr(
-              static_cast<int8_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::UINT8: {
-          curSubarrayPartitionBuilder.setUint8(kj::arrayPtr(
-              static_cast<uint8_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::INT16: {
-          curSubarrayPartitionBuilder.setInt16(kj::arrayPtr(
-              static_cast<int16_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::UINT16: {
-          curSubarrayPartitionBuilder.setUint16(kj::arrayPtr(
-              static_cast<uint16_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::INT32: {
-          curSubarrayPartitionBuilder.setInt32(kj::arrayPtr(
-              static_cast<int32_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::UINT32: {
-          curSubarrayPartitionBuilder.setUint32(kj::arrayPtr(
-              static_cast<uint32_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::INT64: {
-          curSubarrayPartitionBuilder.setInt64(kj::arrayPtr(
-              static_cast<int64_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::UINT64: {
-          curSubarrayPartitionBuilder.setUint64(kj::arrayPtr(
-              static_cast<uint64_t*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::FLOAT32: {
-          curSubarrayPartitionBuilder.setFloat32(kj::arrayPtr(
-              static_cast<float*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        case Datatype::FLOAT64: {
-          curSubarrayPartitionBuilder.setFloat64(kj::arrayPtr(
-              static_cast<double*>(this->read_state_.cur_subarray_partition_),
-              subarray_size));
-          break;
-        }
-        default: {
-          return Status::ReaderError(
-              "Unknown datatype for current subarray partition in capnp");
-        }
-      }
+      RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
+          curSubarrayPartitionBuilder,
+          coords_type,
+          read_state_.cur_subarray_partition_,
+          subarray_size));
     }
 
     if (!this->read_state_.subarray_partitions_.empty()) {
