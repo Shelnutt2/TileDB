@@ -31,6 +31,7 @@
  */
 
 #include "tiledb/sm/array/array.h"
+#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/rest/curl/client.h"
 #include "tiledb/sm/encryption/encryption.h"
 #include "tiledb/sm/enums/serialization_type.h"
@@ -146,84 +147,19 @@ Status Array::capnp(rest::capnp::Array::Builder* arrayBuilder) const {
       maxBufferSizeBuilder.setBufferSize(maxBufferSize.second.second);
     }
 
-    if (this->last_max_buffer_sizes_subarray_ != nullptr) {
-      rest::capnp::DomainArray::Builder subarray =
-          arrayBuilder->initLastMaxBufferSizesSubarray();
-      switch (this->array_schema()->domain()->type()) {
-        case Datatype::INT8: {
-          subarray.setInt8(kj::arrayPtr(
-              static_cast<const int8_t*>(this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::UINT8: {
-          subarray.setUint8(kj::arrayPtr(
-              static_cast<const uint8_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::INT16: {
-          subarray.setInt16(kj::arrayPtr(
-              static_cast<const int16_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::UINT16: {
-          subarray.setUint16(kj::arrayPtr(
-              static_cast<const uint16_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::INT32: {
-          subarray.setInt32(kj::arrayPtr(
-              static_cast<const int32_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::UINT32: {
-          subarray.setUint32(kj::arrayPtr(
-              static_cast<const uint32_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::INT64: {
-          subarray.setInt64(kj::arrayPtr(
-              static_cast<const int64_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::UINT64: {
-          subarray.setUint64(kj::arrayPtr(
-              static_cast<const uint64_t*>(
-                  this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::FLOAT32: {
-          subarray.setFloat32(kj::arrayPtr(
-              static_cast<const float*>(this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        case Datatype::FLOAT64: {
-          subarray.setFloat64(kj::arrayPtr(
-              static_cast<const double*>(this->last_max_buffer_sizes_subarray_),
-              this->array_schema()->dim_num() * 2));
-          break;
-        }
-        default: {
-          return Status::Error("Unknown/Unsupported domain datatype in capnp");
-        }
-      }
+    if (last_max_buffer_sizes_subarray_ != nullptr) {
+      auto subarray_builder = arrayBuilder->initLastMaxBufferSizesSubarray();
+      const auto* schema = array_schema();
+      RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
+          subarray_builder,
+          schema->domain()->type(),
+          last_max_buffer_sizes_subarray_,
+          schema->dim_num() * 2));
     }
   }
+
   return Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_to_capnp);
 }
 
