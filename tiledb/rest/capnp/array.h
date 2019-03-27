@@ -50,15 +50,12 @@ namespace tiledb {
 namespace rest {
 namespace capnp {
 
-tiledb::sm::Status filter_to_capnp(
-    const tiledb::sm::Filter* f, Filter::Builder* filterBuilder);
-std::unique_ptr<tiledb::sm::Filter> filter_from_capnp(
-    const Filter::Reader* filterReader);
 tiledb::sm::Status filter_pipeline_to_capnp(
     const tiledb::sm::FilterPipeline* f,
     FilterPipeline::Builder* filterPipelineBuilder);
-std::unique_ptr<tiledb::sm::FilterPipeline> filter_pipeline_from_capnp(
-    const FilterPipeline::Reader* filterPipelineReader);
+tiledb::sm::Status filter_pipeline_from_capnp(
+    const FilterPipeline::Reader* filterPipelineReader,
+    std::unique_ptr<tiledb::sm::FilterPipeline>* filterPipeline);
 
 /**
  * Conversion of a internal tiledb::sm::Attribute to an capnp format
