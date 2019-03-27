@@ -170,6 +170,10 @@ if (TILEDB_TBB)
   target_compile_definitions(tiledb_unit PRIVATE -DHAVE_TBB)
 endif()
 
+if (TILEDB_SERIALIZATION)
+  target_compile_definitions(tiledb_unit PRIVATE -DTILEDB_SERIALIZATION)
+endif()
+
 # This is necessary only because we are linking directly to the core objects.
 # Other users (e.g. the examples) do not need this flag.
 target_compile_definitions(tiledb_unit PRIVATE -DTILEDB_CORE_OBJECTS_EXPORTS)
