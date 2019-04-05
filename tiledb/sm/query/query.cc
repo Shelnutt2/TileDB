@@ -277,6 +277,10 @@ Status Query::check_var_attr_offsets(
 Status Query::capnp(rest::capnp::Query::Builder* queryBuilder) const {
   STATS_FUNC_IN(serialization_query_capnp);
 
+  if (layout_ == Layout::GLOBAL_ORDER)
+    return LOG_STATUS(Status::QueryError(
+        "Cannot serialize; global order serialization not supported."));
+
   queryBuilder->setType(query_type_str(this->type()));
   queryBuilder->setLayout(layout_str(this->layout()));
   queryBuilder->setStatus(query_status_str(this->status()));
