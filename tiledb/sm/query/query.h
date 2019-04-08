@@ -174,7 +174,7 @@ class Query {
    *
    * @return
    */
-  Status capnp(rest::capnp::Query::Builder* queryBuilder) const;
+  Status capnp(rest::capnp::Query::Builder* queryBuilder);
 
   /**
    * Check the validity of the provided buffer offsets for a variable attribute.
@@ -236,7 +236,8 @@ class Query {
    * @param query
    * @return
    */
-  Status from_capnp(rest::capnp::Query::Reader* query);
+  Status from_capnp(
+      rest::capnp::Query::Reader* query, void* buffer_start);
 
   /**
    * Returns `true` if the query has results. Applicable only to read
@@ -339,6 +340,9 @@ class Query {
   /** Submits the query to the storage manager. */
   Status submit();
 
+  void appendTotalNumOfBytesInBuffers(
+      const int64_t& total_num_of_bytes_in_buffers);
+
   /**
    * Submits the query to the storage manager. The query will be
    * processed asynchronously (i.e., in a non-blocking manner).
@@ -426,7 +430,7 @@ class Query {
   /** Query reader. */
   Reader reader_;
 
-  /** Wuery writer. */
+  /** Query writer. */
   Writer writer_;
 
   /* ********************************* */

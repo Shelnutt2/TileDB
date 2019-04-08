@@ -7,9 +7,9 @@
 #include <capnp/generated-header-support.h>
 
 #if CAPNP_VERSION != 6001
-#error \
-    "Version mismatch between generated code and library headers.  You must use the same version of the Cap'n Proto compiler and library."
+#error "Version mismatch between generated code and library headers.  You must use the same version of the Cap'n Proto compiler and library."
 #endif
+
 
 namespace capnp {
 namespace schemas {
@@ -20,6 +20,7 @@ CAPNP_DECLARE_SCHEMA(d71de32f98e296fe);
 CAPNP_DECLARE_SCHEMA(92ad78f56de3d76a);
 CAPNP_DECLARE_SCHEMA(91ffad4460acd176);
 CAPNP_DECLARE_SCHEMA(8dad27d4e9db0a95);
+CAPNP_DECLARE_SCHEMA(d20a578112fa92a2);
 CAPNP_DECLARE_SCHEMA(95e26a84d32d8223);
 CAPNP_DECLARE_SCHEMA(a2a652536db09fa0);
 CAPNP_DECLARE_SCHEMA(de030f447664754c);
@@ -65,11 +66,9 @@ struct DomainArray {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(ce5904e6f9410cec, 0, 10)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -82,11 +81,9 @@ struct Array {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(a45730f57e0460b4, 1, 6)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -99,11 +96,9 @@ struct ArraySchema {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(d71de32f98e296fe, 1, 9)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -116,11 +111,9 @@ struct Attribute {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(92ad78f56de3d76a, 1, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -134,11 +127,9 @@ struct AttributeBuffer {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(91ffad4460acd176, 1, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -148,7 +139,7 @@ struct AttributeBuffer::Buffer {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     INT8,
     UINT8,
     INT16,
@@ -164,11 +155,24 @@ struct AttributeBuffer::Buffer {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(8dad27d4e9db0a95, 1, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
+  };
+};
+
+struct AttributeBufferHeader {
+  AttributeBufferHeader() = delete;
+
+  class Reader;
+  class Builder;
+  class Pipeline;
+
+  struct _capnpPrivate {
+    CAPNP_DECLARE_STRUCT_HEADER(d20a578112fa92a2, 3, 2)
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -182,11 +186,9 @@ struct Dimension {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(95e26a84d32d8223, 2, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -196,7 +198,7 @@ struct Dimension::TileExtent {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     INT8,
     UINT8,
     INT16,
@@ -211,11 +213,9 @@ struct Dimension::TileExtent {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(a2a652536db09fa0, 2, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -228,11 +228,9 @@ struct Domain {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(de030f447664754c, 0, 4)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -245,11 +243,9 @@ struct Error {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(fa787661cd3563a4, 1, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -263,11 +259,9 @@ struct Filter {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(e7175047415b3f97, 2, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -277,7 +271,7 @@ struct Filter::Data {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     TEXT,
     BYTES,
     INT8,
@@ -294,11 +288,9 @@ struct Filter::Data {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(9ceaf832b3ab897f, 2, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -311,17 +303,13 @@ struct FilterPipeline {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(bc4583f733eac4f5, 0, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
-template <
-    typename Key = ::capnp::AnyPointer,
-    typename Value = ::capnp::AnyPointer>
+template <typename Key = ::capnp::AnyPointer, typename Value = ::capnp::AnyPointer>
 struct Map {
   Map() = delete;
 
@@ -332,15 +320,13 @@ struct Map {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(f179c194ae71718c, 0, 1)
-#if !CAPNP_LITE
+    #if !CAPNP_LITE
     static const ::capnp::_::RawBrandedSchema::Scope brandScopes[];
     static const ::capnp::_::RawBrandedSchema::Binding brandBindings[];
     static const ::capnp::_::RawBrandedSchema::Dependency brandDependencies[];
     static const ::capnp::_::RawBrandedSchema specificBrand;
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return ::capnp::_::ChooseBrand<_capnpPrivate, Key, Value>::brand();
-    }
-#endif  // !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return ::capnp::_::ChooseBrand<_capnpPrivate, Key, Value>::brand(); }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -354,14 +340,12 @@ struct Map<Key, Value>::Entry {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(db5514c8aaf6faea, 0, 2)
-#if !CAPNP_LITE
+    #if !CAPNP_LITE
     static const ::capnp::_::RawBrandedSchema::Scope brandScopes[];
     static const ::capnp::_::RawBrandedSchema::Binding brandBindings[];
     static const ::capnp::_::RawBrandedSchema specificBrand;
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return ::capnp::_::ChooseBrand<_capnpPrivate, Key, Value>::brand();
-    }
-#endif  // !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return ::capnp::_::ChooseBrand<_capnpPrivate, Key, Value>::brand(); }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -375,11 +359,9 @@ struct MapUInt32 {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(c6b5bb09d4611252, 0, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -392,11 +374,9 @@ struct MapUInt32::Entry {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(884e0a5f2521a5c6, 1, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -410,11 +390,9 @@ struct MapInt64 {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(a83707d3ba24dd32, 0, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -427,11 +405,9 @@ struct MapInt64::Entry {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(a9caccb4333a2baf, 1, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -444,11 +420,9 @@ struct MaxBufferSize {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(b6bd2ac1f661bce7, 2, 0)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -462,11 +436,9 @@ struct MapMaxBufferSizes {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(eaf0905463c23b94, 0, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -479,11 +451,9 @@ struct MapMaxBufferSizes::Entry {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(d666e60b155ca48f, 0, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -497,11 +467,9 @@ struct FragmentMetadata {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(cde352fc27e7ca61, 4, 14)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -511,7 +479,7 @@ struct FragmentMetadata::BoundingCoords {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     INT8,
     UINT8,
     INT16,
@@ -526,11 +494,9 @@ struct FragmentMetadata::BoundingCoords {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(d299649d8358bd01, 4, 14)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -543,11 +509,9 @@ struct GlobalWriteState {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(c0c730b5390f4427, 0, 3)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -561,11 +525,9 @@ struct Tile {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(c6706955aa016d5b, 2, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -575,7 +537,7 @@ struct Tile::Buffer {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     INT8,
     UINT8,
     INT16,
@@ -590,11 +552,9 @@ struct Tile::Buffer {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(e02d5e7bb34c1af5, 2, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -607,11 +567,9 @@ struct Writer {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(8ba60147a0e6735e, 1, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -625,11 +583,9 @@ struct ReadState {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(cbe1e7c13508aa2c, 1, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -639,7 +595,7 @@ struct ReadState::SubarrayPartitions {
   class Reader;
   class Builder;
   class Pipeline;
-  enum Which : uint16_t {
+  enum Which: uint16_t {
     INT8,
     UINT8,
     INT16,
@@ -654,11 +610,9 @@ struct ReadState::SubarrayPartitions {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(bc07b09812d262fa, 1, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -671,11 +625,9 @@ struct QueryReader {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(e19754f813ccf79c, 0, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -687,12 +639,10 @@ struct Query {
   class Pipeline;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(96ba49d0f8b23ccc, 0, 8)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    CAPNP_DECLARE_STRUCT_HEADER(96ba49d0f8b23ccc, 3, 8)
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -705,11 +655,9 @@ struct NonEmptyDomain {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(9df6f2a42c4e5f0b, 1, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
@@ -722,24 +670,20 @@ struct MaxBufferSizeVar {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(91f5a1c793993019, 2, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
+    #if !CAPNP_LITE
+    static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
+    #endif  // !CAPNP_LITE
   };
 };
 
 // =======================================================================================
 
 class DomainArray::Reader {
- public:
+public:
   typedef DomainArray Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -752,36 +696,36 @@ class DomainArray::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasInt8() const;
-  inline ::capnp::List<::int8_t>::Reader getInt8() const;
+  inline  ::capnp::List< ::int8_t>::Reader getInt8() const;
 
   inline bool hasUint8() const;
-  inline ::capnp::List<::uint8_t>::Reader getUint8() const;
+  inline  ::capnp::List< ::uint8_t>::Reader getUint8() const;
 
   inline bool hasInt16() const;
-  inline ::capnp::List<::int16_t>::Reader getInt16() const;
+  inline  ::capnp::List< ::int16_t>::Reader getInt16() const;
 
   inline bool hasUint16() const;
-  inline ::capnp::List<::uint16_t>::Reader getUint16() const;
+  inline  ::capnp::List< ::uint16_t>::Reader getUint16() const;
 
   inline bool hasInt32() const;
-  inline ::capnp::List<::int32_t>::Reader getInt32() const;
+  inline  ::capnp::List< ::int32_t>::Reader getInt32() const;
 
   inline bool hasUint32() const;
-  inline ::capnp::List<::uint32_t>::Reader getUint32() const;
+  inline  ::capnp::List< ::uint32_t>::Reader getUint32() const;
 
   inline bool hasInt64() const;
-  inline ::capnp::List<::int64_t>::Reader getInt64() const;
+  inline  ::capnp::List< ::int64_t>::Reader getInt64() const;
 
   inline bool hasUint64() const;
-  inline ::capnp::List<::uint64_t>::Reader getUint64() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getUint64() const;
 
   inline bool hasFloat32() const;
-  inline ::capnp::List<float>::Reader getFloat32() const;
+  inline  ::capnp::List<float>::Reader getFloat32() const;
 
   inline bool hasFloat64() const;
-  inline ::capnp::List<double>::Reader getFloat64() const;
+  inline  ::capnp::List<double>::Reader getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -794,113 +738,102 @@ class DomainArray::Reader {
 };
 
 class DomainArray::Builder {
- public:
+public:
   typedef DomainArray Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasInt8();
-  inline ::capnp::List<::int8_t>::Builder getInt8();
-  inline void setInt8(::capnp::List<::int8_t>::Reader value);
-  inline void setInt8(::kj::ArrayPtr<const ::int8_t> value);
-  inline ::capnp::List<::int8_t>::Builder initInt8(unsigned int size);
-  inline void adoptInt8(::capnp::Orphan<::capnp::List<::int8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int8_t>> disownInt8();
+  inline  ::capnp::List< ::int8_t>::Builder getInt8();
+  inline void setInt8( ::capnp::List< ::int8_t>::Reader value);
+  inline void setInt8(::kj::ArrayPtr<const  ::int8_t> value);
+  inline  ::capnp::List< ::int8_t>::Builder initInt8(unsigned int size);
+  inline void adoptInt8(::capnp::Orphan< ::capnp::List< ::int8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int8_t>> disownInt8();
 
   inline bool hasUint8();
-  inline ::capnp::List<::uint8_t>::Builder getUint8();
-  inline void setUint8(::capnp::List<::uint8_t>::Reader value);
-  inline void setUint8(::kj::ArrayPtr<const ::uint8_t> value);
-  inline ::capnp::List<::uint8_t>::Builder initUint8(unsigned int size);
-  inline void adoptUint8(::capnp::Orphan<::capnp::List<::uint8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint8_t>> disownUint8();
+  inline  ::capnp::List< ::uint8_t>::Builder getUint8();
+  inline void setUint8( ::capnp::List< ::uint8_t>::Reader value);
+  inline void setUint8(::kj::ArrayPtr<const  ::uint8_t> value);
+  inline  ::capnp::List< ::uint8_t>::Builder initUint8(unsigned int size);
+  inline void adoptUint8(::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> disownUint8();
 
   inline bool hasInt16();
-  inline ::capnp::List<::int16_t>::Builder getInt16();
-  inline void setInt16(::capnp::List<::int16_t>::Reader value);
-  inline void setInt16(::kj::ArrayPtr<const ::int16_t> value);
-  inline ::capnp::List<::int16_t>::Builder initInt16(unsigned int size);
-  inline void adoptInt16(::capnp::Orphan<::capnp::List<::int16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int16_t>> disownInt16();
+  inline  ::capnp::List< ::int16_t>::Builder getInt16();
+  inline void setInt16( ::capnp::List< ::int16_t>::Reader value);
+  inline void setInt16(::kj::ArrayPtr<const  ::int16_t> value);
+  inline  ::capnp::List< ::int16_t>::Builder initInt16(unsigned int size);
+  inline void adoptInt16(::capnp::Orphan< ::capnp::List< ::int16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int16_t>> disownInt16();
 
   inline bool hasUint16();
-  inline ::capnp::List<::uint16_t>::Builder getUint16();
-  inline void setUint16(::capnp::List<::uint16_t>::Reader value);
-  inline void setUint16(::kj::ArrayPtr<const ::uint16_t> value);
-  inline ::capnp::List<::uint16_t>::Builder initUint16(unsigned int size);
-  inline void adoptUint16(::capnp::Orphan<::capnp::List<::uint16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint16_t>> disownUint16();
+  inline  ::capnp::List< ::uint16_t>::Builder getUint16();
+  inline void setUint16( ::capnp::List< ::uint16_t>::Reader value);
+  inline void setUint16(::kj::ArrayPtr<const  ::uint16_t> value);
+  inline  ::capnp::List< ::uint16_t>::Builder initUint16(unsigned int size);
+  inline void adoptUint16(::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> disownUint16();
 
   inline bool hasInt32();
-  inline ::capnp::List<::int32_t>::Builder getInt32();
-  inline void setInt32(::capnp::List<::int32_t>::Reader value);
-  inline void setInt32(::kj::ArrayPtr<const ::int32_t> value);
-  inline ::capnp::List<::int32_t>::Builder initInt32(unsigned int size);
-  inline void adoptInt32(::capnp::Orphan<::capnp::List<::int32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int32_t>> disownInt32();
+  inline  ::capnp::List< ::int32_t>::Builder getInt32();
+  inline void setInt32( ::capnp::List< ::int32_t>::Reader value);
+  inline void setInt32(::kj::ArrayPtr<const  ::int32_t> value);
+  inline  ::capnp::List< ::int32_t>::Builder initInt32(unsigned int size);
+  inline void adoptInt32(::capnp::Orphan< ::capnp::List< ::int32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int32_t>> disownInt32();
 
   inline bool hasUint32();
-  inline ::capnp::List<::uint32_t>::Builder getUint32();
-  inline void setUint32(::capnp::List<::uint32_t>::Reader value);
-  inline void setUint32(::kj::ArrayPtr<const ::uint32_t> value);
-  inline ::capnp::List<::uint32_t>::Builder initUint32(unsigned int size);
-  inline void adoptUint32(::capnp::Orphan<::capnp::List<::uint32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint32_t>> disownUint32();
+  inline  ::capnp::List< ::uint32_t>::Builder getUint32();
+  inline void setUint32( ::capnp::List< ::uint32_t>::Reader value);
+  inline void setUint32(::kj::ArrayPtr<const  ::uint32_t> value);
+  inline  ::capnp::List< ::uint32_t>::Builder initUint32(unsigned int size);
+  inline void adoptUint32(::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> disownUint32();
 
   inline bool hasInt64();
-  inline ::capnp::List<::int64_t>::Builder getInt64();
-  inline void setInt64(::capnp::List<::int64_t>::Reader value);
-  inline void setInt64(::kj::ArrayPtr<const ::int64_t> value);
-  inline ::capnp::List<::int64_t>::Builder initInt64(unsigned int size);
-  inline void adoptInt64(::capnp::Orphan<::capnp::List<::int64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int64_t>> disownInt64();
+  inline  ::capnp::List< ::int64_t>::Builder getInt64();
+  inline void setInt64( ::capnp::List< ::int64_t>::Reader value);
+  inline void setInt64(::kj::ArrayPtr<const  ::int64_t> value);
+  inline  ::capnp::List< ::int64_t>::Builder initInt64(unsigned int size);
+  inline void adoptInt64(::capnp::Orphan< ::capnp::List< ::int64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int64_t>> disownInt64();
 
   inline bool hasUint64();
-  inline ::capnp::List<::uint64_t>::Builder getUint64();
-  inline void setUint64(::capnp::List<::uint64_t>::Reader value);
-  inline void setUint64(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initUint64(unsigned int size);
-  inline void adoptUint64(::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownUint64();
+  inline  ::capnp::List< ::uint64_t>::Builder getUint64();
+  inline void setUint64( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setUint64(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initUint64(unsigned int size);
+  inline void adoptUint64(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownUint64();
 
   inline bool hasFloat32();
-  inline ::capnp::List<float>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<float>::Reader value);
+  inline  ::capnp::List<float>::Builder getFloat32();
+  inline void setFloat32( ::capnp::List<float>::Reader value);
   inline void setFloat32(::kj::ArrayPtr<const float> value);
-  inline ::capnp::List<float>::Builder initFloat32(unsigned int size);
-  inline void adoptFloat32(::capnp::Orphan<::capnp::List<float>>&& value);
-  inline ::capnp::Orphan<::capnp::List<float>> disownFloat32();
+  inline  ::capnp::List<float>::Builder initFloat32(unsigned int size);
+  inline void adoptFloat32(::capnp::Orphan< ::capnp::List<float>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<float>> disownFloat32();
 
   inline bool hasFloat64();
-  inline ::capnp::List<double>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<double>::Reader value);
+  inline  ::capnp::List<double>::Builder getFloat64();
+  inline void setFloat64( ::capnp::List<double>::Reader value);
   inline void setFloat64(::kj::ArrayPtr<const double> value);
-  inline ::capnp::List<double>::Builder initFloat64(unsigned int size);
-  inline void adoptFloat64(::capnp::Orphan<::capnp::List<double>>&& value);
-  inline ::capnp::Orphan<::capnp::List<double>> disownFloat64();
+  inline  ::capnp::List<double>::Builder initFloat64(unsigned int size);
+  inline void adoptFloat64(::capnp::Orphan< ::capnp::List<double>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<double>> disownFloat64();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -911,17 +844,14 @@ class DomainArray::Builder {
 
 #if !CAPNP_LITE
 class DomainArray::Pipeline {
- public:
+public:
   typedef DomainArray Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -930,13 +860,11 @@ class DomainArray::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Array::Reader {
- public:
+public:
   typedef Array Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -948,29 +876,27 @@ class Array::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getTimestamp() const;
+  inline  ::uint64_t getTimestamp() const;
 
   inline bool hasEncryptionKey() const;
-  inline ::capnp::Data::Reader getEncryptionKey() const;
+  inline  ::capnp::Data::Reader getEncryptionKey() const;
 
   inline bool hasEncryptionType() const;
-  inline ::capnp::Text::Reader getEncryptionType() const;
+  inline  ::capnp::Text::Reader getEncryptionType() const;
 
   inline bool hasLastMaxBufferSizes() const;
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Reader
-  getLastMaxBufferSizes() const;
+  inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Reader getLastMaxBufferSizes() const;
 
   inline bool hasLastMaxBufferSizesSubarray() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader
-  getLastMaxBufferSizesSubarray() const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getLastMaxBufferSizesSubarray() const;
 
   inline bool hasQueryType() const;
-  inline ::capnp::Text::Reader getQueryType() const;
+  inline  ::capnp::Text::Reader getQueryType() const;
 
   inline bool hasUri() const;
-  inline ::capnp::Text::Reader getUri() const;
+  inline  ::capnp::Text::Reader getUri() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -983,88 +909,67 @@ class Array::Reader {
 };
 
 class Array::Builder {
- public:
+public:
   typedef Array Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getTimestamp();
-  inline void setTimestamp(::uint64_t value);
+  inline  ::uint64_t getTimestamp();
+  inline void setTimestamp( ::uint64_t value);
 
   inline bool hasEncryptionKey();
-  inline ::capnp::Data::Builder getEncryptionKey();
-  inline void setEncryptionKey(::capnp::Data::Reader value);
-  inline ::capnp::Data::Builder initEncryptionKey(unsigned int size);
-  inline void adoptEncryptionKey(::capnp::Orphan<::capnp::Data>&& value);
-  inline ::capnp::Orphan<::capnp::Data> disownEncryptionKey();
+  inline  ::capnp::Data::Builder getEncryptionKey();
+  inline void setEncryptionKey( ::capnp::Data::Reader value);
+  inline  ::capnp::Data::Builder initEncryptionKey(unsigned int size);
+  inline void adoptEncryptionKey(::capnp::Orphan< ::capnp::Data>&& value);
+  inline ::capnp::Orphan< ::capnp::Data> disownEncryptionKey();
 
   inline bool hasEncryptionType();
-  inline ::capnp::Text::Builder getEncryptionType();
-  inline void setEncryptionType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initEncryptionType(unsigned int size);
-  inline void adoptEncryptionType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownEncryptionType();
+  inline  ::capnp::Text::Builder getEncryptionType();
+  inline void setEncryptionType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initEncryptionType(unsigned int size);
+  inline void adoptEncryptionType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownEncryptionType();
 
   inline bool hasLastMaxBufferSizes();
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-  getLastMaxBufferSizes();
-  inline void setLastMaxBufferSizes(
-      ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value);
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-  initLastMaxBufferSizes();
-  inline void adoptLastMaxBufferSizes(
-      ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>
-  disownLastMaxBufferSizes();
+  inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Builder getLastMaxBufferSizes();
+  inline void setLastMaxBufferSizes( ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value);
+  inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Builder initLastMaxBufferSizes();
+  inline void adoptLastMaxBufferSizes(::capnp::Orphan< ::tiledb::rest::capnp::MapMaxBufferSizes>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::MapMaxBufferSizes> disownLastMaxBufferSizes();
 
   inline bool hasLastMaxBufferSizesSubarray();
-  inline ::tiledb::rest::capnp::DomainArray::Builder
-  getLastMaxBufferSizesSubarray();
-  inline void setLastMaxBufferSizesSubarray(
-      ::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder
-  initLastMaxBufferSizesSubarray();
-  inline void adoptLastMaxBufferSizesSubarray(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-  disownLastMaxBufferSizesSubarray();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getLastMaxBufferSizesSubarray();
+  inline void setLastMaxBufferSizesSubarray( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initLastMaxBufferSizesSubarray();
+  inline void adoptLastMaxBufferSizesSubarray(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownLastMaxBufferSizesSubarray();
 
   inline bool hasQueryType();
-  inline ::capnp::Text::Builder getQueryType();
-  inline void setQueryType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initQueryType(unsigned int size);
-  inline void adoptQueryType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownQueryType();
+  inline  ::capnp::Text::Builder getQueryType();
+  inline void setQueryType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initQueryType(unsigned int size);
+  inline void adoptQueryType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownQueryType();
 
   inline bool hasUri();
-  inline ::capnp::Text::Builder getUri();
-  inline void setUri(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initUri(unsigned int size);
-  inline void adoptUri(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownUri();
+  inline  ::capnp::Text::Builder getUri();
+  inline void setUri( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initUri(unsigned int size);
+  inline void adoptUri(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownUri();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1075,22 +980,16 @@ class Array::Builder {
 
 #if !CAPNP_LITE
 class Array::Pipeline {
- public:
+public:
   typedef Array Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline
-  getLastMaxBufferSizes();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline
-  getLastMaxBufferSizesSubarray();
-
- private:
+  inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline getLastMaxBufferSizes();
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getLastMaxBufferSizesSubarray();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1099,13 +998,11 @@ class Array::Pipeline {
 #endif  // !CAPNP_LITE
 
 class ArraySchema::Reader {
- public:
+public:
   typedef ArraySchema Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1118,38 +1015,35 @@ class ArraySchema::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasArrayType() const;
-  inline ::capnp::Text::Reader getArrayType() const;
+  inline  ::capnp::Text::Reader getArrayType() const;
 
   inline bool hasAttributes() const;
-  inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Reader getAttributes()
-      const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Reader getAttributes() const;
 
-  inline ::uint64_t getCapacity() const;
+  inline  ::uint64_t getCapacity() const;
 
   inline bool hasCellOrder() const;
-  inline ::capnp::Text::Reader getCellOrder() const;
+  inline  ::capnp::Text::Reader getCellOrder() const;
 
   inline bool hasCoordsFilterPipeline() const;
-  inline ::tiledb::rest::capnp::FilterPipeline::Reader getCoordsFilterPipeline()
-      const;
+  inline  ::tiledb::rest::capnp::FilterPipeline::Reader getCoordsFilterPipeline() const;
 
   inline bool hasDomain() const;
-  inline ::tiledb::rest::capnp::Domain::Reader getDomain() const;
+  inline  ::tiledb::rest::capnp::Domain::Reader getDomain() const;
 
   inline bool hasOffsetFilterPipeline() const;
-  inline ::tiledb::rest::capnp::FilterPipeline::Reader getOffsetFilterPipeline()
-      const;
+  inline  ::tiledb::rest::capnp::FilterPipeline::Reader getOffsetFilterPipeline() const;
 
   inline bool hasTileOrder() const;
-  inline ::capnp::Text::Reader getTileOrder() const;
+  inline  ::capnp::Text::Reader getTileOrder() const;
 
   inline bool hasUri() const;
-  inline ::capnp::Text::Reader getUri() const;
+  inline  ::capnp::Text::Reader getUri() const;
 
   inline bool hasVersion() const;
-  inline ::capnp::List<::int32_t>::Reader getVersion() const;
+  inline  ::capnp::List< ::int32_t>::Reader getVersion() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1162,116 +1056,89 @@ class ArraySchema::Reader {
 };
 
 class ArraySchema::Builder {
- public:
+public:
   typedef ArraySchema Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasArrayType();
-  inline ::capnp::Text::Builder getArrayType();
-  inline void setArrayType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initArrayType(unsigned int size);
-  inline void adoptArrayType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownArrayType();
+  inline  ::capnp::Text::Builder getArrayType();
+  inline void setArrayType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initArrayType(unsigned int size);
+  inline void adoptArrayType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownArrayType();
 
   inline bool hasAttributes();
-  inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Builder
-  getAttributes();
-  inline void setAttributes(
-      ::capnp::List<::tiledb::rest::capnp::Attribute>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Builder
-  initAttributes(unsigned int size);
-  inline void adoptAttributes(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Attribute>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Attribute>>
-  disownAttributes();
+  inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Builder getAttributes();
+  inline void setAttributes( ::capnp::List< ::tiledb::rest::capnp::Attribute>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Builder initAttributes(unsigned int size);
+  inline void adoptAttributes(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Attribute>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Attribute>> disownAttributes();
 
-  inline ::uint64_t getCapacity();
-  inline void setCapacity(::uint64_t value);
+  inline  ::uint64_t getCapacity();
+  inline void setCapacity( ::uint64_t value);
 
   inline bool hasCellOrder();
-  inline ::capnp::Text::Builder getCellOrder();
-  inline void setCellOrder(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initCellOrder(unsigned int size);
-  inline void adoptCellOrder(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownCellOrder();
+  inline  ::capnp::Text::Builder getCellOrder();
+  inline void setCellOrder( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initCellOrder(unsigned int size);
+  inline void adoptCellOrder(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownCellOrder();
 
   inline bool hasCoordsFilterPipeline();
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder
-  getCoordsFilterPipeline();
-  inline void setCoordsFilterPipeline(
-      ::tiledb::rest::capnp::FilterPipeline::Reader value);
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder
-  initCoordsFilterPipeline();
-  inline void adoptCoordsFilterPipeline(
-      ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-  disownCoordsFilterPipeline();
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder getCoordsFilterPipeline();
+  inline void setCoordsFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value);
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder initCoordsFilterPipeline();
+  inline void adoptCoordsFilterPipeline(::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> disownCoordsFilterPipeline();
 
   inline bool hasDomain();
-  inline ::tiledb::rest::capnp::Domain::Builder getDomain();
-  inline void setDomain(::tiledb::rest::capnp::Domain::Reader value);
-  inline ::tiledb::rest::capnp::Domain::Builder initDomain();
-  inline void adoptDomain(
-      ::capnp::Orphan<::tiledb::rest::capnp::Domain>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Domain> disownDomain();
+  inline  ::tiledb::rest::capnp::Domain::Builder getDomain();
+  inline void setDomain( ::tiledb::rest::capnp::Domain::Reader value);
+  inline  ::tiledb::rest::capnp::Domain::Builder initDomain();
+  inline void adoptDomain(::capnp::Orphan< ::tiledb::rest::capnp::Domain>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Domain> disownDomain();
 
   inline bool hasOffsetFilterPipeline();
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder
-  getOffsetFilterPipeline();
-  inline void setOffsetFilterPipeline(
-      ::tiledb::rest::capnp::FilterPipeline::Reader value);
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder
-  initOffsetFilterPipeline();
-  inline void adoptOffsetFilterPipeline(
-      ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-  disownOffsetFilterPipeline();
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder getOffsetFilterPipeline();
+  inline void setOffsetFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value);
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder initOffsetFilterPipeline();
+  inline void adoptOffsetFilterPipeline(::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> disownOffsetFilterPipeline();
 
   inline bool hasTileOrder();
-  inline ::capnp::Text::Builder getTileOrder();
-  inline void setTileOrder(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initTileOrder(unsigned int size);
-  inline void adoptTileOrder(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownTileOrder();
+  inline  ::capnp::Text::Builder getTileOrder();
+  inline void setTileOrder( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initTileOrder(unsigned int size);
+  inline void adoptTileOrder(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownTileOrder();
 
   inline bool hasUri();
-  inline ::capnp::Text::Builder getUri();
-  inline void setUri(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initUri(unsigned int size);
-  inline void adoptUri(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownUri();
+  inline  ::capnp::Text::Builder getUri();
+  inline void setUri( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initUri(unsigned int size);
+  inline void adoptUri(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownUri();
 
   inline bool hasVersion();
-  inline ::capnp::List<::int32_t>::Builder getVersion();
-  inline void setVersion(::capnp::List<::int32_t>::Reader value);
-  inline void setVersion(::kj::ArrayPtr<const ::int32_t> value);
-  inline ::capnp::List<::int32_t>::Builder initVersion(unsigned int size);
-  inline void adoptVersion(::capnp::Orphan<::capnp::List<::int32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int32_t>> disownVersion();
+  inline  ::capnp::List< ::int32_t>::Builder getVersion();
+  inline void setVersion( ::capnp::List< ::int32_t>::Reader value);
+  inline void setVersion(::kj::ArrayPtr<const  ::int32_t> value);
+  inline  ::capnp::List< ::int32_t>::Builder initVersion(unsigned int size);
+  inline void adoptVersion(::capnp::Orphan< ::capnp::List< ::int32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int32_t>> disownVersion();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1282,23 +1149,17 @@ class ArraySchema::Builder {
 
 #if !CAPNP_LITE
 class ArraySchema::Pipeline {
- public:
+public:
   typedef ArraySchema Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::FilterPipeline::Pipeline
-  getCoordsFilterPipeline();
-  inline ::tiledb::rest::capnp::Domain::Pipeline getDomain();
-  inline ::tiledb::rest::capnp::FilterPipeline::Pipeline
-  getOffsetFilterPipeline();
-
- private:
+  inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline getCoordsFilterPipeline();
+  inline  ::tiledb::rest::capnp::Domain::Pipeline getDomain();
+  inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline getOffsetFilterPipeline();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1307,13 +1168,11 @@ class ArraySchema::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Attribute::Reader {
- public:
+public:
   typedef Attribute Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1325,19 +1184,18 @@ class Attribute::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  inline ::uint32_t getCellValNum() const;
+  inline  ::uint32_t getCellValNum() const;
 
   inline bool hasName() const;
-  inline ::capnp::Text::Reader getName() const;
+  inline  ::capnp::Text::Reader getName() const;
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline bool hasFilterPipeline() const;
-  inline ::tiledb::rest::capnp::FilterPipeline::Reader getFilterPipeline()
-      const;
+  inline  ::tiledb::rest::capnp::FilterPipeline::Reader getFilterPipeline() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1350,60 +1208,46 @@ class Attribute::Reader {
 };
 
 class Attribute::Builder {
- public:
+public:
   typedef Attribute Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline ::uint32_t getCellValNum();
-  inline void setCellValNum(::uint32_t value);
+  inline  ::uint32_t getCellValNum();
+  inline void setCellValNum( ::uint32_t value);
 
   inline bool hasName();
-  inline ::capnp::Text::Builder getName();
-  inline void setName(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownName();
+  inline  ::capnp::Text::Builder getName();
+  inline void setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initName(unsigned int size);
+  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownName();
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline bool hasFilterPipeline();
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder getFilterPipeline();
-  inline void setFilterPipeline(
-      ::tiledb::rest::capnp::FilterPipeline::Reader value);
-  inline ::tiledb::rest::capnp::FilterPipeline::Builder initFilterPipeline();
-  inline void adoptFilterPipeline(
-      ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-  disownFilterPipeline();
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder getFilterPipeline();
+  inline void setFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value);
+  inline  ::tiledb::rest::capnp::FilterPipeline::Builder initFilterPipeline();
+  inline void adoptFilterPipeline(::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> disownFilterPipeline();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1414,19 +1258,15 @@ class Attribute::Builder {
 
 #if !CAPNP_LITE
 class Attribute::Pipeline {
- public:
+public:
   typedef Attribute Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::FilterPipeline::Pipeline getFilterPipeline();
-
- private:
+  inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline getFilterPipeline();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1435,13 +1275,11 @@ class Attribute::Pipeline {
 #endif  // !CAPNP_LITE
 
 class AttributeBuffer::Reader {
- public:
+public:
   typedef AttributeBuffer Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1454,14 +1292,14 @@ class AttributeBuffer::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline typename Buffer::Reader getBuffer() const;
 
   inline bool hasBufferOffset() const;
-  inline ::capnp::List<::uint64_t>::Reader getBufferOffset() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getBufferOffset() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1474,52 +1312,40 @@ class AttributeBuffer::Reader {
 };
 
 class AttributeBuffer::Builder {
- public:
+public:
   typedef AttributeBuffer Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline typename Buffer::Builder getBuffer();
   inline typename Buffer::Builder initBuffer();
 
   inline bool hasBufferOffset();
-  inline ::capnp::List<::uint64_t>::Builder getBufferOffset();
-  inline void setBufferOffset(::capnp::List<::uint64_t>::Reader value);
-  inline void setBufferOffset(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initBufferOffset(unsigned int size);
-  inline void adoptBufferOffset(
-      ::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownBufferOffset();
+  inline  ::capnp::List< ::uint64_t>::Builder getBufferOffset();
+  inline void setBufferOffset( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setBufferOffset(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initBufferOffset(unsigned int size);
+  inline void adoptBufferOffset(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownBufferOffset();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1530,19 +1356,15 @@ class AttributeBuffer::Builder {
 
 #if !CAPNP_LITE
 class AttributeBuffer::Pipeline {
- public:
+public:
   typedef AttributeBuffer Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
   inline typename Buffer::Pipeline getBuffer();
-
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1551,13 +1373,11 @@ class AttributeBuffer::Pipeline {
 #endif  // !CAPNP_LITE
 
 class AttributeBuffer::Buffer::Reader {
- public:
+public:
   typedef Buffer Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1572,49 +1392,49 @@ class AttributeBuffer::Buffer::Reader {
   inline Which which() const;
   inline bool isInt8() const;
   inline bool hasInt8() const;
-  inline ::capnp::List<::int8_t>::Reader getInt8() const;
+  inline  ::capnp::List< ::int8_t>::Reader getInt8() const;
 
   inline bool isUint8() const;
   inline bool hasUint8() const;
-  inline ::capnp::List<::uint8_t>::Reader getUint8() const;
+  inline  ::capnp::List< ::uint8_t>::Reader getUint8() const;
 
   inline bool isInt16() const;
   inline bool hasInt16() const;
-  inline ::capnp::List<::int16_t>::Reader getInt16() const;
+  inline  ::capnp::List< ::int16_t>::Reader getInt16() const;
 
   inline bool isUint16() const;
   inline bool hasUint16() const;
-  inline ::capnp::List<::uint16_t>::Reader getUint16() const;
+  inline  ::capnp::List< ::uint16_t>::Reader getUint16() const;
 
   inline bool isInt32() const;
   inline bool hasInt32() const;
-  inline ::capnp::List<::int32_t>::Reader getInt32() const;
+  inline  ::capnp::List< ::int32_t>::Reader getInt32() const;
 
   inline bool isUint32() const;
   inline bool hasUint32() const;
-  inline ::capnp::List<::uint32_t>::Reader getUint32() const;
+  inline  ::capnp::List< ::uint32_t>::Reader getUint32() const;
 
   inline bool isInt64() const;
   inline bool hasInt64() const;
-  inline ::capnp::List<::int64_t>::Reader getInt64() const;
+  inline  ::capnp::List< ::int64_t>::Reader getInt64() const;
 
   inline bool isUint64() const;
   inline bool hasUint64() const;
-  inline ::capnp::List<::uint64_t>::Reader getUint64() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getUint64() const;
 
   inline bool isFloat32() const;
   inline bool hasFloat32() const;
-  inline ::capnp::List<float>::Reader getFloat32() const;
+  inline  ::capnp::List<float>::Reader getFloat32() const;
 
   inline bool isFloat64() const;
   inline bool hasFloat64() const;
-  inline ::capnp::List<double>::Reader getFloat64() const;
+  inline  ::capnp::List<double>::Reader getFloat64() const;
 
   inline bool isChar() const;
   inline bool hasChar() const;
-  inline ::capnp::Data::Reader getChar() const;
+  inline  ::capnp::Data::Reader getChar() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1627,132 +1447,121 @@ class AttributeBuffer::Buffer::Reader {
 };
 
 class AttributeBuffer::Buffer::Builder {
- public:
+public:
   typedef Buffer Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isInt8();
   inline bool hasInt8();
-  inline ::capnp::List<::int8_t>::Builder getInt8();
-  inline void setInt8(::capnp::List<::int8_t>::Reader value);
-  inline void setInt8(::kj::ArrayPtr<const ::int8_t> value);
-  inline ::capnp::List<::int8_t>::Builder initInt8(unsigned int size);
-  inline void adoptInt8(::capnp::Orphan<::capnp::List<::int8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int8_t>> disownInt8();
+  inline  ::capnp::List< ::int8_t>::Builder getInt8();
+  inline void setInt8( ::capnp::List< ::int8_t>::Reader value);
+  inline void setInt8(::kj::ArrayPtr<const  ::int8_t> value);
+  inline  ::capnp::List< ::int8_t>::Builder initInt8(unsigned int size);
+  inline void adoptInt8(::capnp::Orphan< ::capnp::List< ::int8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int8_t>> disownInt8();
 
   inline bool isUint8();
   inline bool hasUint8();
-  inline ::capnp::List<::uint8_t>::Builder getUint8();
-  inline void setUint8(::capnp::List<::uint8_t>::Reader value);
-  inline void setUint8(::kj::ArrayPtr<const ::uint8_t> value);
-  inline ::capnp::List<::uint8_t>::Builder initUint8(unsigned int size);
-  inline void adoptUint8(::capnp::Orphan<::capnp::List<::uint8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint8_t>> disownUint8();
+  inline  ::capnp::List< ::uint8_t>::Builder getUint8();
+  inline void setUint8( ::capnp::List< ::uint8_t>::Reader value);
+  inline void setUint8(::kj::ArrayPtr<const  ::uint8_t> value);
+  inline  ::capnp::List< ::uint8_t>::Builder initUint8(unsigned int size);
+  inline void adoptUint8(::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> disownUint8();
 
   inline bool isInt16();
   inline bool hasInt16();
-  inline ::capnp::List<::int16_t>::Builder getInt16();
-  inline void setInt16(::capnp::List<::int16_t>::Reader value);
-  inline void setInt16(::kj::ArrayPtr<const ::int16_t> value);
-  inline ::capnp::List<::int16_t>::Builder initInt16(unsigned int size);
-  inline void adoptInt16(::capnp::Orphan<::capnp::List<::int16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int16_t>> disownInt16();
+  inline  ::capnp::List< ::int16_t>::Builder getInt16();
+  inline void setInt16( ::capnp::List< ::int16_t>::Reader value);
+  inline void setInt16(::kj::ArrayPtr<const  ::int16_t> value);
+  inline  ::capnp::List< ::int16_t>::Builder initInt16(unsigned int size);
+  inline void adoptInt16(::capnp::Orphan< ::capnp::List< ::int16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int16_t>> disownInt16();
 
   inline bool isUint16();
   inline bool hasUint16();
-  inline ::capnp::List<::uint16_t>::Builder getUint16();
-  inline void setUint16(::capnp::List<::uint16_t>::Reader value);
-  inline void setUint16(::kj::ArrayPtr<const ::uint16_t> value);
-  inline ::capnp::List<::uint16_t>::Builder initUint16(unsigned int size);
-  inline void adoptUint16(::capnp::Orphan<::capnp::List<::uint16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint16_t>> disownUint16();
+  inline  ::capnp::List< ::uint16_t>::Builder getUint16();
+  inline void setUint16( ::capnp::List< ::uint16_t>::Reader value);
+  inline void setUint16(::kj::ArrayPtr<const  ::uint16_t> value);
+  inline  ::capnp::List< ::uint16_t>::Builder initUint16(unsigned int size);
+  inline void adoptUint16(::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> disownUint16();
 
   inline bool isInt32();
   inline bool hasInt32();
-  inline ::capnp::List<::int32_t>::Builder getInt32();
-  inline void setInt32(::capnp::List<::int32_t>::Reader value);
-  inline void setInt32(::kj::ArrayPtr<const ::int32_t> value);
-  inline ::capnp::List<::int32_t>::Builder initInt32(unsigned int size);
-  inline void adoptInt32(::capnp::Orphan<::capnp::List<::int32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int32_t>> disownInt32();
+  inline  ::capnp::List< ::int32_t>::Builder getInt32();
+  inline void setInt32( ::capnp::List< ::int32_t>::Reader value);
+  inline void setInt32(::kj::ArrayPtr<const  ::int32_t> value);
+  inline  ::capnp::List< ::int32_t>::Builder initInt32(unsigned int size);
+  inline void adoptInt32(::capnp::Orphan< ::capnp::List< ::int32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int32_t>> disownInt32();
 
   inline bool isUint32();
   inline bool hasUint32();
-  inline ::capnp::List<::uint32_t>::Builder getUint32();
-  inline void setUint32(::capnp::List<::uint32_t>::Reader value);
-  inline void setUint32(::kj::ArrayPtr<const ::uint32_t> value);
-  inline ::capnp::List<::uint32_t>::Builder initUint32(unsigned int size);
-  inline void adoptUint32(::capnp::Orphan<::capnp::List<::uint32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint32_t>> disownUint32();
+  inline  ::capnp::List< ::uint32_t>::Builder getUint32();
+  inline void setUint32( ::capnp::List< ::uint32_t>::Reader value);
+  inline void setUint32(::kj::ArrayPtr<const  ::uint32_t> value);
+  inline  ::capnp::List< ::uint32_t>::Builder initUint32(unsigned int size);
+  inline void adoptUint32(::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> disownUint32();
 
   inline bool isInt64();
   inline bool hasInt64();
-  inline ::capnp::List<::int64_t>::Builder getInt64();
-  inline void setInt64(::capnp::List<::int64_t>::Reader value);
-  inline void setInt64(::kj::ArrayPtr<const ::int64_t> value);
-  inline ::capnp::List<::int64_t>::Builder initInt64(unsigned int size);
-  inline void adoptInt64(::capnp::Orphan<::capnp::List<::int64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int64_t>> disownInt64();
+  inline  ::capnp::List< ::int64_t>::Builder getInt64();
+  inline void setInt64( ::capnp::List< ::int64_t>::Reader value);
+  inline void setInt64(::kj::ArrayPtr<const  ::int64_t> value);
+  inline  ::capnp::List< ::int64_t>::Builder initInt64(unsigned int size);
+  inline void adoptInt64(::capnp::Orphan< ::capnp::List< ::int64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int64_t>> disownInt64();
 
   inline bool isUint64();
   inline bool hasUint64();
-  inline ::capnp::List<::uint64_t>::Builder getUint64();
-  inline void setUint64(::capnp::List<::uint64_t>::Reader value);
-  inline void setUint64(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initUint64(unsigned int size);
-  inline void adoptUint64(::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownUint64();
+  inline  ::capnp::List< ::uint64_t>::Builder getUint64();
+  inline void setUint64( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setUint64(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initUint64(unsigned int size);
+  inline void adoptUint64(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownUint64();
 
   inline bool isFloat32();
   inline bool hasFloat32();
-  inline ::capnp::List<float>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<float>::Reader value);
+  inline  ::capnp::List<float>::Builder getFloat32();
+  inline void setFloat32( ::capnp::List<float>::Reader value);
   inline void setFloat32(::kj::ArrayPtr<const float> value);
-  inline ::capnp::List<float>::Builder initFloat32(unsigned int size);
-  inline void adoptFloat32(::capnp::Orphan<::capnp::List<float>>&& value);
-  inline ::capnp::Orphan<::capnp::List<float>> disownFloat32();
+  inline  ::capnp::List<float>::Builder initFloat32(unsigned int size);
+  inline void adoptFloat32(::capnp::Orphan< ::capnp::List<float>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<float>> disownFloat32();
 
   inline bool isFloat64();
   inline bool hasFloat64();
-  inline ::capnp::List<double>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<double>::Reader value);
+  inline  ::capnp::List<double>::Builder getFloat64();
+  inline void setFloat64( ::capnp::List<double>::Reader value);
   inline void setFloat64(::kj::ArrayPtr<const double> value);
-  inline ::capnp::List<double>::Builder initFloat64(unsigned int size);
-  inline void adoptFloat64(::capnp::Orphan<::capnp::List<double>>&& value);
-  inline ::capnp::Orphan<::capnp::List<double>> disownFloat64();
+  inline  ::capnp::List<double>::Builder initFloat64(unsigned int size);
+  inline void adoptFloat64(::capnp::Orphan< ::capnp::List<double>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<double>> disownFloat64();
 
   inline bool isChar();
   inline bool hasChar();
-  inline ::capnp::Data::Builder getChar();
-  inline void setChar(::capnp::Data::Reader value);
-  inline ::capnp::Data::Builder initChar(unsigned int size);
-  inline void adoptChar(::capnp::Orphan<::capnp::Data>&& value);
-  inline ::capnp::Orphan<::capnp::Data> disownChar();
+  inline  ::capnp::Data::Builder getChar();
+  inline void setChar( ::capnp::Data::Reader value);
+  inline  ::capnp::Data::Builder initChar(unsigned int size);
+  inline void adoptChar(::capnp::Orphan< ::capnp::Data>&& value);
+  inline ::capnp::Orphan< ::capnp::Data> disownChar();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1763,17 +1572,120 @@ class AttributeBuffer::Buffer::Builder {
 
 #if !CAPNP_LITE
 class AttributeBuffer::Buffer::Pipeline {
- public:
+public:
   typedef Buffer Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
+      : _typeless(kj::mv(typeless)) {}
+
+private:
+  ::capnp::AnyPointer::Pipeline _typeless;
+  friend class ::capnp::PipelineHook;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::ToDynamic_;
+};
+#endif  // !CAPNP_LITE
+
+class AttributeBufferHeader::Reader {
+public:
+  typedef AttributeBufferHeader Reads;
+
+  Reader() = default;
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+
+  inline ::capnp::MessageSize totalSize() const {
+    return _reader.totalSize().asPublic();
   }
 
- private:
+#if !CAPNP_LITE
+  inline ::kj::StringTree toString() const {
+    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
+  }
+#endif  // !CAPNP_LITE
+
+  inline bool hasAttributeName() const;
+  inline  ::capnp::Text::Reader getAttributeName() const;
+
+  inline bool hasType() const;
+  inline  ::capnp::Text::Reader getType() const;
+
+  inline  ::uint64_t getDatatypeSizeInBytes() const;
+
+  inline  ::uint64_t getBufferSizeInBytes() const;
+
+  inline  ::uint64_t getOffsetBufferSizeInBytes() const;
+
+private:
+  ::capnp::_::StructReader _reader;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::ToDynamic_;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::_::PointerHelpers;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::List;
+  friend class ::capnp::MessageBuilder;
+  friend class ::capnp::Orphanage;
+};
+
+class AttributeBufferHeader::Builder {
+public:
+  typedef AttributeBufferHeader Builds;
+
+  Builder() = delete;  // Deleted to discourage incorrect usage.
+                       // You can explicitly initialize to nullptr instead.
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
+
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+#if !CAPNP_LITE
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
+#endif  // !CAPNP_LITE
+
+  inline bool hasAttributeName();
+  inline  ::capnp::Text::Builder getAttributeName();
+  inline void setAttributeName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initAttributeName(unsigned int size);
+  inline void adoptAttributeName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownAttributeName();
+
+  inline bool hasType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
+
+  inline  ::uint64_t getDatatypeSizeInBytes();
+  inline void setDatatypeSizeInBytes( ::uint64_t value);
+
+  inline  ::uint64_t getBufferSizeInBytes();
+  inline void setBufferSizeInBytes( ::uint64_t value);
+
+  inline  ::uint64_t getOffsetBufferSizeInBytes();
+  inline void setOffsetBufferSizeInBytes( ::uint64_t value);
+
+private:
+  ::capnp::_::StructBuilder _builder;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::ToDynamic_;
+  friend class ::capnp::Orphanage;
+  template <typename, ::capnp::Kind>
+  friend struct ::capnp::_::PointerHelpers;
+};
+
+#if !CAPNP_LITE
+class AttributeBufferHeader::Pipeline {
+public:
+  typedef AttributeBufferHeader Pipelines;
+
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+      : _typeless(kj::mv(typeless)) {}
+
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1782,13 +1694,11 @@ class AttributeBuffer::Buffer::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Dimension::Reader {
- public:
+public:
   typedef Dimension Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1801,19 +1711,19 @@ class Dimension::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasName() const;
-  inline ::capnp::Text::Reader getName() const;
+  inline  ::capnp::Text::Reader getName() const;
 
   inline bool getNullTileExtent() const;
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline typename TileExtent::Reader getTileExtent() const;
 
   inline bool hasDomain() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader getDomain() const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getDomain() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1826,61 +1736,49 @@ class Dimension::Reader {
 };
 
 class Dimension::Builder {
- public:
+public:
   typedef Dimension Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasName();
-  inline ::capnp::Text::Builder getName();
-  inline void setName(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownName();
+  inline  ::capnp::Text::Builder getName();
+  inline void setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initName(unsigned int size);
+  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownName();
 
   inline bool getNullTileExtent();
   inline void setNullTileExtent(bool value);
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline typename TileExtent::Builder getTileExtent();
   inline typename TileExtent::Builder initTileExtent();
 
   inline bool hasDomain();
-  inline ::tiledb::rest::capnp::DomainArray::Builder getDomain();
-  inline void setDomain(::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder initDomain();
-  inline void adoptDomain(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray> disownDomain();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getDomain();
+  inline void setDomain( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initDomain();
+  inline void adoptDomain(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownDomain();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1891,20 +1789,16 @@ class Dimension::Builder {
 
 #if !CAPNP_LITE
 class Dimension::Pipeline {
- public:
+public:
   typedef Dimension Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
   inline typename TileExtent::Pipeline getTileExtent();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline getDomain();
-
- private:
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getDomain();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -1913,13 +1807,11 @@ class Dimension::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Dimension::TileExtent::Reader {
- public:
+public:
   typedef TileExtent Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -1933,28 +1825,28 @@ class Dimension::TileExtent::Reader {
 
   inline Which which() const;
   inline bool isInt8() const;
-  inline ::int8_t getInt8() const;
+  inline  ::int8_t getInt8() const;
 
   inline bool isUint8() const;
-  inline ::uint8_t getUint8() const;
+  inline  ::uint8_t getUint8() const;
 
   inline bool isInt16() const;
-  inline ::int16_t getInt16() const;
+  inline  ::int16_t getInt16() const;
 
   inline bool isUint16() const;
-  inline ::uint16_t getUint16() const;
+  inline  ::uint16_t getUint16() const;
 
   inline bool isInt32() const;
-  inline ::int32_t getInt32() const;
+  inline  ::int32_t getInt32() const;
 
   inline bool isUint32() const;
-  inline ::uint32_t getUint32() const;
+  inline  ::uint32_t getUint32() const;
 
   inline bool isInt64() const;
-  inline ::int64_t getInt64() const;
+  inline  ::int64_t getInt64() const;
 
   inline bool isUint64() const;
-  inline ::uint64_t getUint64() const;
+  inline  ::uint64_t getUint64() const;
 
   inline bool isFloat32() const;
   inline float getFloat32() const;
@@ -1962,7 +1854,7 @@ class Dimension::TileExtent::Reader {
   inline bool isFloat64() const;
   inline double getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -1975,64 +1867,53 @@ class Dimension::TileExtent::Reader {
 };
 
 class Dimension::TileExtent::Builder {
- public:
+public:
   typedef TileExtent Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isInt8();
-  inline ::int8_t getInt8();
-  inline void setInt8(::int8_t value);
+  inline  ::int8_t getInt8();
+  inline void setInt8( ::int8_t value);
 
   inline bool isUint8();
-  inline ::uint8_t getUint8();
-  inline void setUint8(::uint8_t value);
+  inline  ::uint8_t getUint8();
+  inline void setUint8( ::uint8_t value);
 
   inline bool isInt16();
-  inline ::int16_t getInt16();
-  inline void setInt16(::int16_t value);
+  inline  ::int16_t getInt16();
+  inline void setInt16( ::int16_t value);
 
   inline bool isUint16();
-  inline ::uint16_t getUint16();
-  inline void setUint16(::uint16_t value);
+  inline  ::uint16_t getUint16();
+  inline void setUint16( ::uint16_t value);
 
   inline bool isInt32();
-  inline ::int32_t getInt32();
-  inline void setInt32(::int32_t value);
+  inline  ::int32_t getInt32();
+  inline void setInt32( ::int32_t value);
 
   inline bool isUint32();
-  inline ::uint32_t getUint32();
-  inline void setUint32(::uint32_t value);
+  inline  ::uint32_t getUint32();
+  inline void setUint32( ::uint32_t value);
 
   inline bool isInt64();
-  inline ::int64_t getInt64();
-  inline void setInt64(::int64_t value);
+  inline  ::int64_t getInt64();
+  inline void setInt64( ::int64_t value);
 
   inline bool isUint64();
-  inline ::uint64_t getUint64();
-  inline void setUint64(::uint64_t value);
+  inline  ::uint64_t getUint64();
+  inline void setUint64( ::uint64_t value);
 
   inline bool isFloat32();
   inline float getFloat32();
@@ -2042,7 +1923,7 @@ class Dimension::TileExtent::Builder {
   inline double getFloat64();
   inline void setFloat64(double value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2053,17 +1934,14 @@ class Dimension::TileExtent::Builder {
 
 #if !CAPNP_LITE
 class Dimension::TileExtent::Pipeline {
- public:
+public:
   typedef TileExtent Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2072,13 +1950,11 @@ class Dimension::TileExtent::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Domain::Reader {
- public:
+public:
   typedef Domain Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2091,19 +1967,18 @@ class Domain::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasCellOrder() const;
-  inline ::capnp::Text::Reader getCellOrder() const;
+  inline  ::capnp::Text::Reader getCellOrder() const;
 
   inline bool hasDimensions() const;
-  inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Reader getDimensions()
-      const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Reader getDimensions() const;
 
   inline bool hasTileOrder() const;
-  inline ::capnp::Text::Reader getTileOrder() const;
+  inline  ::capnp::Text::Reader getTileOrder() const;
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2116,66 +1991,50 @@ class Domain::Reader {
 };
 
 class Domain::Builder {
- public:
+public:
   typedef Domain Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasCellOrder();
-  inline ::capnp::Text::Builder getCellOrder();
-  inline void setCellOrder(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initCellOrder(unsigned int size);
-  inline void adoptCellOrder(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownCellOrder();
+  inline  ::capnp::Text::Builder getCellOrder();
+  inline void setCellOrder( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initCellOrder(unsigned int size);
+  inline void adoptCellOrder(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownCellOrder();
 
   inline bool hasDimensions();
-  inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Builder
-  getDimensions();
-  inline void setDimensions(
-      ::capnp::List<::tiledb::rest::capnp::Dimension>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Builder
-  initDimensions(unsigned int size);
-  inline void adoptDimensions(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Dimension>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Dimension>>
-  disownDimensions();
+  inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Builder getDimensions();
+  inline void setDimensions( ::capnp::List< ::tiledb::rest::capnp::Dimension>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Builder initDimensions(unsigned int size);
+  inline void adoptDimensions(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Dimension>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Dimension>> disownDimensions();
 
   inline bool hasTileOrder();
-  inline ::capnp::Text::Builder getTileOrder();
-  inline void setTileOrder(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initTileOrder(unsigned int size);
-  inline void adoptTileOrder(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownTileOrder();
+  inline  ::capnp::Text::Builder getTileOrder();
+  inline void setTileOrder( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initTileOrder(unsigned int size);
+  inline void adoptTileOrder(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownTileOrder();
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2186,17 +2045,14 @@ class Domain::Builder {
 
 #if !CAPNP_LITE
 class Domain::Pipeline {
- public:
+public:
   typedef Domain Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2205,13 +2061,11 @@ class Domain::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Error::Reader {
- public:
+public:
   typedef Error Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2223,12 +2077,12 @@ class Error::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  inline ::int64_t getCode() const;
+  inline  ::int64_t getCode() const;
 
   inline bool hasMessage() const;
-  inline ::capnp::Text::Reader getMessage() const;
+  inline  ::capnp::Text::Reader getMessage() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2241,43 +2095,32 @@ class Error::Reader {
 };
 
 class Error::Builder {
- public:
+public:
   typedef Error Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline ::int64_t getCode();
-  inline void setCode(::int64_t value);
+  inline  ::int64_t getCode();
+  inline void setCode( ::int64_t value);
 
   inline bool hasMessage();
-  inline ::capnp::Text::Builder getMessage();
-  inline void setMessage(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initMessage(unsigned int size);
-  inline void adoptMessage(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownMessage();
+  inline  ::capnp::Text::Builder getMessage();
+  inline void setMessage( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initMessage(unsigned int size);
+  inline void adoptMessage(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownMessage();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2288,17 +2131,14 @@ class Error::Builder {
 
 #if !CAPNP_LITE
 class Error::Pipeline {
- public:
+public:
   typedef Error Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2307,13 +2147,11 @@ class Error::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Filter::Reader {
- public:
+public:
   typedef Filter Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2326,11 +2164,11 @@ class Filter::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline typename Data::Reader getData() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2343,43 +2181,32 @@ class Filter::Reader {
 };
 
 class Filter::Builder {
- public:
+public:
   typedef Filter Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline typename Data::Builder getData();
   inline typename Data::Builder initData();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2390,19 +2217,15 @@ class Filter::Builder {
 
 #if !CAPNP_LITE
 class Filter::Pipeline {
- public:
+public:
   typedef Filter Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
   inline typename Data::Pipeline getData();
-
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2411,13 +2234,11 @@ class Filter::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Filter::Data::Reader {
- public:
+public:
   typedef Data Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2432,35 +2253,35 @@ class Filter::Data::Reader {
   inline Which which() const;
   inline bool isText() const;
   inline bool hasText() const;
-  inline ::capnp::Text::Reader getText() const;
+  inline  ::capnp::Text::Reader getText() const;
 
   inline bool isBytes() const;
   inline bool hasBytes() const;
-  inline ::capnp::Data::Reader getBytes() const;
+  inline  ::capnp::Data::Reader getBytes() const;
 
   inline bool isInt8() const;
-  inline ::int8_t getInt8() const;
+  inline  ::int8_t getInt8() const;
 
   inline bool isUint8() const;
-  inline ::uint8_t getUint8() const;
+  inline  ::uint8_t getUint8() const;
 
   inline bool isInt16() const;
-  inline ::int16_t getInt16() const;
+  inline  ::int16_t getInt16() const;
 
   inline bool isUint16() const;
-  inline ::uint16_t getUint16() const;
+  inline  ::uint16_t getUint16() const;
 
   inline bool isInt32() const;
-  inline ::int32_t getInt32() const;
+  inline  ::int32_t getInt32() const;
 
   inline bool isUint32() const;
-  inline ::uint32_t getUint32() const;
+  inline  ::uint32_t getUint32() const;
 
   inline bool isInt64() const;
-  inline ::int64_t getInt64() const;
+  inline  ::int64_t getInt64() const;
 
   inline bool isUint64() const;
-  inline ::uint64_t getUint64() const;
+  inline  ::uint64_t getUint64() const;
 
   inline bool isFloat32() const;
   inline float getFloat32() const;
@@ -2468,7 +2289,7 @@ class Filter::Data::Reader {
   inline bool isFloat64() const;
   inline double getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2481,80 +2302,69 @@ class Filter::Data::Reader {
 };
 
 class Filter::Data::Builder {
- public:
+public:
   typedef Data Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isText();
   inline bool hasText();
-  inline ::capnp::Text::Builder getText();
-  inline void setText(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initText(unsigned int size);
-  inline void adoptText(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownText();
+  inline  ::capnp::Text::Builder getText();
+  inline void setText( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initText(unsigned int size);
+  inline void adoptText(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownText();
 
   inline bool isBytes();
   inline bool hasBytes();
-  inline ::capnp::Data::Builder getBytes();
-  inline void setBytes(::capnp::Data::Reader value);
-  inline ::capnp::Data::Builder initBytes(unsigned int size);
-  inline void adoptBytes(::capnp::Orphan<::capnp::Data>&& value);
-  inline ::capnp::Orphan<::capnp::Data> disownBytes();
+  inline  ::capnp::Data::Builder getBytes();
+  inline void setBytes( ::capnp::Data::Reader value);
+  inline  ::capnp::Data::Builder initBytes(unsigned int size);
+  inline void adoptBytes(::capnp::Orphan< ::capnp::Data>&& value);
+  inline ::capnp::Orphan< ::capnp::Data> disownBytes();
 
   inline bool isInt8();
-  inline ::int8_t getInt8();
-  inline void setInt8(::int8_t value);
+  inline  ::int8_t getInt8();
+  inline void setInt8( ::int8_t value);
 
   inline bool isUint8();
-  inline ::uint8_t getUint8();
-  inline void setUint8(::uint8_t value);
+  inline  ::uint8_t getUint8();
+  inline void setUint8( ::uint8_t value);
 
   inline bool isInt16();
-  inline ::int16_t getInt16();
-  inline void setInt16(::int16_t value);
+  inline  ::int16_t getInt16();
+  inline void setInt16( ::int16_t value);
 
   inline bool isUint16();
-  inline ::uint16_t getUint16();
-  inline void setUint16(::uint16_t value);
+  inline  ::uint16_t getUint16();
+  inline void setUint16( ::uint16_t value);
 
   inline bool isInt32();
-  inline ::int32_t getInt32();
-  inline void setInt32(::int32_t value);
+  inline  ::int32_t getInt32();
+  inline void setInt32( ::int32_t value);
 
   inline bool isUint32();
-  inline ::uint32_t getUint32();
-  inline void setUint32(::uint32_t value);
+  inline  ::uint32_t getUint32();
+  inline void setUint32( ::uint32_t value);
 
   inline bool isInt64();
-  inline ::int64_t getInt64();
-  inline void setInt64(::int64_t value);
+  inline  ::int64_t getInt64();
+  inline void setInt64( ::int64_t value);
 
   inline bool isUint64();
-  inline ::uint64_t getUint64();
-  inline void setUint64(::uint64_t value);
+  inline  ::uint64_t getUint64();
+  inline void setUint64( ::uint64_t value);
 
   inline bool isFloat32();
   inline float getFloat32();
@@ -2564,7 +2374,7 @@ class Filter::Data::Builder {
   inline double getFloat64();
   inline void setFloat64(double value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2575,17 +2385,14 @@ class Filter::Data::Builder {
 
 #if !CAPNP_LITE
 class Filter::Data::Pipeline {
- public:
+public:
   typedef Data Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2594,13 +2401,11 @@ class Filter::Data::Pipeline {
 #endif  // !CAPNP_LITE
 
 class FilterPipeline::Reader {
- public:
+public:
   typedef FilterPipeline Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2613,10 +2418,9 @@ class FilterPipeline::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasFilters() const;
-  inline ::capnp::List<::tiledb::rest::capnp::Filter>::Reader getFilters()
-      const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Reader getFilters() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2629,44 +2433,29 @@ class FilterPipeline::Reader {
 };
 
 class FilterPipeline::Builder {
- public:
+public:
   typedef FilterPipeline Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasFilters();
-  inline ::capnp::List<::tiledb::rest::capnp::Filter>::Builder getFilters();
-  inline void setFilters(
-      ::capnp::List<::tiledb::rest::capnp::Filter>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::Filter>::Builder initFilters(
-      unsigned int size);
-  inline void adoptFilters(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Filter>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Filter>>
-  disownFilters();
+  inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Builder getFilters();
+  inline void setFilters( ::capnp::List< ::tiledb::rest::capnp::Filter>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Builder initFilters(unsigned int size);
+  inline void adoptFilters(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Filter>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Filter>> disownFilters();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2677,17 +2466,14 @@ class FilterPipeline::Builder {
 
 #if !CAPNP_LITE
 class FilterPipeline::Pipeline {
- public:
+public:
   typedef FilterPipeline Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2697,13 +2483,11 @@ class FilterPipeline::Pipeline {
 
 template <typename Key, typename Value>
 class Map<Key, Value>::Reader {
- public:
+public:
   typedef Map Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2715,19 +2499,15 @@ class Map<Key, Value>::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  template <
-      typename Key2 = ::capnp::AnyPointer,
-      typename Value2 = ::capnp::AnyPointer>
+  template <typename Key2 = ::capnp::AnyPointer, typename Value2 = ::capnp::AnyPointer>
   typename Map<Key2, Value2>::Reader asGeneric() {
     return typename Map<Key2, Value2>::Reader(_reader);
   }
 
   inline bool hasEntries() const;
-  inline typename ::capnp::List<
-      typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader
-  getEntries() const;
+  inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader getEntries() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2741,58 +2521,34 @@ class Map<Key, Value>::Reader {
 
 template <typename Key, typename Value>
 class Map<Key, Value>::Builder {
- public:
+public:
   typedef Map Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  template <
-      typename Key2 = ::capnp::AnyPointer,
-      typename Value2 = ::capnp::AnyPointer>
+  template <typename Key2 = ::capnp::AnyPointer, typename Value2 = ::capnp::AnyPointer>
   typename Map<Key2, Value2>::Builder asGeneric() {
     return typename Map<Key2, Value2>::Builder(_builder);
   }
 
   inline bool hasEntries();
-  inline typename ::capnp::List<
-      typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder
-  getEntries();
-  inline void setEntries(
-      typename ::capnp::List<
-          typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader
-          value);
-  inline typename ::capnp::List<
-      typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder
-  initEntries(unsigned int size);
-  inline void adoptEntries(
-      ::capnp::Orphan<::capnp::List<
-          typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>&& value);
-  inline ::capnp::Orphan<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>
-  disownEntries();
+  inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder getEntries();
+  inline void setEntries(typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader value);
+  inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder initEntries(unsigned int size);
+  inline void adoptEntries(::capnp::Orphan< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>> disownEntries();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2804,17 +2560,14 @@ class Map<Key, Value>::Builder {
 #if !CAPNP_LITE
 template <typename Key, typename Value>
 class Map<Key, Value>::Pipeline {
- public:
+public:
   typedef Map Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2824,13 +2577,11 @@ class Map<Key, Value>::Pipeline {
 
 template <typename Key, typename Value>
 class Map<Key, Value>::Entry::Reader {
- public:
+public:
   typedef Entry Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2842,20 +2593,18 @@ class Map<Key, Value>::Entry::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  template <
-      typename Key2 = ::capnp::AnyPointer,
-      typename Value2 = ::capnp::AnyPointer>
+  template <typename Key2 = ::capnp::AnyPointer, typename Value2 = ::capnp::AnyPointer>
   typename Map<Key2, Value2>::Entry::Reader asMapGeneric() {
     return typename Map<Key2, Value2>::Entry::Reader(_reader);
   }
 
   inline bool hasKey() const;
-  inline ::capnp::ReaderFor<Key> getKey() const;
+  inline  ::capnp::ReaderFor<Key> getKey() const;
 
   inline bool hasValue() const;
-  inline ::capnp::ReaderFor<Value> getValue() const;
+  inline  ::capnp::ReaderFor<Value> getValue() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2869,56 +2618,43 @@ class Map<Key, Value>::Entry::Reader {
 
 template <typename Key, typename Value>
 class Map<Key, Value>::Entry::Builder {
- public:
+public:
   typedef Entry Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  template <
-      typename Key2 = ::capnp::AnyPointer,
-      typename Value2 = ::capnp::AnyPointer>
+  template <typename Key2 = ::capnp::AnyPointer, typename Value2 = ::capnp::AnyPointer>
   typename Map<Key2, Value2>::Entry::Builder asMapGeneric() {
     return typename Map<Key2, Value2>::Entry::Builder(_builder);
   }
 
   inline bool hasKey();
-  inline ::capnp::BuilderFor<Key> getKey();
-  inline void setKey(::capnp::ReaderFor<Key> value);
-  inline ::capnp::BuilderFor<Key> initKey();
-  inline ::capnp::BuilderFor<Key> initKey(unsigned int size);
+  inline  ::capnp::BuilderFor<Key> getKey();
+  inline void setKey( ::capnp::ReaderFor<Key> value);
+  inline  ::capnp::BuilderFor<Key> initKey();
+  inline  ::capnp::BuilderFor<Key> initKey(unsigned int size);
   inline void adoptKey(::capnp::Orphan<Key>&& value);
   inline ::capnp::Orphan<Key> disownKey();
 
   inline bool hasValue();
-  inline ::capnp::BuilderFor<Value> getValue();
-  inline void setValue(::capnp::ReaderFor<Value> value);
-  inline ::capnp::BuilderFor<Value> initValue();
-  inline ::capnp::BuilderFor<Value> initValue(unsigned int size);
+  inline  ::capnp::BuilderFor<Value> getValue();
+  inline void setValue( ::capnp::ReaderFor<Value> value);
+  inline  ::capnp::BuilderFor<Value> initValue();
+  inline  ::capnp::BuilderFor<Value> initValue(unsigned int size);
   inline void adoptValue(::capnp::Orphan<Value>&& value);
   inline ::capnp::Orphan<Value> disownValue();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2930,20 +2666,16 @@ class Map<Key, Value>::Entry::Builder {
 #if !CAPNP_LITE
 template <typename Key, typename Value>
 class Map<Key, Value>::Entry::Pipeline {
- public:
+public:
   typedef Entry Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::capnp::PipelineFor<Key> getKey();
-  inline ::capnp::PipelineFor<Value> getValue();
-
- private:
+  inline  ::capnp::PipelineFor<Key> getKey();
+  inline  ::capnp::PipelineFor<Value> getValue();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -2952,13 +2684,11 @@ class Map<Key, Value>::Entry::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapUInt32::Reader {
- public:
+public:
   typedef MapUInt32 Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -2971,10 +2701,9 @@ class MapUInt32::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries() const;
-  inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Reader
-  getEntries() const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Reader getEntries() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -2987,46 +2716,29 @@ class MapUInt32::Reader {
 };
 
 class MapUInt32::Builder {
- public:
+public:
   typedef MapUInt32 Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries();
-  inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Builder
-  getEntries();
-  inline void setEntries(
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Builder
-  initEntries(unsigned int size);
-  inline void adoptEntries(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>&&
-          value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>
-  disownEntries();
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Builder getEntries();
+  inline void setEntries( ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Builder initEntries(unsigned int size);
+  inline void adoptEntries(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>> disownEntries();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3037,17 +2749,14 @@ class MapUInt32::Builder {
 
 #if !CAPNP_LITE
 class MapUInt32::Pipeline {
- public:
+public:
   typedef MapUInt32 Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3056,13 +2765,11 @@ class MapUInt32::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapUInt32::Entry::Reader {
- public:
+public:
   typedef Entry Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3075,11 +2782,11 @@ class MapUInt32::Entry::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasKey() const;
-  inline ::capnp::Text::Reader getKey() const;
+  inline  ::capnp::Text::Reader getKey() const;
 
-  inline ::uint32_t getValue() const;
+  inline  ::uint32_t getValue() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3092,43 +2799,32 @@ class MapUInt32::Entry::Reader {
 };
 
 class MapUInt32::Entry::Builder {
- public:
+public:
   typedef Entry Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasKey();
-  inline ::capnp::Text::Builder getKey();
-  inline void setKey(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initKey(unsigned int size);
-  inline void adoptKey(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownKey();
+  inline  ::capnp::Text::Builder getKey();
+  inline void setKey( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initKey(unsigned int size);
+  inline void adoptKey(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownKey();
 
-  inline ::uint32_t getValue();
-  inline void setValue(::uint32_t value);
+  inline  ::uint32_t getValue();
+  inline void setValue( ::uint32_t value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3139,17 +2835,14 @@ class MapUInt32::Entry::Builder {
 
 #if !CAPNP_LITE
 class MapUInt32::Entry::Pipeline {
- public:
+public:
   typedef Entry Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3158,13 +2851,11 @@ class MapUInt32::Entry::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapInt64::Reader {
- public:
+public:
   typedef MapInt64 Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3177,10 +2868,9 @@ class MapInt64::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries() const;
-  inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Reader
-  getEntries() const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Reader getEntries() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3193,46 +2883,29 @@ class MapInt64::Reader {
 };
 
 class MapInt64::Builder {
- public:
+public:
   typedef MapInt64 Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries();
-  inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Builder
-  getEntries();
-  inline void setEntries(
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Builder
-  initEntries(unsigned int size);
-  inline void adoptEntries(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>&&
-          value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>
-  disownEntries();
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Builder getEntries();
+  inline void setEntries( ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Builder initEntries(unsigned int size);
+  inline void adoptEntries(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>> disownEntries();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3243,17 +2916,14 @@ class MapInt64::Builder {
 
 #if !CAPNP_LITE
 class MapInt64::Pipeline {
- public:
+public:
   typedef MapInt64 Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3262,13 +2932,11 @@ class MapInt64::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapInt64::Entry::Reader {
- public:
+public:
   typedef Entry Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3281,11 +2949,11 @@ class MapInt64::Entry::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasKey() const;
-  inline ::capnp::Text::Reader getKey() const;
+  inline  ::capnp::Text::Reader getKey() const;
 
-  inline ::int64_t getValue() const;
+  inline  ::int64_t getValue() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3298,43 +2966,32 @@ class MapInt64::Entry::Reader {
 };
 
 class MapInt64::Entry::Builder {
- public:
+public:
   typedef Entry Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasKey();
-  inline ::capnp::Text::Builder getKey();
-  inline void setKey(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initKey(unsigned int size);
-  inline void adoptKey(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownKey();
+  inline  ::capnp::Text::Builder getKey();
+  inline void setKey( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initKey(unsigned int size);
+  inline void adoptKey(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownKey();
 
-  inline ::int64_t getValue();
-  inline void setValue(::int64_t value);
+  inline  ::int64_t getValue();
+  inline void setValue( ::int64_t value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3345,17 +3002,14 @@ class MapInt64::Entry::Builder {
 
 #if !CAPNP_LITE
 class MapInt64::Entry::Pipeline {
- public:
+public:
   typedef Entry Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3364,13 +3018,11 @@ class MapInt64::Entry::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MaxBufferSize::Reader {
- public:
+public:
   typedef MaxBufferSize Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3382,11 +3034,11 @@ class MaxBufferSize::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getBufferOffsetSize() const;
+  inline  ::uint64_t getBufferOffsetSize() const;
 
-  inline ::uint64_t getBufferSize() const;
+  inline  ::uint64_t getBufferSize() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3399,39 +3051,28 @@ class MaxBufferSize::Reader {
 };
 
 class MaxBufferSize::Builder {
- public:
+public:
   typedef MaxBufferSize Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getBufferOffsetSize();
-  inline void setBufferOffsetSize(::uint64_t value);
+  inline  ::uint64_t getBufferOffsetSize();
+  inline void setBufferOffsetSize( ::uint64_t value);
 
-  inline ::uint64_t getBufferSize();
-  inline void setBufferSize(::uint64_t value);
+  inline  ::uint64_t getBufferSize();
+  inline void setBufferSize( ::uint64_t value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3442,17 +3083,14 @@ class MaxBufferSize::Builder {
 
 #if !CAPNP_LITE
 class MaxBufferSize::Pipeline {
- public:
+public:
   typedef MaxBufferSize Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3461,13 +3099,11 @@ class MaxBufferSize::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapMaxBufferSizes::Reader {
- public:
+public:
   typedef MapMaxBufferSizes Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3480,10 +3116,9 @@ class MapMaxBufferSizes::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries() const;
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-  getEntries() const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader getEntries() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3496,49 +3131,29 @@ class MapMaxBufferSizes::Reader {
 };
 
 class MapMaxBufferSizes::Builder {
- public:
+public:
   typedef MapMaxBufferSizes Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasEntries();
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-  getEntries();
-  inline void setEntries(
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-          value);
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-  initEntries(unsigned int size);
-  inline void adoptEntries(
-      ::capnp::Orphan<
-          ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&&
-          value);
-  inline ::capnp::Orphan<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>
-  disownEntries();
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder getEntries();
+  inline void setEntries( ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder initEntries(unsigned int size);
+  inline void adoptEntries(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>> disownEntries();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3549,17 +3164,14 @@ class MapMaxBufferSizes::Builder {
 
 #if !CAPNP_LITE
 class MapMaxBufferSizes::Pipeline {
- public:
+public:
   typedef MapMaxBufferSizes Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3568,13 +3180,11 @@ class MapMaxBufferSizes::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MapMaxBufferSizes::Entry::Reader {
- public:
+public:
   typedef Entry Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3587,12 +3197,12 @@ class MapMaxBufferSizes::Entry::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasKey() const;
-  inline ::capnp::Text::Reader getKey() const;
+  inline  ::capnp::Text::Reader getKey() const;
 
   inline bool hasValue() const;
-  inline ::tiledb::rest::capnp::MaxBufferSize::Reader getValue() const;
+  inline  ::tiledb::rest::capnp::MaxBufferSize::Reader getValue() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3605,48 +3215,36 @@ class MapMaxBufferSizes::Entry::Reader {
 };
 
 class MapMaxBufferSizes::Entry::Builder {
- public:
+public:
   typedef Entry Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasKey();
-  inline ::capnp::Text::Builder getKey();
-  inline void setKey(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initKey(unsigned int size);
-  inline void adoptKey(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownKey();
+  inline  ::capnp::Text::Builder getKey();
+  inline void setKey( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initKey(unsigned int size);
+  inline void adoptKey(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownKey();
 
   inline bool hasValue();
-  inline ::tiledb::rest::capnp::MaxBufferSize::Builder getValue();
-  inline void setValue(::tiledb::rest::capnp::MaxBufferSize::Reader value);
-  inline ::tiledb::rest::capnp::MaxBufferSize::Builder initValue();
-  inline void adoptValue(
-      ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize> disownValue();
+  inline  ::tiledb::rest::capnp::MaxBufferSize::Builder getValue();
+  inline void setValue( ::tiledb::rest::capnp::MaxBufferSize::Reader value);
+  inline  ::tiledb::rest::capnp::MaxBufferSize::Builder initValue();
+  inline void adoptValue(::capnp::Orphan< ::tiledb::rest::capnp::MaxBufferSize>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::MaxBufferSize> disownValue();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3657,19 +3255,15 @@ class MapMaxBufferSizes::Entry::Builder {
 
 #if !CAPNP_LITE
 class MapMaxBufferSizes::Entry::Pipeline {
- public:
+public:
   typedef Entry Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::MaxBufferSize::Pipeline getValue();
-
- private:
+  inline  ::tiledb::rest::capnp::MaxBufferSize::Pipeline getValue();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3678,13 +3272,11 @@ class MapMaxBufferSizes::Entry::Pipeline {
 #endif  // !CAPNP_LITE
 
 class FragmentMetadata::Reader {
- public:
+public:
   typedef FragmentMetadata Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -3697,64 +3289,59 @@ class FragmentMetadata::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasAttributeIdxMap() const;
-  inline ::tiledb::rest::capnp::MapUInt32::Reader getAttributeIdxMap() const;
+  inline  ::tiledb::rest::capnp::MapUInt32::Reader getAttributeIdxMap() const;
 
   inline bool hasAttributeUriMap() const;
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader
-  getAttributeUriMap() const;
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader getAttributeUriMap() const;
 
   inline bool hasAttributeVarUriMap() const;
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader
-  getAttributeVarUriMap() const;
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader getAttributeVarUriMap() const;
 
   inline typename BoundingCoords::Reader getBoundingCoords() const;
 
   inline bool getDense() const;
 
   inline bool hasDomain() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader getDomain() const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getDomain() const;
 
   inline bool hasFileSizes() const;
-  inline ::capnp::List<::uint64_t>::Reader getFileSizes() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getFileSizes() const;
 
   inline bool hasFileVarSizes() const;
-  inline ::capnp::List<::uint64_t>::Reader getFileVarSizes() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getFileVarSizes() const;
 
   inline bool hasFragmentUri() const;
-  inline ::capnp::Text::Reader getFragmentUri() const;
+  inline  ::capnp::Text::Reader getFragmentUri() const;
 
-  inline ::uint64_t getLastTileCellNum() const;
+  inline  ::uint64_t getLastTileCellNum() const;
 
-  inline ::capnp::Void getMbrs() const;
+  inline  ::capnp::Void getMbrs() const;
 
   inline bool hasNextTileOffsets() const;
-  inline ::capnp::List<::uint64_t>::Reader getNextTileOffsets() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getNextTileOffsets() const;
 
   inline bool hasNextTileVarOffsets() const;
-  inline ::capnp::List<::uint64_t>::Reader getNextTileVarOffsets() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getNextTileVarOffsets() const;
 
   inline bool hasNonEmptyDomain() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader getNonEmptyDomain() const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getNonEmptyDomain() const;
 
-  inline ::uint64_t getTileIndexBase() const;
+  inline  ::uint64_t getTileIndexBase() const;
 
   inline bool hasTileOffsets() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getTileOffsets()
-      const;
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader getTileOffsets() const;
 
   inline bool hasTileVarOffsets() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getTileVarOffsets()
-      const;
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader getTileVarOffsets() const;
 
   inline bool hasTileVarSizes() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getTileVarSizes()
-      const;
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader getTileVarSizes() const;
 
-  inline ::uint32_t getVersion() const;
+  inline  ::uint32_t getVersion() const;
 
-  inline ::uint64_t getTimestamp() const;
+  inline  ::uint64_t getTimestamp() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3767,69 +3354,41 @@ class FragmentMetadata::Reader {
 };
 
 class FragmentMetadata::Builder {
- public:
+public:
   typedef FragmentMetadata Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasAttributeIdxMap();
-  inline ::tiledb::rest::capnp::MapUInt32::Builder getAttributeIdxMap();
-  inline void setAttributeIdxMap(
-      ::tiledb::rest::capnp::MapUInt32::Reader value);
-  inline ::tiledb::rest::capnp::MapUInt32::Builder initAttributeIdxMap();
-  inline void adoptAttributeIdxMap(
-      ::capnp::Orphan<::tiledb::rest::capnp::MapUInt32>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MapUInt32>
-  disownAttributeIdxMap();
+  inline  ::tiledb::rest::capnp::MapUInt32::Builder getAttributeIdxMap();
+  inline void setAttributeIdxMap( ::tiledb::rest::capnp::MapUInt32::Reader value);
+  inline  ::tiledb::rest::capnp::MapUInt32::Builder initAttributeIdxMap();
+  inline void adoptAttributeIdxMap(::capnp::Orphan< ::tiledb::rest::capnp::MapUInt32>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::MapUInt32> disownAttributeIdxMap();
 
   inline bool hasAttributeUriMap();
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-  getAttributeUriMap();
-  inline void setAttributeUriMap(
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader value);
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-  initAttributeUriMap();
-  inline void adoptAttributeUriMap(
-      ::capnp::Orphan<
-          ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>&& value);
-  inline ::capnp::Orphan<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>
-  disownAttributeUriMap();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder getAttributeUriMap();
+  inline void setAttributeUriMap( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader value);
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder initAttributeUriMap();
+  inline void adoptAttributeUriMap(::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>> disownAttributeUriMap();
 
   inline bool hasAttributeVarUriMap();
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-  getAttributeVarUriMap();
-  inline void setAttributeVarUriMap(
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader value);
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-  initAttributeVarUriMap();
-  inline void adoptAttributeVarUriMap(
-      ::capnp::Orphan<
-          ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>&& value);
-  inline ::capnp::Orphan<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>
-  disownAttributeVarUriMap();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder getAttributeVarUriMap();
+  inline void setAttributeVarUriMap( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader value);
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder initAttributeVarUriMap();
+  inline void adoptAttributeVarUriMap(::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>> disownAttributeVarUriMap();
 
   inline typename BoundingCoords::Builder getBoundingCoords();
   inline typename BoundingCoords::Builder initBoundingCoords();
@@ -3838,123 +3397,98 @@ class FragmentMetadata::Builder {
   inline void setDense(bool value);
 
   inline bool hasDomain();
-  inline ::tiledb::rest::capnp::DomainArray::Builder getDomain();
-  inline void setDomain(::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder initDomain();
-  inline void adoptDomain(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray> disownDomain();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getDomain();
+  inline void setDomain( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initDomain();
+  inline void adoptDomain(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownDomain();
 
   inline bool hasFileSizes();
-  inline ::capnp::List<::uint64_t>::Builder getFileSizes();
-  inline void setFileSizes(::capnp::List<::uint64_t>::Reader value);
-  inline void setFileSizes(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initFileSizes(unsigned int size);
-  inline void adoptFileSizes(
-      ::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownFileSizes();
+  inline  ::capnp::List< ::uint64_t>::Builder getFileSizes();
+  inline void setFileSizes( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setFileSizes(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initFileSizes(unsigned int size);
+  inline void adoptFileSizes(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownFileSizes();
 
   inline bool hasFileVarSizes();
-  inline ::capnp::List<::uint64_t>::Builder getFileVarSizes();
-  inline void setFileVarSizes(::capnp::List<::uint64_t>::Reader value);
-  inline void setFileVarSizes(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initFileVarSizes(unsigned int size);
-  inline void adoptFileVarSizes(
-      ::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownFileVarSizes();
+  inline  ::capnp::List< ::uint64_t>::Builder getFileVarSizes();
+  inline void setFileVarSizes( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setFileVarSizes(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initFileVarSizes(unsigned int size);
+  inline void adoptFileVarSizes(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownFileVarSizes();
 
   inline bool hasFragmentUri();
-  inline ::capnp::Text::Builder getFragmentUri();
-  inline void setFragmentUri(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initFragmentUri(unsigned int size);
-  inline void adoptFragmentUri(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownFragmentUri();
+  inline  ::capnp::Text::Builder getFragmentUri();
+  inline void setFragmentUri( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initFragmentUri(unsigned int size);
+  inline void adoptFragmentUri(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownFragmentUri();
 
-  inline ::uint64_t getLastTileCellNum();
-  inline void setLastTileCellNum(::uint64_t value);
+  inline  ::uint64_t getLastTileCellNum();
+  inline void setLastTileCellNum( ::uint64_t value);
 
-  inline ::capnp::Void getMbrs();
-  inline void setMbrs(::capnp::Void value = ::capnp::VOID);
+  inline  ::capnp::Void getMbrs();
+  inline void setMbrs( ::capnp::Void value = ::capnp::VOID);
 
   inline bool hasNextTileOffsets();
-  inline ::capnp::List<::uint64_t>::Builder getNextTileOffsets();
-  inline void setNextTileOffsets(::capnp::List<::uint64_t>::Reader value);
-  inline void setNextTileOffsets(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initNextTileOffsets(
-      unsigned int size);
-  inline void adoptNextTileOffsets(
-      ::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownNextTileOffsets();
+  inline  ::capnp::List< ::uint64_t>::Builder getNextTileOffsets();
+  inline void setNextTileOffsets( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setNextTileOffsets(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initNextTileOffsets(unsigned int size);
+  inline void adoptNextTileOffsets(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownNextTileOffsets();
 
   inline bool hasNextTileVarOffsets();
-  inline ::capnp::List<::uint64_t>::Builder getNextTileVarOffsets();
-  inline void setNextTileVarOffsets(::capnp::List<::uint64_t>::Reader value);
-  inline void setNextTileVarOffsets(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initNextTileVarOffsets(
-      unsigned int size);
-  inline void adoptNextTileVarOffsets(
-      ::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownNextTileVarOffsets();
+  inline  ::capnp::List< ::uint64_t>::Builder getNextTileVarOffsets();
+  inline void setNextTileVarOffsets( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setNextTileVarOffsets(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initNextTileVarOffsets(unsigned int size);
+  inline void adoptNextTileVarOffsets(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownNextTileVarOffsets();
 
   inline bool hasNonEmptyDomain();
-  inline ::tiledb::rest::capnp::DomainArray::Builder getNonEmptyDomain();
-  inline void setNonEmptyDomain(
-      ::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder initNonEmptyDomain();
-  inline void adoptNonEmptyDomain(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-  disownNonEmptyDomain();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getNonEmptyDomain();
+  inline void setNonEmptyDomain( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initNonEmptyDomain();
+  inline void adoptNonEmptyDomain(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownNonEmptyDomain();
 
-  inline ::uint64_t getTileIndexBase();
-  inline void setTileIndexBase(::uint64_t value);
+  inline  ::uint64_t getTileIndexBase();
+  inline void setTileIndexBase( ::uint64_t value);
 
   inline bool hasTileOffsets();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getTileOffsets();
-  inline void setTileOffsets(
-      ::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setTileOffsets(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initTileOffsets(
-      unsigned int size);
-  inline void adoptTileOffsets(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownTileOffsets();
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder getTileOffsets();
+  inline void setTileOffsets( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value);
+  inline void setTileOffsets(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder initTileOffsets(unsigned int size);
+  inline void adoptTileOffsets(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> disownTileOffsets();
 
   inline bool hasTileVarOffsets();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getTileVarOffsets();
-  inline void setTileVarOffsets(
-      ::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setTileVarOffsets(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initTileVarOffsets(
-      unsigned int size);
-  inline void adoptTileVarOffsets(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownTileVarOffsets();
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder getTileVarOffsets();
+  inline void setTileVarOffsets( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value);
+  inline void setTileVarOffsets(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder initTileVarOffsets(unsigned int size);
+  inline void adoptTileVarOffsets(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> disownTileVarOffsets();
 
   inline bool hasTileVarSizes();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getTileVarSizes();
-  inline void setTileVarSizes(
-      ::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setTileVarSizes(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initTileVarSizes(
-      unsigned int size);
-  inline void adoptTileVarSizes(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownTileVarSizes();
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder getTileVarSizes();
+  inline void setTileVarSizes( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value);
+  inline void setTileVarSizes(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder initTileVarSizes(unsigned int size);
+  inline void adoptTileVarSizes(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> disownTileVarSizes();
 
-  inline ::uint32_t getVersion();
-  inline void setVersion(::uint32_t value);
+  inline  ::uint32_t getVersion();
+  inline void setVersion( ::uint32_t value);
 
-  inline ::uint64_t getTimestamp();
-  inline void setTimestamp(::uint64_t value);
+  inline  ::uint64_t getTimestamp();
+  inline void setTimestamp( ::uint64_t value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -3965,26 +3499,20 @@ class FragmentMetadata::Builder {
 
 #if !CAPNP_LITE
 class FragmentMetadata::Pipeline {
- public:
+public:
   typedef FragmentMetadata Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::MapUInt32::Pipeline getAttributeIdxMap();
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline
-  getAttributeUriMap();
-  inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline
-  getAttributeVarUriMap();
+  inline  ::tiledb::rest::capnp::MapUInt32::Pipeline getAttributeIdxMap();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline getAttributeUriMap();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline getAttributeVarUriMap();
   inline typename BoundingCoords::Pipeline getBoundingCoords();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline getDomain();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline getNonEmptyDomain();
-
- private:
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getDomain();
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getNonEmptyDomain();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -3993,13 +3521,11 @@ class FragmentMetadata::Pipeline {
 #endif  // !CAPNP_LITE
 
 class FragmentMetadata::BoundingCoords::Reader {
- public:
+public:
   typedef BoundingCoords Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4014,45 +3540,45 @@ class FragmentMetadata::BoundingCoords::Reader {
   inline Which which() const;
   inline bool isInt8() const;
   inline bool hasInt8() const;
-  inline ::capnp::List<::capnp::List<::int8_t>>::Reader getInt8() const;
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Reader getInt8() const;
 
   inline bool isUint8() const;
   inline bool hasUint8() const;
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Reader getUint8() const;
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Reader getUint8() const;
 
   inline bool isInt16() const;
   inline bool hasInt16() const;
-  inline ::capnp::List<::capnp::List<::int16_t>>::Reader getInt16() const;
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Reader getInt16() const;
 
   inline bool isUint16() const;
   inline bool hasUint16() const;
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Reader getUint16() const;
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Reader getUint16() const;
 
   inline bool isInt32() const;
   inline bool hasInt32() const;
-  inline ::capnp::List<::capnp::List<::int32_t>>::Reader getInt32() const;
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Reader getInt32() const;
 
   inline bool isUint32() const;
   inline bool hasUint32() const;
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Reader getUint32() const;
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Reader getUint32() const;
 
   inline bool isInt64() const;
   inline bool hasInt64() const;
-  inline ::capnp::List<::capnp::List<::int64_t>>::Reader getInt64() const;
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Reader getInt64() const;
 
   inline bool isUint64() const;
   inline bool hasUint64() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getUint64() const;
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader getUint64() const;
 
   inline bool isFloat32() const;
   inline bool hasFloat32() const;
-  inline ::capnp::List<::capnp::List<float>>::Reader getFloat32() const;
+  inline  ::capnp::List< ::capnp::List<float>>::Reader getFloat32() const;
 
   inline bool isFloat64() const;
   inline bool hasFloat64() const;
-  inline ::capnp::List<::capnp::List<double>>::Reader getFloat64() const;
+  inline  ::capnp::List< ::capnp::List<double>>::Reader getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4065,157 +3591,113 @@ class FragmentMetadata::BoundingCoords::Reader {
 };
 
 class FragmentMetadata::BoundingCoords::Builder {
- public:
+public:
   typedef BoundingCoords Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isInt8();
   inline bool hasInt8();
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder getInt8();
-  inline void setInt8(::capnp::List<::capnp::List<::int8_t>>::Reader value);
-  inline void setInt8(
-      ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder initInt8(
-      unsigned int size);
-  inline void adoptInt8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>> disownInt8();
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder getInt8();
+  inline void setInt8( ::capnp::List< ::capnp::List< ::int8_t>>::Reader value);
+  inline void setInt8(::kj::ArrayPtr<const  ::capnp::List< ::int8_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder initInt8(unsigned int size);
+  inline void adoptInt8(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>> disownInt8();
 
   inline bool isUint8();
   inline bool hasUint8();
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder getUint8();
-  inline void setUint8(::capnp::List<::capnp::List<::uint8_t>>::Reader value);
-  inline void setUint8(
-      ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder initUint8(
-      unsigned int size);
-  inline void adoptUint8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>> disownUint8();
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder getUint8();
+  inline void setUint8( ::capnp::List< ::capnp::List< ::uint8_t>>::Reader value);
+  inline void setUint8(::kj::ArrayPtr<const  ::capnp::List< ::uint8_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder initUint8(unsigned int size);
+  inline void adoptUint8(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>> disownUint8();
 
   inline bool isInt16();
   inline bool hasInt16();
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder getInt16();
-  inline void setInt16(::capnp::List<::capnp::List<::int16_t>>::Reader value);
-  inline void setInt16(
-      ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder initInt16(
-      unsigned int size);
-  inline void adoptInt16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>> disownInt16();
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder getInt16();
+  inline void setInt16( ::capnp::List< ::capnp::List< ::int16_t>>::Reader value);
+  inline void setInt16(::kj::ArrayPtr<const  ::capnp::List< ::int16_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder initInt16(unsigned int size);
+  inline void adoptInt16(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>> disownInt16();
 
   inline bool isUint16();
   inline bool hasUint16();
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder getUint16();
-  inline void setUint16(::capnp::List<::capnp::List<::uint16_t>>::Reader value);
-  inline void setUint16(
-      ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder initUint16(
-      unsigned int size);
-  inline void adoptUint16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-  disownUint16();
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder getUint16();
+  inline void setUint16( ::capnp::List< ::capnp::List< ::uint16_t>>::Reader value);
+  inline void setUint16(::kj::ArrayPtr<const  ::capnp::List< ::uint16_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder initUint16(unsigned int size);
+  inline void adoptUint16(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>> disownUint16();
 
   inline bool isInt32();
   inline bool hasInt32();
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder getInt32();
-  inline void setInt32(::capnp::List<::capnp::List<::int32_t>>::Reader value);
-  inline void setInt32(
-      ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder initInt32(
-      unsigned int size);
-  inline void adoptInt32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>> disownInt32();
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder getInt32();
+  inline void setInt32( ::capnp::List< ::capnp::List< ::int32_t>>::Reader value);
+  inline void setInt32(::kj::ArrayPtr<const  ::capnp::List< ::int32_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder initInt32(unsigned int size);
+  inline void adoptInt32(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>> disownInt32();
 
   inline bool isUint32();
   inline bool hasUint32();
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder getUint32();
-  inline void setUint32(::capnp::List<::capnp::List<::uint32_t>>::Reader value);
-  inline void setUint32(
-      ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder initUint32(
-      unsigned int size);
-  inline void adoptUint32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-  disownUint32();
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder getUint32();
+  inline void setUint32( ::capnp::List< ::capnp::List< ::uint32_t>>::Reader value);
+  inline void setUint32(::kj::ArrayPtr<const  ::capnp::List< ::uint32_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder initUint32(unsigned int size);
+  inline void adoptUint32(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>> disownUint32();
 
   inline bool isInt64();
   inline bool hasInt64();
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder getInt64();
-  inline void setInt64(::capnp::List<::capnp::List<::int64_t>>::Reader value);
-  inline void setInt64(
-      ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder initInt64(
-      unsigned int size);
-  inline void adoptInt64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>> disownInt64();
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder getInt64();
+  inline void setInt64( ::capnp::List< ::capnp::List< ::int64_t>>::Reader value);
+  inline void setInt64(::kj::ArrayPtr<const  ::capnp::List< ::int64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder initInt64(unsigned int size);
+  inline void adoptInt64(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>> disownInt64();
 
   inline bool isUint64();
   inline bool hasUint64();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getUint64();
-  inline void setUint64(::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setUint64(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initUint64(
-      unsigned int size);
-  inline void adoptUint64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownUint64();
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder getUint64();
+  inline void setUint64( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value);
+  inline void setUint64(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder initUint64(unsigned int size);
+  inline void adoptUint64(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> disownUint64();
 
   inline bool isFloat32();
   inline bool hasFloat32();
-  inline ::capnp::List<::capnp::List<float>>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<::capnp::List<float>>::Reader value);
-  inline void setFloat32(
-      ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value);
-  inline ::capnp::List<::capnp::List<float>>::Builder initFloat32(
-      unsigned int size);
-  inline void adoptFloat32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>> disownFloat32();
+  inline  ::capnp::List< ::capnp::List<float>>::Builder getFloat32();
+  inline void setFloat32( ::capnp::List< ::capnp::List<float>>::Reader value);
+  inline void setFloat32(::kj::ArrayPtr<const  ::capnp::List<float>::Reader> value);
+  inline  ::capnp::List< ::capnp::List<float>>::Builder initFloat32(unsigned int size);
+  inline void adoptFloat32(::capnp::Orphan< ::capnp::List< ::capnp::List<float>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>> disownFloat32();
 
   inline bool isFloat64();
   inline bool hasFloat64();
-  inline ::capnp::List<::capnp::List<double>>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<::capnp::List<double>>::Reader value);
-  inline void setFloat64(
-      ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value);
-  inline ::capnp::List<::capnp::List<double>>::Builder initFloat64(
-      unsigned int size);
-  inline void adoptFloat64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>> disownFloat64();
+  inline  ::capnp::List< ::capnp::List<double>>::Builder getFloat64();
+  inline void setFloat64( ::capnp::List< ::capnp::List<double>>::Reader value);
+  inline void setFloat64(::kj::ArrayPtr<const  ::capnp::List<double>::Reader> value);
+  inline  ::capnp::List< ::capnp::List<double>>::Builder initFloat64(unsigned int size);
+  inline void adoptFloat64(::capnp::Orphan< ::capnp::List< ::capnp::List<double>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>> disownFloat64();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4226,17 +3708,14 @@ class FragmentMetadata::BoundingCoords::Builder {
 
 #if !CAPNP_LITE
 class FragmentMetadata::BoundingCoords::Pipeline {
- public:
+public:
   typedef BoundingCoords Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4245,13 +3724,11 @@ class FragmentMetadata::BoundingCoords::Pipeline {
 #endif  // !CAPNP_LITE
 
 class GlobalWriteState::Reader {
- public:
+public:
   typedef GlobalWriteState Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4264,18 +3741,15 @@ class GlobalWriteState::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasCellsWritten() const;
-  inline ::tiledb::rest::capnp::MapInt64::Reader getCellsWritten() const;
+  inline  ::tiledb::rest::capnp::MapInt64::Reader getCellsWritten() const;
 
   inline bool hasLastTiles() const;
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Reader
-      getLastTiles() const;
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Reader getLastTiles() const;
 
   inline bool hasFragmentMetadata() const;
-  inline ::tiledb::rest::capnp::FragmentMetadata::Reader getFragmentMetadata()
-      const;
+  inline  ::tiledb::rest::capnp::FragmentMetadata::Reader getFragmentMetadata() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4288,72 +3762,43 @@ class GlobalWriteState::Reader {
 };
 
 class GlobalWriteState::Builder {
- public:
+public:
   typedef GlobalWriteState Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasCellsWritten();
-  inline ::tiledb::rest::capnp::MapInt64::Builder getCellsWritten();
-  inline void setCellsWritten(::tiledb::rest::capnp::MapInt64::Reader value);
-  inline ::tiledb::rest::capnp::MapInt64::Builder initCellsWritten();
-  inline void adoptCellsWritten(
-      ::capnp::Orphan<::tiledb::rest::capnp::MapInt64>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MapInt64> disownCellsWritten();
+  inline  ::tiledb::rest::capnp::MapInt64::Builder getCellsWritten();
+  inline void setCellsWritten( ::tiledb::rest::capnp::MapInt64::Reader value);
+  inline  ::tiledb::rest::capnp::MapInt64::Builder initCellsWritten();
+  inline void adoptCellsWritten(::capnp::Orphan< ::tiledb::rest::capnp::MapInt64>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::MapInt64> disownCellsWritten();
 
   inline bool hasLastTiles();
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Builder
-      getLastTiles();
-  inline void setLastTiles(
-      ::tiledb::rest::capnp::Map<
-          ::capnp::Text,
-          ::capnp::List<::tiledb::rest::capnp::Tile>>::Reader value);
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Builder
-      initLastTiles();
-  inline void adoptLastTiles(
-      ::capnp::Orphan<::tiledb::rest::capnp::Map<
-          ::capnp::Text,
-          ::capnp::List<::tiledb::rest::capnp::Tile>>>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>
-  disownLastTiles();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Builder getLastTiles();
+  inline void setLastTiles( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Reader value);
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Builder initLastTiles();
+  inline void adoptLastTiles(::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>> disownLastTiles();
 
   inline bool hasFragmentMetadata();
-  inline ::tiledb::rest::capnp::FragmentMetadata::Builder getFragmentMetadata();
-  inline void setFragmentMetadata(
-      ::tiledb::rest::capnp::FragmentMetadata::Reader value);
-  inline ::tiledb::rest::capnp::FragmentMetadata::Builder
-  initFragmentMetadata();
-  inline void adoptFragmentMetadata(
-      ::capnp::Orphan<::tiledb::rest::capnp::FragmentMetadata>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::FragmentMetadata>
-  disownFragmentMetadata();
+  inline  ::tiledb::rest::capnp::FragmentMetadata::Builder getFragmentMetadata();
+  inline void setFragmentMetadata( ::tiledb::rest::capnp::FragmentMetadata::Reader value);
+  inline  ::tiledb::rest::capnp::FragmentMetadata::Builder initFragmentMetadata();
+  inline void adoptFragmentMetadata(::capnp::Orphan< ::tiledb::rest::capnp::FragmentMetadata>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::FragmentMetadata> disownFragmentMetadata();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4364,24 +3809,17 @@ class GlobalWriteState::Builder {
 
 #if !CAPNP_LITE
 class GlobalWriteState::Pipeline {
- public:
+public:
   typedef GlobalWriteState Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::MapInt64::Pipeline getCellsWritten();
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Pipeline
-      getLastTiles();
-  inline ::tiledb::rest::capnp::FragmentMetadata::Pipeline
-  getFragmentMetadata();
-
- private:
+  inline  ::tiledb::rest::capnp::MapInt64::Pipeline getCellsWritten();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Pipeline getLastTiles();
+  inline  ::tiledb::rest::capnp::FragmentMetadata::Pipeline getFragmentMetadata();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4390,13 +3828,11 @@ class GlobalWriteState::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Tile::Reader {
- public:
+public:
   typedef Tile Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4408,16 +3844,16 @@ class Tile::Reader {
   }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getCellSize() const;
+  inline  ::uint64_t getCellSize() const;
 
-  inline ::uint32_t getDimNum() const;
+  inline  ::uint32_t getDimNum() const;
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline typename Buffer::Reader getBuffer() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4430,49 +3866,38 @@ class Tile::Reader {
 };
 
 class Tile::Builder {
- public:
+public:
   typedef Tile Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline ::uint64_t getCellSize();
-  inline void setCellSize(::uint64_t value);
+  inline  ::uint64_t getCellSize();
+  inline void setCellSize( ::uint64_t value);
 
-  inline ::uint32_t getDimNum();
-  inline void setDimNum(::uint32_t value);
+  inline  ::uint32_t getDimNum();
+  inline void setDimNum( ::uint32_t value);
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline typename Buffer::Builder getBuffer();
   inline typename Buffer::Builder initBuffer();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4483,19 +3908,15 @@ class Tile::Builder {
 
 #if !CAPNP_LITE
 class Tile::Pipeline {
- public:
+public:
   typedef Tile Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
   inline typename Buffer::Pipeline getBuffer();
-
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4504,13 +3925,11 @@ class Tile::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Tile::Buffer::Reader {
- public:
+public:
   typedef Buffer Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4525,45 +3944,45 @@ class Tile::Buffer::Reader {
   inline Which which() const;
   inline bool isInt8() const;
   inline bool hasInt8() const;
-  inline ::capnp::List<::int8_t>::Reader getInt8() const;
+  inline  ::capnp::List< ::int8_t>::Reader getInt8() const;
 
   inline bool isUint8() const;
   inline bool hasUint8() const;
-  inline ::capnp::List<::uint8_t>::Reader getUint8() const;
+  inline  ::capnp::List< ::uint8_t>::Reader getUint8() const;
 
   inline bool isInt16() const;
   inline bool hasInt16() const;
-  inline ::capnp::List<::int16_t>::Reader getInt16() const;
+  inline  ::capnp::List< ::int16_t>::Reader getInt16() const;
 
   inline bool isUint16() const;
   inline bool hasUint16() const;
-  inline ::capnp::List<::uint16_t>::Reader getUint16() const;
+  inline  ::capnp::List< ::uint16_t>::Reader getUint16() const;
 
   inline bool isInt32() const;
   inline bool hasInt32() const;
-  inline ::capnp::List<::int32_t>::Reader getInt32() const;
+  inline  ::capnp::List< ::int32_t>::Reader getInt32() const;
 
   inline bool isUint32() const;
   inline bool hasUint32() const;
-  inline ::capnp::List<::uint32_t>::Reader getUint32() const;
+  inline  ::capnp::List< ::uint32_t>::Reader getUint32() const;
 
   inline bool isInt64() const;
   inline bool hasInt64() const;
-  inline ::capnp::List<::int64_t>::Reader getInt64() const;
+  inline  ::capnp::List< ::int64_t>::Reader getInt64() const;
 
   inline bool isUint64() const;
   inline bool hasUint64() const;
-  inline ::capnp::List<::uint64_t>::Reader getUint64() const;
+  inline  ::capnp::List< ::uint64_t>::Reader getUint64() const;
 
   inline bool isFloat32() const;
   inline bool hasFloat32() const;
-  inline ::capnp::List<float>::Reader getFloat32() const;
+  inline  ::capnp::List<float>::Reader getFloat32() const;
 
   inline bool isFloat64() const;
   inline bool hasFloat64() const;
-  inline ::capnp::List<double>::Reader getFloat64() const;
+  inline  ::capnp::List<double>::Reader getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4576,124 +3995,113 @@ class Tile::Buffer::Reader {
 };
 
 class Tile::Buffer::Builder {
- public:
+public:
   typedef Buffer Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isInt8();
   inline bool hasInt8();
-  inline ::capnp::List<::int8_t>::Builder getInt8();
-  inline void setInt8(::capnp::List<::int8_t>::Reader value);
-  inline void setInt8(::kj::ArrayPtr<const ::int8_t> value);
-  inline ::capnp::List<::int8_t>::Builder initInt8(unsigned int size);
-  inline void adoptInt8(::capnp::Orphan<::capnp::List<::int8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int8_t>> disownInt8();
+  inline  ::capnp::List< ::int8_t>::Builder getInt8();
+  inline void setInt8( ::capnp::List< ::int8_t>::Reader value);
+  inline void setInt8(::kj::ArrayPtr<const  ::int8_t> value);
+  inline  ::capnp::List< ::int8_t>::Builder initInt8(unsigned int size);
+  inline void adoptInt8(::capnp::Orphan< ::capnp::List< ::int8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int8_t>> disownInt8();
 
   inline bool isUint8();
   inline bool hasUint8();
-  inline ::capnp::List<::uint8_t>::Builder getUint8();
-  inline void setUint8(::capnp::List<::uint8_t>::Reader value);
-  inline void setUint8(::kj::ArrayPtr<const ::uint8_t> value);
-  inline ::capnp::List<::uint8_t>::Builder initUint8(unsigned int size);
-  inline void adoptUint8(::capnp::Orphan<::capnp::List<::uint8_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint8_t>> disownUint8();
+  inline  ::capnp::List< ::uint8_t>::Builder getUint8();
+  inline void setUint8( ::capnp::List< ::uint8_t>::Reader value);
+  inline void setUint8(::kj::ArrayPtr<const  ::uint8_t> value);
+  inline  ::capnp::List< ::uint8_t>::Builder initUint8(unsigned int size);
+  inline void adoptUint8(::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> disownUint8();
 
   inline bool isInt16();
   inline bool hasInt16();
-  inline ::capnp::List<::int16_t>::Builder getInt16();
-  inline void setInt16(::capnp::List<::int16_t>::Reader value);
-  inline void setInt16(::kj::ArrayPtr<const ::int16_t> value);
-  inline ::capnp::List<::int16_t>::Builder initInt16(unsigned int size);
-  inline void adoptInt16(::capnp::Orphan<::capnp::List<::int16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int16_t>> disownInt16();
+  inline  ::capnp::List< ::int16_t>::Builder getInt16();
+  inline void setInt16( ::capnp::List< ::int16_t>::Reader value);
+  inline void setInt16(::kj::ArrayPtr<const  ::int16_t> value);
+  inline  ::capnp::List< ::int16_t>::Builder initInt16(unsigned int size);
+  inline void adoptInt16(::capnp::Orphan< ::capnp::List< ::int16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int16_t>> disownInt16();
 
   inline bool isUint16();
   inline bool hasUint16();
-  inline ::capnp::List<::uint16_t>::Builder getUint16();
-  inline void setUint16(::capnp::List<::uint16_t>::Reader value);
-  inline void setUint16(::kj::ArrayPtr<const ::uint16_t> value);
-  inline ::capnp::List<::uint16_t>::Builder initUint16(unsigned int size);
-  inline void adoptUint16(::capnp::Orphan<::capnp::List<::uint16_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint16_t>> disownUint16();
+  inline  ::capnp::List< ::uint16_t>::Builder getUint16();
+  inline void setUint16( ::capnp::List< ::uint16_t>::Reader value);
+  inline void setUint16(::kj::ArrayPtr<const  ::uint16_t> value);
+  inline  ::capnp::List< ::uint16_t>::Builder initUint16(unsigned int size);
+  inline void adoptUint16(::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> disownUint16();
 
   inline bool isInt32();
   inline bool hasInt32();
-  inline ::capnp::List<::int32_t>::Builder getInt32();
-  inline void setInt32(::capnp::List<::int32_t>::Reader value);
-  inline void setInt32(::kj::ArrayPtr<const ::int32_t> value);
-  inline ::capnp::List<::int32_t>::Builder initInt32(unsigned int size);
-  inline void adoptInt32(::capnp::Orphan<::capnp::List<::int32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int32_t>> disownInt32();
+  inline  ::capnp::List< ::int32_t>::Builder getInt32();
+  inline void setInt32( ::capnp::List< ::int32_t>::Reader value);
+  inline void setInt32(::kj::ArrayPtr<const  ::int32_t> value);
+  inline  ::capnp::List< ::int32_t>::Builder initInt32(unsigned int size);
+  inline void adoptInt32(::capnp::Orphan< ::capnp::List< ::int32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int32_t>> disownInt32();
 
   inline bool isUint32();
   inline bool hasUint32();
-  inline ::capnp::List<::uint32_t>::Builder getUint32();
-  inline void setUint32(::capnp::List<::uint32_t>::Reader value);
-  inline void setUint32(::kj::ArrayPtr<const ::uint32_t> value);
-  inline ::capnp::List<::uint32_t>::Builder initUint32(unsigned int size);
-  inline void adoptUint32(::capnp::Orphan<::capnp::List<::uint32_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint32_t>> disownUint32();
+  inline  ::capnp::List< ::uint32_t>::Builder getUint32();
+  inline void setUint32( ::capnp::List< ::uint32_t>::Reader value);
+  inline void setUint32(::kj::ArrayPtr<const  ::uint32_t> value);
+  inline  ::capnp::List< ::uint32_t>::Builder initUint32(unsigned int size);
+  inline void adoptUint32(::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> disownUint32();
 
   inline bool isInt64();
   inline bool hasInt64();
-  inline ::capnp::List<::int64_t>::Builder getInt64();
-  inline void setInt64(::capnp::List<::int64_t>::Reader value);
-  inline void setInt64(::kj::ArrayPtr<const ::int64_t> value);
-  inline ::capnp::List<::int64_t>::Builder initInt64(unsigned int size);
-  inline void adoptInt64(::capnp::Orphan<::capnp::List<::int64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::int64_t>> disownInt64();
+  inline  ::capnp::List< ::int64_t>::Builder getInt64();
+  inline void setInt64( ::capnp::List< ::int64_t>::Reader value);
+  inline void setInt64(::kj::ArrayPtr<const  ::int64_t> value);
+  inline  ::capnp::List< ::int64_t>::Builder initInt64(unsigned int size);
+  inline void adoptInt64(::capnp::Orphan< ::capnp::List< ::int64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::int64_t>> disownInt64();
 
   inline bool isUint64();
   inline bool hasUint64();
-  inline ::capnp::List<::uint64_t>::Builder getUint64();
-  inline void setUint64(::capnp::List<::uint64_t>::Reader value);
-  inline void setUint64(::kj::ArrayPtr<const ::uint64_t> value);
-  inline ::capnp::List<::uint64_t>::Builder initUint64(unsigned int size);
-  inline void adoptUint64(::capnp::Orphan<::capnp::List<::uint64_t>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::uint64_t>> disownUint64();
+  inline  ::capnp::List< ::uint64_t>::Builder getUint64();
+  inline void setUint64( ::capnp::List< ::uint64_t>::Reader value);
+  inline void setUint64(::kj::ArrayPtr<const  ::uint64_t> value);
+  inline  ::capnp::List< ::uint64_t>::Builder initUint64(unsigned int size);
+  inline void adoptUint64(::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> disownUint64();
 
   inline bool isFloat32();
   inline bool hasFloat32();
-  inline ::capnp::List<float>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<float>::Reader value);
+  inline  ::capnp::List<float>::Builder getFloat32();
+  inline void setFloat32( ::capnp::List<float>::Reader value);
   inline void setFloat32(::kj::ArrayPtr<const float> value);
-  inline ::capnp::List<float>::Builder initFloat32(unsigned int size);
-  inline void adoptFloat32(::capnp::Orphan<::capnp::List<float>>&& value);
-  inline ::capnp::Orphan<::capnp::List<float>> disownFloat32();
+  inline  ::capnp::List<float>::Builder initFloat32(unsigned int size);
+  inline void adoptFloat32(::capnp::Orphan< ::capnp::List<float>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<float>> disownFloat32();
 
   inline bool isFloat64();
   inline bool hasFloat64();
-  inline ::capnp::List<double>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<double>::Reader value);
+  inline  ::capnp::List<double>::Builder getFloat64();
+  inline void setFloat64( ::capnp::List<double>::Reader value);
   inline void setFloat64(::kj::ArrayPtr<const double> value);
-  inline ::capnp::List<double>::Builder initFloat64(unsigned int size);
-  inline void adoptFloat64(::capnp::Orphan<::capnp::List<double>>&& value);
-  inline ::capnp::Orphan<::capnp::List<double>> disownFloat64();
+  inline  ::capnp::List<double>::Builder initFloat64(unsigned int size);
+  inline void adoptFloat64(::capnp::Orphan< ::capnp::List<double>>&& value);
+  inline ::capnp::Orphan< ::capnp::List<double>> disownFloat64();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4704,17 +4112,14 @@ class Tile::Buffer::Builder {
 
 #if !CAPNP_LITE
 class Tile::Buffer::Pipeline {
- public:
+public:
   typedef Buffer Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4723,13 +4128,11 @@ class Tile::Buffer::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Writer::Reader {
- public:
+public:
   typedef Writer Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4742,8 +4145,7 @@ class Writer::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasGlobalWriteState() const;
-  inline ::tiledb::rest::capnp::GlobalWriteState::Reader getGlobalWriteState()
-      const;
+  inline  ::tiledb::rest::capnp::GlobalWriteState::Reader getGlobalWriteState() const;
 
   inline bool getCheckCoordDups() const;
 
@@ -4752,9 +4154,9 @@ class Writer::Reader {
   inline bool getInitialized() const;
 
   inline bool hasFragmentUri() const;
-  inline ::capnp::Text::Reader getFragmentUri() const;
+  inline  ::capnp::Text::Reader getFragmentUri() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4767,42 +4169,27 @@ class Writer::Reader {
 };
 
 class Writer::Builder {
- public:
+public:
   typedef Writer Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasGlobalWriteState();
-  inline ::tiledb::rest::capnp::GlobalWriteState::Builder getGlobalWriteState();
-  inline void setGlobalWriteState(
-      ::tiledb::rest::capnp::GlobalWriteState::Reader value);
-  inline ::tiledb::rest::capnp::GlobalWriteState::Builder
-  initGlobalWriteState();
-  inline void adoptGlobalWriteState(
-      ::capnp::Orphan<::tiledb::rest::capnp::GlobalWriteState>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::GlobalWriteState>
-  disownGlobalWriteState();
+  inline  ::tiledb::rest::capnp::GlobalWriteState::Builder getGlobalWriteState();
+  inline void setGlobalWriteState( ::tiledb::rest::capnp::GlobalWriteState::Reader value);
+  inline  ::tiledb::rest::capnp::GlobalWriteState::Builder initGlobalWriteState();
+  inline void adoptGlobalWriteState(::capnp::Orphan< ::tiledb::rest::capnp::GlobalWriteState>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::GlobalWriteState> disownGlobalWriteState();
 
   inline bool getCheckCoordDups();
   inline void setCheckCoordDups(bool value);
@@ -4814,13 +4201,13 @@ class Writer::Builder {
   inline void setInitialized(bool value);
 
   inline bool hasFragmentUri();
-  inline ::capnp::Text::Builder getFragmentUri();
-  inline void setFragmentUri(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initFragmentUri(unsigned int size);
-  inline void adoptFragmentUri(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownFragmentUri();
+  inline  ::capnp::Text::Builder getFragmentUri();
+  inline void setFragmentUri( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initFragmentUri(unsigned int size);
+  inline void adoptFragmentUri(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownFragmentUri();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4831,20 +4218,15 @@ class Writer::Builder {
 
 #if !CAPNP_LITE
 class Writer::Pipeline {
- public:
+public:
   typedef Writer Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::GlobalWriteState::Pipeline
-  getGlobalWriteState();
-
- private:
+  inline  ::tiledb::rest::capnp::GlobalWriteState::Pipeline getGlobalWriteState();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4853,13 +4235,11 @@ class Writer::Pipeline {
 #endif  // !CAPNP_LITE
 
 class ReadState::Reader {
- public:
+public:
   typedef ReadState Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4876,12 +4256,11 @@ class ReadState::Reader {
   inline bool getOverflowed() const;
 
   inline bool hasCurSubarrayPartition() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader getCurSubarrayPartition()
-      const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getCurSubarrayPartition() const;
 
   inline typename SubarrayPartitions::Reader getSubarrayPartitions() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4894,30 +4273,19 @@ class ReadState::Reader {
 };
 
 class ReadState::Builder {
- public:
+public:
   typedef ReadState Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool getInitialized();
@@ -4927,19 +4295,16 @@ class ReadState::Builder {
   inline void setOverflowed(bool value);
 
   inline bool hasCurSubarrayPartition();
-  inline ::tiledb::rest::capnp::DomainArray::Builder getCurSubarrayPartition();
-  inline void setCurSubarrayPartition(
-      ::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder initCurSubarrayPartition();
-  inline void adoptCurSubarrayPartition(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-  disownCurSubarrayPartition();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getCurSubarrayPartition();
+  inline void setCurSubarrayPartition( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initCurSubarrayPartition();
+  inline void adoptCurSubarrayPartition(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownCurSubarrayPartition();
 
   inline typename SubarrayPartitions::Builder getSubarrayPartitions();
   inline typename SubarrayPartitions::Builder initSubarrayPartitions();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -4950,20 +4315,16 @@ class ReadState::Builder {
 
 #if !CAPNP_LITE
 class ReadState::Pipeline {
- public:
+public:
   typedef ReadState Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline getCurSubarrayPartition();
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getCurSubarrayPartition();
   inline typename SubarrayPartitions::Pipeline getSubarrayPartitions();
-
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -4972,13 +4333,11 @@ class ReadState::Pipeline {
 #endif  // !CAPNP_LITE
 
 class ReadState::SubarrayPartitions::Reader {
- public:
+public:
   typedef SubarrayPartitions Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -4993,45 +4352,45 @@ class ReadState::SubarrayPartitions::Reader {
   inline Which which() const;
   inline bool isInt8() const;
   inline bool hasInt8() const;
-  inline ::capnp::List<::capnp::List<::int8_t>>::Reader getInt8() const;
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Reader getInt8() const;
 
   inline bool isUint8() const;
   inline bool hasUint8() const;
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Reader getUint8() const;
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Reader getUint8() const;
 
   inline bool isInt16() const;
   inline bool hasInt16() const;
-  inline ::capnp::List<::capnp::List<::int16_t>>::Reader getInt16() const;
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Reader getInt16() const;
 
   inline bool isUint16() const;
   inline bool hasUint16() const;
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Reader getUint16() const;
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Reader getUint16() const;
 
   inline bool isInt32() const;
   inline bool hasInt32() const;
-  inline ::capnp::List<::capnp::List<::int32_t>>::Reader getInt32() const;
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Reader getInt32() const;
 
   inline bool isUint32() const;
   inline bool hasUint32() const;
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Reader getUint32() const;
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Reader getUint32() const;
 
   inline bool isInt64() const;
   inline bool hasInt64() const;
-  inline ::capnp::List<::capnp::List<::int64_t>>::Reader getInt64() const;
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Reader getInt64() const;
 
   inline bool isUint64() const;
   inline bool hasUint64() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getUint64() const;
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader getUint64() const;
 
   inline bool isFloat32() const;
   inline bool hasFloat32() const;
-  inline ::capnp::List<::capnp::List<float>>::Reader getFloat32() const;
+  inline  ::capnp::List< ::capnp::List<float>>::Reader getFloat32() const;
 
   inline bool isFloat64() const;
   inline bool hasFloat64() const;
-  inline ::capnp::List<::capnp::List<double>>::Reader getFloat64() const;
+  inline  ::capnp::List< ::capnp::List<double>>::Reader getFloat64() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5044,157 +4403,113 @@ class ReadState::SubarrayPartitions::Reader {
 };
 
 class ReadState::SubarrayPartitions::Builder {
- public:
+public:
   typedef SubarrayPartitions Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline Which which();
   inline bool isInt8();
   inline bool hasInt8();
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder getInt8();
-  inline void setInt8(::capnp::List<::capnp::List<::int8_t>>::Reader value);
-  inline void setInt8(
-      ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder initInt8(
-      unsigned int size);
-  inline void adoptInt8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>> disownInt8();
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder getInt8();
+  inline void setInt8( ::capnp::List< ::capnp::List< ::int8_t>>::Reader value);
+  inline void setInt8(::kj::ArrayPtr<const  ::capnp::List< ::int8_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder initInt8(unsigned int size);
+  inline void adoptInt8(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>> disownInt8();
 
   inline bool isUint8();
   inline bool hasUint8();
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder getUint8();
-  inline void setUint8(::capnp::List<::capnp::List<::uint8_t>>::Reader value);
-  inline void setUint8(
-      ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder initUint8(
-      unsigned int size);
-  inline void adoptUint8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>> disownUint8();
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder getUint8();
+  inline void setUint8( ::capnp::List< ::capnp::List< ::uint8_t>>::Reader value);
+  inline void setUint8(::kj::ArrayPtr<const  ::capnp::List< ::uint8_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder initUint8(unsigned int size);
+  inline void adoptUint8(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>> disownUint8();
 
   inline bool isInt16();
   inline bool hasInt16();
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder getInt16();
-  inline void setInt16(::capnp::List<::capnp::List<::int16_t>>::Reader value);
-  inline void setInt16(
-      ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder initInt16(
-      unsigned int size);
-  inline void adoptInt16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>> disownInt16();
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder getInt16();
+  inline void setInt16( ::capnp::List< ::capnp::List< ::int16_t>>::Reader value);
+  inline void setInt16(::kj::ArrayPtr<const  ::capnp::List< ::int16_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder initInt16(unsigned int size);
+  inline void adoptInt16(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>> disownInt16();
 
   inline bool isUint16();
   inline bool hasUint16();
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder getUint16();
-  inline void setUint16(::capnp::List<::capnp::List<::uint16_t>>::Reader value);
-  inline void setUint16(
-      ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder initUint16(
-      unsigned int size);
-  inline void adoptUint16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-  disownUint16();
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder getUint16();
+  inline void setUint16( ::capnp::List< ::capnp::List< ::uint16_t>>::Reader value);
+  inline void setUint16(::kj::ArrayPtr<const  ::capnp::List< ::uint16_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder initUint16(unsigned int size);
+  inline void adoptUint16(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>> disownUint16();
 
   inline bool isInt32();
   inline bool hasInt32();
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder getInt32();
-  inline void setInt32(::capnp::List<::capnp::List<::int32_t>>::Reader value);
-  inline void setInt32(
-      ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder initInt32(
-      unsigned int size);
-  inline void adoptInt32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>> disownInt32();
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder getInt32();
+  inline void setInt32( ::capnp::List< ::capnp::List< ::int32_t>>::Reader value);
+  inline void setInt32(::kj::ArrayPtr<const  ::capnp::List< ::int32_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder initInt32(unsigned int size);
+  inline void adoptInt32(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>> disownInt32();
 
   inline bool isUint32();
   inline bool hasUint32();
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder getUint32();
-  inline void setUint32(::capnp::List<::capnp::List<::uint32_t>>::Reader value);
-  inline void setUint32(
-      ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder initUint32(
-      unsigned int size);
-  inline void adoptUint32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-  disownUint32();
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder getUint32();
+  inline void setUint32( ::capnp::List< ::capnp::List< ::uint32_t>>::Reader value);
+  inline void setUint32(::kj::ArrayPtr<const  ::capnp::List< ::uint32_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder initUint32(unsigned int size);
+  inline void adoptUint32(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>> disownUint32();
 
   inline bool isInt64();
   inline bool hasInt64();
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder getInt64();
-  inline void setInt64(::capnp::List<::capnp::List<::int64_t>>::Reader value);
-  inline void setInt64(
-      ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder initInt64(
-      unsigned int size);
-  inline void adoptInt64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>> disownInt64();
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder getInt64();
+  inline void setInt64( ::capnp::List< ::capnp::List< ::int64_t>>::Reader value);
+  inline void setInt64(::kj::ArrayPtr<const  ::capnp::List< ::int64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder initInt64(unsigned int size);
+  inline void adoptInt64(::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>> disownInt64();
 
   inline bool isUint64();
   inline bool hasUint64();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getUint64();
-  inline void setUint64(::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setUint64(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initUint64(
-      unsigned int size);
-  inline void adoptUint64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownUint64();
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder getUint64();
+  inline void setUint64( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value);
+  inline void setUint64(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value);
+  inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder initUint64(unsigned int size);
+  inline void adoptUint64(::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> disownUint64();
 
   inline bool isFloat32();
   inline bool hasFloat32();
-  inline ::capnp::List<::capnp::List<float>>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<::capnp::List<float>>::Reader value);
-  inline void setFloat32(
-      ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value);
-  inline ::capnp::List<::capnp::List<float>>::Builder initFloat32(
-      unsigned int size);
-  inline void adoptFloat32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>> disownFloat32();
+  inline  ::capnp::List< ::capnp::List<float>>::Builder getFloat32();
+  inline void setFloat32( ::capnp::List< ::capnp::List<float>>::Reader value);
+  inline void setFloat32(::kj::ArrayPtr<const  ::capnp::List<float>::Reader> value);
+  inline  ::capnp::List< ::capnp::List<float>>::Builder initFloat32(unsigned int size);
+  inline void adoptFloat32(::capnp::Orphan< ::capnp::List< ::capnp::List<float>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>> disownFloat32();
 
   inline bool isFloat64();
   inline bool hasFloat64();
-  inline ::capnp::List<::capnp::List<double>>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<::capnp::List<double>>::Reader value);
-  inline void setFloat64(
-      ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value);
-  inline ::capnp::List<::capnp::List<double>>::Builder initFloat64(
-      unsigned int size);
-  inline void adoptFloat64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>> disownFloat64();
+  inline  ::capnp::List< ::capnp::List<double>>::Builder getFloat64();
+  inline void setFloat64( ::capnp::List< ::capnp::List<double>>::Reader value);
+  inline void setFloat64(::kj::ArrayPtr<const  ::capnp::List<double>::Reader> value);
+  inline  ::capnp::List< ::capnp::List<double>>::Builder initFloat64(unsigned int size);
+  inline void adoptFloat64(::capnp::Orphan< ::capnp::List< ::capnp::List<double>>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>> disownFloat64();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5205,17 +4520,14 @@ class ReadState::SubarrayPartitions::Builder {
 
 #if !CAPNP_LITE
 class ReadState::SubarrayPartitions::Pipeline {
- public:
+public:
   typedef SubarrayPartitions Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -5224,13 +4536,11 @@ class ReadState::SubarrayPartitions::Pipeline {
 #endif  // !CAPNP_LITE
 
 class QueryReader::Reader {
- public:
+public:
   typedef QueryReader Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -5243,13 +4553,12 @@ class QueryReader::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasFragmentMetadata() const;
-  inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Reader
-  getFragmentMetadata() const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Reader getFragmentMetadata() const;
 
   inline bool hasReadState() const;
-  inline ::tiledb::rest::capnp::ReadState::Reader getReadState() const;
+  inline  ::tiledb::rest::capnp::ReadState::Reader getReadState() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5262,54 +4571,36 @@ class QueryReader::Reader {
 };
 
 class QueryReader::Builder {
- public:
+public:
   typedef QueryReader Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasFragmentMetadata();
-  inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Builder
-  getFragmentMetadata();
-  inline void setFragmentMetadata(
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Reader value);
-  inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Builder
-  initFragmentMetadata(unsigned int size);
-  inline void adoptFragmentMetadata(
-      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>&&
-          value);
-  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>
-  disownFragmentMetadata();
+  inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Builder getFragmentMetadata();
+  inline void setFragmentMetadata( ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Builder initFragmentMetadata(unsigned int size);
+  inline void adoptFragmentMetadata(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>> disownFragmentMetadata();
 
   inline bool hasReadState();
-  inline ::tiledb::rest::capnp::ReadState::Builder getReadState();
-  inline void setReadState(::tiledb::rest::capnp::ReadState::Reader value);
-  inline ::tiledb::rest::capnp::ReadState::Builder initReadState();
-  inline void adoptReadState(
-      ::capnp::Orphan<::tiledb::rest::capnp::ReadState>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::ReadState> disownReadState();
+  inline  ::tiledb::rest::capnp::ReadState::Builder getReadState();
+  inline void setReadState( ::tiledb::rest::capnp::ReadState::Reader value);
+  inline  ::tiledb::rest::capnp::ReadState::Builder initReadState();
+  inline void adoptReadState(::capnp::Orphan< ::tiledb::rest::capnp::ReadState>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::ReadState> disownReadState();
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5320,19 +4611,15 @@ class QueryReader::Builder {
 
 #if !CAPNP_LITE
 class QueryReader::Pipeline {
- public:
+public:
   typedef QueryReader Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::ReadState::Pipeline getReadState();
-
- private:
+  inline  ::tiledb::rest::capnp::ReadState::Pipeline getReadState();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -5341,13 +4628,11 @@ class QueryReader::Pipeline {
 #endif  // !CAPNP_LITE
 
 class Query::Reader {
- public:
+public:
   typedef Query Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -5360,32 +4645,36 @@ class Query::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasBuffers() const;
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Reader
-      getBuffers() const;
+  inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Reader getBuffers() const;
 
   inline bool hasLayout() const;
-  inline ::capnp::Text::Reader getLayout() const;
+  inline  ::capnp::Text::Reader getLayout() const;
 
   inline bool hasStatus() const;
-  inline ::capnp::Text::Reader getStatus() const;
+  inline  ::capnp::Text::Reader getStatus() const;
 
   inline bool hasType() const;
-  inline ::capnp::Text::Reader getType() const;
+  inline  ::capnp::Text::Reader getType() const;
 
   inline bool hasWriter() const;
-  inline ::tiledb::rest::capnp::Writer::Reader getWriter() const;
+  inline  ::tiledb::rest::capnp::Writer::Reader getWriter() const;
 
   inline bool hasReader() const;
-  inline ::tiledb::rest::capnp::QueryReader::Reader getReader() const;
+  inline  ::tiledb::rest::capnp::QueryReader::Reader getReader() const;
 
   inline bool hasSubarray() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader getSubarray() const;
+  inline  ::tiledb::rest::capnp::DomainArray::Reader getSubarray() const;
 
   inline bool hasArray() const;
-  inline ::tiledb::rest::capnp::Array::Reader getArray() const;
+  inline  ::tiledb::rest::capnp::Array::Reader getArray() const;
 
- private:
+  inline  ::uint64_t getTotalNumOfBytesInBuffers() const;
+
+  inline  ::uint64_t getTotalNumOfBytesInVarBuffers() const;
+
+  inline  ::uint64_t getTotalNumOfBytesInOffsets() const;
+
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5398,104 +4687,87 @@ class Query::Reader {
 };
 
 class Query::Builder {
- public:
+public:
   typedef Query Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasBuffers();
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Builder
-      getBuffers();
-  inline void setBuffers(::tiledb::rest::capnp::Map<
-                         ::capnp::Text,
-                         ::tiledb::rest::capnp::AttributeBuffer>::Reader value);
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Builder
-      initBuffers();
-  inline void adoptBuffers(
-      ::capnp::Orphan<::tiledb::rest::capnp::Map<
-          ::capnp::Text,
-          ::tiledb::rest::capnp::AttributeBuffer>>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>
-  disownBuffers();
+  inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Builder getBuffers();
+  inline void setBuffers( ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Reader value);
+  inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Builder initBuffers(unsigned int size);
+  inline void adoptBuffers(::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>> disownBuffers();
 
   inline bool hasLayout();
-  inline ::capnp::Text::Builder getLayout();
-  inline void setLayout(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initLayout(unsigned int size);
-  inline void adoptLayout(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownLayout();
+  inline  ::capnp::Text::Builder getLayout();
+  inline void setLayout( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initLayout(unsigned int size);
+  inline void adoptLayout(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownLayout();
 
   inline bool hasStatus();
-  inline ::capnp::Text::Builder getStatus();
-  inline void setStatus(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initStatus(unsigned int size);
-  inline void adoptStatus(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownStatus();
+  inline  ::capnp::Text::Builder getStatus();
+  inline void setStatus( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initStatus(unsigned int size);
+  inline void adoptStatus(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownStatus();
 
   inline bool hasType();
-  inline ::capnp::Text::Builder getType();
-  inline void setType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initType(unsigned int size);
-  inline void adoptType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownType();
+  inline  ::capnp::Text::Builder getType();
+  inline void setType( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initType(unsigned int size);
+  inline void adoptType(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownType();
 
   inline bool hasWriter();
-  inline ::tiledb::rest::capnp::Writer::Builder getWriter();
-  inline void setWriter(::tiledb::rest::capnp::Writer::Reader value);
-  inline ::tiledb::rest::capnp::Writer::Builder initWriter();
-  inline void adoptWriter(
-      ::capnp::Orphan<::tiledb::rest::capnp::Writer>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Writer> disownWriter();
+  inline  ::tiledb::rest::capnp::Writer::Builder getWriter();
+  inline void setWriter( ::tiledb::rest::capnp::Writer::Reader value);
+  inline  ::tiledb::rest::capnp::Writer::Builder initWriter();
+  inline void adoptWriter(::capnp::Orphan< ::tiledb::rest::capnp::Writer>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Writer> disownWriter();
 
   inline bool hasReader();
-  inline ::tiledb::rest::capnp::QueryReader::Builder getReader();
-  inline void setReader(::tiledb::rest::capnp::QueryReader::Reader value);
-  inline ::tiledb::rest::capnp::QueryReader::Builder initReader();
-  inline void adoptReader(
-      ::capnp::Orphan<::tiledb::rest::capnp::QueryReader>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::QueryReader> disownReader();
+  inline  ::tiledb::rest::capnp::QueryReader::Builder getReader();
+  inline void setReader( ::tiledb::rest::capnp::QueryReader::Reader value);
+  inline  ::tiledb::rest::capnp::QueryReader::Builder initReader();
+  inline void adoptReader(::capnp::Orphan< ::tiledb::rest::capnp::QueryReader>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::QueryReader> disownReader();
 
   inline bool hasSubarray();
-  inline ::tiledb::rest::capnp::DomainArray::Builder getSubarray();
-  inline void setSubarray(::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder initSubarray();
-  inline void adoptSubarray(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray> disownSubarray();
+  inline  ::tiledb::rest::capnp::DomainArray::Builder getSubarray();
+  inline void setSubarray( ::tiledb::rest::capnp::DomainArray::Reader value);
+  inline  ::tiledb::rest::capnp::DomainArray::Builder initSubarray();
+  inline void adoptSubarray(::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> disownSubarray();
 
   inline bool hasArray();
-  inline ::tiledb::rest::capnp::Array::Builder getArray();
-  inline void setArray(::tiledb::rest::capnp::Array::Reader value);
-  inline ::tiledb::rest::capnp::Array::Builder initArray();
-  inline void adoptArray(::capnp::Orphan<::tiledb::rest::capnp::Array>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Array> disownArray();
+  inline  ::tiledb::rest::capnp::Array::Builder getArray();
+  inline void setArray( ::tiledb::rest::capnp::Array::Reader value);
+  inline  ::tiledb::rest::capnp::Array::Builder initArray();
+  inline void adoptArray(::capnp::Orphan< ::tiledb::rest::capnp::Array>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Array> disownArray();
 
- private:
+  inline  ::uint64_t getTotalNumOfBytesInBuffers();
+  inline void setTotalNumOfBytesInBuffers( ::uint64_t value);
+
+  inline  ::uint64_t getTotalNumOfBytesInVarBuffers();
+  inline void setTotalNumOfBytesInVarBuffers( ::uint64_t value);
+
+  inline  ::uint64_t getTotalNumOfBytesInOffsets();
+  inline void setTotalNumOfBytesInOffsets( ::uint64_t value);
+
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5506,25 +4778,18 @@ class Query::Builder {
 
 #if !CAPNP_LITE
 class Query::Pipeline {
- public:
+public:
   typedef Query Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Pipeline
-      getBuffers();
-  inline ::tiledb::rest::capnp::Writer::Pipeline getWriter();
-  inline ::tiledb::rest::capnp::QueryReader::Pipeline getReader();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline getSubarray();
-  inline ::tiledb::rest::capnp::Array::Pipeline getArray();
-
- private:
+  inline  ::tiledb::rest::capnp::Writer::Pipeline getWriter();
+  inline  ::tiledb::rest::capnp::QueryReader::Pipeline getReader();
+  inline  ::tiledb::rest::capnp::DomainArray::Pipeline getSubarray();
+  inline  ::tiledb::rest::capnp::Array::Pipeline getArray();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -5533,13 +4798,11 @@ class Query::Pipeline {
 #endif  // !CAPNP_LITE
 
 class NonEmptyDomain::Reader {
- public:
+public:
   typedef NonEmptyDomain Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -5552,13 +4815,11 @@ class NonEmptyDomain::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasNonEmptyDomain() const;
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Reader
-      getNonEmptyDomain() const;
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Reader getNonEmptyDomain() const;
 
   inline bool getIsEmpty() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5571,55 +4832,32 @@ class NonEmptyDomain::Reader {
 };
 
 class NonEmptyDomain::Builder {
- public:
+public:
   typedef NonEmptyDomain Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasNonEmptyDomain();
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Builder
-      getNonEmptyDomain();
-  inline void setNonEmptyDomain(
-      ::tiledb::rest::capnp::
-          Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Reader value);
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Builder
-      initNonEmptyDomain();
-  inline void adoptNonEmptyDomain(
-      ::capnp::Orphan<::tiledb::rest::capnp::Map<
-          ::capnp::Text,
-          ::tiledb::rest::capnp::DomainArray>>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>
-  disownNonEmptyDomain();
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Builder getNonEmptyDomain();
+  inline void setNonEmptyDomain( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Reader value);
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Builder initNonEmptyDomain();
+  inline void adoptNonEmptyDomain(::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>&& value);
+  inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>> disownNonEmptyDomain();
 
   inline bool getIsEmpty();
   inline void setIsEmpty(bool value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5630,21 +4868,15 @@ class NonEmptyDomain::Builder {
 
 #if !CAPNP_LITE
 class NonEmptyDomain::Pipeline {
- public:
+public:
   typedef NonEmptyDomain Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
-  inline ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Pipeline
-      getNonEmptyDomain();
-
- private:
+  inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Pipeline getNonEmptyDomain();
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -5653,13 +4885,11 @@ class NonEmptyDomain::Pipeline {
 #endif  // !CAPNP_LITE
 
 class MaxBufferSizeVar::Reader {
- public:
+public:
   typedef MaxBufferSizeVar Reads;
 
   Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
+  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
   inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
@@ -5672,13 +4902,13 @@ class MaxBufferSizeVar::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasAttribute() const;
-  inline ::capnp::Text::Reader getAttribute() const;
+  inline  ::capnp::Text::Reader getAttribute() const;
 
-  inline ::uint64_t getBufferSize() const;
+  inline  ::uint64_t getBufferSize() const;
 
-  inline ::uint64_t getBufferOffsetSize() const;
+  inline  ::uint64_t getBufferOffsetSize() const;
 
- private:
+private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5691,46 +4921,35 @@ class MaxBufferSizeVar::Reader {
 };
 
 class MaxBufferSizeVar::Builder {
- public:
+public:
   typedef MaxBufferSizeVar Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
+  inline Builder(decltype(nullptr)) {}
+  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
+  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
+  inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
   inline bool hasAttribute();
-  inline ::capnp::Text::Builder getAttribute();
-  inline void setAttribute(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initAttribute(unsigned int size);
-  inline void adoptAttribute(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownAttribute();
+  inline  ::capnp::Text::Builder getAttribute();
+  inline void setAttribute( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initAttribute(unsigned int size);
+  inline void adoptAttribute(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownAttribute();
 
-  inline ::uint64_t getBufferSize();
-  inline void setBufferSize(::uint64_t value);
+  inline  ::uint64_t getBufferSize();
+  inline void setBufferSize( ::uint64_t value);
 
-  inline ::uint64_t getBufferOffsetSize();
-  inline void setBufferOffsetSize(::uint64_t value);
+  inline  ::uint64_t getBufferOffsetSize();
+  inline void setBufferOffsetSize( ::uint64_t value);
 
- private:
+private:
   ::capnp::_::StructBuilder _builder;
   template <typename, ::capnp::Kind>
   friend struct ::capnp::ToDynamic_;
@@ -5741,17 +4960,14 @@ class MaxBufferSizeVar::Builder {
 
 #if !CAPNP_LITE
 class MaxBufferSizeVar::Pipeline {
- public:
+public:
   typedef MaxBufferSizeVar Pipelines;
 
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
+  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
+      : _typeless(kj::mv(typeless)) {}
 
- private:
+private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
   template <typename, ::capnp::Kind>
@@ -5762,1382 +4978,1166 @@ class MaxBufferSizeVar::Pipeline {
 // =======================================================================================
 
 inline bool DomainArray::Reader::hasInt8() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasInt8() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int8_t>::Reader DomainArray::Reader::getInt8() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Reader DomainArray::Reader::getInt8() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int8_t>::Builder DomainArray::Builder::getInt8() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Builder DomainArray::Builder::getInt8() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setInt8(
-    ::capnp::List<::int8_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt8( ::capnp::List< ::int8_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setInt8(
-    ::kj::ArrayPtr<const ::int8_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt8(::kj::ArrayPtr<const  ::int8_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int8_t>::Builder DomainArray::Builder::initInt8(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::int8_t>::Builder DomainArray::Builder::initInt8(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::int8_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::int8_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int8_t>>
-DomainArray::Builder::disownInt8() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int8_t>> DomainArray::Builder::disownInt8() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasUint8() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasUint8() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint8_t>::Reader DomainArray::Reader::getUint8() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Reader DomainArray::Reader::getUint8() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint8_t>::Builder DomainArray::Builder::getUint8() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Builder DomainArray::Builder::getUint8() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setUint8(
-    ::capnp::List<::uint8_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint8( ::capnp::List< ::uint8_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setUint8(
-    ::kj::ArrayPtr<const ::uint8_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint8(::kj::ArrayPtr<const  ::uint8_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint8_t>::Builder DomainArray::Builder::initUint8(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint8_t>::Builder DomainArray::Builder::initUint8(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::uint8_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint8_t>>
-DomainArray::Builder::disownUint8() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> DomainArray::Builder::disownUint8() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasInt16() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasInt16() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int16_t>::Reader DomainArray::Reader::getInt16() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Reader DomainArray::Reader::getInt16() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int16_t>::Builder DomainArray::Builder::getInt16() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Builder DomainArray::Builder::getInt16() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setInt16(
-    ::capnp::List<::int16_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt16( ::capnp::List< ::int16_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setInt16(
-    ::kj::ArrayPtr<const ::int16_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt16(::kj::ArrayPtr<const  ::int16_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int16_t>::Builder DomainArray::Builder::initInt16(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::int16_t>::Builder DomainArray::Builder::initInt16(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::int16_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::int16_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int16_t>>
-DomainArray::Builder::disownInt16() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int16_t>> DomainArray::Builder::disownInt16() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasUint16() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasUint16() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint16_t>::Reader DomainArray::Reader::getUint16()
-    const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Reader DomainArray::Reader::getUint16() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint16_t>::Builder DomainArray::Builder::getUint16() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Builder DomainArray::Builder::getUint16() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setUint16(
-    ::capnp::List<::uint16_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint16( ::capnp::List< ::uint16_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setUint16(
-    ::kj::ArrayPtr<const ::uint16_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint16(::kj::ArrayPtr<const  ::uint16_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint16_t>::Builder DomainArray::Builder::initUint16(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint16_t>::Builder DomainArray::Builder::initUint16(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::uint16_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint16_t>>
-DomainArray::Builder::disownUint16() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> DomainArray::Builder::disownUint16() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasInt32() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasInt32() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int32_t>::Reader DomainArray::Reader::getInt32() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Reader DomainArray::Reader::getInt32() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int32_t>::Builder DomainArray::Builder::getInt32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Builder DomainArray::Builder::getInt32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setInt32(
-    ::capnp::List<::int32_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt32( ::capnp::List< ::int32_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setInt32(
-    ::kj::ArrayPtr<const ::int32_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt32(::kj::ArrayPtr<const  ::int32_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int32_t>::Builder DomainArray::Builder::initInt32(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::int32_t>::Builder DomainArray::Builder::initInt32(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::int32_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::int32_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int32_t>>
-DomainArray::Builder::disownInt32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int32_t>> DomainArray::Builder::disownInt32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasUint32() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasUint32() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint32_t>::Reader DomainArray::Reader::getUint32()
-    const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Reader DomainArray::Reader::getUint32() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint32_t>::Builder DomainArray::Builder::getUint32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Builder DomainArray::Builder::getUint32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setUint32(
-    ::capnp::List<::uint32_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint32( ::capnp::List< ::uint32_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setUint32(
-    ::kj::ArrayPtr<const ::uint32_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint32(::kj::ArrayPtr<const  ::uint32_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint32_t>::Builder DomainArray::Builder::initUint32(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint32_t>::Builder DomainArray::Builder::initUint32(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::uint32_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint32_t>>
-DomainArray::Builder::disownUint32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> DomainArray::Builder::disownUint32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasInt64() const {
-  return !_reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasInt64() {
-  return !_builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int64_t>::Reader DomainArray::Reader::getInt64() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Reader DomainArray::Reader::getInt64() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int64_t>::Builder DomainArray::Builder::getInt64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Builder DomainArray::Builder::getInt64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setInt64(
-    ::capnp::List<::int64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt64( ::capnp::List< ::int64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setInt64(
-    ::kj::ArrayPtr<const ::int64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setInt64(::kj::ArrayPtr<const  ::int64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int64_t>::Builder DomainArray::Builder::initInt64(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::int64_t>::Builder DomainArray::Builder::initInt64(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::int64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::int64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int64_t>>
-DomainArray::Builder::disownInt64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int64_t>> DomainArray::Builder::disownInt64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasUint64() const {
-  return !_reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasUint64() {
-  return !_builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader DomainArray::Reader::getUint64()
-    const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader DomainArray::Reader::getUint64() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder DomainArray::Builder::getUint64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder DomainArray::Builder::getUint64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setUint64(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint64( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setUint64(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setUint64(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder DomainArray::Builder::initUint64(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder DomainArray::Builder::initUint64(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-DomainArray::Builder::disownUint64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> DomainArray::Builder::disownUint64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasFloat32() const {
-  return !_reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasFloat32() {
-  return !_builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<float>::Reader DomainArray::Reader::getFloat32() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Reader DomainArray::Reader::getFloat32() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<float>::Builder DomainArray::Builder::getFloat32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Builder DomainArray::Builder::getFloat32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setFloat32(
-    ::capnp::List<float>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setFloat32( ::capnp::List<float>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setFloat32(
-    ::kj::ArrayPtr<const float> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setFloat32(::kj::ArrayPtr<const float> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<float>::Builder DomainArray::Builder::initFloat32(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::init(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List<float>::Builder DomainArray::Builder::initFloat32(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::init(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<float>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::adopt(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List<float>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<float>>
-DomainArray::Builder::disownFloat32() {
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::disown(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<float>> DomainArray::Builder::disownFloat32() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::disown(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
 
 inline bool DomainArray::Reader::hasFloat64() const {
-  return !_reader.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS).isNull();
 }
 inline bool DomainArray::Builder::hasFloat64() {
-  return !_builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<double>::Reader DomainArray::Reader::getFloat64() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _reader.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Reader DomainArray::Reader::getFloat64() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_reader.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<double>::Builder DomainArray::Builder::getFloat64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Builder DomainArray::Builder::getFloat64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
-inline void DomainArray::Builder::setFloat64(
-    ::capnp::List<double>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setFloat64( ::capnp::List<double>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), value);
 }
-inline void DomainArray::Builder::setFloat64(
-    ::kj::ArrayPtr<const double> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      value);
+inline void DomainArray::Builder::setFloat64(::kj::ArrayPtr<const double> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<double>::Builder DomainArray::Builder::initFloat64(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::init(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List<double>::Builder DomainArray::Builder::initFloat64(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::init(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), size);
 }
 inline void DomainArray::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<double>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::adopt(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List<double>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<double>>
-DomainArray::Builder::disownFloat64() {
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::disown(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<double>> DomainArray::Builder::disownFloat64() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::disown(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
 
-inline ::uint64_t Array::Reader::getTimestamp() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Array::Reader::getTimestamp() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t Array::Builder::getTimestamp() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Array::Builder::getTimestamp() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void Array::Builder::setTimestamp(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void Array::Builder::setTimestamp( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Array::Reader::hasEncryptionKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasEncryptionKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Data::Reader Array::Reader::getEncryptionKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Reader Array::Reader::getEncryptionKey() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Data::Builder Array::Builder::getEncryptionKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Builder Array::Builder::getEncryptionKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Array::Builder::setEncryptionKey(::capnp::Data::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Data>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setEncryptionKey( ::capnp::Data::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Data>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Data::Builder Array::Builder::initEncryptionKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Data::Builder Array::Builder::initEncryptionKey(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Array::Builder::adoptEncryptionKey(
-    ::capnp::Orphan<::capnp::Data>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Data>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Data>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Data>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Data> Array::Builder::disownEncryptionKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Data> Array::Builder::disownEncryptionKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasEncryptionType() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasEncryptionType() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Array::Reader::getEncryptionType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Array::Reader::getEncryptionType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Array::Builder::getEncryptionType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Array::Builder::getEncryptionType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Array::Builder::setEncryptionType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setEncryptionType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Array::Builder::initEncryptionType(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Array::Builder::initEncryptionType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Array::Builder::adoptEncryptionType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownEncryptionType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Array::Builder::disownEncryptionType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasLastMaxBufferSizes() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasLastMaxBufferSizes() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Reader
-Array::Reader::getLastMaxBufferSizes() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      get(_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Reader Array::Reader::getLastMaxBufferSizes() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-Array::Builder::getLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      get(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Builder Array::Builder::getLastMaxBufferSizes() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline
-Array::Pipeline::getLastMaxBufferSizes() {
-  return ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline(
-      _typeless.getPointerField(2));
+inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline Array::Pipeline::getLastMaxBufferSizes() {
+  return  ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline(_typeless.getPointerField(2));
 }
 #endif  // !CAPNP_LITE
-inline void Array::Builder::setLastMaxBufferSizes(
-    ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setLastMaxBufferSizes( ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-Array::Builder::initLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      init(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapMaxBufferSizes::Builder Array::Builder::initLastMaxBufferSizes() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 inline void Array::Builder::adoptLastMaxBufferSizes(
-    ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::MapMaxBufferSizes>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>
-Array::Builder::disownLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::MapMaxBufferSizes> Array::Builder::disownLastMaxBufferSizes() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapMaxBufferSizes>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasLastMaxBufferSizesSubarray() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasLastMaxBufferSizesSubarray() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader
-Array::Reader::getLastMaxBufferSizesSubarray() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader Array::Reader::getLastMaxBufferSizesSubarray() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Array::Builder::getLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Array::Builder::getLastMaxBufferSizesSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-Array::Pipeline::getLastMaxBufferSizesSubarray() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(3));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline Array::Pipeline::getLastMaxBufferSizesSubarray() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(3));
 }
 #endif  // !CAPNP_LITE
-inline void Array::Builder::setLastMaxBufferSizesSubarray(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setLastMaxBufferSizesSubarray( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Array::Builder::initLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Array::Builder::initLastMaxBufferSizesSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 inline void Array::Builder::adoptLastMaxBufferSizesSubarray(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-Array::Builder::disownLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> Array::Builder::disownLastMaxBufferSizesSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasQueryType() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasQueryType() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Array::Reader::getQueryType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Array::Reader::getQueryType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Array::Builder::getQueryType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Array::Builder::getQueryType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline void Array::Builder::setQueryType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setQueryType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Array::Builder::initQueryType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Array::Builder::initQueryType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), size);
 }
 inline void Array::Builder::adoptQueryType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownQueryType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Array::Builder::disownQueryType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasUri() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
 inline bool Array::Builder::hasUri() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Array::Reader::getUri() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Array::Reader::getUri() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Array::Builder::getUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Array::Builder::getUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline void Array::Builder::setUri(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void Array::Builder::setUri( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Array::Builder::initUri(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Array::Builder::initUri(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), size);
 }
-inline void Array::Builder::adoptUri(::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline void Array::Builder::adoptUri(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Array::Builder::disownUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasArrayType() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasArrayType() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader ArraySchema::Reader::getArrayType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader ArraySchema::Reader::getArrayType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::getArrayType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder ArraySchema::Builder::getArrayType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setArrayType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setArrayType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::initArrayType(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder ArraySchema::Builder::initArrayType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptArrayType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> ArraySchema::Builder::disownArrayType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> ArraySchema::Builder::disownArrayType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasAttributes() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasAttributes() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Reader
-ArraySchema::Reader::getAttributes() const {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::get(
-          _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Reader ArraySchema::Reader::getAttributes() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Builder
-ArraySchema::Builder::getAttributes() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::get(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Builder ArraySchema::Builder::getAttributes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setAttributes(
-    ::capnp::List<::tiledb::rest::capnp::Attribute>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::
-      set(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          value);
+inline void ArraySchema::Builder::setAttributes( ::capnp::List< ::tiledb::rest::capnp::Attribute>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::Attribute>::Builder
-ArraySchema::Builder::initAttributes(unsigned int size) {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::Attribute>::Builder ArraySchema::Builder::initAttributes(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptAttributes(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Attribute>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Attribute>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Attribute>>
-ArraySchema::Builder::disownAttributes() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Attribute>>::disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Attribute>> ArraySchema::Builder::disownAttributes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Attribute>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
-inline ::uint64_t ArraySchema::Reader::getCapacity() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t ArraySchema::Reader::getCapacity() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t ArraySchema::Builder::getCapacity() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t ArraySchema::Builder::getCapacity() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void ArraySchema::Builder::setCapacity(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void ArraySchema::Builder::setCapacity( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool ArraySchema::Reader::hasCellOrder() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasCellOrder() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader ArraySchema::Reader::getCellOrder() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader ArraySchema::Reader::getCellOrder() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::getCellOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder ArraySchema::Builder::getCellOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setCellOrder(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setCellOrder( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::initCellOrder(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder ArraySchema::Builder::initCellOrder(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptCellOrder(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> ArraySchema::Builder::disownCellOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> ArraySchema::Builder::disownCellOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasCoordsFilterPipeline() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasCoordsFilterPipeline() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Reader
-ArraySchema::Reader::getCoordsFilterPipeline() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Reader ArraySchema::Reader::getCoordsFilterPipeline() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-ArraySchema::Builder::getCoordsFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder ArraySchema::Builder::getCoordsFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::FilterPipeline::Pipeline
-ArraySchema::Pipeline::getCoordsFilterPipeline() {
-  return ::tiledb::rest::capnp::FilterPipeline::Pipeline(
-      _typeless.getPointerField(3));
+inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline ArraySchema::Pipeline::getCoordsFilterPipeline() {
+  return  ::tiledb::rest::capnp::FilterPipeline::Pipeline(_typeless.getPointerField(3));
 }
 #endif  // !CAPNP_LITE
-inline void ArraySchema::Builder::setCoordsFilterPipeline(
-    ::tiledb::rest::capnp::FilterPipeline::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setCoordsFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-ArraySchema::Builder::initCoordsFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      init(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder ArraySchema::Builder::initCoordsFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 inline void ArraySchema::Builder::adoptCoordsFilterPipeline(
-    ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-ArraySchema::Builder::disownCoordsFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> ArraySchema::Builder::disownCoordsFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasDomain() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasDomain() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::Domain::Reader ArraySchema::Reader::getDomain()
-    const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Domain::Reader ArraySchema::Reader::getDomain() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::get(_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::Domain::Builder
-ArraySchema::Builder::getDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Domain::Builder ArraySchema::Builder::getDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::get(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::Domain::Pipeline
-ArraySchema::Pipeline::getDomain() {
-  return ::tiledb::rest::capnp::Domain::Pipeline(_typeless.getPointerField(4));
+inline  ::tiledb::rest::capnp::Domain::Pipeline ArraySchema::Pipeline::getDomain() {
+  return  ::tiledb::rest::capnp::Domain::Pipeline(_typeless.getPointerField(4));
 }
 #endif  // !CAPNP_LITE
-inline void ArraySchema::Builder::setDomain(
-    ::tiledb::rest::capnp::Domain::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setDomain( ::tiledb::rest::capnp::Domain::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::Domain::Builder
-ArraySchema::Builder::initDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Domain::Builder ArraySchema::Builder::initDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::init(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 inline void ArraySchema::Builder::adoptDomain(
-    ::capnp::Orphan<::tiledb::rest::capnp::Domain>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Domain>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::adopt(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Domain>
-ArraySchema::Builder::disownDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Domain>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Domain> ArraySchema::Builder::disownDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Domain>::disown(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasOffsetFilterPipeline() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasOffsetFilterPipeline() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Reader
-ArraySchema::Reader::getOffsetFilterPipeline() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Reader ArraySchema::Reader::getOffsetFilterPipeline() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-ArraySchema::Builder::getOffsetFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder ArraySchema::Builder::getOffsetFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::FilterPipeline::Pipeline
-ArraySchema::Pipeline::getOffsetFilterPipeline() {
-  return ::tiledb::rest::capnp::FilterPipeline::Pipeline(
-      _typeless.getPointerField(5));
+inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline ArraySchema::Pipeline::getOffsetFilterPipeline() {
+  return  ::tiledb::rest::capnp::FilterPipeline::Pipeline(_typeless.getPointerField(5));
 }
 #endif  // !CAPNP_LITE
-inline void ArraySchema::Builder::setOffsetFilterPipeline(
-    ::tiledb::rest::capnp::FilterPipeline::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setOffsetFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-ArraySchema::Builder::initOffsetFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      init(_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder ArraySchema::Builder::initOffsetFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::init(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 inline void ArraySchema::Builder::adoptOffsetFilterPipeline(
-    ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::adopt(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-ArraySchema::Builder::disownOffsetFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> ArraySchema::Builder::disownOffsetFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::disown(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasTileOrder() const {
-  return !_reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasTileOrder() {
-  return !_builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader ArraySchema::Reader::getTileOrder() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader ArraySchema::Reader::getTileOrder() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::getTileOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder ArraySchema::Builder::getTileOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setTileOrder(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setTileOrder( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::initTileOrder(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder ArraySchema::Builder::initTileOrder(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptTileOrder(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> ArraySchema::Builder::disownTileOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> ArraySchema::Builder::disownTileOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasUri() const {
-  return !_reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasUri() {
-  return !_builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader ArraySchema::Reader::getUri() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader ArraySchema::Reader::getUri() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::getUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder ArraySchema::Builder::getUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setUri(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setUri( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder ArraySchema::Builder::initUri(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder ArraySchema::Builder::initUri(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptUri(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> ArraySchema::Builder::disownUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> ArraySchema::Builder::disownUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasVersion() const {
-  return !_reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
 inline bool ArraySchema::Builder::hasVersion() {
-  return !_builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int32_t>::Reader ArraySchema::Reader::getVersion()
-    const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Reader ArraySchema::Reader::getVersion() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int32_t>::Builder ArraySchema::Builder::getVersion() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Builder ArraySchema::Builder::getVersion() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline void ArraySchema::Builder::setVersion(
-    ::capnp::List<::int32_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setVersion( ::capnp::List< ::int32_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline void ArraySchema::Builder::setVersion(
-    ::kj::ArrayPtr<const ::int32_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void ArraySchema::Builder::setVersion(::kj::ArrayPtr<const  ::int32_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int32_t>::Builder ArraySchema::Builder::initVersion(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::int32_t>::Builder ArraySchema::Builder::initVersion(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), size);
 }
 inline void ArraySchema::Builder::adoptVersion(
-    ::capnp::Orphan<::capnp::List<::int32_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::int32_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int32_t>>
-ArraySchema::Builder::disownVersion() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int32_t>> ArraySchema::Builder::disownVersion() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
 
-inline ::uint32_t Attribute::Reader::getCellValNum() const {
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t Attribute::Reader::getCellValNum() const {
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t Attribute::Builder::getCellValNum() {
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t Attribute::Builder::getCellValNum() {
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void Attribute::Builder::setCellValNum(::uint32_t value) {
-  _builder.setDataField<::uint32_t>(
+inline void Attribute::Builder::setCellValNum( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Attribute::Reader::hasName() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Attribute::Builder::hasName() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Attribute::Reader::getName() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Attribute::Reader::getName() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Attribute::Builder::getName() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Attribute::Builder::getName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Attribute::Builder::setName(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Attribute::Builder::setName( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Attribute::Builder::initName(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Attribute::Builder::initName(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Attribute::Builder::adoptName(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Attribute::Builder::disownName() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Attribute::Builder::disownName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Attribute::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Attribute::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Attribute::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Attribute::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Attribute::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Attribute::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Attribute::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Attribute::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Attribute::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Attribute::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Attribute::Builder::adoptType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Attribute::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Attribute::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Attribute::Reader::hasFilterPipeline() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool Attribute::Builder::hasFilterPipeline() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Reader
-Attribute::Reader::getFilterPipeline() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Reader Attribute::Reader::getFilterPipeline() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-Attribute::Builder::getFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder Attribute::Builder::getFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::FilterPipeline::Pipeline
-Attribute::Pipeline::getFilterPipeline() {
-  return ::tiledb::rest::capnp::FilterPipeline::Pipeline(
-      _typeless.getPointerField(2));
+inline  ::tiledb::rest::capnp::FilterPipeline::Pipeline Attribute::Pipeline::getFilterPipeline() {
+  return  ::tiledb::rest::capnp::FilterPipeline::Pipeline(_typeless.getPointerField(2));
 }
 #endif  // !CAPNP_LITE
-inline void Attribute::Builder::setFilterPipeline(
-    ::tiledb::rest::capnp::FilterPipeline::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void Attribute::Builder::setFilterPipeline( ::tiledb::rest::capnp::FilterPipeline::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::FilterPipeline::Builder
-Attribute::Builder::initFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      init(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FilterPipeline::Builder Attribute::Builder::initFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 inline void Attribute::Builder::adoptFilterPipeline(
-    ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::FilterPipeline>
-Attribute::Builder::disownFilterPipeline() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FilterPipeline>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::FilterPipeline> Attribute::Builder::disownFilterPipeline() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FilterPipeline>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader AttributeBuffer::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader AttributeBuffer::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder AttributeBuffer::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder AttributeBuffer::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void AttributeBuffer::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder AttributeBuffer::Builder::initType(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder AttributeBuffer::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Builder::adoptType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> AttributeBuffer::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> AttributeBuffer::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline typename AttributeBuffer::Buffer::Reader
-AttributeBuffer::Reader::getBuffer() const {
+inline typename AttributeBuffer::Buffer::Reader AttributeBuffer::Reader::getBuffer() const {
   return typename AttributeBuffer::Buffer::Reader(_reader);
 }
-inline typename AttributeBuffer::Buffer::Builder
-AttributeBuffer::Builder::getBuffer() {
+inline typename AttributeBuffer::Buffer::Builder AttributeBuffer::Builder::getBuffer() {
   return typename AttributeBuffer::Buffer::Builder(_builder);
 }
 #if !CAPNP_LITE
-inline typename AttributeBuffer::Buffer::Pipeline
-AttributeBuffer::Pipeline::getBuffer() {
+inline typename AttributeBuffer::Buffer::Pipeline AttributeBuffer::Pipeline::getBuffer() {
   return typename AttributeBuffer::Buffer::Pipeline(_typeless.noop());
 }
 #endif  // !CAPNP_LITE
-inline typename AttributeBuffer::Buffer::Builder
-AttributeBuffer::Builder::initBuffer() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
+inline typename AttributeBuffer::Buffer::Builder AttributeBuffer::Builder::initBuffer() {
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
   _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS).clear();
   return typename AttributeBuffer::Buffer::Builder(_builder);
 }
 inline bool AttributeBuffer::Reader::hasBufferOffset() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Builder::hasBufferOffset() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-AttributeBuffer::Reader::getBufferOffset() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader AttributeBuffer::Reader::getBufferOffset() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-AttributeBuffer::Builder::getBufferOffset() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder AttributeBuffer::Builder::getBufferOffset() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Builder::setBufferOffset(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void AttributeBuffer::Builder::setBufferOffset( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Builder::setBufferOffset(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void AttributeBuffer::Builder::setBufferOffset(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-AttributeBuffer::Builder::initBufferOffset(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder AttributeBuffer::Builder::initBufferOffset(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Builder::adoptBufferOffset(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-AttributeBuffer::Builder::disownBufferOffset() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> AttributeBuffer::Builder::disownBufferOffset() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
-inline ::tiledb::rest::capnp::AttributeBuffer::Buffer::Which
-AttributeBuffer::Buffer::Reader::which() const {
-  return _reader.getDataField<Which>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::AttributeBuffer::Buffer::Which AttributeBuffer::Buffer::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::AttributeBuffer::Buffer::Which
-AttributeBuffer::Buffer::Builder::which() {
+inline  ::tiledb::rest::capnp::AttributeBuffer::Buffer::Which AttributeBuffer::Buffer::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
@@ -7149,72 +6149,57 @@ inline bool AttributeBuffer::Buffer::Builder::isInt8() {
   return which() == AttributeBuffer::Buffer::INT8;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasInt8() const {
-  if (which() != AttributeBuffer::Buffer::INT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasInt8() {
-  if (which() != AttributeBuffer::Buffer::INT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int8_t>::Reader
-AttributeBuffer::Buffer::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Reader AttributeBuffer::Buffer::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int8_t>::Builder
-AttributeBuffer::Buffer::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Builder AttributeBuffer::Buffer::Builder::getInt8() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setInt8(
-    ::capnp::List<::int8_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setInt8( ::capnp::List< ::int8_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setInt8(
-    ::kj::ArrayPtr<const ::int8_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setInt8(::kj::ArrayPtr<const  ::int8_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int8_t>::Builder
-AttributeBuffer::Buffer::Builder::initInt8(unsigned int size) {
+inline  ::capnp::List< ::int8_t>::Builder AttributeBuffer::Buffer::Builder::initInt8(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::int8_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int8_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int8_t>>
-AttributeBuffer::Buffer::Builder::disownInt8() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int8_t>> AttributeBuffer::Buffer::Builder::disownInt8() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isUint8() const {
@@ -7224,76 +6209,57 @@ inline bool AttributeBuffer::Buffer::Builder::isUint8() {
   return which() == AttributeBuffer::Buffer::UINT8;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasUint8() const {
-  if (which() != AttributeBuffer::Buffer::UINT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasUint8() {
-  if (which() != AttributeBuffer::Buffer::UINT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint8_t>::Reader
-AttributeBuffer::Buffer::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Reader AttributeBuffer::Buffer::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint8_t>::Builder
-AttributeBuffer::Buffer::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Builder AttributeBuffer::Buffer::Builder::getUint8() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setUint8(
-    ::capnp::List<::uint8_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setUint8( ::capnp::List< ::uint8_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setUint8(
-    ::kj::ArrayPtr<const ::uint8_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setUint8(::kj::ArrayPtr<const  ::uint8_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint8_t>::Builder
-AttributeBuffer::Buffer::Builder::initUint8(unsigned int size) {
+inline  ::capnp::List< ::uint8_t>::Builder AttributeBuffer::Buffer::Builder::initUint8(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT8);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::uint8_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint8_t>>
-AttributeBuffer::Buffer::Builder::disownUint8() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> AttributeBuffer::Buffer::Builder::disownUint8() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isInt16() const {
@@ -7303,76 +6269,57 @@ inline bool AttributeBuffer::Buffer::Builder::isInt16() {
   return which() == AttributeBuffer::Buffer::INT16;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasInt16() const {
-  if (which() != AttributeBuffer::Buffer::INT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasInt16() {
-  if (which() != AttributeBuffer::Buffer::INT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int16_t>::Reader
-AttributeBuffer::Buffer::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Reader AttributeBuffer::Buffer::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int16_t>::Builder
-AttributeBuffer::Buffer::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Builder AttributeBuffer::Buffer::Builder::getInt16() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setInt16(
-    ::capnp::List<::int16_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setInt16( ::capnp::List< ::int16_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setInt16(
-    ::kj::ArrayPtr<const ::int16_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setInt16(::kj::ArrayPtr<const  ::int16_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int16_t>::Builder
-AttributeBuffer::Buffer::Builder::initInt16(unsigned int size) {
+inline  ::capnp::List< ::int16_t>::Builder AttributeBuffer::Buffer::Builder::initInt16(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::int16_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int16_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int16_t>>
-AttributeBuffer::Buffer::Builder::disownInt16() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int16_t>> AttributeBuffer::Buffer::Builder::disownInt16() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isUint16() const {
@@ -7382,76 +6329,57 @@ inline bool AttributeBuffer::Buffer::Builder::isUint16() {
   return which() == AttributeBuffer::Buffer::UINT16;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasUint16() const {
-  if (which() != AttributeBuffer::Buffer::UINT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasUint16() {
-  if (which() != AttributeBuffer::Buffer::UINT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint16_t>::Reader
-AttributeBuffer::Buffer::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Reader AttributeBuffer::Buffer::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint16_t>::Builder
-AttributeBuffer::Buffer::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Builder AttributeBuffer::Buffer::Builder::getUint16() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setUint16(
-    ::capnp::List<::uint16_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setUint16( ::capnp::List< ::uint16_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setUint16(
-    ::kj::ArrayPtr<const ::uint16_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setUint16(::kj::ArrayPtr<const  ::uint16_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint16_t>::Builder
-AttributeBuffer::Buffer::Builder::initUint16(unsigned int size) {
+inline  ::capnp::List< ::uint16_t>::Builder AttributeBuffer::Buffer::Builder::initUint16(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::uint16_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint16_t>>
-AttributeBuffer::Buffer::Builder::disownUint16() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> AttributeBuffer::Buffer::Builder::disownUint16() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isInt32() const {
@@ -7461,76 +6389,57 @@ inline bool AttributeBuffer::Buffer::Builder::isInt32() {
   return which() == AttributeBuffer::Buffer::INT32;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasInt32() const {
-  if (which() != AttributeBuffer::Buffer::INT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasInt32() {
-  if (which() != AttributeBuffer::Buffer::INT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int32_t>::Reader
-AttributeBuffer::Buffer::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Reader AttributeBuffer::Buffer::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int32_t>::Builder
-AttributeBuffer::Buffer::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Builder AttributeBuffer::Buffer::Builder::getInt32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setInt32(
-    ::capnp::List<::int32_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setInt32( ::capnp::List< ::int32_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setInt32(
-    ::kj::ArrayPtr<const ::int32_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setInt32(::kj::ArrayPtr<const  ::int32_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int32_t>::Builder
-AttributeBuffer::Buffer::Builder::initInt32(unsigned int size) {
+inline  ::capnp::List< ::int32_t>::Builder AttributeBuffer::Buffer::Builder::initInt32(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::int32_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int32_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int32_t>>
-AttributeBuffer::Buffer::Builder::disownInt32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int32_t>> AttributeBuffer::Buffer::Builder::disownInt32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isUint32() const {
@@ -7540,76 +6449,57 @@ inline bool AttributeBuffer::Buffer::Builder::isUint32() {
   return which() == AttributeBuffer::Buffer::UINT32;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasUint32() const {
-  if (which() != AttributeBuffer::Buffer::UINT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasUint32() {
-  if (which() != AttributeBuffer::Buffer::UINT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint32_t>::Reader
-AttributeBuffer::Buffer::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Reader AttributeBuffer::Buffer::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint32_t>::Builder
-AttributeBuffer::Buffer::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Builder AttributeBuffer::Buffer::Builder::getUint32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setUint32(
-    ::capnp::List<::uint32_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setUint32( ::capnp::List< ::uint32_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setUint32(
-    ::kj::ArrayPtr<const ::uint32_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setUint32(::kj::ArrayPtr<const  ::uint32_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint32_t>::Builder
-AttributeBuffer::Buffer::Builder::initUint32(unsigned int size) {
+inline  ::capnp::List< ::uint32_t>::Builder AttributeBuffer::Buffer::Builder::initUint32(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::uint32_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint32_t>>
-AttributeBuffer::Buffer::Builder::disownUint32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> AttributeBuffer::Buffer::Builder::disownUint32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isInt64() const {
@@ -7619,76 +6509,57 @@ inline bool AttributeBuffer::Buffer::Builder::isInt64() {
   return which() == AttributeBuffer::Buffer::INT64;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasInt64() const {
-  if (which() != AttributeBuffer::Buffer::INT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasInt64() {
-  if (which() != AttributeBuffer::Buffer::INT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::INT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int64_t>::Reader
-AttributeBuffer::Buffer::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Reader AttributeBuffer::Buffer::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int64_t>::Builder
-AttributeBuffer::Buffer::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Builder AttributeBuffer::Buffer::Builder::getInt64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setInt64(
-    ::capnp::List<::int64_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setInt64( ::capnp::List< ::int64_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setInt64(
-    ::kj::ArrayPtr<const ::int64_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setInt64(::kj::ArrayPtr<const  ::int64_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int64_t>::Builder
-AttributeBuffer::Buffer::Builder::initInt64(unsigned int size) {
+inline  ::capnp::List< ::int64_t>::Builder AttributeBuffer::Buffer::Builder::initInt64(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::int64_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int64_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int64_t>>
-AttributeBuffer::Buffer::Builder::disownInt64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int64_t>> AttributeBuffer::Buffer::Builder::disownInt64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isUint64() const {
@@ -7698,76 +6569,57 @@ inline bool AttributeBuffer::Buffer::Builder::isUint64() {
   return which() == AttributeBuffer::Buffer::UINT64;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasUint64() const {
-  if (which() != AttributeBuffer::Buffer::UINT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasUint64() {
-  if (which() != AttributeBuffer::Buffer::UINT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::UINT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-AttributeBuffer::Buffer::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader AttributeBuffer::Buffer::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-AttributeBuffer::Buffer::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder AttributeBuffer::Buffer::Builder::getUint64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setUint64(
-    ::capnp::List<::uint64_t>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setUint64( ::capnp::List< ::uint64_t>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setUint64(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
+inline void AttributeBuffer::Buffer::Builder::setUint64(::kj::ArrayPtr<const  ::uint64_t> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-AttributeBuffer::Buffer::Builder::initUint64(unsigned int size) {
+inline  ::capnp::List< ::uint64_t>::Builder AttributeBuffer::Buffer::Builder::initUint64(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-AttributeBuffer::Buffer::Builder::disownUint64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> AttributeBuffer::Buffer::Builder::disownUint64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isFloat32() const {
@@ -7777,76 +6629,57 @@ inline bool AttributeBuffer::Buffer::Builder::isFloat32() {
   return which() == AttributeBuffer::Buffer::FLOAT32;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasFloat32() const {
-  if (which() != AttributeBuffer::Buffer::FLOAT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::FLOAT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasFloat32() {
-  if (which() != AttributeBuffer::Buffer::FLOAT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::FLOAT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<float>::Reader
-AttributeBuffer::Buffer::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Reader AttributeBuffer::Buffer::Reader::getFloat32() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<float>::Builder
-AttributeBuffer::Buffer::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Builder AttributeBuffer::Buffer::Builder::getFloat32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setFloat32(
-    ::capnp::List<float>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setFloat32( ::capnp::List<float>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setFloat32(
-    ::kj::ArrayPtr<const float> value) {
+inline void AttributeBuffer::Buffer::Builder::setFloat32(::kj::ArrayPtr<const float> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<float>::Builder
-AttributeBuffer::Buffer::Builder::initFloat32(unsigned int size) {
+inline  ::capnp::List<float>::Builder AttributeBuffer::Buffer::Builder::initFloat32(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<float>>&& value) {
+    ::capnp::Orphan< ::capnp::List<float>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<float>>
-AttributeBuffer::Buffer::Builder::disownFloat32() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<float>> AttributeBuffer::Buffer::Builder::disownFloat32() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isFloat64() const {
@@ -7856,76 +6689,57 @@ inline bool AttributeBuffer::Buffer::Builder::isFloat64() {
   return which() == AttributeBuffer::Buffer::FLOAT64;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasFloat64() const {
-  if (which() != AttributeBuffer::Buffer::FLOAT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::FLOAT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasFloat64() {
-  if (which() != AttributeBuffer::Buffer::FLOAT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::FLOAT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<double>::Reader
-AttributeBuffer::Buffer::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Reader AttributeBuffer::Buffer::Reader::getFloat64() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<double>::Builder
-AttributeBuffer::Buffer::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Builder AttributeBuffer::Buffer::Builder::getFloat64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setFloat64(
-    ::capnp::List<double>::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setFloat64( ::capnp::List<double>::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void AttributeBuffer::Buffer::Builder::setFloat64(
-    ::kj::ArrayPtr<const double> value) {
+inline void AttributeBuffer::Buffer::Builder::setFloat64(::kj::ArrayPtr<const double> value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<double>::Builder
-AttributeBuffer::Buffer::Builder::initFloat64(unsigned int size) {
+inline  ::capnp::List<double>::Builder AttributeBuffer::Buffer::Builder::initFloat64(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<double>>&& value) {
+    ::capnp::Orphan< ::capnp::List<double>>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      AttributeBuffer::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<double>>
-AttributeBuffer::Buffer::Builder::disownFloat64() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<double>> AttributeBuffer::Buffer::Builder::disownFloat64() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool AttributeBuffer::Buffer::Reader::isChar() const {
@@ -7935,229 +6749,307 @@ inline bool AttributeBuffer::Buffer::Builder::isChar() {
   return which() == AttributeBuffer::Buffer::CHAR;
 }
 inline bool AttributeBuffer::Buffer::Reader::hasChar() const {
-  if (which() != AttributeBuffer::Buffer::CHAR)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::CHAR) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool AttributeBuffer::Buffer::Builder::hasChar() {
-  if (which() != AttributeBuffer::Buffer::CHAR)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != AttributeBuffer::Buffer::CHAR) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Data::Reader AttributeBuffer::Buffer::Reader::getChar() const {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::CHAR),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Reader AttributeBuffer::Buffer::Reader::getChar() const {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::CHAR),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Data::Builder AttributeBuffer::Buffer::Builder::getChar() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::CHAR),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Builder AttributeBuffer::Buffer::Builder::getChar() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::CHAR),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void AttributeBuffer::Buffer::Builder::setChar(
-    ::capnp::Data::Reader value) {
+inline void AttributeBuffer::Buffer::Builder::setChar( ::capnp::Data::Reader value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::CHAR);
-  ::capnp::_::PointerHelpers<::capnp::Data>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::Data>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Data::Builder AttributeBuffer::Buffer::Builder::initChar(
-    unsigned int size) {
+inline  ::capnp::Data::Builder AttributeBuffer::Buffer::Builder::initChar(unsigned int size) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::CHAR);
-  return ::capnp::_::PointerHelpers<::capnp::Data>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void AttributeBuffer::Buffer::Builder::adoptChar(
-    ::capnp::Orphan<::capnp::Data>&& value) {
+    ::capnp::Orphan< ::capnp::Data>&& value) {
   _builder.setDataField<AttributeBuffer::Buffer::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, AttributeBuffer::Buffer::CHAR);
-  ::capnp::_::PointerHelpers<::capnp::Data>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::Data>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Data>
-AttributeBuffer::Buffer::Builder::disownChar() {
-  KJ_IREQUIRE(
-      (which() == AttributeBuffer::Buffer::CHAR),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Data> AttributeBuffer::Buffer::Builder::disownChar() {
+  KJ_IREQUIRE((which() == AttributeBuffer::Buffer::CHAR),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
+}
+
+inline bool AttributeBufferHeader::Reader::hasAttributeName() const {
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline bool AttributeBufferHeader::Builder::hasAttributeName() {
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline  ::capnp::Text::Reader AttributeBufferHeader::Reader::getAttributeName() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline  ::capnp::Text::Builder AttributeBufferHeader::Builder::getAttributeName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline void AttributeBufferHeader::Builder::setAttributeName( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
+}
+inline  ::capnp::Text::Builder AttributeBufferHeader::Builder::initAttributeName(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
+}
+inline void AttributeBufferHeader::Builder::adoptAttributeName(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
+}
+inline ::capnp::Orphan< ::capnp::Text> AttributeBufferHeader::Builder::disownAttributeName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+
+inline bool AttributeBufferHeader::Reader::hasType() const {
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
+}
+inline bool AttributeBufferHeader::Builder::hasType() {
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
+}
+inline  ::capnp::Text::Reader AttributeBufferHeader::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
+}
+inline  ::capnp::Text::Builder AttributeBufferHeader::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
+}
+inline void AttributeBufferHeader::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
+}
+inline  ::capnp::Text::Builder AttributeBufferHeader::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
+}
+inline void AttributeBufferHeader::Builder::adoptType(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
+}
+inline ::capnp::Orphan< ::capnp::Text> AttributeBufferHeader::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
+}
+
+inline  ::uint64_t AttributeBufferHeader::Reader::getDatatypeSizeInBytes() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t AttributeBufferHeader::Builder::getDatatypeSizeInBytes() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+inline void AttributeBufferHeader::Builder::setDatatypeSizeInBytes( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::uint64_t AttributeBufferHeader::Reader::getBufferSizeInBytes() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t AttributeBufferHeader::Builder::getBufferSizeInBytes() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+inline void AttributeBufferHeader::Builder::setBufferSizeInBytes( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::uint64_t AttributeBufferHeader::Reader::getOffsetBufferSizeInBytes() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t AttributeBufferHeader::Builder::getOffsetBufferSizeInBytes() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+inline void AttributeBufferHeader::Builder::setOffsetBufferSizeInBytes( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Dimension::Reader::hasName() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Dimension::Builder::hasName() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Dimension::Reader::getName() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Dimension::Reader::getName() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Dimension::Builder::getName() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Dimension::Builder::getName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Dimension::Builder::setName(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Dimension::Builder::setName( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Dimension::Builder::initName(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Dimension::Builder::initName(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Dimension::Builder::adoptName(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Dimension::Builder::disownName() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Dimension::Builder::disownName() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Dimension::Reader::getNullTileExtent() const {
-  return _reader.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
 inline bool Dimension::Builder::getNullTileExtent() {
-  return _builder.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 inline void Dimension::Builder::setNullTileExtent(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Dimension::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Dimension::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Dimension::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Dimension::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Dimension::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Dimension::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Dimension::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Dimension::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Dimension::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Dimension::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Dimension::Builder::adoptType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Dimension::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Dimension::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
-inline typename Dimension::TileExtent::Reader Dimension::Reader::getTileExtent()
-    const {
+inline typename Dimension::TileExtent::Reader Dimension::Reader::getTileExtent() const {
   return typename Dimension::TileExtent::Reader(_reader);
 }
-inline typename Dimension::TileExtent::Builder
-Dimension::Builder::getTileExtent() {
+inline typename Dimension::TileExtent::Builder Dimension::Builder::getTileExtent() {
   return typename Dimension::TileExtent::Builder(_builder);
 }
 #if !CAPNP_LITE
-inline typename Dimension::TileExtent::Pipeline
-Dimension::Pipeline::getTileExtent() {
+inline typename Dimension::TileExtent::Pipeline Dimension::Pipeline::getTileExtent() {
   return typename Dimension::TileExtent::Pipeline(_typeless.noop());
 }
 #endif  // !CAPNP_LITE
-inline typename Dimension::TileExtent::Builder
-Dimension::Builder::initTileExtent() {
-  _builder.setDataField<::uint8_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint32_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+inline typename Dimension::TileExtent::Builder Dimension::Builder::initTileExtent() {
+  _builder.setDataField< ::uint8_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint32_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint64_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
   return typename Dimension::TileExtent::Builder(_builder);
 }
 inline bool Dimension::Reader::hasDomain() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool Dimension::Builder::hasDomain() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader Dimension::Reader::getDomain()
-    const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader Dimension::Reader::getDomain() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Dimension::Builder::getDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Dimension::Builder::getDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-Dimension::Pipeline::getDomain() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(2));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline Dimension::Pipeline::getDomain() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(2));
 }
 #endif  // !CAPNP_LITE
-inline void Dimension::Builder::setDomain(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void Dimension::Builder::setDomain( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Dimension::Builder::initDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Dimension::Builder::initDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 inline void Dimension::Builder::adoptDomain(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-Dimension::Builder::disownDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> Dimension::Builder::disownDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
-inline ::tiledb::rest::capnp::Dimension::TileExtent::Which
-Dimension::TileExtent::Reader::which() const {
-  return _reader.getDataField<Which>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::Dimension::TileExtent::Which Dimension::TileExtent::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::Dimension::TileExtent::Which
-Dimension::TileExtent::Builder::which() {
+inline  ::tiledb::rest::capnp::Dimension::TileExtent::Which Dimension::TileExtent::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
@@ -8168,25 +7060,23 @@ inline bool Dimension::TileExtent::Reader::isInt8() const {
 inline bool Dimension::TileExtent::Builder::isInt8() {
   return which() == Dimension::TileExtent::INT8;
 }
-inline ::int8_t Dimension::TileExtent::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT8),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int8_t>(
+inline  ::int8_t Dimension::TileExtent::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT8),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int8_t Dimension::TileExtent::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT8),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int8_t>(
+inline  ::int8_t Dimension::TileExtent::Builder::getInt8() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT8),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setInt8(::int8_t value) {
+inline void Dimension::TileExtent::Builder::setInt8( ::int8_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::INT8);
-  _builder.setDataField<::int8_t>(
+  _builder.setDataField< ::int8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8196,25 +7086,23 @@ inline bool Dimension::TileExtent::Reader::isUint8() const {
 inline bool Dimension::TileExtent::Builder::isUint8() {
   return which() == Dimension::TileExtent::UINT8;
 }
-inline ::uint8_t Dimension::TileExtent::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT8),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint8_t>(
+inline  ::uint8_t Dimension::TileExtent::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT8),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint8_t Dimension::TileExtent::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT8),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint8_t>(
+inline  ::uint8_t Dimension::TileExtent::Builder::getUint8() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT8),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setUint8(::uint8_t value) {
+inline void Dimension::TileExtent::Builder::setUint8( ::uint8_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::UINT8);
-  _builder.setDataField<::uint8_t>(
+  _builder.setDataField< ::uint8_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8224,25 +7112,23 @@ inline bool Dimension::TileExtent::Reader::isInt16() const {
 inline bool Dimension::TileExtent::Builder::isInt16() {
   return which() == Dimension::TileExtent::INT16;
 }
-inline ::int16_t Dimension::TileExtent::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT16),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int16_t>(
+inline  ::int16_t Dimension::TileExtent::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT16),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::int16_t Dimension::TileExtent::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT16),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int16_t>(
+inline  ::int16_t Dimension::TileExtent::Builder::getInt16() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT16),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setInt16(::int16_t value) {
+inline void Dimension::TileExtent::Builder::setInt16( ::int16_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::INT16);
-  _builder.setDataField<::int16_t>(
+  _builder.setDataField< ::int16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8252,25 +7138,23 @@ inline bool Dimension::TileExtent::Reader::isUint16() const {
 inline bool Dimension::TileExtent::Builder::isUint16() {
   return which() == Dimension::TileExtent::UINT16;
 }
-inline ::uint16_t Dimension::TileExtent::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT16),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint16_t>(
+inline  ::uint16_t Dimension::TileExtent::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT16),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint16_t Dimension::TileExtent::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT16),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint16_t>(
+inline  ::uint16_t Dimension::TileExtent::Builder::getUint16() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT16),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setUint16(::uint16_t value) {
+inline void Dimension::TileExtent::Builder::setUint16( ::uint16_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::UINT16);
-  _builder.setDataField<::uint16_t>(
+  _builder.setDataField< ::uint16_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8280,25 +7164,23 @@ inline bool Dimension::TileExtent::Reader::isInt32() const {
 inline bool Dimension::TileExtent::Builder::isInt32() {
   return which() == Dimension::TileExtent::INT32;
 }
-inline ::int32_t Dimension::TileExtent::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int32_t>(
+inline  ::int32_t Dimension::TileExtent::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int32_t Dimension::TileExtent::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT32),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int32_t>(
+inline  ::int32_t Dimension::TileExtent::Builder::getInt32() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT32),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setInt32(::int32_t value) {
+inline void Dimension::TileExtent::Builder::setInt32( ::int32_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::INT32);
-  _builder.setDataField<::int32_t>(
+  _builder.setDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8308,25 +7190,23 @@ inline bool Dimension::TileExtent::Reader::isUint32() const {
 inline bool Dimension::TileExtent::Builder::isUint32() {
   return which() == Dimension::TileExtent::UINT32;
 }
-inline ::uint32_t Dimension::TileExtent::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t Dimension::TileExtent::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t Dimension::TileExtent::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT32),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t Dimension::TileExtent::Builder::getUint32() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT32),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setUint32(::uint32_t value) {
+inline void Dimension::TileExtent::Builder::setUint32( ::uint32_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::UINT32);
-  _builder.setDataField<::uint32_t>(
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8336,25 +7216,23 @@ inline bool Dimension::TileExtent::Reader::isInt64() const {
 inline bool Dimension::TileExtent::Builder::isInt64() {
   return which() == Dimension::TileExtent::INT64;
 }
-inline ::int64_t Dimension::TileExtent::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT64),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int64_t>(
+inline  ::int64_t Dimension::TileExtent::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT64),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int64_t Dimension::TileExtent::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::INT64),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int64_t>(
+inline  ::int64_t Dimension::TileExtent::Builder::getInt64() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::INT64),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setInt64(::int64_t value) {
+inline void Dimension::TileExtent::Builder::setInt64( ::int64_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::INT64);
-  _builder.setDataField<::int64_t>(
+  _builder.setDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8364,25 +7242,23 @@ inline bool Dimension::TileExtent::Reader::isUint64() const {
 inline bool Dimension::TileExtent::Builder::isUint64() {
   return which() == Dimension::TileExtent::UINT64;
 }
-inline ::uint64_t Dimension::TileExtent::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT64),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Dimension::TileExtent::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT64),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t Dimension::TileExtent::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::UINT64),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Dimension::TileExtent::Builder::getUint64() {
+  KJ_IREQUIRE((which() == Dimension::TileExtent::UINT64),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Dimension::TileExtent::Builder::setUint64(::uint64_t value) {
+inline void Dimension::TileExtent::Builder::setUint64( ::uint64_t value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::UINT64);
-  _builder.setDataField<::uint64_t>(
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8393,23 +7269,21 @@ inline bool Dimension::TileExtent::Builder::isFloat32() {
   return which() == Dimension::TileExtent::FLOAT32;
 }
 inline float Dimension::TileExtent::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<float>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  KJ_IREQUIRE((which() == Dimension::TileExtent::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField<float>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline float Dimension::TileExtent::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::FLOAT32),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Dimension::TileExtent::FLOAT32),
+              "Must check which() before get()ing a union member.");
   return _builder.getDataField<float>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 inline void Dimension::TileExtent::Builder::setFloat32(float value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      Dimension::TileExtent::FLOAT32);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::FLOAT32);
   _builder.setDataField<float>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
@@ -8421,272 +7295,241 @@ inline bool Dimension::TileExtent::Builder::isFloat64() {
   return which() == Dimension::TileExtent::FLOAT64;
 }
 inline double Dimension::TileExtent::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::FLOAT64),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Dimension::TileExtent::FLOAT64),
+              "Must check which() before get()ing a union member.");
   return _reader.getDataField<double>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline double Dimension::TileExtent::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == Dimension::TileExtent::FLOAT64),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Dimension::TileExtent::FLOAT64),
+              "Must check which() before get()ing a union member.");
   return _builder.getDataField<double>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 inline void Dimension::TileExtent::Builder::setFloat64(double value) {
   _builder.setDataField<Dimension::TileExtent::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      Dimension::TileExtent::FLOAT64);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, Dimension::TileExtent::FLOAT64);
   _builder.setDataField<double>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Domain::Reader::hasCellOrder() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Domain::Builder::hasCellOrder() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Domain::Reader::getCellOrder() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Domain::Reader::getCellOrder() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Domain::Builder::getCellOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Domain::Builder::getCellOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Domain::Builder::setCellOrder(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Domain::Builder::setCellOrder( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Domain::Builder::initCellOrder(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Domain::Builder::initCellOrder(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Domain::Builder::adoptCellOrder(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Domain::Builder::disownCellOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Domain::Builder::disownCellOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Domain::Reader::hasDimensions() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Domain::Builder::hasDimensions() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Reader
-Domain::Reader::getDimensions() const {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::get(
-          _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Reader Domain::Reader::getDimensions() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Builder
-Domain::Builder::getDimensions() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::get(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Builder Domain::Builder::getDimensions() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Domain::Builder::setDimensions(
-    ::capnp::List<::tiledb::rest::capnp::Dimension>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::
-      set(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          value);
+inline void Domain::Builder::setDimensions( ::capnp::List< ::tiledb::rest::capnp::Dimension>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::Dimension>::Builder
-Domain::Builder::initDimensions(unsigned int size) {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::Dimension>::Builder Domain::Builder::initDimensions(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Domain::Builder::adoptDimensions(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Dimension>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Dimension>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Dimension>>
-Domain::Builder::disownDimensions() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Dimension>>::disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Dimension>> Domain::Builder::disownDimensions() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Dimension>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Domain::Reader::hasTileOrder() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool Domain::Builder::hasTileOrder() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Domain::Reader::getTileOrder() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Domain::Reader::getTileOrder() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Domain::Builder::getTileOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Domain::Builder::getTileOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void Domain::Builder::setTileOrder(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void Domain::Builder::setTileOrder( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Domain::Builder::initTileOrder(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Domain::Builder::initTileOrder(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), size);
 }
 inline void Domain::Builder::adoptTileOrder(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Domain::Builder::disownTileOrder() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Domain::Builder::disownTileOrder() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool Domain::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool Domain::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Domain::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Domain::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Domain::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Domain::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void Domain::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void Domain::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Domain::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Domain::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
-inline void Domain::Builder::adoptType(::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline void Domain::Builder::adoptType(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Domain::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Domain::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
-inline ::int64_t Error::Reader::getCode() const {
-  return _reader.getDataField<::int64_t>(
+inline  ::int64_t Error::Reader::getCode() const {
+  return _reader.getDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::int64_t Error::Builder::getCode() {
-  return _builder.getDataField<::int64_t>(
+inline  ::int64_t Error::Builder::getCode() {
+  return _builder.getDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void Error::Builder::setCode(::int64_t value) {
-  _builder.setDataField<::int64_t>(
+inline void Error::Builder::setCode( ::int64_t value) {
+  _builder.setDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Error::Reader::hasMessage() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Error::Builder::hasMessage() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Error::Reader::getMessage() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Error::Reader::getMessage() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Error::Builder::getMessage() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Error::Builder::getMessage() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Error::Builder::setMessage(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Error::Builder::setMessage( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Error::Builder::initMessage(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Error::Builder::initMessage(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Error::Builder::adoptMessage(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Error::Builder::disownMessage() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Error::Builder::disownMessage() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Filter::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Filter::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Filter::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Filter::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Filter::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Filter::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Filter::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Filter::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Filter::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Filter::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
-inline void Filter::Builder::adoptType(::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline void Filter::Builder::adoptType(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Filter::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Filter::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline typename Filter::Data::Reader Filter::Reader::getData() const {
@@ -8701,23 +7544,18 @@ inline typename Filter::Data::Pipeline Filter::Pipeline::getData() {
 }
 #endif  // !CAPNP_LITE
 inline typename Filter::Data::Builder Filter::Builder::initData() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint32_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint32_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint64_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
   _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS).clear();
   return typename Filter::Data::Builder(_builder);
 }
-inline ::tiledb::rest::capnp::Filter::Data::Which Filter::Data::Reader::which()
-    const {
-  return _reader.getDataField<Which>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::Filter::Data::Which Filter::Data::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::Filter::Data::Which
-Filter::Data::Builder::which() {
+inline  ::tiledb::rest::capnp::Filter::Data::Which Filter::Data::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
@@ -8729,60 +7567,51 @@ inline bool Filter::Data::Builder::isText() {
   return which() == Filter::Data::TEXT;
 }
 inline bool Filter::Data::Reader::hasText() const {
-  if (which() != Filter::Data::TEXT)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Filter::Data::TEXT) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Filter::Data::Builder::hasText() {
-  if (which() != Filter::Data::TEXT)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Filter::Data::TEXT) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Filter::Data::Reader::getText() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::TEXT),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Filter::Data::Reader::getText() const {
+  KJ_IREQUIRE((which() == Filter::Data::TEXT),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Filter::Data::Builder::getText() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::TEXT),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Filter::Data::Builder::getText() {
+  KJ_IREQUIRE((which() == Filter::Data::TEXT),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Filter::Data::Builder::setText(::capnp::Text::Reader value) {
+inline void Filter::Data::Builder::setText( ::capnp::Text::Reader value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::TEXT);
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Filter::Data::Builder::initText(
-    unsigned int size) {
+inline  ::capnp::Text::Builder Filter::Data::Builder::initText(unsigned int size) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::TEXT);
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Filter::Data::Builder::adoptText(
-    ::capnp::Orphan<::capnp::Text>&& value) {
+    ::capnp::Orphan< ::capnp::Text>&& value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::TEXT);
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Filter::Data::Builder::disownText() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::TEXT),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Filter::Data::Builder::disownText() {
+  KJ_IREQUIRE((which() == Filter::Data::TEXT),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Filter::Data::Reader::isBytes() const {
@@ -8792,60 +7621,51 @@ inline bool Filter::Data::Builder::isBytes() {
   return which() == Filter::Data::BYTES;
 }
 inline bool Filter::Data::Reader::hasBytes() const {
-  if (which() != Filter::Data::BYTES)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Filter::Data::BYTES) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Filter::Data::Builder::hasBytes() {
-  if (which() != Filter::Data::BYTES)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Filter::Data::BYTES) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Data::Reader Filter::Data::Reader::getBytes() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::BYTES),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Reader Filter::Data::Reader::getBytes() const {
+  KJ_IREQUIRE((which() == Filter::Data::BYTES),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Data::Builder Filter::Data::Builder::getBytes() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::BYTES),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Data::Builder Filter::Data::Builder::getBytes() {
+  KJ_IREQUIRE((which() == Filter::Data::BYTES),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Filter::Data::Builder::setBytes(::capnp::Data::Reader value) {
+inline void Filter::Data::Builder::setBytes( ::capnp::Data::Reader value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::BYTES);
-  ::capnp::_::PointerHelpers<::capnp::Data>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::Data>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Data::Builder Filter::Data::Builder::initBytes(
-    unsigned int size) {
+inline  ::capnp::Data::Builder Filter::Data::Builder::initBytes(unsigned int size) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::BYTES);
-  return ::capnp::_::PointerHelpers<::capnp::Data>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Filter::Data::Builder::adoptBytes(
-    ::capnp::Orphan<::capnp::Data>&& value) {
+    ::capnp::Orphan< ::capnp::Data>&& value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::BYTES);
-  ::capnp::_::PointerHelpers<::capnp::Data>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::Data>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Data> Filter::Data::Builder::disownBytes() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::BYTES),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::Data>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Data> Filter::Data::Builder::disownBytes() {
+  KJ_IREQUIRE((which() == Filter::Data::BYTES),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::Data>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Filter::Data::Reader::isInt8() const {
@@ -8854,25 +7674,23 @@ inline bool Filter::Data::Reader::isInt8() const {
 inline bool Filter::Data::Builder::isInt8() {
   return which() == Filter::Data::INT8;
 }
-inline ::int8_t Filter::Data::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT8),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int8_t>(
+inline  ::int8_t Filter::Data::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == Filter::Data::INT8),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::int8_t Filter::Data::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT8),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int8_t>(
+inline  ::int8_t Filter::Data::Builder::getInt8() {
+  KJ_IREQUIRE((which() == Filter::Data::INT8),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setInt8(::int8_t value) {
+inline void Filter::Data::Builder::setInt8( ::int8_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::INT8);
-  _builder.setDataField<::int8_t>(
+  _builder.setDataField< ::int8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8882,25 +7700,23 @@ inline bool Filter::Data::Reader::isUint8() const {
 inline bool Filter::Data::Builder::isUint8() {
   return which() == Filter::Data::UINT8;
 }
-inline ::uint8_t Filter::Data::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT8),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint8_t>(
+inline  ::uint8_t Filter::Data::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == Filter::Data::UINT8),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint8_t Filter::Data::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT8),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint8_t>(
+inline  ::uint8_t Filter::Data::Builder::getUint8() {
+  KJ_IREQUIRE((which() == Filter::Data::UINT8),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setUint8(::uint8_t value) {
+inline void Filter::Data::Builder::setUint8( ::uint8_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::UINT8);
-  _builder.setDataField<::uint8_t>(
+  _builder.setDataField< ::uint8_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8910,25 +7726,23 @@ inline bool Filter::Data::Reader::isInt16() const {
 inline bool Filter::Data::Builder::isInt16() {
   return which() == Filter::Data::INT16;
 }
-inline ::int16_t Filter::Data::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT16),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int16_t>(
+inline  ::int16_t Filter::Data::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == Filter::Data::INT16),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int16_t Filter::Data::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT16),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int16_t>(
+inline  ::int16_t Filter::Data::Builder::getInt16() {
+  KJ_IREQUIRE((which() == Filter::Data::INT16),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setInt16(::int16_t value) {
+inline void Filter::Data::Builder::setInt16( ::int16_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::INT16);
-  _builder.setDataField<::int16_t>(
+  _builder.setDataField< ::int16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8938,25 +7752,23 @@ inline bool Filter::Data::Reader::isUint16() const {
 inline bool Filter::Data::Builder::isUint16() {
   return which() == Filter::Data::UINT16;
 }
-inline ::uint16_t Filter::Data::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT16),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint16_t>(
+inline  ::uint16_t Filter::Data::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == Filter::Data::UINT16),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint16_t Filter::Data::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT16),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint16_t>(
+inline  ::uint16_t Filter::Data::Builder::getUint16() {
+  KJ_IREQUIRE((which() == Filter::Data::UINT16),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setUint16(::uint16_t value) {
+inline void Filter::Data::Builder::setUint16( ::uint16_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::UINT16);
-  _builder.setDataField<::uint16_t>(
+  _builder.setDataField< ::uint16_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8966,25 +7778,23 @@ inline bool Filter::Data::Reader::isInt32() const {
 inline bool Filter::Data::Builder::isInt32() {
   return which() == Filter::Data::INT32;
 }
-inline ::int32_t Filter::Data::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int32_t>(
+inline  ::int32_t Filter::Data::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == Filter::Data::INT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int32_t Filter::Data::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT32),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int32_t>(
+inline  ::int32_t Filter::Data::Builder::getInt32() {
+  KJ_IREQUIRE((which() == Filter::Data::INT32),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setInt32(::int32_t value) {
+inline void Filter::Data::Builder::setInt32( ::int32_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::INT32);
-  _builder.setDataField<::int32_t>(
+  _builder.setDataField< ::int32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -8994,25 +7804,23 @@ inline bool Filter::Data::Reader::isUint32() const {
 inline bool Filter::Data::Builder::isUint32() {
   return which() == Filter::Data::UINT32;
 }
-inline ::uint32_t Filter::Data::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t Filter::Data::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == Filter::Data::UINT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t Filter::Data::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT32),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t Filter::Data::Builder::getUint32() {
+  KJ_IREQUIRE((which() == Filter::Data::UINT32),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setUint32(::uint32_t value) {
+inline void Filter::Data::Builder::setUint32( ::uint32_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::UINT32);
-  _builder.setDataField<::uint32_t>(
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -9022,25 +7830,23 @@ inline bool Filter::Data::Reader::isInt64() const {
 inline bool Filter::Data::Builder::isInt64() {
   return which() == Filter::Data::INT64;
 }
-inline ::int64_t Filter::Data::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT64),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::int64_t>(
+inline  ::int64_t Filter::Data::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == Filter::Data::INT64),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::int64_t Filter::Data::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::INT64),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::int64_t>(
+inline  ::int64_t Filter::Data::Builder::getInt64() {
+  KJ_IREQUIRE((which() == Filter::Data::INT64),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setInt64(::int64_t value) {
+inline void Filter::Data::Builder::setInt64( ::int64_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::INT64);
-  _builder.setDataField<::int64_t>(
+  _builder.setDataField< ::int64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -9050,25 +7856,23 @@ inline bool Filter::Data::Reader::isUint64() const {
 inline bool Filter::Data::Builder::isUint64() {
   return which() == Filter::Data::UINT64;
 }
-inline ::uint64_t Filter::Data::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT64),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Filter::Data::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == Filter::Data::UINT64),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t Filter::Data::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::UINT64),
-      "Must check which() before get()ing a union member.");
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Filter::Data::Builder::getUint64() {
+  KJ_IREQUIRE((which() == Filter::Data::UINT64),
+              "Must check which() before get()ing a union member.");
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Filter::Data::Builder::setUint64(::uint64_t value) {
+inline void Filter::Data::Builder::setUint64( ::uint64_t value) {
   _builder.setDataField<Filter::Data::Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, Filter::Data::UINT64);
-  _builder.setDataField<::uint64_t>(
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
@@ -9079,16 +7883,15 @@ inline bool Filter::Data::Builder::isFloat32() {
   return which() == Filter::Data::FLOAT32;
 }
 inline float Filter::Data::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return _reader.getDataField<float>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  KJ_IREQUIRE((which() == Filter::Data::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return _reader.getDataField<float>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline float Filter::Data::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::FLOAT32),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Filter::Data::FLOAT32),
+              "Must check which() before get()ing a union member.");
   return _builder.getDataField<float>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
@@ -9106,17 +7909,15 @@ inline bool Filter::Data::Builder::isFloat64() {
   return which() == Filter::Data::FLOAT64;
 }
 inline double Filter::Data::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::FLOAT64),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Filter::Data::FLOAT64),
+              "Must check which() before get()ing a union member.");
   return _reader.getDataField<double>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline double Filter::Data::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == Filter::Data::FLOAT64),
-      "Must check which() before get()ing a union member.");
+  KJ_IREQUIRE((which() == Filter::Data::FLOAT64),
+              "Must check which() before get()ing a union member.");
   return _builder.getDataField<double>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
@@ -9128,234 +7929,185 @@ inline void Filter::Data::Builder::setFloat64(double value) {
 }
 
 inline bool FilterPipeline::Reader::hasFilters() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool FilterPipeline::Builder::hasFilters() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::Filter>::Reader
-FilterPipeline::Reader::getFilters() const {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::get(
-          _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Reader FilterPipeline::Reader::getFilters() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::Filter>::Builder
-FilterPipeline::Builder::getFilters() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::get(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Builder FilterPipeline::Builder::getFilters() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void FilterPipeline::Builder::setFilters(
-    ::capnp::List<::tiledb::rest::capnp::Filter>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void FilterPipeline::Builder::setFilters( ::capnp::List< ::tiledb::rest::capnp::Filter>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::Filter>::Builder
-FilterPipeline::Builder::initFilters(unsigned int size) {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::Filter>::Builder FilterPipeline::Builder::initFilters(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void FilterPipeline::Builder::adoptFilters(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Filter>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Filter>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::Filter>>
-FilterPipeline::Builder::disownFilters() {
-  return ::capnp::_::
-      PointerHelpers<::capnp::List<::tiledb::rest::capnp::Filter>>::disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::Filter>> FilterPipeline::Builder::disownFilters() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::Filter>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Reader::hasEntries() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Builder::hasEntries() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
-inline typename ::capnp::List<
-    typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader
-Map<Key, Value>::Reader::getEntries() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader Map<Key, Value>::Reader::getEntries() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline typename ::capnp::List<
-    typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder
-Map<Key, Value>::Builder::getEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder Map<Key, Value>::Builder::getEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline void Map<Key, Value>::Builder::setEntries(
-    typename ::capnp::List<
-        typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
+inline void Map<Key, Value>::Builder::setEntries(typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
 template <typename Key, typename Value>
-inline typename ::capnp::List<
-    typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder
-Map<Key, Value>::Builder::initEntries(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline typename  ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>::Builder Map<Key, Value>::Builder::initEntries(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 template <typename Key, typename Value>
 inline void Map<Key, Value>::Builder::adoptEntries(
-    ::capnp::Orphan<
-        ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
 template <typename Key, typename Value>
-inline ::capnp::Orphan<
-    ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>
-Map<Key, Value>::Builder::disownEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<typename ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>> Map<Key, Value>::Builder::disownEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List<typename  ::tiledb::rest::capnp::Map<Key, Value>::Entry>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Entry::Reader::hasKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Entry::Builder::hasKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
-inline ::capnp::ReaderFor<Key> Map<Key, Value>::Entry::Reader::getKey() const {
-  return ::capnp::_::PointerHelpers<Key>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::ReaderFor<Key> Map<Key, Value>::Entry::Reader::getKey() const {
+  return ::capnp::_::PointerHelpers<Key>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::getKey() {
-  return ::capnp::_::PointerHelpers<Key>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::getKey() {
+  return ::capnp::_::PointerHelpers<Key>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
 template <typename Key, typename Value>
-inline ::capnp::PipelineFor<Key> Map<Key, Value>::Entry::Pipeline::getKey() {
-  return ::capnp::PipelineFor<Key>(_typeless.getPointerField(0));
+inline  ::capnp::PipelineFor<Key> Map<Key, Value>::Entry::Pipeline::getKey() {
+  return  ::capnp::PipelineFor<Key>(_typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
 template <typename Key, typename Value>
-inline void Map<Key, Value>::Entry::Builder::setKey(
-    ::capnp::ReaderFor<Key> value) {
-  ::capnp::_::PointerHelpers<Key>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Map<Key, Value>::Entry::Builder::setKey( ::capnp::ReaderFor<Key> value) {
+  ::capnp::_::PointerHelpers<Key>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::initKey() {
-  return ::capnp::_::PointerHelpers<Key>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::initKey() {
+  return ::capnp::_::PointerHelpers<Key>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::initKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<Key>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::BuilderFor<Key> Map<Key, Value>::Entry::Builder::initKey(unsigned int size) {
+  return ::capnp::_::PointerHelpers<Key>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 template <typename Key, typename Value>
 inline void Map<Key, Value>::Entry::Builder::adoptKey(
     ::capnp::Orphan<Key>&& value) {
-  ::capnp::_::PointerHelpers<Key>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers<Key>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
 template <typename Key, typename Value>
 inline ::capnp::Orphan<Key> Map<Key, Value>::Entry::Builder::disownKey() {
-  return ::capnp::_::PointerHelpers<Key>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+  return ::capnp::_::PointerHelpers<Key>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Entry::Reader::hasValue() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
 inline bool Map<Key, Value>::Entry::Builder::hasValue() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 template <typename Key, typename Value>
-inline ::capnp::ReaderFor<Value> Map<Key, Value>::Entry::Reader::getValue()
-    const {
-  return ::capnp::_::PointerHelpers<Value>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::ReaderFor<Value> Map<Key, Value>::Entry::Reader::getValue() const {
+  return ::capnp::_::PointerHelpers<Value>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::getValue() {
-  return ::capnp::_::PointerHelpers<Value>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::getValue() {
+  return ::capnp::_::PointerHelpers<Value>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
 template <typename Key, typename Value>
-inline ::capnp::PipelineFor<Value>
-Map<Key, Value>::Entry::Pipeline::getValue() {
-  return ::capnp::PipelineFor<Value>(_typeless.getPointerField(1));
+inline  ::capnp::PipelineFor<Value> Map<Key, Value>::Entry::Pipeline::getValue() {
+  return  ::capnp::PipelineFor<Value>(_typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
 template <typename Key, typename Value>
-inline void Map<Key, Value>::Entry::Builder::setValue(
-    ::capnp::ReaderFor<Value> value) {
-  ::capnp::_::PointerHelpers<Value>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Map<Key, Value>::Entry::Builder::setValue( ::capnp::ReaderFor<Value> value) {
+  ::capnp::_::PointerHelpers<Value>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::initValue() {
-  return ::capnp::_::PointerHelpers<Value>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::initValue() {
+  return ::capnp::_::PointerHelpers<Value>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 template <typename Key, typename Value>
-inline ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::initValue(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<Value>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::BuilderFor<Value> Map<Key, Value>::Entry::Builder::initValue(unsigned int size) {
+  return ::capnp::_::PointerHelpers<Value>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 template <typename Key, typename Value>
 inline void Map<Key, Value>::Entry::Builder::adoptValue(
     ::capnp::Orphan<Value>&& value) {
-  ::capnp::_::PointerHelpers<Value>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers<Value>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
 template <typename Key, typename Value>
 inline ::capnp::Orphan<Value> Map<Key, Value>::Entry::Builder::disownValue() {
-  return ::capnp::_::PointerHelpers<Value>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+  return ::capnp::_::PointerHelpers<Value>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 // Map<Key, Value>::Entry
@@ -9367,28 +8119,21 @@ constexpr uint16_t Map<Key, Value>::Entry::_capnpPrivate::pointerCount;
 template <typename Key, typename Value>
 constexpr ::capnp::Kind Map<Key, Value>::Entry::_capnpPrivate::kind;
 template <typename Key, typename Value>
-constexpr ::capnp::_::RawSchema const*
-    Map<Key, Value>::Entry::_capnpPrivate::schema;
+constexpr ::capnp::_::RawSchema const* Map<Key, Value>::Entry::_capnpPrivate::schema;
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema::Scope
-    Map<Key, Value>::Entry::_capnpPrivate::brandScopes[] = {
-        {0xf179c194ae71718c, brandBindings + 0, 2, false},
+const ::capnp::_::RawBrandedSchema::Scope Map<Key, Value>::Entry::_capnpPrivate::brandScopes[] = {
+  { 0xf179c194ae71718c, brandBindings + 0, 2, false},
 };
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema::Binding
-    Map<Key, Value>::Entry::_capnpPrivate::brandBindings[] = {
-        ::capnp::_::brandBindingFor<Key>(),
-        ::capnp::_::brandBindingFor<Value>(),
+const ::capnp::_::RawBrandedSchema::Binding Map<Key, Value>::Entry::_capnpPrivate::brandBindings[] = {
+  ::capnp::_::brandBindingFor<Key>(),
+  ::capnp::_::brandBindingFor<Value>(),
 };
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema
-    Map<Key, Value>::Entry::_capnpPrivate::specificBrand = {
-        &::capnp::schemas::s_db5514c8aaf6faea,
-        brandScopes,
-        nullptr,
-        1,
-        0,
-        nullptr};
+const ::capnp::_::RawBrandedSchema Map<Key, Value>::Entry::_capnpPrivate::specificBrand = {
+  &::capnp::schemas::s_db5514c8aaf6faea, brandScopes, nullptr,
+  1, 0, nullptr
+};
 #endif  // !CAPNP_LITE
 
 // Map<Key, Value>
@@ -9402,598 +8147,460 @@ constexpr ::capnp::Kind Map<Key, Value>::_capnpPrivate::kind;
 template <typename Key, typename Value>
 constexpr ::capnp::_::RawSchema const* Map<Key, Value>::_capnpPrivate::schema;
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema::Scope
-    Map<Key, Value>::_capnpPrivate::brandScopes[] = {
-        {0xf179c194ae71718c, brandBindings + 0, 2, false},
+const ::capnp::_::RawBrandedSchema::Scope Map<Key, Value>::_capnpPrivate::brandScopes[] = {
+  { 0xf179c194ae71718c, brandBindings + 0, 2, false},
 };
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema::Binding
-    Map<Key, Value>::_capnpPrivate::brandBindings[] = {
-        ::capnp::_::brandBindingFor<Key>(),
-        ::capnp::_::brandBindingFor<Value>(),
+const ::capnp::_::RawBrandedSchema::Binding Map<Key, Value>::_capnpPrivate::brandBindings[] = {
+  ::capnp::_::brandBindingFor<Key>(),
+  ::capnp::_::brandBindingFor<Value>(),
 };
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema::Dependency
-    Map<Key, Value>::_capnpPrivate::brandDependencies[] = {
-        {16777216,
-         ::tiledb::rest::capnp::Map<Key, Value>::Entry::_capnpPrivate::brand()},
+const ::capnp::_::RawBrandedSchema::Dependency Map<Key, Value>::_capnpPrivate::brandDependencies[] = {
+  { 16777216,  ::tiledb::rest::capnp::Map<Key, Value>::Entry::_capnpPrivate::brand() },
 };
 template <typename Key, typename Value>
-const ::capnp::_::RawBrandedSchema
-    Map<Key, Value>::_capnpPrivate::specificBrand = {
-        &::capnp::schemas::s_f179c194ae71718c,
-        brandScopes,
-        brandDependencies,
-        1,
-        1,
-        nullptr};
+const ::capnp::_::RawBrandedSchema Map<Key, Value>::_capnpPrivate::specificBrand = {
+  &::capnp::schemas::s_f179c194ae71718c, brandScopes, brandDependencies,
+  1, 1, nullptr
+};
 #endif  // !CAPNP_LITE
 
 inline bool MapUInt32::Reader::hasEntries() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapUInt32::Builder::hasEntries() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Reader
-MapUInt32::Reader::getEntries() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Reader MapUInt32::Reader::getEntries() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Builder
-MapUInt32::Builder::getEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Builder MapUInt32::Builder::getEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapUInt32::Builder::setEntries(
-    ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
+inline void MapUInt32::Builder::setEntries( ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>::Builder
-MapUInt32::Builder::initEntries(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>::Builder MapUInt32::Builder::initEntries(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapUInt32::Builder::adoptEntries(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>
-MapUInt32::Builder::disownEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapUInt32::Entry>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>> MapUInt32::Builder::disownEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapUInt32::Entry>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool MapUInt32::Entry::Reader::hasKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapUInt32::Entry::Builder::hasKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader MapUInt32::Entry::Reader::getKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader MapUInt32::Entry::Reader::getKey() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder MapUInt32::Entry::Builder::getKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder MapUInt32::Entry::Builder::getKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapUInt32::Entry::Builder::setKey(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void MapUInt32::Entry::Builder::setKey( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder MapUInt32::Entry::Builder::initKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder MapUInt32::Entry::Builder::initKey(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapUInt32::Entry::Builder::adoptKey(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> MapUInt32::Entry::Builder::disownKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> MapUInt32::Entry::Builder::disownKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline ::uint32_t MapUInt32::Entry::Reader::getValue() const {
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t MapUInt32::Entry::Reader::getValue() const {
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t MapUInt32::Entry::Builder::getValue() {
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t MapUInt32::Entry::Builder::getValue() {
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void MapUInt32::Entry::Builder::setValue(::uint32_t value) {
-  _builder.setDataField<::uint32_t>(
+inline void MapUInt32::Entry::Builder::setValue( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool MapInt64::Reader::hasEntries() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapInt64::Builder::hasEntries() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Reader
-MapInt64::Reader::getEntries() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Reader MapInt64::Reader::getEntries() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Builder
-MapInt64::Builder::getEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Builder MapInt64::Builder::getEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapInt64::Builder::setEntries(
-    ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
+inline void MapInt64::Builder::setEntries( ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>::Builder
-MapInt64::Builder::initEntries(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>::Builder MapInt64::Builder::initEntries(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapInt64::Builder::adoptEntries(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>
-MapInt64::Builder::disownEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapInt64::Entry>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>> MapInt64::Builder::disownEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapInt64::Entry>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool MapInt64::Entry::Reader::hasKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapInt64::Entry::Builder::hasKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader MapInt64::Entry::Reader::getKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader MapInt64::Entry::Reader::getKey() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder MapInt64::Entry::Builder::getKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder MapInt64::Entry::Builder::getKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapInt64::Entry::Builder::setKey(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void MapInt64::Entry::Builder::setKey( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder MapInt64::Entry::Builder::initKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder MapInt64::Entry::Builder::initKey(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapInt64::Entry::Builder::adoptKey(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> MapInt64::Entry::Builder::disownKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> MapInt64::Entry::Builder::disownKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline ::int64_t MapInt64::Entry::Reader::getValue() const {
-  return _reader.getDataField<::int64_t>(
+inline  ::int64_t MapInt64::Entry::Reader::getValue() const {
+  return _reader.getDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::int64_t MapInt64::Entry::Builder::getValue() {
-  return _builder.getDataField<::int64_t>(
+inline  ::int64_t MapInt64::Entry::Builder::getValue() {
+  return _builder.getDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void MapInt64::Entry::Builder::setValue(::int64_t value) {
-  _builder.setDataField<::int64_t>(
+inline void MapInt64::Entry::Builder::setValue( ::int64_t value) {
+  _builder.setDataField< ::int64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint64_t MaxBufferSize::Reader::getBufferOffsetSize() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t MaxBufferSize::Reader::getBufferOffsetSize() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t MaxBufferSize::Builder::getBufferOffsetSize() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t MaxBufferSize::Builder::getBufferOffsetSize() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void MaxBufferSize::Builder::setBufferOffsetSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void MaxBufferSize::Builder::setBufferOffsetSize( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint64_t MaxBufferSize::Reader::getBufferSize() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t MaxBufferSize::Reader::getBufferSize() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t MaxBufferSize::Builder::getBufferSize() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t MaxBufferSize::Builder::getBufferSize() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void MaxBufferSize::Builder::setBufferSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void MaxBufferSize::Builder::setBufferSize( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool MapMaxBufferSizes::Reader::hasEntries() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapMaxBufferSizes::Builder::hasEntries() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-MapMaxBufferSizes::Reader::getEntries() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader MapMaxBufferSizes::Reader::getEntries() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-MapMaxBufferSizes::Builder::getEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder MapMaxBufferSizes::Builder::getEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapMaxBufferSizes::Builder::setEntries(
-    ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
+inline void MapMaxBufferSizes::Builder::setEntries( ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-MapMaxBufferSizes::Builder::initEntries(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder MapMaxBufferSizes::Builder::initEntries(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapMaxBufferSizes::Builder::adoptEntries(
-    ::capnp::Orphan<
-        ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<
-    ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>
-MapMaxBufferSizes::Builder::disownEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>> MapMaxBufferSizes::Builder::disownEntries() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool MapMaxBufferSizes::Entry::Reader::hasKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapMaxBufferSizes::Entry::Builder::hasKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader MapMaxBufferSizes::Entry::Reader::getKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader MapMaxBufferSizes::Entry::Reader::getKey() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::getKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::getKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void MapMaxBufferSizes::Entry::Builder::setKey(
-    ::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void MapMaxBufferSizes::Entry::Builder::setKey( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::initKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::initKey(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void MapMaxBufferSizes::Entry::Builder::adoptKey(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text>
-MapMaxBufferSizes::Entry::Builder::disownKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> MapMaxBufferSizes::Entry::Builder::disownKey() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool MapMaxBufferSizes::Entry::Reader::hasValue() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool MapMaxBufferSizes::Entry::Builder::hasValue() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::MaxBufferSize::Reader
-MapMaxBufferSizes::Entry::Reader::getValue() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MaxBufferSize::Reader MapMaxBufferSizes::Entry::Reader::getValue() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::MaxBufferSize::Builder
-MapMaxBufferSizes::Entry::Builder::getValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MaxBufferSize::Builder MapMaxBufferSizes::Entry::Builder::getValue() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MaxBufferSize::Pipeline
-MapMaxBufferSizes::Entry::Pipeline::getValue() {
-  return ::tiledb::rest::capnp::MaxBufferSize::Pipeline(
-      _typeless.getPointerField(1));
+inline  ::tiledb::rest::capnp::MaxBufferSize::Pipeline MapMaxBufferSizes::Entry::Pipeline::getValue() {
+  return  ::tiledb::rest::capnp::MaxBufferSize::Pipeline(_typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
-inline void MapMaxBufferSizes::Entry::Builder::setValue(
-    ::tiledb::rest::capnp::MaxBufferSize::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void MapMaxBufferSizes::Entry::Builder::setValue( ::tiledb::rest::capnp::MaxBufferSize::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::MaxBufferSize::Builder
-MapMaxBufferSizes::Entry::Builder::initValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MaxBufferSize::Builder MapMaxBufferSizes::Entry::Builder::initValue() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline void MapMaxBufferSizes::Entry::Builder::adoptValue(
-    ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::MaxBufferSize>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>
-MapMaxBufferSizes::Entry::Builder::disownValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::MaxBufferSize> MapMaxBufferSizes::Entry::Builder::disownValue() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MaxBufferSize>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasAttributeIdxMap() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasAttributeIdxMap() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::MapUInt32::Reader
-FragmentMetadata::Reader::getAttributeIdxMap() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapUInt32::Reader FragmentMetadata::Reader::getAttributeIdxMap() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::MapUInt32::Builder
-FragmentMetadata::Builder::getAttributeIdxMap() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapUInt32::Builder FragmentMetadata::Builder::getAttributeIdxMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MapUInt32::Pipeline
-FragmentMetadata::Pipeline::getAttributeIdxMap() {
-  return ::tiledb::rest::capnp::MapUInt32::Pipeline(
-      _typeless.getPointerField(0));
+inline  ::tiledb::rest::capnp::MapUInt32::Pipeline FragmentMetadata::Pipeline::getAttributeIdxMap() {
+  return  ::tiledb::rest::capnp::MapUInt32::Pipeline(_typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
-inline void FragmentMetadata::Builder::setAttributeIdxMap(
-    ::tiledb::rest::capnp::MapUInt32::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setAttributeIdxMap( ::tiledb::rest::capnp::MapUInt32::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::MapUInt32::Builder
-FragmentMetadata::Builder::initAttributeIdxMap() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapUInt32::Builder FragmentMetadata::Builder::initAttributeIdxMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void FragmentMetadata::Builder::adoptAttributeIdxMap(
-    ::capnp::Orphan<::tiledb::rest::capnp::MapUInt32>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::MapUInt32>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::MapUInt32>
-FragmentMetadata::Builder::disownAttributeIdxMap() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapUInt32>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::MapUInt32> FragmentMetadata::Builder::disownAttributeIdxMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapUInt32>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasAttributeUriMap() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasAttributeUriMap() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader
-FragmentMetadata::Reader::getAttributeUriMap() const {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader FragmentMetadata::Reader::getAttributeUriMap() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-FragmentMetadata::Builder::getAttributeUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder FragmentMetadata::Builder::getAttributeUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline
-FragmentMetadata::Pipeline::getAttributeUriMap() {
-  return ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline(
-      _typeless.getPointerField(1));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline FragmentMetadata::Pipeline::getAttributeUriMap() {
+  return  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline(_typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
-inline void FragmentMetadata::Builder::setAttributeUriMap(
-    ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      set(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          value);
+inline void FragmentMetadata::Builder::setAttributeUriMap( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-FragmentMetadata::Builder::initAttributeUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      init(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder FragmentMetadata::Builder::initAttributeUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline void FragmentMetadata::Builder::adoptAttributeUriMap(
-    ::capnp::Orphan<::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>
-FragmentMetadata::Builder::disownAttributeUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>> FragmentMetadata::Builder::disownAttributeUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasAttributeVarUriMap() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasAttributeVarUriMap() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader
-FragmentMetadata::Reader::getAttributeVarUriMap() const {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      get(_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader FragmentMetadata::Reader::getAttributeVarUriMap() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-FragmentMetadata::Builder::getAttributeVarUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      get(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder FragmentMetadata::Builder::getAttributeVarUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline
-FragmentMetadata::Pipeline::getAttributeVarUriMap() {
-  return ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Pipeline(
-      _typeless.getPointerField(2));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline FragmentMetadata::Pipeline::getAttributeVarUriMap() {
+  return  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Pipeline(_typeless.getPointerField(2));
 }
 #endif  // !CAPNP_LITE
-inline void FragmentMetadata::Builder::setAttributeVarUriMap(
-    ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      set(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-          value);
+inline void FragmentMetadata::Builder::setAttributeVarUriMap( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>::Builder
-FragmentMetadata::Builder::initAttributeVarUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      init(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>::Builder FragmentMetadata::Builder::initAttributeVarUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 inline void FragmentMetadata::Builder::adoptAttributeVarUriMap(
-    ::capnp::Orphan<::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>
-FragmentMetadata::Builder::disownAttributeVarUriMap() {
-  return ::capnp::_::PointerHelpers<
-      ::tiledb::rest::capnp::Map<::capnp::Text, ::capnp::Text>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>> FragmentMetadata::Builder::disownAttributeVarUriMap() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::Text>>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
-inline typename FragmentMetadata::BoundingCoords::Reader
-FragmentMetadata::Reader::getBoundingCoords() const {
+inline typename FragmentMetadata::BoundingCoords::Reader FragmentMetadata::Reader::getBoundingCoords() const {
   return typename FragmentMetadata::BoundingCoords::Reader(_reader);
 }
-inline typename FragmentMetadata::BoundingCoords::Builder
-FragmentMetadata::Builder::getBoundingCoords() {
+inline typename FragmentMetadata::BoundingCoords::Builder FragmentMetadata::Builder::getBoundingCoords() {
   return typename FragmentMetadata::BoundingCoords::Builder(_builder);
 }
 #if !CAPNP_LITE
-inline typename FragmentMetadata::BoundingCoords::Pipeline
-FragmentMetadata::Pipeline::getBoundingCoords() {
+inline typename FragmentMetadata::BoundingCoords::Pipeline FragmentMetadata::Pipeline::getBoundingCoords() {
   return typename FragmentMetadata::BoundingCoords::Pipeline(_typeless.noop());
 }
 #endif  // !CAPNP_LITE
-inline typename FragmentMetadata::BoundingCoords::Builder
-FragmentMetadata::Builder::initBoundingCoords() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
+inline typename FragmentMetadata::BoundingCoords::Builder FragmentMetadata::Builder::initBoundingCoords() {
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<0>() * ::capnp::ELEMENTS, 0);
   _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS).clear();
   return typename FragmentMetadata::BoundingCoords::Builder(_builder);
 }
 inline bool FragmentMetadata::Reader::getDense() const {
-  return _reader.getDataField<bool>(::capnp::bounded<16>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS);
 }
 
 inline bool FragmentMetadata::Builder::getDense() {
@@ -10006,559 +8613,458 @@ inline void FragmentMetadata::Builder::setDense(bool value) {
 }
 
 inline bool FragmentMetadata::Reader::hasDomain() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasDomain() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader
-FragmentMetadata::Reader::getDomain() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader FragmentMetadata::Reader::getDomain() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-FragmentMetadata::Builder::getDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder FragmentMetadata::Builder::getDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-FragmentMetadata::Pipeline::getDomain() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(4));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline FragmentMetadata::Pipeline::getDomain() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(4));
 }
 #endif  // !CAPNP_LITE
-inline void FragmentMetadata::Builder::setDomain(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setDomain( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-FragmentMetadata::Builder::initDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder FragmentMetadata::Builder::initDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 inline void FragmentMetadata::Builder::adoptDomain(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-FragmentMetadata::Builder::disownDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> FragmentMetadata::Builder::disownDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasFileSizes() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasFileSizes() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-FragmentMetadata::Reader::getFileSizes() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader FragmentMetadata::Reader::getFileSizes() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::getFileSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::getFileSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setFileSizes(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setFileSizes( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setFileSizes(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setFileSizes(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::initFileSizes(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::initFileSizes(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptFileSizes(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-FragmentMetadata::Builder::disownFileSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> FragmentMetadata::Builder::disownFileSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasFileVarSizes() const {
-  return !_reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasFileVarSizes() {
-  return !_builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-FragmentMetadata::Reader::getFileVarSizes() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader FragmentMetadata::Reader::getFileVarSizes() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::getFileVarSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::getFileVarSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setFileVarSizes(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setFileVarSizes( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setFileVarSizes(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setFileVarSizes(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::initFileVarSizes(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::initFileVarSizes(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptFileVarSizes(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-FragmentMetadata::Builder::disownFileVarSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> FragmentMetadata::Builder::disownFileVarSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasFragmentUri() const {
-  return !_reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasFragmentUri() {
-  return !_builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader FragmentMetadata::Reader::getFragmentUri() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader FragmentMetadata::Reader::getFragmentUri() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder FragmentMetadata::Builder::getFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder FragmentMetadata::Builder::getFragmentUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setFragmentUri(
-    ::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setFragmentUri( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder FragmentMetadata::Builder::initFragmentUri(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder FragmentMetadata::Builder::initFragmentUri(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptFragmentUri(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text>
-FragmentMetadata::Builder::disownFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> FragmentMetadata::Builder::disownFragmentUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 
-inline ::uint64_t FragmentMetadata::Reader::getLastTileCellNum() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Reader::getLastTileCellNum() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t FragmentMetadata::Builder::getLastTileCellNum() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Builder::getLastTileCellNum() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void FragmentMetadata::Builder::setLastTileCellNum(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void FragmentMetadata::Builder::setLastTileCellNum( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::capnp::Void FragmentMetadata::Reader::getMbrs() const {
-  return _reader.getDataField<::capnp::Void>(
+inline  ::capnp::Void FragmentMetadata::Reader::getMbrs() const {
+  return _reader.getDataField< ::capnp::Void>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::capnp::Void FragmentMetadata::Builder::getMbrs() {
-  return _builder.getDataField<::capnp::Void>(
+inline  ::capnp::Void FragmentMetadata::Builder::getMbrs() {
+  return _builder.getDataField< ::capnp::Void>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void FragmentMetadata::Builder::setMbrs(::capnp::Void value) {
-  _builder.setDataField<::capnp::Void>(
+inline void FragmentMetadata::Builder::setMbrs( ::capnp::Void value) {
+  _builder.setDataField< ::capnp::Void>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool FragmentMetadata::Reader::hasNextTileOffsets() const {
-  return !_reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasNextTileOffsets() {
-  return !_builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-FragmentMetadata::Reader::getNextTileOffsets() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader FragmentMetadata::Reader::getNextTileOffsets() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::getNextTileOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::getNextTileOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setNextTileOffsets(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setNextTileOffsets( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setNextTileOffsets(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setNextTileOffsets(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::initNextTileOffsets(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::initNextTileOffsets(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptNextTileOffsets(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-FragmentMetadata::Builder::disownNextTileOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<8>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> FragmentMetadata::Builder::disownNextTileOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<8>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasNextTileVarOffsets() const {
-  return !_reader.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasNextTileVarOffsets() {
-  return !_builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader
-FragmentMetadata::Reader::getNextTileVarOffsets() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader FragmentMetadata::Reader::getNextTileVarOffsets() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::getNextTileVarOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::getNextTileVarOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setNextTileVarOffsets(
-    ::capnp::List<::uint64_t>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setNextTileVarOffsets( ::capnp::List< ::uint64_t>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setNextTileVarOffsets(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setNextTileVarOffsets(::kj::ArrayPtr<const  ::uint64_t> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder
-FragmentMetadata::Builder::initNextTileVarOffsets(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::List< ::uint64_t>::Builder FragmentMetadata::Builder::initNextTileVarOffsets(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptNextTileVarOffsets(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-FragmentMetadata::Builder::disownNextTileVarOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<9>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> FragmentMetadata::Builder::disownNextTileVarOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<9>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasNonEmptyDomain() const {
-  return !_reader.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasNonEmptyDomain() {
-  return !_builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader
-FragmentMetadata::Reader::getNonEmptyDomain() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader FragmentMetadata::Reader::getNonEmptyDomain() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-FragmentMetadata::Builder::getNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder FragmentMetadata::Builder::getNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-FragmentMetadata::Pipeline::getNonEmptyDomain() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(10));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline FragmentMetadata::Pipeline::getNonEmptyDomain() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(10));
 }
 #endif  // !CAPNP_LITE
-inline void FragmentMetadata::Builder::setNonEmptyDomain(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setNonEmptyDomain( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-FragmentMetadata::Builder::initNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder FragmentMetadata::Builder::initNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS));
 }
 inline void FragmentMetadata::Builder::adoptNonEmptyDomain(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-FragmentMetadata::Builder::disownNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<10>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> FragmentMetadata::Builder::disownNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<10>() * ::capnp::POINTERS));
 }
 
-inline ::uint64_t FragmentMetadata::Reader::getTileIndexBase() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Reader::getTileIndexBase() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t FragmentMetadata::Builder::getTileIndexBase() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Builder::getTileIndexBase() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void FragmentMetadata::Builder::setTileIndexBase(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void FragmentMetadata::Builder::setTileIndexBase( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool FragmentMetadata::Reader::hasTileOffsets() const {
-  return !_reader.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasTileOffsets() {
-  return !_builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-FragmentMetadata::Reader::getTileOffsets() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader FragmentMetadata::Reader::getTileOffsets() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::getTileOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::getTileOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setTileOffsets(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileOffsets( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setTileOffsets(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileOffsets(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::initTileOffsets(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::initTileOffsets(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptTileOffsets(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-FragmentMetadata::Builder::disownTileOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<11>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> FragmentMetadata::Builder::disownTileOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<11>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasTileVarOffsets() const {
-  return !_reader.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasTileVarOffsets() {
-  return !_builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-FragmentMetadata::Reader::getTileVarOffsets() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader FragmentMetadata::Reader::getTileVarOffsets() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::getTileVarOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::getTileVarOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setTileVarOffsets(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileVarOffsets( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setTileVarOffsets(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileVarOffsets(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::initTileVarOffsets(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::initTileVarOffsets(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptTileVarOffsets(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-FragmentMetadata::Builder::disownTileVarOffsets() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<12>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> FragmentMetadata::Builder::disownTileVarOffsets() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<12>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::Reader::hasTileVarSizes() const {
-  return !_reader.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::Builder::hasTileVarSizes() {
-  return !_builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-FragmentMetadata::Reader::getTileVarSizes() const {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader FragmentMetadata::Reader::getTileVarSizes() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::getTileVarSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::getTileVarSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::Builder::setTileVarSizes(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileVarSizes( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::Builder::setTileVarSizes(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS),
-      value);
+inline void FragmentMetadata::Builder::setTileVarSizes(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::Builder::initTileVarSizes(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::Builder::initTileVarSizes(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::Builder::adoptTileVarSizes(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-FragmentMetadata::Builder::disownTileVarSizes() {
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<13>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> FragmentMetadata::Builder::disownTileVarSizes() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<13>() * ::capnp::POINTERS));
 }
 
-inline ::uint32_t FragmentMetadata::Reader::getVersion() const {
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t FragmentMetadata::Reader::getVersion() const {
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t FragmentMetadata::Builder::getVersion() {
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t FragmentMetadata::Builder::getVersion() {
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void FragmentMetadata::Builder::setVersion(::uint32_t value) {
-  _builder.setDataField<::uint32_t>(
+inline void FragmentMetadata::Builder::setVersion( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint64_t FragmentMetadata::Reader::getTimestamp() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Reader::getTimestamp() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<3>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t FragmentMetadata::Builder::getTimestamp() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t FragmentMetadata::Builder::getTimestamp() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<3>() * ::capnp::ELEMENTS);
 }
-inline void FragmentMetadata::Builder::setTimestamp(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void FragmentMetadata::Builder::setTimestamp( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<3>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::tiledb::rest::capnp::FragmentMetadata::BoundingCoords::Which
-FragmentMetadata::BoundingCoords::Reader::which() const {
-  return _reader.getDataField<Which>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::FragmentMetadata::BoundingCoords::Which FragmentMetadata::BoundingCoords::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::FragmentMetadata::BoundingCoords::Which
-FragmentMetadata::BoundingCoords::Builder::which() {
+inline  ::tiledb::rest::capnp::FragmentMetadata::BoundingCoords::Which FragmentMetadata::BoundingCoords::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
@@ -10570,78 +9076,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isInt8() {
   return which() == FragmentMetadata::BoundingCoords::INT8;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasInt8() const {
-  if (which() != FragmentMetadata::BoundingCoords::INT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasInt8() {
-  if (which() != FragmentMetadata::BoundingCoords::INT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getInt8() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt8(
-    ::capnp::List<::capnp::List<::int8_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt8( ::capnp::List< ::capnp::List< ::int8_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt8(
-    ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt8(::kj::ArrayPtr<const  ::capnp::List< ::int8_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initInt8(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initInt8(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT8);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownInt8() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>> FragmentMetadata::BoundingCoords::Builder::disownInt8() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isUint8() const {
@@ -10651,78 +9136,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isUint8() {
   return which() == FragmentMetadata::BoundingCoords::UINT8;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasUint8() const {
-  if (which() != FragmentMetadata::BoundingCoords::UINT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasUint8() {
-  if (which() != FragmentMetadata::BoundingCoords::UINT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getUint8() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint8(
-    ::capnp::List<::capnp::List<::uint8_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint8( ::capnp::List< ::capnp::List< ::uint8_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint8(
-    ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint8(::kj::ArrayPtr<const  ::capnp::List< ::uint8_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initUint8(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initUint8(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT8);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownUint8() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>> FragmentMetadata::BoundingCoords::Builder::disownUint8() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isInt16() const {
@@ -10732,78 +9196,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isInt16() {
   return which() == FragmentMetadata::BoundingCoords::INT16;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasInt16() const {
-  if (which() != FragmentMetadata::BoundingCoords::INT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasInt16() {
-  if (which() != FragmentMetadata::BoundingCoords::INT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getInt16() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt16(
-    ::capnp::List<::capnp::List<::int16_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt16( ::capnp::List< ::capnp::List< ::int16_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt16(
-    ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt16(::kj::ArrayPtr<const  ::capnp::List< ::int16_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initInt16(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initInt16(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownInt16() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>> FragmentMetadata::BoundingCoords::Builder::disownInt16() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isUint16() const {
@@ -10813,78 +9256,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isUint16() {
   return which() == FragmentMetadata::BoundingCoords::UINT16;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasUint16() const {
-  if (which() != FragmentMetadata::BoundingCoords::UINT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasUint16() {
-  if (which() != FragmentMetadata::BoundingCoords::UINT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getUint16() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint16(
-    ::capnp::List<::capnp::List<::uint16_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint16( ::capnp::List< ::capnp::List< ::uint16_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint16(
-    ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint16(::kj::ArrayPtr<const  ::capnp::List< ::uint16_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initUint16(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initUint16(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownUint16() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>> FragmentMetadata::BoundingCoords::Builder::disownUint16() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isInt32() const {
@@ -10894,78 +9316,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isInt32() {
   return which() == FragmentMetadata::BoundingCoords::INT32;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasInt32() const {
-  if (which() != FragmentMetadata::BoundingCoords::INT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasInt32() {
-  if (which() != FragmentMetadata::BoundingCoords::INT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getInt32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt32(
-    ::capnp::List<::capnp::List<::int32_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt32( ::capnp::List< ::capnp::List< ::int32_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt32(
-    ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt32(::kj::ArrayPtr<const  ::capnp::List< ::int32_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initInt32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initInt32(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownInt32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>> FragmentMetadata::BoundingCoords::Builder::disownInt32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isUint32() const {
@@ -10975,78 +9376,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isUint32() {
   return which() == FragmentMetadata::BoundingCoords::UINT32;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasUint32() const {
-  if (which() != FragmentMetadata::BoundingCoords::UINT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasUint32() {
-  if (which() != FragmentMetadata::BoundingCoords::UINT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getUint32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint32(
-    ::capnp::List<::capnp::List<::uint32_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint32( ::capnp::List< ::capnp::List< ::uint32_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint32(
-    ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint32(::kj::ArrayPtr<const  ::capnp::List< ::uint32_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initUint32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initUint32(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownUint32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>> FragmentMetadata::BoundingCoords::Builder::disownUint32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isInt64() const {
@@ -11056,78 +9436,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isInt64() {
   return which() == FragmentMetadata::BoundingCoords::INT64;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasInt64() const {
-  if (which() != FragmentMetadata::BoundingCoords::INT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasInt64() {
-  if (which() != FragmentMetadata::BoundingCoords::INT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::INT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getInt64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt64(
-    ::capnp::List<::capnp::List<::int64_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt64( ::capnp::List< ::capnp::List< ::int64_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setInt64(
-    ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setInt64(::kj::ArrayPtr<const  ::capnp::List< ::int64_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initInt64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initInt64(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownInt64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>> FragmentMetadata::BoundingCoords::Builder::disownInt64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isUint64() const {
@@ -11137,78 +9496,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isUint64() {
   return which() == FragmentMetadata::BoundingCoords::UINT64;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasUint64() const {
-  if (which() != FragmentMetadata::BoundingCoords::UINT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasUint64() {
-  if (which() != FragmentMetadata::BoundingCoords::UINT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::UINT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader FragmentMetadata::BoundingCoords::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::BoundingCoords::Builder::getUint64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint64(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint64( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setUint64(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setUint64(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initUint64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder FragmentMetadata::BoundingCoords::Builder::initUint64(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-FragmentMetadata::BoundingCoords::Builder::disownUint64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> FragmentMetadata::BoundingCoords::Builder::disownUint64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isFloat32() const {
@@ -11218,77 +9556,57 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isFloat32() {
   return which() == FragmentMetadata::BoundingCoords::FLOAT32;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasFloat32() const {
-  if (which() != FragmentMetadata::BoundingCoords::FLOAT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::FLOAT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasFloat32() {
-  if (which() != FragmentMetadata::BoundingCoords::FLOAT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::FLOAT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<float>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<float>>::Reader FragmentMetadata::BoundingCoords::Reader::getFloat32() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<float>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<float>>::Builder FragmentMetadata::BoundingCoords::Builder::getFloat32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setFloat32(
-    ::capnp::List<::capnp::List<float>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setFloat32( ::capnp::List< ::capnp::List<float>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setFloat32(
-    ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setFloat32(::kj::ArrayPtr<const  ::capnp::List<float>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<float>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initFloat32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List<float>>::Builder FragmentMetadata::BoundingCoords::Builder::initFloat32(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>>
-FragmentMetadata::BoundingCoords::Builder::disownFloat32() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>> FragmentMetadata::BoundingCoords::Builder::disownFloat32() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool FragmentMetadata::BoundingCoords::Reader::isFloat64() const {
@@ -11298,311 +9616,236 @@ inline bool FragmentMetadata::BoundingCoords::Builder::isFloat64() {
   return which() == FragmentMetadata::BoundingCoords::FLOAT64;
 }
 inline bool FragmentMetadata::BoundingCoords::Reader::hasFloat64() const {
-  if (which() != FragmentMetadata::BoundingCoords::FLOAT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::FLOAT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool FragmentMetadata::BoundingCoords::Builder::hasFloat64() {
-  if (which() != FragmentMetadata::BoundingCoords::FLOAT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != FragmentMetadata::BoundingCoords::FLOAT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<double>>::Reader
-FragmentMetadata::BoundingCoords::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<double>>::Reader FragmentMetadata::BoundingCoords::Reader::getFloat64() const {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<double>>::Builder
-FragmentMetadata::BoundingCoords::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<double>>::Builder FragmentMetadata::BoundingCoords::Builder::getFloat64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setFloat64(
-    ::capnp::List<::capnp::List<double>>::Reader value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setFloat64( ::capnp::List< ::capnp::List<double>>::Reader value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline void FragmentMetadata::BoundingCoords::Builder::setFloat64(
-    ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value) {
+inline void FragmentMetadata::BoundingCoords::Builder::setFloat64(::kj::ArrayPtr<const  ::capnp::List<double>::Reader> value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<double>>::Builder
-FragmentMetadata::BoundingCoords::Builder::initFloat64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List<double>>::Builder FragmentMetadata::BoundingCoords::Builder::initFloat64(unsigned int size) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
 inline void FragmentMetadata::BoundingCoords::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>>&& value) {
   _builder.setDataField<FragmentMetadata::BoundingCoords::Which>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS,
-      FragmentMetadata::BoundingCoords::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, FragmentMetadata::BoundingCoords::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>>
-FragmentMetadata::BoundingCoords::Builder::disownFloat64() {
-  KJ_IREQUIRE(
-      (which() == FragmentMetadata::BoundingCoords::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>> FragmentMetadata::BoundingCoords::Builder::disownFloat64() {
+  KJ_IREQUIRE((which() == FragmentMetadata::BoundingCoords::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool GlobalWriteState::Reader::hasCellsWritten() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool GlobalWriteState::Builder::hasCellsWritten() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::MapInt64::Reader
-GlobalWriteState::Reader::getCellsWritten() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapInt64::Reader GlobalWriteState::Reader::getCellsWritten() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::MapInt64::Builder
-GlobalWriteState::Builder::getCellsWritten() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapInt64::Builder GlobalWriteState::Builder::getCellsWritten() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MapInt64::Pipeline
-GlobalWriteState::Pipeline::getCellsWritten() {
-  return ::tiledb::rest::capnp::MapInt64::Pipeline(
-      _typeless.getPointerField(0));
+inline  ::tiledb::rest::capnp::MapInt64::Pipeline GlobalWriteState::Pipeline::getCellsWritten() {
+  return  ::tiledb::rest::capnp::MapInt64::Pipeline(_typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
-inline void GlobalWriteState::Builder::setCellsWritten(
-    ::tiledb::rest::capnp::MapInt64::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void GlobalWriteState::Builder::setCellsWritten( ::tiledb::rest::capnp::MapInt64::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::MapInt64::Builder
-GlobalWriteState::Builder::initCellsWritten() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::MapInt64::Builder GlobalWriteState::Builder::initCellsWritten() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void GlobalWriteState::Builder::adoptCellsWritten(
-    ::capnp::Orphan<::tiledb::rest::capnp::MapInt64>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::MapInt64>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::MapInt64>
-GlobalWriteState::Builder::disownCellsWritten() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapInt64>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::MapInt64> GlobalWriteState::Builder::disownCellsWritten() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::MapInt64>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool GlobalWriteState::Reader::hasLastTiles() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool GlobalWriteState::Builder::hasLastTiles() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Reader
-    GlobalWriteState::Reader::getLastTiles() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Reader GlobalWriteState::Reader::getLastTiles() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Builder
-    GlobalWriteState::Builder::getLastTiles() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Builder GlobalWriteState::Builder::getLastTiles() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Pipeline
-    GlobalWriteState::Pipeline::getLastTiles() {
-  return ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Pipeline(
-          _typeless.getPointerField(1));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Pipeline GlobalWriteState::Pipeline::getLastTiles() {
+  return  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Pipeline(_typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
-inline void GlobalWriteState::Builder::setLastTiles(
-    ::tiledb::rest::capnp::Map<
-        ::capnp::Text,
-        ::capnp::List<::tiledb::rest::capnp::Tile>>::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      set(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          value);
+inline void GlobalWriteState::Builder::setLastTiles( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::capnp::List<::tiledb::rest::capnp::Tile>>::Builder
-    GlobalWriteState::Builder::initLastTiles() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      init(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>::Builder GlobalWriteState::Builder::initLastTiles() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline void GlobalWriteState::Builder::adoptLastTiles(
-    ::capnp::Orphan<::tiledb::rest::capnp::Map<
-        ::capnp::Text,
-        ::capnp::List<::tiledb::rest::capnp::Tile>>>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-    ::capnp::Text,
-    ::capnp::List<::tiledb::rest::capnp::Tile>>>
-GlobalWriteState::Builder::disownLastTiles() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::capnp::List<::tiledb::rest::capnp::Tile>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>> GlobalWriteState::Builder::disownLastTiles() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::capnp::List< ::tiledb::rest::capnp::Tile>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool GlobalWriteState::Reader::hasFragmentMetadata() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool GlobalWriteState::Builder::hasFragmentMetadata() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::FragmentMetadata::Reader
-GlobalWriteState::Reader::getFragmentMetadata() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::
-      get(_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FragmentMetadata::Reader GlobalWriteState::Reader::getFragmentMetadata() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::FragmentMetadata::Builder
-GlobalWriteState::Builder::getFragmentMetadata() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::
-      get(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FragmentMetadata::Builder GlobalWriteState::Builder::getFragmentMetadata() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::FragmentMetadata::Pipeline
-GlobalWriteState::Pipeline::getFragmentMetadata() {
-  return ::tiledb::rest::capnp::FragmentMetadata::Pipeline(
-      _typeless.getPointerField(2));
+inline  ::tiledb::rest::capnp::FragmentMetadata::Pipeline GlobalWriteState::Pipeline::getFragmentMetadata() {
+  return  ::tiledb::rest::capnp::FragmentMetadata::Pipeline(_typeless.getPointerField(2));
 }
 #endif  // !CAPNP_LITE
-inline void GlobalWriteState::Builder::setFragmentMetadata(
-    ::tiledb::rest::capnp::FragmentMetadata::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void GlobalWriteState::Builder::setFragmentMetadata( ::tiledb::rest::capnp::FragmentMetadata::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::FragmentMetadata::Builder
-GlobalWriteState::Builder::initFragmentMetadata() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::
-      init(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::FragmentMetadata::Builder GlobalWriteState::Builder::initFragmentMetadata() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 inline void GlobalWriteState::Builder::adoptFragmentMetadata(
-    ::capnp::Orphan<::tiledb::rest::capnp::FragmentMetadata>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::FragmentMetadata>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::FragmentMetadata>
-GlobalWriteState::Builder::disownFragmentMetadata() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::FragmentMetadata>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::FragmentMetadata> GlobalWriteState::Builder::disownFragmentMetadata() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::FragmentMetadata>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
-inline ::uint64_t Tile::Reader::getCellSize() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Tile::Reader::getCellSize() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t Tile::Builder::getCellSize() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Tile::Builder::getCellSize() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void Tile::Builder::setCellSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void Tile::Builder::setCellSize( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint32_t Tile::Reader::getDimNum() const {
-  return _reader.getDataField<::uint32_t>(
+inline  ::uint32_t Tile::Reader::getDimNum() const {
+  return _reader.getDataField< ::uint32_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint32_t Tile::Builder::getDimNum() {
-  return _builder.getDataField<::uint32_t>(
+inline  ::uint32_t Tile::Builder::getDimNum() {
+  return _builder.getDataField< ::uint32_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Tile::Builder::setDimNum(::uint32_t value) {
-  _builder.setDataField<::uint32_t>(
+inline void Tile::Builder::setDimNum( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
       ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Tile::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Tile::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Tile::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Tile::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Tile::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void Tile::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Tile::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Tile::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Tile::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
-inline void Tile::Builder::adoptType(::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline void Tile::Builder::adoptType(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Tile::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Tile::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline typename Tile::Buffer::Reader Tile::Reader::getBuffer() const {
@@ -11617,17 +9860,15 @@ inline typename Tile::Buffer::Pipeline Tile::Pipeline::getBuffer() {
 }
 #endif  // !CAPNP_LITE
 inline typename Tile::Buffer::Builder Tile::Builder::initBuffer() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<6>() * ::capnp::ELEMENTS, 0);
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<6>() * ::capnp::ELEMENTS, 0);
   _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS).clear();
   return typename Tile::Buffer::Builder(_builder);
 }
-inline ::tiledb::rest::capnp::Tile::Buffer::Which Tile::Buffer::Reader::which()
-    const {
-  return _reader.getDataField<Which>(::capnp::bounded<6>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::Tile::Buffer::Which Tile::Buffer::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<6>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::Tile::Buffer::Which
-Tile::Buffer::Builder::which() {
+inline  ::tiledb::rest::capnp::Tile::Buffer::Which Tile::Buffer::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS);
 }
@@ -11639,70 +9880,57 @@ inline bool Tile::Buffer::Builder::isInt8() {
   return which() == Tile::Buffer::INT8;
 }
 inline bool Tile::Buffer::Reader::hasInt8() const {
-  if (which() != Tile::Buffer::INT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasInt8() {
-  if (which() != Tile::Buffer::INT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int8_t>::Reader Tile::Buffer::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Reader Tile::Buffer::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int8_t>::Builder Tile::Buffer::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int8_t>::Builder Tile::Buffer::Builder::getInt8() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setInt8(
-    ::capnp::List<::int8_t>::Reader value) {
+inline void Tile::Buffer::Builder::setInt8( ::capnp::List< ::int8_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setInt8(
-    ::kj::ArrayPtr<const ::int8_t> value) {
+inline void Tile::Buffer::Builder::setInt8(::kj::ArrayPtr<const  ::int8_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int8_t>::Builder Tile::Buffer::Builder::initInt8(
-    unsigned int size) {
+inline  ::capnp::List< ::int8_t>::Builder Tile::Buffer::Builder::initInt8(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::int8_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int8_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int8_t>>
-Tile::Buffer::Builder::disownInt8() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int8_t>> Tile::Buffer::Builder::disownInt8() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isUint8() const {
@@ -11712,70 +9940,57 @@ inline bool Tile::Buffer::Builder::isUint8() {
   return which() == Tile::Buffer::UINT8;
 }
 inline bool Tile::Buffer::Reader::hasUint8() const {
-  if (which() != Tile::Buffer::UINT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasUint8() {
-  if (which() != Tile::Buffer::UINT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint8_t>::Reader Tile::Buffer::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Reader Tile::Buffer::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint8_t>::Builder Tile::Buffer::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint8_t>::Builder Tile::Buffer::Builder::getUint8() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setUint8(
-    ::capnp::List<::uint8_t>::Reader value) {
+inline void Tile::Buffer::Builder::setUint8( ::capnp::List< ::uint8_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setUint8(
-    ::kj::ArrayPtr<const ::uint8_t> value) {
+inline void Tile::Buffer::Builder::setUint8(::kj::ArrayPtr<const  ::uint8_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint8_t>::Builder Tile::Buffer::Builder::initUint8(
-    unsigned int size) {
+inline  ::capnp::List< ::uint8_t>::Builder Tile::Buffer::Builder::initUint8(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::uint8_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint8_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint8_t>>
-Tile::Buffer::Builder::disownUint8() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint8_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint8_t>> Tile::Buffer::Builder::disownUint8() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isInt16() const {
@@ -11785,70 +10000,57 @@ inline bool Tile::Buffer::Builder::isInt16() {
   return which() == Tile::Buffer::INT16;
 }
 inline bool Tile::Buffer::Reader::hasInt16() const {
-  if (which() != Tile::Buffer::INT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasInt16() {
-  if (which() != Tile::Buffer::INT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int16_t>::Reader Tile::Buffer::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Reader Tile::Buffer::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int16_t>::Builder Tile::Buffer::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int16_t>::Builder Tile::Buffer::Builder::getInt16() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setInt16(
-    ::capnp::List<::int16_t>::Reader value) {
+inline void Tile::Buffer::Builder::setInt16( ::capnp::List< ::int16_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setInt16(
-    ::kj::ArrayPtr<const ::int16_t> value) {
+inline void Tile::Buffer::Builder::setInt16(::kj::ArrayPtr<const  ::int16_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int16_t>::Builder Tile::Buffer::Builder::initInt16(
-    unsigned int size) {
+inline  ::capnp::List< ::int16_t>::Builder Tile::Buffer::Builder::initInt16(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::int16_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int16_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int16_t>>
-Tile::Buffer::Builder::disownInt16() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int16_t>> Tile::Buffer::Builder::disownInt16() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isUint16() const {
@@ -11858,71 +10060,57 @@ inline bool Tile::Buffer::Builder::isUint16() {
   return which() == Tile::Buffer::UINT16;
 }
 inline bool Tile::Buffer::Reader::hasUint16() const {
-  if (which() != Tile::Buffer::UINT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasUint16() {
-  if (which() != Tile::Buffer::UINT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint16_t>::Reader Tile::Buffer::Reader::getUint16()
-    const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Reader Tile::Buffer::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint16_t>::Builder Tile::Buffer::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint16_t>::Builder Tile::Buffer::Builder::getUint16() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setUint16(
-    ::capnp::List<::uint16_t>::Reader value) {
+inline void Tile::Buffer::Builder::setUint16( ::capnp::List< ::uint16_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setUint16(
-    ::kj::ArrayPtr<const ::uint16_t> value) {
+inline void Tile::Buffer::Builder::setUint16(::kj::ArrayPtr<const  ::uint16_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint16_t>::Builder Tile::Buffer::Builder::initUint16(
-    unsigned int size) {
+inline  ::capnp::List< ::uint16_t>::Builder Tile::Buffer::Builder::initUint16(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::uint16_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint16_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint16_t>>
-Tile::Buffer::Builder::disownUint16() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint16_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint16_t>> Tile::Buffer::Builder::disownUint16() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isInt32() const {
@@ -11932,70 +10120,57 @@ inline bool Tile::Buffer::Builder::isInt32() {
   return which() == Tile::Buffer::INT32;
 }
 inline bool Tile::Buffer::Reader::hasInt32() const {
-  if (which() != Tile::Buffer::INT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasInt32() {
-  if (which() != Tile::Buffer::INT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int32_t>::Reader Tile::Buffer::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Reader Tile::Buffer::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int32_t>::Builder Tile::Buffer::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int32_t>::Builder Tile::Buffer::Builder::getInt32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setInt32(
-    ::capnp::List<::int32_t>::Reader value) {
+inline void Tile::Buffer::Builder::setInt32( ::capnp::List< ::int32_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setInt32(
-    ::kj::ArrayPtr<const ::int32_t> value) {
+inline void Tile::Buffer::Builder::setInt32(::kj::ArrayPtr<const  ::int32_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int32_t>::Builder Tile::Buffer::Builder::initInt32(
-    unsigned int size) {
+inline  ::capnp::List< ::int32_t>::Builder Tile::Buffer::Builder::initInt32(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::int32_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int32_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int32_t>>
-Tile::Buffer::Builder::disownInt32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int32_t>> Tile::Buffer::Builder::disownInt32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isUint32() const {
@@ -12005,71 +10180,57 @@ inline bool Tile::Buffer::Builder::isUint32() {
   return which() == Tile::Buffer::UINT32;
 }
 inline bool Tile::Buffer::Reader::hasUint32() const {
-  if (which() != Tile::Buffer::UINT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasUint32() {
-  if (which() != Tile::Buffer::UINT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint32_t>::Reader Tile::Buffer::Reader::getUint32()
-    const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Reader Tile::Buffer::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint32_t>::Builder Tile::Buffer::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint32_t>::Builder Tile::Buffer::Builder::getUint32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setUint32(
-    ::capnp::List<::uint32_t>::Reader value) {
+inline void Tile::Buffer::Builder::setUint32( ::capnp::List< ::uint32_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setUint32(
-    ::kj::ArrayPtr<const ::uint32_t> value) {
+inline void Tile::Buffer::Builder::setUint32(::kj::ArrayPtr<const  ::uint32_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint32_t>::Builder Tile::Buffer::Builder::initUint32(
-    unsigned int size) {
+inline  ::capnp::List< ::uint32_t>::Builder Tile::Buffer::Builder::initUint32(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::uint32_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint32_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint32_t>>
-Tile::Buffer::Builder::disownUint32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint32_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint32_t>> Tile::Buffer::Builder::disownUint32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isInt64() const {
@@ -12079,70 +10240,57 @@ inline bool Tile::Buffer::Builder::isInt64() {
   return which() == Tile::Buffer::INT64;
 }
 inline bool Tile::Buffer::Reader::hasInt64() const {
-  if (which() != Tile::Buffer::INT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasInt64() {
-  if (which() != Tile::Buffer::INT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::INT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::int64_t>::Reader Tile::Buffer::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Reader Tile::Buffer::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::int64_t>::Builder Tile::Buffer::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::int64_t>::Builder Tile::Buffer::Builder::getInt64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setInt64(
-    ::capnp::List<::int64_t>::Reader value) {
+inline void Tile::Buffer::Builder::setInt64( ::capnp::List< ::int64_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setInt64(
-    ::kj::ArrayPtr<const ::int64_t> value) {
+inline void Tile::Buffer::Builder::setInt64(::kj::ArrayPtr<const  ::int64_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::int64_t>::Builder Tile::Buffer::Builder::initInt64(
-    unsigned int size) {
+inline  ::capnp::List< ::int64_t>::Builder Tile::Buffer::Builder::initInt64(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::int64_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::int64_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::int64_t>>
-Tile::Buffer::Builder::disownInt64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::int64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::int64_t>> Tile::Buffer::Builder::disownInt64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isUint64() const {
@@ -12152,71 +10300,57 @@ inline bool Tile::Buffer::Builder::isUint64() {
   return which() == Tile::Buffer::UINT64;
 }
 inline bool Tile::Buffer::Reader::hasUint64() const {
-  if (which() != Tile::Buffer::UINT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasUint64() {
-  if (which() != Tile::Buffer::UINT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::UINT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::uint64_t>::Reader Tile::Buffer::Reader::getUint64()
-    const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Reader Tile::Buffer::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::uint64_t>::Builder Tile::Buffer::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::uint64_t>::Builder Tile::Buffer::Builder::getUint64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setUint64(
-    ::capnp::List<::uint64_t>::Reader value) {
+inline void Tile::Buffer::Builder::setUint64( ::capnp::List< ::uint64_t>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setUint64(
-    ::kj::ArrayPtr<const ::uint64_t> value) {
+inline void Tile::Buffer::Builder::setUint64(::kj::ArrayPtr<const  ::uint64_t> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::uint64_t>::Builder Tile::Buffer::Builder::initUint64(
-    unsigned int size) {
+inline  ::capnp::List< ::uint64_t>::Builder Tile::Buffer::Builder::initUint64(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::uint64_t>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::uint64_t>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::uint64_t>>
-Tile::Buffer::Builder::disownUint64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::uint64_t>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::uint64_t>> Tile::Buffer::Builder::disownUint64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isFloat32() const {
@@ -12226,70 +10360,57 @@ inline bool Tile::Buffer::Builder::isFloat32() {
   return which() == Tile::Buffer::FLOAT32;
 }
 inline bool Tile::Buffer::Reader::hasFloat32() const {
-  if (which() != Tile::Buffer::FLOAT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::FLOAT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasFloat32() {
-  if (which() != Tile::Buffer::FLOAT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::FLOAT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<float>::Reader Tile::Buffer::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Reader Tile::Buffer::Reader::getFloat32() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<float>::Builder Tile::Buffer::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<float>::Builder Tile::Buffer::Builder::getFloat32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setFloat32(
-    ::capnp::List<float>::Reader value) {
+inline void Tile::Buffer::Builder::setFloat32( ::capnp::List<float>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setFloat32(
-    ::kj::ArrayPtr<const float> value) {
+inline void Tile::Buffer::Builder::setFloat32(::kj::ArrayPtr<const float> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<float>::Builder Tile::Buffer::Builder::initFloat32(
-    unsigned int size) {
+inline  ::capnp::List<float>::Builder Tile::Buffer::Builder::initFloat32(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<float>>&& value) {
+    ::capnp::Orphan< ::capnp::List<float>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<float>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List<float>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<float>>
-Tile::Buffer::Builder::disownFloat32() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<float>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<float>> Tile::Buffer::Builder::disownFloat32() {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<float>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Tile::Buffer::Reader::isFloat64() const {
@@ -12299,289 +10420,262 @@ inline bool Tile::Buffer::Builder::isFloat64() {
   return which() == Tile::Buffer::FLOAT64;
 }
 inline bool Tile::Buffer::Reader::hasFloat64() const {
-  if (which() != Tile::Buffer::FLOAT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::FLOAT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Tile::Buffer::Builder::hasFloat64() {
-  if (which() != Tile::Buffer::FLOAT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != Tile::Buffer::FLOAT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<double>::Reader Tile::Buffer::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Reader Tile::Buffer::Reader::getFloat64() const {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<double>::Builder Tile::Buffer::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List<double>::Builder Tile::Buffer::Builder::getFloat64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Tile::Buffer::Builder::setFloat64(
-    ::capnp::List<double>::Reader value) {
+inline void Tile::Buffer::Builder::setFloat64( ::capnp::List<double>::Reader value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void Tile::Buffer::Builder::setFloat64(
-    ::kj::ArrayPtr<const double> value) {
+inline void Tile::Buffer::Builder::setFloat64(::kj::ArrayPtr<const double> value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<double>::Builder Tile::Buffer::Builder::initFloat64(
-    unsigned int size) {
+inline  ::capnp::List<double>::Builder Tile::Buffer::Builder::initFloat64(unsigned int size) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Tile::Buffer::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<double>>&& value) {
+    ::capnp::Orphan< ::capnp::List<double>>&& value) {
   _builder.setDataField<Tile::Buffer::Which>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, Tile::Buffer::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<double>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+  ::capnp::_::PointerHelpers< ::capnp::List<double>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<double>>
-Tile::Buffer::Builder::disownFloat64() {
-  KJ_IREQUIRE(
-      (which() == Tile::Buffer::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<double>>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List<double>> Tile::Buffer::Builder::disownFloat64() {
+  KJ_IREQUIRE((which() == Tile::Buffer::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List<double>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Writer::Reader::hasGlobalWriteState() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Writer::Builder::hasGlobalWriteState() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::GlobalWriteState::Reader
-Writer::Reader::getGlobalWriteState() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::GlobalWriteState::Reader Writer::Reader::getGlobalWriteState() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::GlobalWriteState::Builder
-Writer::Builder::getGlobalWriteState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::GlobalWriteState::Builder Writer::Builder::getGlobalWriteState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::GlobalWriteState::Pipeline
-Writer::Pipeline::getGlobalWriteState() {
-  return ::tiledb::rest::capnp::GlobalWriteState::Pipeline(
-      _typeless.getPointerField(0));
+inline  ::tiledb::rest::capnp::GlobalWriteState::Pipeline Writer::Pipeline::getGlobalWriteState() {
+  return  ::tiledb::rest::capnp::GlobalWriteState::Pipeline(_typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
-inline void Writer::Builder::setGlobalWriteState(
-    ::tiledb::rest::capnp::GlobalWriteState::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void Writer::Builder::setGlobalWriteState( ::tiledb::rest::capnp::GlobalWriteState::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::GlobalWriteState::Builder
-Writer::Builder::initGlobalWriteState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::
-      init(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::GlobalWriteState::Builder Writer::Builder::initGlobalWriteState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void Writer::Builder::adoptGlobalWriteState(
-    ::capnp::Orphan<::tiledb::rest::capnp::GlobalWriteState>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::GlobalWriteState>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::GlobalWriteState>
-Writer::Builder::disownGlobalWriteState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::GlobalWriteState>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::GlobalWriteState> Writer::Builder::disownGlobalWriteState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::GlobalWriteState>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Writer::Reader::getCheckCoordDups() const {
-  return _reader.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
 inline bool Writer::Builder::getCheckCoordDups() {
-  return _builder.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 inline void Writer::Builder::setCheckCoordDups(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Writer::Reader::getDedupCoords() const {
-  return _reader.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline bool Writer::Builder::getDedupCoords() {
-  return _builder.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 inline void Writer::Builder::setDedupCoords(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Writer::Reader::getInitialized() const {
-  return _reader.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
 inline bool Writer::Builder::getInitialized() {
-  return _builder.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 inline void Writer::Builder::setInitialized(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Writer::Reader::hasFragmentUri() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Writer::Builder::hasFragmentUri() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Writer::Reader::getFragmentUri() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Writer::Reader::getFragmentUri() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Writer::Builder::getFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Writer::Builder::getFragmentUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Writer::Builder::setFragmentUri(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Writer::Builder::setFragmentUri( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Writer::Builder::initFragmentUri(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Writer::Builder::initFragmentUri(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Writer::Builder::adoptFragmentUri(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Writer::Builder::disownFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Writer::Builder::disownFragmentUri() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::Reader::getInitialized() const {
-  return _reader.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
 inline bool ReadState::Builder::getInitialized() {
-  return _builder.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 inline void ReadState::Builder::setInitialized(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool ReadState::Reader::getOverflowed() const {
-  return _reader.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
 inline bool ReadState::Builder::getOverflowed() {
-  return _builder.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 inline void ReadState::Builder::setOverflowed(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
+  _builder.setDataField<bool>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool ReadState::Reader::hasCurSubarrayPartition() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::Builder::hasCurSubarrayPartition() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader
-ReadState::Reader::getCurSubarrayPartition() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader ReadState::Reader::getCurSubarrayPartition() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-ReadState::Builder::getCurSubarrayPartition() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder ReadState::Builder::getCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-ReadState::Pipeline::getCurSubarrayPartition() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(0));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline ReadState::Pipeline::getCurSubarrayPartition() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
-inline void ReadState::Builder::setCurSubarrayPartition(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
+inline void ReadState::Builder::setCurSubarrayPartition( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-ReadState::Builder::initCurSubarrayPartition() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder ReadState::Builder::initCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void ReadState::Builder::adoptCurSubarrayPartition(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-ReadState::Builder::disownCurSubarrayPartition() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> ReadState::Builder::disownCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline typename ReadState::SubarrayPartitions::Reader
-ReadState::Reader::getSubarrayPartitions() const {
+inline typename ReadState::SubarrayPartitions::Reader ReadState::Reader::getSubarrayPartitions() const {
   return typename ReadState::SubarrayPartitions::Reader(_reader);
 }
-inline typename ReadState::SubarrayPartitions::Builder
-ReadState::Builder::getSubarrayPartitions() {
+inline typename ReadState::SubarrayPartitions::Builder ReadState::Builder::getSubarrayPartitions() {
   return typename ReadState::SubarrayPartitions::Builder(_builder);
 }
 #if !CAPNP_LITE
-inline typename ReadState::SubarrayPartitions::Pipeline
-ReadState::Pipeline::getSubarrayPartitions() {
+inline typename ReadState::SubarrayPartitions::Pipeline ReadState::Pipeline::getSubarrayPartitions() {
   return typename ReadState::SubarrayPartitions::Pipeline(_typeless.noop());
 }
 #endif  // !CAPNP_LITE
-inline typename ReadState::SubarrayPartitions::Builder
-ReadState::Builder::initSubarrayPartitions() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
+inline typename ReadState::SubarrayPartitions::Builder ReadState::Builder::initSubarrayPartitions() {
+  _builder.setDataField< ::uint16_t>(::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
   _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS).clear();
   return typename ReadState::SubarrayPartitions::Builder(_builder);
 }
-inline ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which
-ReadState::SubarrayPartitions::Reader::which() const {
-  return _reader.getDataField<Which>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+inline  ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which ReadState::SubarrayPartitions::Reader::which() const {
+  return _reader.getDataField<Which>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which
-ReadState::SubarrayPartitions::Builder::which() {
+inline  ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which ReadState::SubarrayPartitions::Builder::which() {
   return _builder.getDataField<Which>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
@@ -12593,78 +10687,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isInt8() {
   return which() == ReadState::SubarrayPartitions::INT8;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasInt8() const {
-  if (which() != ReadState::SubarrayPartitions::INT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasInt8() {
-  if (which() != ReadState::SubarrayPartitions::INT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Reader ReadState::SubarrayPartitions::Reader::getInt8() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder ReadState::SubarrayPartitions::Builder::getInt8() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt8(
-    ::capnp::List<::capnp::List<::int8_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt8( ::capnp::List< ::capnp::List< ::int8_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt8(
-    ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt8(::kj::ArrayPtr<const  ::capnp::List< ::int8_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt8(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int8_t>>::Builder ReadState::SubarrayPartitions::Builder::initInt8(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT8);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int8_t>>> ReadState::SubarrayPartitions::Builder::disownInt8() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int8_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isUint8() const {
@@ -12674,78 +10747,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isUint8() {
   return which() == ReadState::SubarrayPartitions::UINT8;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasUint8() const {
-  if (which() != ReadState::SubarrayPartitions::UINT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT8) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasUint8() {
-  if (which() != ReadState::SubarrayPartitions::UINT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT8) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Reader ReadState::SubarrayPartitions::Reader::getUint8() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder ReadState::SubarrayPartitions::Builder::getUint8() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint8(
-    ::capnp::List<::capnp::List<::uint8_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint8( ::capnp::List< ::capnp::List< ::uint8_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint8(
-    ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint8(::kj::ArrayPtr<const  ::capnp::List< ::uint8_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint8(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint8_t>>::Builder ReadState::SubarrayPartitions::Builder::initUint8(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT8);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT8);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint8_t>>> ReadState::SubarrayPartitions::Builder::disownUint8() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT8),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint8_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isInt16() const {
@@ -12755,78 +10807,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isInt16() {
   return which() == ReadState::SubarrayPartitions::INT16;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasInt16() const {
-  if (which() != ReadState::SubarrayPartitions::INT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasInt16() {
-  if (which() != ReadState::SubarrayPartitions::INT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Reader ReadState::SubarrayPartitions::Reader::getInt16() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder ReadState::SubarrayPartitions::Builder::getInt16() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt16(
-    ::capnp::List<::capnp::List<::int16_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt16( ::capnp::List< ::capnp::List< ::int16_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt16(
-    ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt16(::kj::ArrayPtr<const  ::capnp::List< ::int16_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt16(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int16_t>>::Builder ReadState::SubarrayPartitions::Builder::initInt16(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int16_t>>> ReadState::SubarrayPartitions::Builder::disownInt16() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int16_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isUint16() const {
@@ -12836,78 +10867,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isUint16() {
   return which() == ReadState::SubarrayPartitions::UINT16;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasUint16() const {
-  if (which() != ReadState::SubarrayPartitions::UINT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT16) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasUint16() {
-  if (which() != ReadState::SubarrayPartitions::UINT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT16) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Reader ReadState::SubarrayPartitions::Reader::getUint16() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder ReadState::SubarrayPartitions::Builder::getUint16() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint16(
-    ::capnp::List<::capnp::List<::uint16_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint16( ::capnp::List< ::capnp::List< ::uint16_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint16(
-    ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint16(::kj::ArrayPtr<const  ::capnp::List< ::uint16_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint16(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint16_t>>::Builder ReadState::SubarrayPartitions::Builder::initUint16(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT16);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT16);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint16_t>>> ReadState::SubarrayPartitions::Builder::disownUint16() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT16),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint16_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isInt32() const {
@@ -12917,78 +10927,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isInt32() {
   return which() == ReadState::SubarrayPartitions::INT32;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasInt32() const {
-  if (which() != ReadState::SubarrayPartitions::INT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasInt32() {
-  if (which() != ReadState::SubarrayPartitions::INT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Reader ReadState::SubarrayPartitions::Reader::getInt32() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder ReadState::SubarrayPartitions::Builder::getInt32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt32(
-    ::capnp::List<::capnp::List<::int32_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt32( ::capnp::List< ::capnp::List< ::int32_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt32(
-    ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt32(::kj::ArrayPtr<const  ::capnp::List< ::int32_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int32_t>>::Builder ReadState::SubarrayPartitions::Builder::initInt32(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int32_t>>> ReadState::SubarrayPartitions::Builder::disownInt32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int32_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isUint32() const {
@@ -12998,78 +10987,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isUint32() {
   return which() == ReadState::SubarrayPartitions::UINT32;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasUint32() const {
-  if (which() != ReadState::SubarrayPartitions::UINT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasUint32() {
-  if (which() != ReadState::SubarrayPartitions::UINT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Reader ReadState::SubarrayPartitions::Reader::getUint32() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder ReadState::SubarrayPartitions::Builder::getUint32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint32(
-    ::capnp::List<::capnp::List<::uint32_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint32( ::capnp::List< ::capnp::List< ::uint32_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint32(
-    ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint32(::kj::ArrayPtr<const  ::capnp::List< ::uint32_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint32_t>>::Builder ReadState::SubarrayPartitions::Builder::initUint32(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint32_t>>> ReadState::SubarrayPartitions::Builder::disownUint32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint32_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isInt64() const {
@@ -13079,78 +11047,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isInt64() {
   return which() == ReadState::SubarrayPartitions::INT64;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasInt64() const {
-  if (which() != ReadState::SubarrayPartitions::INT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasInt64() {
-  if (which() != ReadState::SubarrayPartitions::INT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::INT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Reader ReadState::SubarrayPartitions::Reader::getInt64() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder ReadState::SubarrayPartitions::Builder::getInt64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt64(
-    ::capnp::List<::capnp::List<::int64_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt64( ::capnp::List< ::capnp::List< ::int64_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt64(
-    ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setInt64(::kj::ArrayPtr<const  ::capnp::List< ::int64_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::int64_t>>::Builder ReadState::SubarrayPartitions::Builder::initInt64(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::INT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::int64_t>>> ReadState::SubarrayPartitions::Builder::disownInt64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::INT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::int64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isUint64() const {
@@ -13160,78 +11107,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isUint64() {
   return which() == ReadState::SubarrayPartitions::UINT64;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasUint64() const {
-  if (which() != ReadState::SubarrayPartitions::UINT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasUint64() {
-  if (which() != ReadState::SubarrayPartitions::UINT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::UINT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Reader ReadState::SubarrayPartitions::Reader::getUint64() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder ReadState::SubarrayPartitions::Builder::getUint64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint64(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint64( ::capnp::List< ::capnp::List< ::uint64_t>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setUint64(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setUint64(::kj::ArrayPtr<const  ::capnp::List< ::uint64_t>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List< ::uint64_t>>::Builder ReadState::SubarrayPartitions::Builder::initUint64(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::UINT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List< ::uint64_t>>> ReadState::SubarrayPartitions::Builder::disownUint64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::UINT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List< ::uint64_t>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isFloat32() const {
@@ -13241,77 +11167,57 @@ inline bool ReadState::SubarrayPartitions::Builder::isFloat32() {
   return which() == ReadState::SubarrayPartitions::FLOAT32;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasFloat32() const {
-  if (which() != ReadState::SubarrayPartitions::FLOAT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::FLOAT32) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasFloat32() {
-  if (which() != ReadState::SubarrayPartitions::FLOAT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::FLOAT32) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<float>>::Reader
-ReadState::SubarrayPartitions::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<float>>::Reader ReadState::SubarrayPartitions::Reader::getFloat32() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<float>>::Builder
-ReadState::SubarrayPartitions::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<float>>::Builder ReadState::SubarrayPartitions::Builder::getFloat32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat32(
-    ::capnp::List<::capnp::List<float>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setFloat32( ::capnp::List< ::capnp::List<float>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat32(
-    ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setFloat32(::kj::ArrayPtr<const  ::capnp::List<float>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<float>>::Builder
-ReadState::SubarrayPartitions::Builder::initFloat32(unsigned int size) {
+inline  ::capnp::List< ::capnp::List<float>>::Builder ReadState::SubarrayPartitions::Builder::initFloat32(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT32);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT32);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>>
-ReadState::SubarrayPartitions::Builder::disownFloat32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List<float>>> ReadState::SubarrayPartitions::Builder::disownFloat32() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT32),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<float>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::SubarrayPartitions::Reader::isFloat64() const {
@@ -13321,702 +11227,583 @@ inline bool ReadState::SubarrayPartitions::Builder::isFloat64() {
   return which() == ReadState::SubarrayPartitions::FLOAT64;
 }
 inline bool ReadState::SubarrayPartitions::Reader::hasFloat64() const {
-  if (which() != ReadState::SubarrayPartitions::FLOAT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::FLOAT64) return false;
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool ReadState::SubarrayPartitions::Builder::hasFloat64() {
-  if (which() != ReadState::SubarrayPartitions::FLOAT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  if (which() != ReadState::SubarrayPartitions::FLOAT64) return false;
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::capnp::List<double>>::Reader
-ReadState::SubarrayPartitions::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<double>>::Reader ReadState::SubarrayPartitions::Reader::getFloat64() const {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::capnp::List<double>>::Builder
-ReadState::SubarrayPartitions::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::capnp::List<double>>::Builder ReadState::SubarrayPartitions::Builder::getFloat64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat64(
-    ::capnp::List<::capnp::List<double>>::Reader value) {
+inline void ReadState::SubarrayPartitions::Builder::setFloat64( ::capnp::List< ::capnp::List<double>>::Reader value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat64(
-    ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value) {
+inline void ReadState::SubarrayPartitions::Builder::setFloat64(::kj::ArrayPtr<const  ::capnp::List<double>::Reader> value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::capnp::List<double>>::Builder
-ReadState::SubarrayPartitions::Builder::initFloat64(unsigned int size) {
+inline  ::capnp::List< ::capnp::List<double>>::Builder ReadState::SubarrayPartitions::Builder::initFloat64(unsigned int size) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT64);
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void ReadState::SubarrayPartitions::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value) {
+    ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>>&& value) {
   _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, ReadState::SubarrayPartitions::FLOAT64);
+  ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>>
-ReadState::SubarrayPartitions::Builder::disownFloat64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::capnp::List<double>>> ReadState::SubarrayPartitions::Builder::disownFloat64() {
+  KJ_IREQUIRE((which() == ReadState::SubarrayPartitions::FLOAT64),
+              "Must check which() before get()ing a union member.");
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::List<double>>>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool QueryReader::Reader::hasFragmentMetadata() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool QueryReader::Builder::hasFragmentMetadata() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Reader
-QueryReader::Reader::getFragmentMetadata() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Reader QueryReader::Reader::getFragmentMetadata() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Builder
-QueryReader::Builder::getFragmentMetadata() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Builder QueryReader::Builder::getFragmentMetadata() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void QueryReader::Builder::setFragmentMetadata(
-    ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Reader value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
+inline void QueryReader::Builder::setFragmentMetadata( ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>::Builder
-QueryReader::Builder::initFragmentMetadata(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
+inline  ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>::Builder QueryReader::Builder::initFragmentMetadata(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void QueryReader::Builder::adoptFragmentMetadata(
-    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>
-QueryReader::Builder::disownFragmentMetadata() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::FragmentMetadata>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>> QueryReader::Builder::disownFragmentMetadata() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::FragmentMetadata>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool QueryReader::Reader::hasReadState() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool QueryReader::Builder::hasReadState() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::ReadState::Reader
-QueryReader::Reader::getReadState() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::ReadState::Reader QueryReader::Reader::getReadState() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::ReadState::Builder
-QueryReader::Builder::getReadState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::ReadState::Builder QueryReader::Builder::getReadState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::ReadState::Pipeline
-QueryReader::Pipeline::getReadState() {
-  return ::tiledb::rest::capnp::ReadState::Pipeline(
-      _typeless.getPointerField(1));
+inline  ::tiledb::rest::capnp::ReadState::Pipeline QueryReader::Pipeline::getReadState() {
+  return  ::tiledb::rest::capnp::ReadState::Pipeline(_typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
-inline void QueryReader::Builder::setReadState(
-    ::tiledb::rest::capnp::ReadState::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void QueryReader::Builder::setReadState( ::tiledb::rest::capnp::ReadState::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::ReadState::Builder
-QueryReader::Builder::initReadState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::ReadState::Builder QueryReader::Builder::initReadState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline void QueryReader::Builder::adoptReadState(
-    ::capnp::Orphan<::tiledb::rest::capnp::ReadState>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::ReadState>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::ReadState>
-QueryReader::Builder::disownReadState() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::ReadState>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::ReadState> QueryReader::Builder::disownReadState() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::ReadState>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasBuffers() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasBuffers() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Reader
-    Query::Reader::getBuffers() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Reader Query::Reader::getBuffers() const {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Builder
-    Query::Builder::getBuffers() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Builder Query::Builder::getBuffers() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-#if !CAPNP_LITE
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Pipeline
-    Query::Pipeline::getBuffers() {
-  return ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Pipeline(
-          _typeless.getPointerField(0));
+inline void Query::Builder::setBuffers( ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-#endif  // !CAPNP_LITE
-inline void Query::Builder::setBuffers(
-    ::tiledb::rest::capnp::Map<
-        ::capnp::Text,
-        ::tiledb::rest::capnp::AttributeBuffer>::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
-}
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::AttributeBuffer>::Builder
-    Query::Builder::initBuffers() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      init(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline  ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>::Builder Query::Builder::initBuffers(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
 inline void Query::Builder::adoptBuffers(
-    ::capnp::Orphan<::tiledb::rest::capnp::Map<
-        ::capnp::Text,
-        ::tiledb::rest::capnp::AttributeBuffer>>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
+    ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-    ::capnp::Text,
-    ::tiledb::rest::capnp::AttributeBuffer>>
-Query::Builder::disownBuffers() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::AttributeBuffer>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>> Query::Builder::disownBuffers() {
+  return ::capnp::_::PointerHelpers< ::capnp::List< ::tiledb::rest::capnp::AttributeBufferHeader>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasLayout() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasLayout() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Query::Reader::getLayout() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Query::Reader::getLayout() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Query::Builder::getLayout() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Query::Builder::getLayout() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void Query::Builder::setLayout(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setLayout( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Query::Builder::initLayout(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Query::Builder::initLayout(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
 inline void Query::Builder::adoptLayout(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Query::Builder::disownLayout() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Query::Builder::disownLayout() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasStatus() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasStatus() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Query::Reader::getStatus() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Query::Reader::getStatus() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Query::Builder::getStatus() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Query::Builder::getStatus() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void Query::Builder::setStatus(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setStatus( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Query::Builder::initStatus(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Query::Builder::initStatus(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), size);
 }
 inline void Query::Builder::adoptStatus(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Query::Builder::disownStatus() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Query::Builder::disownStatus() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasType() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasType() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline ::capnp::Text::Reader Query::Reader::getType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Reader Query::Reader::getType() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline ::capnp::Text::Builder Query::Builder::getType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline  ::capnp::Text::Builder Query::Builder::getType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void Query::Builder::setType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setType( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline ::capnp::Text::Builder Query::Builder::initType(unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      size);
+inline  ::capnp::Text::Builder Query::Builder::initType(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
-inline void Query::Builder::adoptType(::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline void Query::Builder::adoptType(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::Text> Query::Builder::disownType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::capnp::Text> Query::Builder::disownType() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasWriter() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasWriter() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::Writer::Reader Query::Reader::getWriter() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Writer::Reader Query::Reader::getWriter() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::get(_reader.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::Writer::Builder Query::Builder::getWriter() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Writer::Builder Query::Builder::getWriter() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::get(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::Writer::Pipeline Query::Pipeline::getWriter() {
-  return ::tiledb::rest::capnp::Writer::Pipeline(_typeless.getPointerField(4));
+inline  ::tiledb::rest::capnp::Writer::Pipeline Query::Pipeline::getWriter() {
+  return  ::tiledb::rest::capnp::Writer::Pipeline(_typeless.getPointerField(4));
 }
 #endif  // !CAPNP_LITE
-inline void Query::Builder::setWriter(
-    ::tiledb::rest::capnp::Writer::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setWriter( ::tiledb::rest::capnp::Writer::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::set(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::Writer::Builder Query::Builder::initWriter() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Writer::Builder Query::Builder::initWriter() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::init(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 inline void Query::Builder::adoptWriter(
-    ::capnp::Orphan<::tiledb::rest::capnp::Writer>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Writer>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::adopt(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Writer>
-Query::Builder::disownWriter() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Writer>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Writer> Query::Builder::disownWriter() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Writer>::disown(_builder.getPointerField(
+      ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasReader() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasReader() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::QueryReader::Reader Query::Reader::getReader()
-    const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::QueryReader::Reader Query::Reader::getReader() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::get(_reader.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::QueryReader::Builder Query::Builder::getReader() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::QueryReader::Builder Query::Builder::getReader() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::get(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::QueryReader::Pipeline
-Query::Pipeline::getReader() {
-  return ::tiledb::rest::capnp::QueryReader::Pipeline(
-      _typeless.getPointerField(5));
+inline  ::tiledb::rest::capnp::QueryReader::Pipeline Query::Pipeline::getReader() {
+  return  ::tiledb::rest::capnp::QueryReader::Pipeline(_typeless.getPointerField(5));
 }
 #endif  // !CAPNP_LITE
-inline void Query::Builder::setReader(
-    ::tiledb::rest::capnp::QueryReader::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setReader( ::tiledb::rest::capnp::QueryReader::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::set(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::QueryReader::Builder
-Query::Builder::initReader() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::init(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::QueryReader::Builder Query::Builder::initReader() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::init(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 inline void Query::Builder::adoptReader(
-    ::capnp::Orphan<::tiledb::rest::capnp::QueryReader>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::QueryReader>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::adopt(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::QueryReader>
-Query::Builder::disownReader() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::QueryReader>::disown(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::QueryReader> Query::Builder::disownReader() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::QueryReader>::disown(_builder.getPointerField(
+      ::capnp::bounded<5>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasSubarray() const {
-  return !_reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasSubarray() {
-  return !_builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::DomainArray::Reader Query::Reader::getSubarray()
-    const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Reader Query::Reader::getSubarray() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_reader.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Query::Builder::getSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Query::Builder::getSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::get(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-Query::Pipeline::getSubarray() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(6));
+inline  ::tiledb::rest::capnp::DomainArray::Pipeline Query::Pipeline::getSubarray() {
+  return  ::tiledb::rest::capnp::DomainArray::Pipeline(_typeless.getPointerField(6));
 }
 #endif  // !CAPNP_LITE
-inline void Query::Builder::setSubarray(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setSubarray( ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::set(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Query::Builder::initSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::DomainArray::Builder Query::Builder::initSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::init(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 inline void Query::Builder::adoptSubarray(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::adopt(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-Query::Builder::disownSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<6>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::DomainArray> Query::Builder::disownSubarray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::DomainArray>::disown(_builder.getPointerField(
+      ::capnp::bounded<6>() * ::capnp::POINTERS));
 }
 
 inline bool Query::Reader::hasArray() const {
-  return !_reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
 inline bool Query::Builder::hasArray() {
-  return !_builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS)
-              .isNull();
+  return !_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS).isNull();
 }
-inline ::tiledb::rest::capnp::Array::Reader Query::Reader::getArray() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::get(
-      _reader.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Array::Reader Query::Reader::getArray() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::get(_reader.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
-inline ::tiledb::rest::capnp::Array::Builder Query::Builder::getArray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::get(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Array::Builder Query::Builder::getArray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::get(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::rest::capnp::Array::Pipeline Query::Pipeline::getArray() {
-  return ::tiledb::rest::capnp::Array::Pipeline(_typeless.getPointerField(7));
+inline  ::tiledb::rest::capnp::Array::Pipeline Query::Pipeline::getArray() {
+  return  ::tiledb::rest::capnp::Array::Pipeline(_typeless.getPointerField(7));
 }
 #endif  // !CAPNP_LITE
-inline void Query::Builder::setArray(
-    ::tiledb::rest::capnp::Array::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::set(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      value);
+inline void Query::Builder::setArray( ::tiledb::rest::capnp::Array::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::set(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), value);
 }
-inline ::tiledb::rest::capnp::Array::Builder Query::Builder::initArray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::init(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline  ::tiledb::rest::capnp::Array::Builder Query::Builder::initArray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::init(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 inline void Query::Builder::adoptArray(
-    ::capnp::Orphan<::tiledb::rest::capnp::Array>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::adopt(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS),
-      kj::mv(value));
+    ::capnp::Orphan< ::tiledb::rest::capnp::Array>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::adopt(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::rest::capnp::Array>
-Query::Builder::disownArray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Array>::disown(
-      _builder.getPointerField(::capnp::bounded<7>() * ::capnp::POINTERS));
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Array> Query::Builder::disownArray() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Array>::disown(_builder.getPointerField(
+      ::capnp::bounded<7>() * ::capnp::POINTERS));
 }
 
-inline bool NonEmptyDomain::Reader::hasNonEmptyDomain() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool NonEmptyDomain::Builder::hasNonEmptyDomain() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Reader
-    NonEmptyDomain::Reader::getNonEmptyDomain() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::get(_reader
-                                                    .getPointerField(
-                                                        ::capnp::bounded<0>() *
-                                                        ::capnp::POINTERS));
-}
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Builder
-    NonEmptyDomain::Builder::getNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::get(_builder
-                                                    .getPointerField(
-                                                        ::capnp::bounded<0>() *
-                                                        ::capnp::POINTERS));
-}
-#if !CAPNP_LITE
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Pipeline
-    NonEmptyDomain::Pipeline::getNonEmptyDomain() {
-  return ::tiledb::rest::capnp::
-      Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Pipeline(
-          _typeless.getPointerField(0));
-}
-#endif  // !CAPNP_LITE
-inline void NonEmptyDomain::Builder::setNonEmptyDomain(
-    ::tiledb::rest::capnp::
-        Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
-}
-inline ::tiledb::rest::capnp::
-    Map<::capnp::Text, ::tiledb::rest::capnp::DomainArray>::Builder
-    NonEmptyDomain::Builder::initNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::init(_builder
-                                                     .getPointerField(
-                                                         ::capnp::bounded<0>() *
-                                                         ::capnp::POINTERS));
-}
-inline void NonEmptyDomain::Builder::adoptNonEmptyDomain(
-    ::capnp::Orphan<::tiledb::rest::capnp::Map<
-        ::capnp::Text,
-        ::tiledb::rest::capnp::DomainArray>>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
-}
-inline ::capnp::Orphan<::tiledb::rest::capnp::Map<
-    ::capnp::Text,
-    ::tiledb::rest::capnp::DomainArray>>
-NonEmptyDomain::Builder::disownNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::rest::capnp::DomainArray>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline bool NonEmptyDomain::Reader::getIsEmpty() const {
-  return _reader.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-
-inline bool NonEmptyDomain::Builder::getIsEmpty() {
-  return _builder.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-inline void NonEmptyDomain::Builder::setIsEmpty(bool value) {
-  _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
-}
-
-inline bool MaxBufferSizeVar::Reader::hasAttribute() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool MaxBufferSizeVar::Builder::hasAttribute() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Text::Reader MaxBufferSizeVar::Reader::getAttribute() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::Text::Builder MaxBufferSizeVar::Builder::getAttribute() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void MaxBufferSizeVar::Builder::setAttribute(
-    ::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Text::Builder MaxBufferSizeVar::Builder::initAttribute(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
-}
-inline void MaxBufferSizeVar::Builder::adoptAttribute(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Text>
-MaxBufferSizeVar::Builder::disownAttribute() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline ::uint64_t MaxBufferSizeVar::Reader::getBufferSize() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Query::Reader::getTotalNumOfBytesInBuffers() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t MaxBufferSizeVar::Builder::getBufferSize() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Query::Builder::getTotalNumOfBytesInBuffers() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void MaxBufferSizeVar::Builder::setBufferSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void Query::Builder::setTotalNumOfBytesInBuffers( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint64_t MaxBufferSizeVar::Reader::getBufferOffsetSize() const {
-  return _reader.getDataField<::uint64_t>(
+inline  ::uint64_t Query::Reader::getTotalNumOfBytesInVarBuffers() const {
+  return _reader.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline ::uint64_t MaxBufferSizeVar::Builder::getBufferOffsetSize() {
-  return _builder.getDataField<::uint64_t>(
+inline  ::uint64_t Query::Builder::getTotalNumOfBytesInVarBuffers() {
+  return _builder.getDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void MaxBufferSizeVar::Builder::setBufferOffsetSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
+inline void Query::Builder::setTotalNumOfBytesInVarBuffers( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-}  // namespace capnp
-}  // namespace rest
-}  // namespace tiledb
+inline  ::uint64_t Query::Reader::getTotalNumOfBytesInOffsets() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t Query::Builder::getTotalNumOfBytesInOffsets() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+inline void Query::Builder::setTotalNumOfBytesInOffsets( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool NonEmptyDomain::Reader::hasNonEmptyDomain() const {
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline bool NonEmptyDomain::Builder::hasNonEmptyDomain() {
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Reader NonEmptyDomain::Reader::getNonEmptyDomain() const {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Builder NonEmptyDomain::Builder::getNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+#if !CAPNP_LITE
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Pipeline NonEmptyDomain::Pipeline::getNonEmptyDomain() {
+  return  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Pipeline(_typeless.getPointerField(0));
+}
+#endif  // !CAPNP_LITE
+inline void NonEmptyDomain::Builder::setNonEmptyDomain( ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Reader value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
+}
+inline  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::Builder NonEmptyDomain::Builder::initNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline void NonEmptyDomain::Builder::adoptNonEmptyDomain(
+    ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>&& value) {
+  ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
+}
+inline ::capnp::Orphan< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>> NonEmptyDomain::Builder::disownNonEmptyDomain() {
+  return ::capnp::_::PointerHelpers< ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+
+inline bool NonEmptyDomain::Reader::getIsEmpty() const {
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+
+inline bool NonEmptyDomain::Builder::getIsEmpty() {
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+inline void NonEmptyDomain::Builder::setIsEmpty(bool value) {
+  _builder.setDataField<bool>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool MaxBufferSizeVar::Reader::hasAttribute() const {
+  return !_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline bool MaxBufferSizeVar::Builder::hasAttribute() {
+  return !_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
+}
+inline  ::capnp::Text::Reader MaxBufferSizeVar::Reader::getAttribute() const {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline  ::capnp::Text::Builder MaxBufferSizeVar::Builder::getAttribute() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+inline void MaxBufferSizeVar::Builder::setAttribute( ::capnp::Text::Reader value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), value);
+}
+inline  ::capnp::Text::Builder MaxBufferSizeVar::Builder::initAttribute(unsigned int size) {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), size);
+}
+inline void MaxBufferSizeVar::Builder::adoptAttribute(
+    ::capnp::Orphan< ::capnp::Text>&& value) {
+  ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
+}
+inline ::capnp::Orphan< ::capnp::Text> MaxBufferSizeVar::Builder::disownAttribute() {
+  return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
+      ::capnp::bounded<0>() * ::capnp::POINTERS));
+}
+
+inline  ::uint64_t MaxBufferSizeVar::Reader::getBufferSize() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t MaxBufferSizeVar::Builder::getBufferSize() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
+}
+inline void MaxBufferSizeVar::Builder::setBufferSize( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::uint64_t MaxBufferSizeVar::Reader::getBufferOffsetSize() const {
+  return _reader.getDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint64_t MaxBufferSizeVar::Builder::getBufferOffsetSize() {
+  return _builder.getDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+inline void MaxBufferSizeVar::Builder::setBufferOffsetSize( ::uint64_t value) {
+  _builder.setDataField< ::uint64_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
+}
+
+}  // namespace
+}  // namespace
+}  // namespace
 
 #endif  // CAPNP_INCLUDED_b57d9224b587d87f_

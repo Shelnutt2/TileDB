@@ -58,6 +58,13 @@ tiledb::sm::Status query_serialize(
       return tiledb::sm::Status::Error(
           "Could not serialize query: " + status.to_string());
 
+    uint64_t totalNumOfBytesInBuffers{
+        query_builder.getTotalNumOfBytesInBuffers()};
+    uint64_t totalNumOfBytesInOffsets{
+        query_builder.getTotalNumOfBytesInOffsets()};
+    uint64_t totalNumOfBytesInVarBuffers{
+        query_builder.getTotalNumOfBytesInVarBuffers()};
+
     switch (serialize_type) {
       case tiledb::sm::SerializationType::JSON: {
         ::capnp::JsonCodec json;
@@ -71,16 +78,68 @@ tiledb::sm::Status query_serialize(
       case tiledb::sm::SerializationType::CAPNP: {
         kj::Array<::capnp::word> protomessage = messageToFlatArray(message);
         kj::ArrayPtr<const char> message_chars = protomessage.asChars();
-        *serialized_string = new char[message_chars.size()];
+
+        *serialized_string = new char
+            [message_chars.size() + totalNumOfBytesInBuffers +
+             totalNumOfBytesInOffsets + totalNumOfBytesInVarBuffers];
+        // Copy capnp part of message
         memcpy(*serialized_string, message_chars.begin(), message_chars.size());
-        *serialized_string_length = message_chars.size();
+        // Compute total message length
+        *serialized_string_length =
+            message_chars.size() + totalNumOfBytesInBuffers +
+            totalNumOfBytesInOffsets + totalNumOfBytesInVarBuffers;
+
+        char* serialized_message = *serialized_string;
+        // char** serialized_string remains intact
+        serialized_message += static_cast<int>(message_chars.size());
+        // Iterate in attributes and copy buffers to message
+        auto bufferBuilder = query_builder.getBuffers();
+        for (uint64_t I = 0; I < bufferBuilder.size(); I++) {
+          auto attributeBufferHeader = bufferBuilder[I];
+          auto atributeName = attributeBufferHeader.getAttributeName().cStr();
+          auto offsetBufferSizeInBytes =
+              attributeBufferHeader.getOffsetBufferSizeInBytes();
+          if (offsetBufferSizeInBytes) {
+            // variable size attribute buffer
+            uint64_t* existingBufferOffset = nullptr;
+            uint64_t* existingBufferOffsetSize = nullptr;
+            void* existingBuffer = nullptr;
+            uint64_t* existingBufferSize = nullptr;
+            query->get_buffer(
+                atributeName,
+                &existingBufferOffset,
+                &existingBufferOffsetSize,
+                &existingBuffer,
+                &existingBufferSize);
+            memcpy(
+                serialized_message,
+                existingBufferOffset,
+                size_t(*existingBufferOffsetSize));
+            serialized_message += *existingBufferOffsetSize;
+            memcpy(
+                *serialized_string,
+                existingBuffer,
+                size_t(*existingBufferSize));
+            serialized_message += *existingBufferSize;
+          } else {
+            // fixed size attribute buffer
+            void* existingBuffer = nullptr;
+            uint64_t* existingBufferSize = nullptr;
+            query->get_buffer(
+                atributeName, &existingBuffer, &existingBufferSize);
+            memcpy(
+                serialized_message,
+                existingBuffer,
+                size_t(*existingBufferSize));
+            serialized_message += *existingBufferSize;
+          }
+        }
         break;
       }
       default: {
         return tiledb::sm::Status::Error("Unknown serialization type passed");
       }
     }
-
   } catch (kj::Exception& e) {
     return tiledb::sm::Status::Error(
         std::string("Error serializing query: ") + e.getDescription().cStr());
@@ -98,6 +157,7 @@ tiledb::sm::Status query_deserialize(
     const char* serialized_string,
     const uint64_t serialized_string_length) {
   STATS_FUNC_IN(serialization_query_deserialize);
+
   try {
     switch (serialize_type) {
       case tiledb::sm::SerializationType::JSON: {
@@ -107,8 +167,7 @@ tiledb::sm::Status query_deserialize(
             message_builder.initRoot<rest::capnp::Query>();
         json.decode(kj::StringPtr(serialized_string), query_builder);
         rest::capnp::Query::Reader query_reader = query_builder.asReader();
-        return query->from_capnp(&query_reader);
-        break;
+        return query->from_capnp(&query_reader, nullptr);
       }
       case tiledb::sm::SerializationType::CAPNP: {
         ::capnp::ReaderOptions readerOptions;
@@ -121,11 +180,10 @@ tiledb::sm::Status query_deserialize(
                 reinterpret_cast<const ::capnp::word*>(mBytes),
                 serialized_string_length / sizeof(::capnp::word)),
             readerOptions);
-
         Query::Reader query_reader = reader.getRoot<rest::capnp::Query>();
-
-        return query->from_capnp(&query_reader);
-        break;
+        auto attribute_buffer_start = reader.getEnd();
+        auto buffer_start = const_cast<::capnp::word*>(attribute_buffer_start);
+        return query->from_capnp(&query_reader, buffer_start);
       }
       default: {
         return tiledb::sm::Status::Error("Unknown serialization type passed");
