@@ -61,46 +61,11 @@ Array::Array(const URI& array_uri, StorageManager* storage_manager)
     , storage_manager_(storage_manager) {
   is_open_ = false;
   array_schema_ = nullptr;
-  remote_ = false;
-  timestamp_ = 0;
-  last_max_buffer_sizes_subarray_ = nullptr;
-}
-
-Array::Array(const URI& array_uri, StorageManager* storage_manager, bool remote)
-    : array_uri_(array_uri)
-    , storage_manager_(storage_manager)
-    , remote_(remote) {
-  is_open_ = false;
   timestamp_ = 0;
   last_max_buffer_sizes_subarray_ = nullptr;
 
-  tiledb::sm::Status st = tiledb::sm::serialization_type_enum(
-      tiledb::sm::constants::serialization_default_format,
-      &serialization_type_);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-  }
-  const char* config_serialization_type = nullptr;
-  Config config = this->storage_manager_->config();
-  st = config.get(
-      "rest.server_serialization_format", &config_serialization_type);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-  }
-  if (config_serialization_type != nullptr) {
-    st = tiledb::sm::serialization_type_enum(
-        config_serialization_type, &serialization_type_);
-    if (!st.ok()) {
-      LOG_STATUS(st);
-    }
-  }
-
-  const char* config_rest_server = nullptr;
-  st = config.get("rest.server_address", &config_rest_server);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-  }
-  this->rest_server_ = config_rest_server;
+  assert(storage_manager_ != nullptr);
+  remote_ = storage_manager_->rest_server_configured();
 };
 
 Array::~Array() {
@@ -709,14 +674,6 @@ Status Array::get_max_buffer_size(
 const EncryptionKey& Array::get_encryption_key() const {
   std::unique_lock<std::mutex> lck(mtx_);
   return encryption_key_;
-}
-
-const std::string Array::get_rest_server() const {
-  return rest_server_;
-}
-
-SerializationType Array::get_serialization_type() const {
-  return serialization_type_;
 }
 
 Status Array::reopen() {
