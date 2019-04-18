@@ -51,17 +51,40 @@ std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> init_curl_safe() {
       curl_easy_init(), curl_easy_cleanup);
 }
 
+tiledb::sm::Status get_rest_info_from_config(
+    const tiledb::sm::Config* config,
+    std::string* organization,
+    std::string* rest_server,
+    tiledb::sm::SerializationType* serialization_type) {
+  const char* c_str;
+
+  RETURN_NOT_OK(config->get("rest.organization", &c_str));
+  if (c_str != nullptr)
+    *organization = std::string(c_str);
+
+  RETURN_NOT_OK(config->get("rest.server_address", &c_str));
+  if (c_str != nullptr)
+    *rest_server = std::string(c_str);
+
+  RETURN_NOT_OK(config->get("rest.server_serialization_format", &c_str));
+  if (c_str != nullptr)
+    RETURN_NOT_OK(
+        tiledb::sm::serialization_type_enum(c_str, serialization_type));
+
+  return tiledb::sm::Status::Ok();
+}
+
 tiledb::sm::Status get_array_schema_from_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::ArraySchema** array_schema) {
   STATS_FUNC_IN(serialization_get_array_schema_from_rest);
 
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Error getting array schema from REST; "
         "config param rest.organization cannot be null."));
@@ -89,15 +112,15 @@ tiledb::sm::Status get_array_schema_from_rest(
 
 tiledb::sm::Status post_array_schema_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::ArraySchema* array_schema) {
   STATS_FUNC_IN(serialization_post_array_schema_to_rest);
 
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Error posting array schema to REST; "
         "config param rest.organization cannot be null."));
@@ -121,15 +144,14 @@ tiledb::sm::Status post_array_schema_to_rest(
 }
 
 tiledb::sm::Status deregister_array_from_rest(
-    const tiledb::sm::Config* config,
-    const std::string& rest_server,
-    const std::string& uri,
-    tiledb::sm::SerializationType serialization_type) {
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+    const tiledb::sm::Config* config, const std::string& uri) {
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
-        "Error deregistering array schema on REST; "
+        "Error deregistering array on REST; "
         "config param rest.organization cannot be null."));
 
   // Escape the URL and make a copy
@@ -146,7 +168,6 @@ tiledb::sm::Status deregister_array_from_rest(
 
 tiledb::sm::Status get_array_non_empty_domain(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     tiledb::sm::Array* array,
     void* domain,
     bool* is_empty) {
@@ -159,9 +180,11 @@ tiledb::sm::Status get_array_non_empty_domain(
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Cannot get array non-empty domain; array URI is empty"));
 
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Cannot get array non-empty domain; "
         "config param rest.organization cannot be null."));
@@ -326,15 +349,15 @@ tiledb::sm::Status get_array_non_empty_domain(
 
 tiledb::sm::Status submit_query_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_submit_query_to_rest);
 
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Error submitting query to REST; "
         "config param rest.organization cannot be null."));
@@ -369,15 +392,15 @@ tiledb::sm::Status submit_query_to_rest(
 
 tiledb::sm::Status finalize_query_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_finalize_query_to_rest);
 
-  const char* organization;
-  RETURN_NOT_OK(config->get("rest.organization", &organization));
-  if (organization == nullptr)
+  std::string organization, rest_server;
+  tiledb::sm::SerializationType serialization_type;
+  RETURN_NOT_OK(get_rest_info_from_config(
+      config, &organization, &rest_server, &serialization_type));
+  if (organization.empty())
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Cannot finalize query; "
         "config param rest.organization cannot be null."));
