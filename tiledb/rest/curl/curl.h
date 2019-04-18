@@ -56,7 +56,7 @@ namespace curl {
  */
 tiledb::sm::Status post_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* data,
@@ -74,7 +74,7 @@ tiledb::sm::Status post_data(
  */
 tiledb::sm::Status get_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data);
@@ -90,7 +90,7 @@ tiledb::sm::Status get_data(
  */
 tiledb::sm::Status delete_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data);
