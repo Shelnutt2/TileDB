@@ -1901,11 +1901,7 @@ int32_t tiledb_array_schema_load_with_key(
     }
 
     auto st = tiledb::rest::get_array_schema_from_rest(
-        config->config_,
-        rest_server,
-        array_uri,
-        static_cast<tiledb::sm::SerializationType>(serialization_type),
-        &(*array_schema)->array_schema_);
+        config->config_, array_uri, &(*array_schema)->array_schema_);
     if (!st.ok()) {
       LOG_STATUS(st);
       save_error(ctx, st);
@@ -2982,11 +2978,7 @@ int32_t tiledb_array_create_with_key(
     }
 
     auto st = tiledb::rest::post_array_schema_to_rest(
-        config->config_,
-        rest_server,
-        array_uri,
-        static_cast<tiledb::sm::SerializationType>(serialization_type),
-        array_schema->array_schema_);
+        config->config_, array_uri, array_schema->array_schema_);
     if (!st.ok()) {
       LOG_STATUS(st);
       save_error(ctx, st);
@@ -3066,11 +3058,7 @@ int32_t tiledb_array_get_non_empty_domain(
       if (save_error(
               ctx,
               tiledb::rest::get_array_non_empty_domain(
-                  config->config_,
-                  rest_server,
-                  array->array_,
-                  domain,
-                  &is_empty_b)))
+                  config->config_, array->array_, domain, &is_empty_b)))
         return TILEDB_ERR;
     } else {
       auto st = tiledb::sm::Status::Error(
