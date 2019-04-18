@@ -44,56 +44,42 @@ namespace rest {
  * Get a data encoded array schema from rest server
  *
  * @param config tiledb config used to get auth information
- * @param rest_server url
  * @param uri of array being loaded
- * @param serialization_type format to serialize in
  * @param array_schema array schema to send to server
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status get_array_schema_from_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::ArraySchema** array_schema);
 
 /**
  * Post a data array schema to rest server
  *
  * @param config tiledb config used to get auth information
- * @param rest_server url
  * @param uri of array being created
- * @param serialization_type format to serialize in
  * @param array_schema array schema to load into
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status post_array_schema_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::ArraySchema* array_schema);
 
 /**
  * Deregisters an array at the given URI from the REST server.
  *
  * @param config TileDB config instance used for auth information
- * @param rest_server URL of the REST server
  * @param uri Array URI to deregister
- * @param serialization_type Serialization type to use for request
  * @return Status
  */
 tiledb::sm::Status deregister_array_from_rest(
-    const tiledb::sm::Config* config,
-    const std::string& rest_server,
-    const std::string& uri,
-    tiledb::sm::SerializationType serialization_type);
+    const tiledb::sm::Config* config, const std::string& uri);
 
 /**
  * Get array's non_empty domain from rest server
  *
  * @param config tiledb config used to get auth information
- * @param rest_server url
  * @param uri of array being loaded
  * @param domain The domain to be retrieved.
  * @param is_empty The function sets it to `1` if the non-empty domain is
@@ -102,7 +88,6 @@ tiledb::sm::Status deregister_array_from_rest(
  */
 tiledb::sm::Status get_array_non_empty_domain(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     tiledb::sm::Array* array,
     void* domain,
     bool* is_empty);
@@ -111,34 +96,26 @@ tiledb::sm::Status get_array_non_empty_domain(
  * Post a data query to rest server
  *
  * @param config tiledb config used to get auth information
- * @param rest_server url
  * @param uri of array being queried
- * @param serialization_type format to serialize in
  * @param query to send to server and store results in, this qill be modified
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status submit_query_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Query* query);
 
 /**
  * Post a data query to rest server
  *
  * @param config tiledb config used to get auth information
- * @param rest_server url
  * @param uri of array being queried
- * @param serialization_type format to serialize in
  * @param query to send to server and store results in, this qill be modified
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status finalize_query_to_rest(
     const tiledb::sm::Config* config,
-    const std::string& rest_server,
     const std::string& uri,
-    tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Query* query);
 }  // namespace rest
 }  // namespace tiledb

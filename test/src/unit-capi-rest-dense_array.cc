@@ -296,12 +296,7 @@ DenseArrayRESTFx::~DenseArrayRESTFx() {
   config.set("rest.organization", rest_server_username_);
 
   for (const auto& uri : to_deregister_) {
-    CHECK(tiledb::rest::deregister_array_from_rest(
-              &config,
-              rest_server_uri_,
-              uri,
-              tiledb::sm::SerializationType::CAPNP)
-              .ok());
+    CHECK(tiledb::rest::deregister_array_from_rest(&config, uri).ok());
   }
 
   tiledb_vfs_free(&vfs_);
