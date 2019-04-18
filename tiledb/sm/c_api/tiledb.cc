@@ -1835,7 +1835,9 @@ int32_t tiledb_array_schema_load_with_key(
     if (SAVE_ERROR_CATCH(
             ctx,
             tiledb::rest::get_array_schema_from_rest(
-                ctx->ctx_->storage_manager()->config(), array_uri, &(*array_schema)->array_schema_))) {
+                ctx->ctx_->storage_manager()->config(),
+                array_uri,
+                &(*array_schema)->array_schema_))) {
       delete *array_schema;
       return TILEDB_ERR;
     }
@@ -2186,15 +2188,16 @@ int tiledb_array_schema_deserialize(
   tiledb::sm::Buffer buffer(
       (void*)serialized_string, serialized_string_length, false);
 
-  auto st = tiledb::rest::capnp::array_schema_deserialize(
-      &((*array_schema)->array_schema_),
-      (tiledb::sm::SerializationType)serialize_type,
-      buffer);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    save_error(ctx, st);
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::array_schema_deserialize(
+              &((*array_schema)->array_schema_),
+              (tiledb::sm::SerializationType)serialize_type,
+              buffer))) {
+    delete *array_schema;
     return TILEDB_ERR;
   }
+
   return TILEDB_OK;
 }
 
@@ -2578,13 +2581,14 @@ int tiledb_query_deserialize(
   tiledb::sm::Buffer buffer(
       (void*)serialized_string, serialized_string_length, false);
 
-  tiledb::sm::Status st = tiledb::rest::capnp::query_deserialize(
-      query->query_, (tiledb::sm::SerializationType)serialize_type, buffer);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    save_error(ctx, st);
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::query_deserialize(
+              query->query_,
+              (tiledb::sm::SerializationType)serialize_type,
+              buffer)))
     return TILEDB_ERR;
-  }
+
   return TILEDB_OK;
 }
 
@@ -2633,8 +2637,8 @@ int32_t tiledb_array_alloc(
   }
 
   // Allocate an array object
-  (*array)->array_ = new (std::nothrow)
-      tiledb::sm::Array(uri, ctx->ctx_->storage_manager());
+  (*array)->array_ =
+      new (std::nothrow) tiledb::sm::Array(uri, ctx->ctx_->storage_manager());
 
   if ((*array)->array_ == nullptr) {
     delete *array;
@@ -2883,13 +2887,13 @@ int32_t tiledb_array_create_with_key(
 
   // If we have configured a rest server address use it
   if (ctx->ctx_->storage_manager()->rest_server_configured()) {
-    auto st = tiledb::rest::post_array_schema_to_rest(
-        ctx->ctx_->storage_manager()->config(), array_uri, array_schema->array_schema_);
-    if (!st.ok()) {
-      LOG_STATUS(st);
-      save_error(ctx, st);
+    if (SAVE_ERROR_CATCH(
+            ctx,
+            tiledb::rest::post_array_schema_to_rest(
+                ctx->ctx_->storage_manager()->config(),
+                array_uri,
+                array_schema->array_schema_)))
       return TILEDB_ERR;
-    }
   } else {
     // Create key
     tiledb::sm::EncryptionKey key;
@@ -2948,21 +2952,16 @@ int32_t tiledb_array_get_non_empty_domain(
 
   bool is_empty_b;
 
-  // Log error for unimplemented remote functionality
-  if (array->array_->is_remote()) {
-    if (ctx->ctx_->storage_manager()->rest_server_configured()) {
-      if (save_error(
-              ctx,
-              tiledb::rest::get_array_non_empty_domain(
-                  ctx->ctx_->storage_manager()->config(), array->array_, domain, &is_empty_b)))
-        return TILEDB_ERR;
-    } else {
-      auto st = tiledb::sm::Status::Error(
-          "Rest server not in config but array marked remote");
-      LOG_STATUS(st);
-      save_error(ctx, st);
+  // Use REST server if configured.
+  if (ctx->ctx_->storage_manager()->rest_server_configured()) {
+    if (SAVE_ERROR_CATCH(
+            ctx,
+            tiledb::rest::get_array_non_empty_domain(
+                ctx->ctx_->storage_manager()->config(),
+                array->array_,
+                domain,
+                &is_empty_b)))
       return TILEDB_ERR;
-    }
   } else {
     if (SAVE_ERROR_CATCH(
             ctx,
