@@ -52,21 +52,21 @@ std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> init_curl_safe() {
 }
 
 tiledb::sm::Status get_rest_info_from_config(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     std::string* organization,
     std::string* rest_server,
     tiledb::sm::SerializationType* serialization_type) {
   const char* c_str;
 
-  RETURN_NOT_OK(config->get("rest.organization", &c_str));
+  RETURN_NOT_OK(config.get("rest.organization", &c_str));
   if (c_str != nullptr)
     *organization = std::string(c_str);
 
-  RETURN_NOT_OK(config->get("rest.server_address", &c_str));
+  RETURN_NOT_OK(config.get("rest.server_address", &c_str));
   if (c_str != nullptr)
     *rest_server = std::string(c_str);
 
-  RETURN_NOT_OK(config->get("rest.server_serialization_format", &c_str));
+  RETURN_NOT_OK(config.get("rest.server_serialization_format", &c_str));
   if (c_str != nullptr)
     RETURN_NOT_OK(
         tiledb::sm::serialization_type_enum(c_str, serialization_type));
@@ -75,7 +75,7 @@ tiledb::sm::Status get_rest_info_from_config(
 }
 
 tiledb::sm::Status get_array_schema_from_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::ArraySchema** array_schema) {
   STATS_FUNC_IN(serialization_get_array_schema_from_rest);
@@ -111,7 +111,7 @@ tiledb::sm::Status get_array_schema_from_rest(
 }
 
 tiledb::sm::Status post_array_schema_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::ArraySchema* array_schema) {
   STATS_FUNC_IN(serialization_post_array_schema_to_rest);
@@ -144,7 +144,7 @@ tiledb::sm::Status post_array_schema_to_rest(
 }
 
 tiledb::sm::Status deregister_array_from_rest(
-    const tiledb::sm::Config* config, const std::string& uri) {
+    const tiledb::sm::Config& config, const std::string& uri) {
   std::string organization, rest_server;
   tiledb::sm::SerializationType serialization_type;
   RETURN_NOT_OK(get_rest_info_from_config(
@@ -167,7 +167,7 @@ tiledb::sm::Status deregister_array_from_rest(
 }
 
 tiledb::sm::Status get_array_non_empty_domain(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     tiledb::sm::Array* array,
     void* domain,
     bool* is_empty) {
@@ -348,7 +348,7 @@ tiledb::sm::Status get_array_non_empty_domain(
 }
 
 tiledb::sm::Status submit_query_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_submit_query_to_rest);
@@ -391,7 +391,7 @@ tiledb::sm::Status submit_query_to_rest(
 }
 
 tiledb::sm::Status finalize_query_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_finalize_query_to_rest);
