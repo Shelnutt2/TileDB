@@ -957,13 +957,12 @@ Status StorageManager::init(Config* config) {
   return Status::Ok();
 }
 
-Status StorageManager::rest_server_configured(bool* configured) const {
+bool StorageManager::rest_server_configured() const {
   const char* str = nullptr;
-  RETURN_NOT_OK(config_.get("rest.server_address", &str));
+  if (!config_.get("rest.server_address", &str).ok())
+    return false;
 
-  *configured = str != nullptr;
-
-  return Status::Ok();
+  return str != nullptr;
 }
 
 void StorageManager::increment_in_progress() {
