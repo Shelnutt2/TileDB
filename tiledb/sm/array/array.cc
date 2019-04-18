@@ -400,7 +400,7 @@ Status Array::open(
   if (remote_) {
     Config config = storage_manager_->config();
     RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        &config, array_uri_.to_string(), &array_schema_));
+        config, array_uri_.to_string(), &array_schema_));
   } else if (query_type == QueryType::READ) {
     timestamp_ = utils::time::timestamp_now_ms();
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(
@@ -449,7 +449,7 @@ Status Array::open(
   if (remote_) {
     Config config = this->storage_manager_->config();
     RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        &config, array_uri_.to_string(), &array_schema_));
+        config, array_uri_.to_string(), &array_schema_));
   } else {
     // Open the array.
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(
@@ -492,7 +492,7 @@ Status Array::open(
   if (remote_) {
     Config config = this->storage_manager_->config();
     RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        &config, array_uri_.to_string(), &array_schema_));
+        config, array_uri_.to_string(), &array_schema_));
   } else {
     // Open the array.
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(

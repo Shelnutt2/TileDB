@@ -213,16 +213,6 @@ static bool create_error(tiledb_error_t** error, const tiledb::sm::Status& st) {
   return true;
 }
 
-int get_ctx_config(tiledb_ctx_t* ctx, tiledb_config_t** config) {
-  *config = nullptr;
-  if (tiledb_ctx_get_config(ctx, config) == TILEDB_ERR) {
-    if (config != nullptr)
-      tiledb_config_free(config);
-    return TILEDB_ERR;
-  }
-  return TILEDB_OK;
-}
-
 inline int32_t sanity_check(tiledb_ctx_t* ctx, const tiledb_array_t* array) {
   if (array == nullptr || array->array_ == nullptr) {
     auto st = tiledb::sm::Status::Error("Invalid TileDB array object");
@@ -1819,17 +1809,10 @@ int32_t tiledb_array_schema_load_with_key(
 
   // If we have configured a REST server, use it
   if (ctx->ctx_->storage_manager()->rest_server_configured()) {
-    tiledb_config_t* config;
-    if (get_ctx_config(ctx, &config) == TILEDB_ERR) {
-      auto st = tiledb::sm::Status::Error("Failed to get context config");
-      save_error(ctx, st);
-      return TILEDB_ERR;
-    }
-
     if (SAVE_ERROR_CATCH(
             ctx,
             tiledb::rest::get_array_schema_from_rest(
-                config->config_, array_uri, &(*array_schema)->array_schema_))) {
+                ctx->ctx_->storage_manager()->config(), array_uri, &(*array_schema)->array_schema_))) {
       delete *array_schema;
       return TILEDB_ERR;
     }
@@ -2877,21 +2860,13 @@ int32_t tiledb_array_create_with_key(
 
   // If we have configured a rest server address use it
   if (ctx->ctx_->storage_manager()->rest_server_configured()) {
-    tiledb_config_t* config;
-    if (get_ctx_config(ctx, &config) == TILEDB_ERR) {
-      auto st = tiledb::sm::Status::Error("Failed to get context config");
-      save_error(ctx, st);
-      return TILEDB_ERR;
-    }
-
     auto st = tiledb::rest::post_array_schema_to_rest(
-        config->config_, array_uri, array_schema->array_schema_);
+        ctx->ctx_->storage_manager()->config(), array_uri, array_schema->array_schema_);
     if (!st.ok()) {
       LOG_STATUS(st);
       save_error(ctx, st);
       return TILEDB_ERR;
     }
-    tiledb_config_free(&config);
   } else {
     // Create key
     tiledb::sm::EncryptionKey key;
@@ -2953,17 +2928,10 @@ int32_t tiledb_array_get_non_empty_domain(
   // Log error for unimplemented remote functionality
   if (array->array_->is_remote()) {
     if (ctx->ctx_->storage_manager()->rest_server_configured()) {
-      tiledb_config_t* config;
-      if (get_ctx_config(ctx, &config) == TILEDB_ERR) {
-        auto st = tiledb::sm::Status::Error("Failed to get context config");
-        save_error(ctx, st);
-        return TILEDB_ERR;
-      }
-
       if (save_error(
               ctx,
               tiledb::rest::get_array_non_empty_domain(
-                  config->config_, array->array_, domain, &is_empty_b)))
+                  ctx->ctx_->storage_manager()->config(), array->array_, domain, &is_empty_b)))
         return TILEDB_ERR;
     } else {
       auto st = tiledb::sm::Status::Error(
