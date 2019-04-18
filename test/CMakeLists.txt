@@ -118,7 +118,6 @@ endif()
 
 if (TILEDB_TESTS_ENABLE_REST)
   list(APPEND TILEDB_TEST_SOURCES
-    src/unit-capi-rest.cc
     src/unit-capi-rest-dense_array.cc
   )
 endif()
