@@ -375,11 +375,10 @@ class StorageManager {
   /**
    * Checks if the StorageManager was configured with a REST server.
    *
-   * @param configured Set to true if the StorageManager was configured with a
+   * @return Status True if the StorageManager was configured with a
    *    REST server.
-   * @return Status
    */
-  Status rest_server_configured(bool* configured) const;
+  bool rest_server_configured() const;
 
   /**
    * Checks if the input URI represents an array.
