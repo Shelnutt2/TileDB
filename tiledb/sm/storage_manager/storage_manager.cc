@@ -957,6 +957,15 @@ Status StorageManager::init(Config* config) {
   return Status::Ok();
 }
 
+Status StorageManager::rest_server_configured(bool *configured) const {
+  const char* str = nullptr;
+  RETURN_NOT_OK(config_.get("rest.server_address", &str));
+
+  *configured = str != nullptr;
+
+  return Status::Ok();
+}
+
 void StorageManager::increment_in_progress() {
   std::unique_lock<std::mutex> lck(queries_in_progress_mtx_);
   queries_in_progress_++;

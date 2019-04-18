@@ -240,19 +240,6 @@ class Config {
    *
    * **Parameters**
    *
-   * - `rest.server_address` <br>
-   *   url for rest server
-   * - `rest.server_serialization_format` <br>
-   *   serialization format
-   * - `rest.username` <br>
-   *   username for rest server (can use token instead)
-   * - `rest.password` <br>
-   *   password for login to rest server
-   * - `rest.token` <br>
-   *   authentication token (used instead of username/password)
-   * - `rest.organization` <br>
-   *   organization to use for array
-   * <br>
    * - `sm.dedup_coords` <br>
    *    If `true`, cells with duplicate coordinates will be removed during
    *    sparse array writes. Note that ties during deduplication are
@@ -420,6 +407,29 @@ class Config {
    *    **Default**: ""
    * - `vfs.hdfs.kerb_ticket_cache_path` <br>
    *    HDFS kerb ticket cache path. <br>
+   *    **Default**: ""
+   *
+   * <br>
+   *
+   * - `rest.server_address` <br>
+   *    URL for REST server to use for remote arrays. <br>
+   *    **Default**: ""
+   * - `rest.server_serialization_format` <br>
+   *    Serialization format to use for remote array requests (CAPNP or
+   *    JSON). <br>
+   *    **Default**: "CAPNP"
+   * - `rest.username` <br>
+   *    Username for login to REST server (a token can be used instead). <br>
+   *    **Default**: ""
+   * - `rest.password` <br>
+   *    Password for login to REST server. <br>
+   *    **Default**: ""
+   * - `rest.token` <br>
+   *    Authentication token for REST server (used instead of
+   *    username/password). <br>
+   *    **Default**: ""
+   * - `rest.organization` <br>
+   *    Organization to use for remote arrays. <br>
    *    **Default**: ""
    */
   Status set(const std::string& param, const std::string& value);
