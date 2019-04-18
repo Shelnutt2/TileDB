@@ -81,9 +81,9 @@ size_t write_memory_callback(
  * @return Status
  */
 tiledb::sm::Status set_auth(
-    CURL* curl, const tiledb::sm::Config* config, struct curl_slist** headers) {
+    CURL* curl, const tiledb::sm::Config& config, struct curl_slist** headers) {
   const char* token = nullptr;
-  RETURN_NOT_OK(config->get("rest.token", &token));
+  RETURN_NOT_OK(config.get("rest.token", &token));
 
   if (token != nullptr) {
     *headers = curl_slist_append(
@@ -92,8 +92,8 @@ tiledb::sm::Status set_auth(
     // Try username+password instead of token
     const char* username = nullptr;
     const char* password = nullptr;
-    RETURN_NOT_OK(config->get("rest.username", &username));
-    RETURN_NOT_OK(config->get("rest.password", &password));
+    RETURN_NOT_OK(config.get("rest.username", &username));
+    RETURN_NOT_OK(config.get("rest.password", &password));
 
     // Check for no auth.
     if (username == nullptr || password == nullptr)
@@ -167,7 +167,7 @@ CURLcode curl_fetch_url(
 
 tiledb::sm::Status post_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* data,
@@ -222,7 +222,7 @@ tiledb::sm::Status post_data(
 
 tiledb::sm::Status get_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data) {
@@ -264,7 +264,7 @@ tiledb::sm::Status get_data(
 
 tiledb::sm::Status delete_data(
     CURL* curl,
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data) {
