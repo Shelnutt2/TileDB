@@ -49,7 +49,7 @@ namespace rest {
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status get_array_schema_from_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::ArraySchema** array_schema);
 
@@ -62,7 +62,7 @@ tiledb::sm::Status get_array_schema_from_rest(
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status post_array_schema_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::ArraySchema* array_schema);
 
@@ -74,7 +74,7 @@ tiledb::sm::Status post_array_schema_to_rest(
  * @return Status
  */
 tiledb::sm::Status deregister_array_from_rest(
-    const tiledb::sm::Config* config, const std::string& uri);
+    const tiledb::sm::Config& config, const std::string& uri);
 
 /**
  * Get array's non_empty domain from rest server
@@ -87,7 +87,7 @@ tiledb::sm::Status deregister_array_from_rest(
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status get_array_non_empty_domain(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     tiledb::sm::Array* array,
     void* domain,
     bool* is_empty);
@@ -101,7 +101,7 @@ tiledb::sm::Status get_array_non_empty_domain(
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status submit_query_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::Query* query);
 
@@ -114,7 +114,7 @@ tiledb::sm::Status submit_query_to_rest(
  * @return Status Ok() on success Error() on failures
  */
 tiledb::sm::Status finalize_query_to_rest(
-    const tiledb::sm::Config* config,
+    const tiledb::sm::Config& config,
     const std::string& uri,
     tiledb::sm::Query* query);
 }  // namespace rest

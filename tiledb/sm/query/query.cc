@@ -105,7 +105,7 @@ Status Query::finalize() {
     array_->array_schema()->set_array_uri(array_->array_uri());
     Config config = this->storage_manager_->config();
     return tiledb::rest::finalize_query_to_rest(
-        &config, array_->array_uri().to_string(), this);
+        config, array_->array_uri().to_string(), this);
   }
 
   RETURN_NOT_OK(writer_.finalize());
@@ -698,7 +698,7 @@ Status Query::submit() {  // Do nothing if the query is completed or failed
     array_->array_schema()->set_array_uri(array_->array_uri());
     Config config = this->storage_manager_->config();
     return tiledb::rest::submit_query_to_rest(
-        &config, array_->array_uri().to_string(), this);
+        config, array_->array_uri().to_string(), this);
   }
   RETURN_NOT_OK(init());
   return storage_manager_->query_submit(this);
