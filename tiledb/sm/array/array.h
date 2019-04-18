@@ -34,7 +34,6 @@
 #define TILEDB_ARRAY_H
 
 #include "tiledb/sm/encryption/encryption_key.h"
-#include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/misc/status.h"
 #include "tiledb/sm/storage_manager/open_array.h"
 #include "tiledb/sm/storage_manager/storage_manager.h"
@@ -55,9 +54,6 @@ class Array {
 
   /** Constructor. */
   Array(const URI& array_uri, StorageManager* storage_manager);
-
-  /** Constructor. */
-  Array(const URI& array_uri, StorageManager* storage_manager, bool remote);
 
   /** Destructor. */
   ~Array();
@@ -209,16 +205,6 @@ class Array {
   const EncryptionKey& get_encryption_key() const;
 
   /**
-   * Returns rest server url, only set if array is remote
-   */
-  const std::string get_rest_server() const;
-
-  /**
-   * Returns serialization type used for rest server communication
-   */
-  SerializationType get_serialization_type() const;
-
-  /**
    * Re-opens the array. This effectively updates the "view" of the array,
    * by loading the fragments potentially written after the last time
    * the array was opened. Errors if the array is not open.
@@ -292,12 +278,6 @@ class Array {
 
   /** defines if the array is remote */
   bool remote_;
-
-  /** Serialization typed used for array rest communication */
-  SerializationType serialization_type_;
-
-  /** url of rest server for array */
-  std::string rest_server_;
 
   /* ********************************* */
   /*          PRIVATE METHODS          */
