@@ -5,8 +5,7 @@
  *
  * The MIT License
  *
- * @copyright Copyright (c) 2017-2018 TileDB, Inc.
- * @copyright Copyright (c) 2016 MIT and Intel Corporation
+ * @copyright Copyright (c) 2018-2019 TileDB, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +27,7 @@
  *
  * @section DESCRIPTION
  *
- * This file defines high-level libcurl helper functions.
+ * This file defines a high-level libcurl helper class.
  */
 
 #include "tiledb/rest/curl/curl.h"
@@ -41,7 +40,7 @@
 #define CURL_MAX_RETRIES 3
 
 namespace tiledb {
-namespace curl {
+namespace rest {
 
 /**
  * @brief Callback for saving libcurl response data
@@ -71,23 +70,43 @@ size_t write_memory_callback(
   return content_nbytes;
 }
 
-/**
- * Sets authorization (token or username+password) on the curl instance using
- * the given config instance.
- *
- * @param curl Curl instance to set authorization on
- * @param config TileDB config instance
- * @param headers Headers (may be modified)
- * @return Status
- */
-tiledb::sm::Status set_auth(
-    CURL* curl, const tiledb::sm::Config& config, struct curl_slist** headers) {
+Curl::Curl(const tiledb::sm::Config& config)
+    : config_(config)
+    , curl_(nullptr, curl_easy_cleanup) {
+}
+
+tiledb::sm::Status Curl::init() {
+  curl_.reset(curl_easy_init());
+
+  return tiledb::sm::Status::Ok();
+}
+
+std::string Curl::url_escape(const std::string& url) const {
+  if (curl_.get() == nullptr)
+    return "";
+
+  char* escaped_c = curl_easy_escape(curl_.get(), url.c_str(), url.length());
+  std::string escaped(escaped_c);
+  curl_free(escaped_c);
+  return escaped;
+}
+
+tiledb::sm::Status Curl::set_auth(
+    const tiledb::sm::Config& config, struct curl_slist** headers) const {
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Cannot set auth; curl instance is null."));
+
   const char* token = nullptr;
   RETURN_NOT_OK(config.get("rest.token", &token));
 
   if (token != nullptr) {
     *headers = curl_slist_append(
         *headers, (std::string("X-TILEDB-REST-API-Key: ") + token).c_str());
+    if (*headers == nullptr)
+      return LOG_STATUS(tiledb::sm::Status::RestError(
+          "Cannot set curl auth; curl_slist_append returned null."));
   } else {
     // Try username+password instead of token
     const char* username = nullptr;
@@ -109,22 +128,42 @@ tiledb::sm::Status set_auth(
   return tiledb::sm::Status::Ok();
 }
 
-/**
- * Fetches the contents of the given URL into the given buffer.
- *
- * @param curl pointer to curl instance
- * @param url URL to fetch
- * @param fetch Buffer that will store the response data
- * @return CURLcode
- */
-CURLcode curl_fetch_url(
-    CURL* curl, const char* url, tiledb::sm::Buffer* fetch) {
-  STATS_FUNC_IN(serialization_curl_fetch_url);
+tiledb::sm::Status Curl::set_content_type(
+    tiledb::sm::SerializationType serialization_type,
+    struct curl_slist** headers) const {
+  switch (serialization_type) {
+    case tiledb::sm::SerializationType::JSON:
+      *headers = curl_slist_append(*headers, "Content-Type: application/json");
+      break;
+    case tiledb::sm::SerializationType::CAPNP:
+      *headers = curl_slist_append(*headers, "Content-Type: application/capnp");
+      break;
+    default:
+      return LOG_STATUS(tiledb::sm::Status::RestError(
+          "Cannot set content-type header; unknown serialization format."));
+  }
 
-  CURLcode rcode = CURLE_OK;
+  if (*headers == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Cannot set content-type header; curl_slist_append returned null."));
+
+  return tiledb::sm::Status::Ok();
+}
+
+tiledb::sm::Status Curl::make_curl_request(
+    const char* url,
+    CURLcode* curl_code,
+    tiledb::sm::Buffer* returned_data) const {
+  STATS_FUNC_IN(serialization_curl_fetch_url);
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Cannot make curl request; curl instance is null."));
+
+  *curl_code = CURLE_OK;
   for (uint8_t i = 0; i < CURL_MAX_RETRIES; i++) {
-    fetch->set_size(0);
-    fetch->set_offset(0);
+    returned_data->set_size(0);
+    returned_data->set_offset(0);
 
     /* set url to fetch */
     curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -133,7 +172,7 @@ CURLcode curl_fetch_url(
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_memory_callback);
 
     /* pass fetch buffer pointer */
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)fetch);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)returned_data);
 
     /* set default user agent */
     // curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -151,28 +190,66 @@ CURLcode curl_fetch_url(
     curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 1);
 
     /* fetch the url */
-    rcode = curl_easy_perform(curl);
+    *curl_code = curl_easy_perform(curl);
     /* If Curl call was successful (not http status, but no socket error, etc)
      * break */
-    if (rcode == CURLE_OK)
+    if (*curl_code == CURLE_OK)
       break;
 
     /* Retry on curl errors */
   }
 
-  return rcode;
+  return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_curl_fetch_url);
 }
 
-tiledb::sm::Status post_data(
-    CURL* curl,
-    const tiledb::sm::Config& config,
+tiledb::sm::Status Curl::check_curl_errors(
+    CURLcode curl_code,
+    const std::string& operation,
+    const tiledb::sm::Buffer* returned_data) const {
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error checking curl error; curl instance is null."));
+
+  long http_code = 0;
+  if (curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code) != CURLE_OK)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error checking curl error; could not get HTTP code."));
+
+  if (curl_code != CURLE_OK || http_code >= 400) {
+    // TODO: Should see if message has error data object
+    std::stringstream msg;
+    msg << "Error in curl " << operation << " operation ; HTTP code "
+        << http_code << "; ";
+    if (returned_data->size() > 0) {
+      msg << " response data '"
+          << std::string(
+                 reinterpret_cast<const char*>(returned_data->data()),
+                 returned_data->size())
+          << "'.";
+    } else {
+      msg << " server response was empty.";
+    }
+
+    return LOG_STATUS(tiledb::sm::Status::RestError(msg.str()));
+  }
+
+  return tiledb::sm::Status::Ok();
+}
+
+tiledb::sm::Status Curl::post_data(
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* data,
     tiledb::sm::Buffer* returned_data) {
   STATS_FUNC_IN(serialization_post_data);
+
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error posting data; curl instance is null."));
 
   // TODO: If you post more than 2GB, use CURLOPT_POSTFIELDSIZE_LARGE.
   const uint64_t post_size_limit = uint64_t(2) * 1024 * 1024 * 1024;
@@ -180,14 +257,12 @@ tiledb::sm::Status post_data(
     return LOG_STATUS(
         tiledb::sm::Status::RestError("Error posting data; buffer size > 2GB"));
 
-  // Set auth for server
+  // Set auth and content-type for request
   struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK(set_auth(curl, config, &headers));
-
-  if (serialization_type == tiledb::sm::SerializationType::JSON)
-    headers = curl_slist_append(headers, "Content-Type: application/json");
-  else
-    headers = curl_slist_append(headers, "Content-Type: application/capnp");
+  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(
+      set_content_type(serialization_type, &headers),
+      curl_slist_free_all(headers));
 
   /* HTTP PUT please */
   curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -197,87 +272,70 @@ tiledb::sm::Status post_data(
   /* pass our list of custom made headers */
   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-  CURLcode ret = curl_fetch_url(curl, url.c_str(), returned_data);
+  CURLcode ret;
+  auto st = make_curl_request(url.c_str(), &ret, returned_data);
   curl_slist_free_all(headers);
+  RETURN_NOT_OK(st);
 
   // Check for errors
-  long httpCode = 0;
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
-  if (ret != CURLE_OK || httpCode >= 400) {
-    // TODO: Should see if message has error data object
-    std::string response =
-        returned_data->size() == 0 ?
-            "No error message from server" :
-            std::string(
-                static_cast<const char*>(returned_data->data()),
-                returned_data->size());
-    return LOG_STATUS(
-        tiledb::sm::Status::RestError("Error posting data: " + response));
-  }
+  RETURN_NOT_OK(check_curl_errors(ret, "POST", returned_data));
 
   return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_post_data);
 }
 
-tiledb::sm::Status get_data(
-    CURL* curl,
-    const tiledb::sm::Config& config,
+tiledb::sm::Status Curl::get_data(
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data) {
   STATS_FUNC_IN(serialization_get_data);
 
-  // Set auth for server
-  struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK(set_auth(curl, config, &headers));
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error getting data; curl instance is null."));
 
-  if (serialization_type == tiledb::sm::SerializationType::JSON)
-    headers = curl_slist_append(headers, "Content-Type: application/json");
-  else
-    headers = curl_slist_append(headers, "Content-Type: application/capnp");
+  // Set auth and content-type for request
+  struct curl_slist* headers = nullptr;
+  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(
+      set_content_type(serialization_type, &headers),
+      curl_slist_free_all(headers));
 
   /* pass our list of custom made headers */
   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-  CURLcode ret = curl_fetch_url(curl, url.c_str(), returned_data);
+  CURLcode ret;
+  auto st = make_curl_request(url.c_str(), &ret, returned_data);
   curl_slist_free_all(headers);
+  RETURN_NOT_OK(st);
 
   // Check for errors
-  long httpCode = 0;
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
-  if (ret != CURLE_OK || httpCode >= 400) {
-    // TODO: Should see if message has error data object
-    std::string response =
-        returned_data->size() == 0 ?
-            "No error message from server" :
-            std::string(
-                static_cast<const char*>(returned_data->data()),
-                returned_data->size());
-    return LOG_STATUS(
-        tiledb::sm::Status::RestError("Error getting data: " + response));
-  }
+  RETURN_NOT_OK(check_curl_errors(ret, "GET", returned_data));
+
   return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_get_data);
 }
 
-tiledb::sm::Status delete_data(
-    CURL* curl,
-    const tiledb::sm::Config& config,
+tiledb::sm::Status Curl::delete_data(
     const std::string& url,
     tiledb::sm::SerializationType serialization_type,
     tiledb::sm::Buffer* returned_data) {
   STATS_FUNC_IN(serialization_delete_data);
 
-  // Set auth for server
-  struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK(set_auth(curl, config, &headers));
+  CURL* curl = curl_.get();
+  if (curl == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error deleting data; curl instance is null."));
 
-  if (serialization_type == tiledb::sm::SerializationType::JSON)
-    headers = curl_slist_append(headers, "Content-Type: application/json");
-  else
-    headers = curl_slist_append(headers, "Content-Type: application/capnp");
+  // Set auth and content-type for request
+  struct curl_slist* headers = nullptr;
+  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(
+      set_content_type(serialization_type, &headers),
+      curl_slist_free_all(headers));
 
   /* HTTP DELETE please */
   curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -285,27 +343,18 @@ tiledb::sm::Status delete_data(
   /* pass our list of custom made headers */
   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-  CURLcode ret = curl_fetch_url(curl, url.c_str(), returned_data);
+  CURLcode ret;
+  auto st = make_curl_request(url.c_str(), &ret, returned_data);
   curl_slist_free_all(headers);
+  RETURN_NOT_OK(st);
 
   // Check for errors
-  long httpCode = 0;
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
-  if (ret != CURLE_OK || httpCode >= 400) {
-    // TODO: Should see if message has error data object
-    std::string response =
-        returned_data->size() == 0 ?
-            "No error message from server" :
-            std::string(
-                static_cast<const char*>(returned_data->data()),
-                returned_data->size());
-    return LOG_STATUS(
-        tiledb::sm::Status::RestError("Error deleting data: " + response));
-  }
+  RETURN_NOT_OK(check_curl_errors(ret, "DELETE", returned_data));
+
   return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_delete_data);
 }
 
-}  // namespace curl
+}  // namespace rest
 }  // namespace tiledb
