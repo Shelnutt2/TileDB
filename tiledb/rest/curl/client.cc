@@ -82,10 +82,7 @@ tiledb::sm::Status get_array_schema_from_rest(
         "Error getting array schema from REST; server returned no data."));
 
   return rest::capnp::array_schema_deserialize(
-      array_schema,
-      serialization_type,
-      static_cast<const char*>(returned_data.data()),
-      returned_data.size());
+      array_schema, serialization_type, returned_data);
 
   STATS_FUNC_OUT(serialization_get_array_schema_from_rest);
 }
@@ -105,19 +102,9 @@ tiledb::sm::Status post_array_schema_to_rest(
         "Error posting array schema to REST; "
         "config param rest.organization cannot be null."));
 
-  // TODO: Wrap this in a Buffer
-  char* serialized_string = nullptr;
-  uint64_t serialized_string_size = 0;
-  tiledb::sm::Status status = rest::capnp::array_schema_serialize(
-      array_schema,
-      serialization_type,
-      &serialized_string,
-      &serialized_string_size);
-  if (!status.ok()) {
-    if (serialized_string != nullptr)
-      delete[] serialized_string;
-    return status;
-  }
+  tiledb::sm::Buffer serialized;
+  RETURN_NOT_OK(rest::capnp::array_schema_serialize(
+      array_schema, serialization_type, &serialized));
 
   // Escape the URL and make a copy
   auto curl = init_curl_safe();
@@ -126,16 +113,9 @@ tiledb::sm::Status post_array_schema_to_rest(
                     "/" + uri_escaped;
   curl_free(uri_escaped);
 
-  tiledb::sm::Buffer data(serialized_string, serialized_string_size, false);
   tiledb::sm::Buffer returned_data;
-  auto st = curl::post_data(
-      curl.get(), config, url, serialization_type, &data, &returned_data);
-
-  // Always cleanup serialized string
-  if (serialized_string != nullptr)
-    delete[] serialized_string;
-
-  return st;
+  return curl::post_data(
+      curl.get(), config, url, serialization_type, &serialized, &returned_data);
 
   STATS_FUNC_OUT(serialization_post_array_schema_to_rest);
 }
@@ -360,16 +340,9 @@ tiledb::sm::Status submit_query_to_rest(
         "config param rest.organization cannot be null."));
 
   // Serialize data to send
-  // TODO: Wrap this in a Buffer
-  char* serialized_string = nullptr;
-  uint64_t serialized_string_size = 0;
-  tiledb::sm::Status status = rest::capnp::query_serialize(
-      query, serialization_type, &serialized_string, &serialized_string_size);
-  if (!status.ok()) {
-    if (serialized_string != nullptr)
-      delete[] serialized_string;
-    return status;
-  }
+  tiledb::sm::Buffer serialized;
+  RETURN_NOT_OK(
+      rest::capnp::query_serialize(query, serialization_type, &serialized));
 
   // Escape the URL and make a copy
   auto curl = init_curl_safe();
@@ -379,14 +352,9 @@ tiledb::sm::Status submit_query_to_rest(
                     tiledb::sm::query_type_str(query->type());
   curl_free(uri_escaped);
 
-  tiledb::sm::Buffer data(serialized_string, serialized_string_size, false);
   tiledb::sm::Buffer returned_data;
   auto st = curl::post_data(
-      curl.get(), config, url, serialization_type, &data, &returned_data);
-
-  // Always cleanup serialized string
-  if (serialized_string != nullptr)
-    delete[] serialized_string;
+      curl.get(), config, url, serialization_type, &serialized, &returned_data);
 
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(tiledb::sm::Status::RestError(
@@ -394,10 +362,7 @@ tiledb::sm::Status submit_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      query,
-      serialization_type,
-      static_cast<const char*>(returned_data.data()),
-      returned_data.size());
+      query, serialization_type, returned_data);
 
   STATS_FUNC_OUT(serialization_submit_query_to_rest);
 }
@@ -418,16 +383,9 @@ tiledb::sm::Status finalize_query_to_rest(
         "config param rest.organization cannot be null."));
 
   // Serialize data to send
-  // TODO: Wrap this in a Buffer
-  char* serialized_string = nullptr;
-  uint64_t serialized_string_size = 0;
-  tiledb::sm::Status status = rest::capnp::query_serialize(
-      query, serialization_type, &serialized_string, &serialized_string_size);
-  if (!status.ok()) {
-    if (serialized_string != nullptr)
-      delete[] serialized_string;
-    return status;
-  }
+  tiledb::sm::Buffer serialized;
+  RETURN_NOT_OK(
+      rest::capnp::query_serialize(query, serialization_type, &serialized));
 
   // Escape the URL and make a copy
   auto curl = init_curl_safe();
@@ -437,14 +395,9 @@ tiledb::sm::Status finalize_query_to_rest(
                     tiledb::sm::query_type_str(query->type());
   curl_free(uri_escaped);
 
-  tiledb::sm::Buffer data(serialized_string, serialized_string_size, false);
   tiledb::sm::Buffer returned_data;
   auto st = curl::post_data(
-      curl.get(), config, url, serialization_type, &data, &returned_data);
-
-  // Always cleanup serialized string
-  if (serialized_string != nullptr)
-    delete[] serialized_string;
+      curl.get(), config, url, serialization_type, &serialized, &returned_data);
 
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(tiledb::sm::Status::RestError(
@@ -452,10 +405,7 @@ tiledb::sm::Status finalize_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      query,
-      serialization_type,
-      static_cast<const char*>(returned_data.data()),
-      returned_data.size());
+      query, serialization_type, returned_data);
 
   STATS_FUNC_OUT(serialization_finalize_query_to_rest);
 }
