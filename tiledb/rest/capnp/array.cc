@@ -576,9 +576,9 @@ std::unique_ptr<tiledb::sm::ArraySchema> array_schema_from_capnp(
 tiledb::sm::Status array_schema_serialize(
     tiledb::sm::ArraySchema* array_schema,
     tiledb::sm::SerializationType serialize_type,
-    char** serialized_string,
-    uint64_t* serialized_string_length) {
+    tiledb::sm::Buffer* serialized_buffer) {
   STATS_FUNC_IN(serialization_array_schema_serialize);
+
   try {
     ::capnp::MallocMessageBuilder message;
     ArraySchema::Builder arraySchemaBuilder = message.initRoot<ArraySchema>();
@@ -589,22 +589,27 @@ tiledb::sm::Status array_schema_serialize(
       return tiledb::sm::Status::Error(
           "Could not serialize array_schema: " + status.to_string());
 
+    serialized_buffer->reset_size();
+    serialized_buffer->reset_offset();
+
     switch (serialize_type) {
       case tiledb::sm::SerializationType::JSON: {
         ::capnp::JsonCodec json;
         kj::String capnp_json = json.encode(arraySchemaBuilder);
+        const auto json_len = capnp_json.size();
+        const char nul = '\0';
         // size does not include needed null terminator, so add +1
-        *serialized_string_length = capnp_json.size() + 1;
-        *serialized_string = new char[*serialized_string_length];
-        strcpy(*serialized_string, capnp_json.cStr());
+        RETURN_NOT_OK(serialized_buffer->realloc(json_len + 1));
+        RETURN_NOT_OK(serialized_buffer->write(capnp_json.cStr(), json_len))
+        RETURN_NOT_OK(serialized_buffer->write(&nul, 1));
         break;
       }
       case tiledb::sm::SerializationType::CAPNP: {
         kj::Array<::capnp::word> protomessage = messageToFlatArray(message);
         kj::ArrayPtr<const char> message_chars = protomessage.asChars();
-        *serialized_string = new char[message_chars.size()];
-        memcpy(*serialized_string, message_chars.begin(), message_chars.size());
-        *serialized_string_length = message_chars.size();
+        const auto nbytes = message_chars.size();
+        RETURN_NOT_OK(serialized_buffer->realloc(nbytes));
+        RETURN_NOT_OK(serialized_buffer->write(message_chars.begin(), nbytes));
         break;
       }
       default: {
@@ -621,15 +626,16 @@ tiledb::sm::Status array_schema_serialize(
         std::string("Error serializing array schema: ") + e.what());
   }
   return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_schema_serialize);
 }
 
 tiledb::sm::Status array_schema_deserialize(
     tiledb::sm::ArraySchema** array_schema,
     tiledb::sm::SerializationType serialize_type,
-    const char* serialized_string,
-    const uint64_t serialized_string_length) {
+    const tiledb::sm::Buffer& serialized_buffer) {
   STATS_FUNC_IN(serialization_array_schema_deserialize);
+
   try {
     std::unique_ptr<tiledb::sm::ArraySchema> decoded_array_schema = nullptr;
 
@@ -639,7 +645,9 @@ tiledb::sm::Status array_schema_deserialize(
         ::capnp::MallocMessageBuilder message_builder;
         rest::capnp::ArraySchema::Builder array_schema_builder =
             message_builder.initRoot<rest::capnp::ArraySchema>();
-        json.decode(kj::StringPtr(serialized_string), array_schema_builder);
+        json.decode(
+            kj::StringPtr(static_cast<const char*>(serialized_buffer.data())),
+            array_schema_builder);
         rest::capnp::ArraySchema::Reader array_schema_reader =
             array_schema_builder.asReader();
         decoded_array_schema =
@@ -647,15 +655,11 @@ tiledb::sm::Status array_schema_deserialize(
         break;
       }
       case tiledb::sm::SerializationType::CAPNP: {
-        const kj::byte* mBytes =
-            reinterpret_cast<const kj::byte*>(serialized_string);
+        const auto mBytes =
+            reinterpret_cast<const kj::byte*>(serialized_buffer.data());
         ::capnp::FlatArrayMessageReader reader(kj::arrayPtr(
             reinterpret_cast<const ::capnp::word*>(mBytes),
-            serialized_string_length / sizeof(::capnp::word)));
-        // capnp::FlatArrayMessageReader reader(kj::arrayPtr<const
-        // kj::byte>(reinterpret_cast<const kj::byte*>(serialized_string),
-        // serialized_string_length));
-
+            serialized_buffer.size() / sizeof(::capnp::word)));
         ArraySchema::Reader array_schema_reader =
             reader.getRoot<rest::capnp::ArraySchema>();
         decoded_array_schema =
@@ -689,6 +693,7 @@ tiledb::sm::Status array_schema_deserialize(
         std::string("Error serializing array schema: ") + e.what());
   }
   return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_schema_deserialize);
 }
 
