@@ -135,14 +135,12 @@ std::unique_ptr<tiledb::sm::ArraySchema> array_schema_from_capnp(
 tiledb::sm::Status array_schema_serialize(
     tiledb::sm::ArraySchema* array_schema,
     tiledb::sm::SerializationType serialize_type,
-    char** serialized_string,
-    uint64_t* serialized_string_length);
+    tiledb::sm::Buffer* serialized_buffer);
 
 tiledb::sm::Status array_schema_deserialize(
     tiledb::sm::ArraySchema** array_schema,
     tiledb::sm::SerializationType serialize_type,
-    const char* serialized_string,
-    const uint64_t serialized_string_length);
+    const tiledb::sm::Buffer& serialized_buffer);
 
 }  // namespace capnp
 }  // namespace rest
