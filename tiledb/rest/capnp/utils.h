@@ -43,6 +43,14 @@ namespace capnp {
 namespace utils {
 
 /**
+ * Returns true if the given pointer is aligned to the given number of bytes.
+ */
+template <size_t bytes>
+inline bool is_aligned(const void* ptr) {
+  return ((uintptr_t)ptr) % bytes == 0;
+}
+
+/**
  * Calls `set{Int8,Int16,Float32,...}(::kj::ArrayPtr<const T> value)` as
  * necessary on the given Capnp builder object, by dispatching on the given
  * TileDB type.
@@ -154,6 +162,101 @@ tiledb::sm::Status set_capnp_scalar(
     default:
       return tiledb::sm::Status::RestError(
           "Cannot set capnp scalar; unknown TileDB datatype.");
+  }
+
+  return tiledb::sm::Status::Ok();
+}
+
+/**
+ * Makes a copy of a typed Capnp List into the given output Buffer.
+ *
+ * @tparam T The primitive type of elements in the list.
+ * @tparam CapnpT The CapnProto List Reader type.
+ * @param list_reader The list Reader
+ * @param buffer Buffer that will contain a copy of the list.
+ * @return Status
+ */
+template <typename T, typename CapnpT>
+tiledb::sm::Status copy_capnp_list(
+    const CapnpT& list_reader, tiledb::sm::Buffer* buffer) {
+  const auto nelts = list_reader.size();
+  RETURN_NOT_OK(buffer->realloc(nelts * sizeof(T)));
+
+  for (size_t i = 0; i < nelts; i++) {
+    T val = list_reader[i];
+    RETURN_NOT_OK(buffer->write(&val, sizeof(val)));
+  }
+
+  return tiledb::sm::Status::Ok();
+}
+
+/**
+ * Makes a copy of a typed Capnp List into the given output Buffer.
+ *
+ * This calls `get{Int8,Int16,Float32,...}()` to get the typed list as
+ * necessary on the given Capnp reader object, by dispatching on the given
+ * TileDB datatype. It then calls
+ * `copy_capnp_list(const CapnpT& list_reader, tiledb::sm::Buffer* buffer)` to
+ * copy every element in the capnp list to the buffer.
+ *
+ * @tparam CapnpT The CapnProto type. Must define the `get*` functions.
+ * @param reader The CapnProto reader instance.
+ * @param datatype The TileDB datatype of the underlying list.
+ * @param buffer Buffer that will contain a copy of the list.
+ * @return Status
+ */
+template <typename CapnpT>
+tiledb::sm::Status copy_capnp_list(
+    const CapnpT& reader,
+    tiledb::sm::Datatype datatype,
+    tiledb::sm::Buffer* buffer) {
+  buffer->reset_size();
+  buffer->reset_offset();
+
+  switch (datatype) {
+    case tiledb::sm::Datatype::INT8:
+      if (reader.hasInt8())
+        RETURN_NOT_OK(copy_capnp_list<int8_t>(reader.getInt8(), buffer));
+      break;
+    case tiledb::sm::Datatype::UINT8:
+      if (reader.hasUint8())
+        RETURN_NOT_OK(copy_capnp_list<uint8_t>(reader.getUint8(), buffer));
+      break;
+    case tiledb::sm::Datatype::INT16:
+      if (reader.hasInt16())
+        RETURN_NOT_OK(copy_capnp_list<int16_t>(reader.getInt16(), buffer));
+      break;
+    case tiledb::sm::Datatype::UINT16:
+      if (reader.hasUint16())
+        RETURN_NOT_OK(copy_capnp_list<uint16_t>(reader.getUint16(), buffer));
+      break;
+    case tiledb::sm::Datatype::INT32:
+      if (reader.hasInt32())
+        RETURN_NOT_OK(copy_capnp_list<int32_t>(reader.getInt32(), buffer));
+      break;
+    case tiledb::sm::Datatype::UINT32:
+      if (reader.hasUint32())
+        RETURN_NOT_OK(copy_capnp_list<uint32_t>(reader.getUint32(), buffer));
+      break;
+    case tiledb::sm::Datatype::INT64:
+      if (reader.hasInt64())
+        RETURN_NOT_OK(copy_capnp_list<int64_t>(reader.getInt64(), buffer));
+      break;
+    case tiledb::sm::Datatype::UINT64:
+      if (reader.hasUint64())
+        RETURN_NOT_OK(copy_capnp_list<uint64_t>(reader.getUint64(), buffer));
+      break;
+    case tiledb::sm::Datatype::FLOAT32:
+      if (reader.hasFloat32())
+        RETURN_NOT_OK(copy_capnp_list<float>(reader.getFloat32(), buffer));
+      break;
+    case tiledb::sm::Datatype::FLOAT64:
+      if (reader.hasFloat64())
+        RETURN_NOT_OK(copy_capnp_list<double>(reader.getFloat64(), buffer));
+      break;
+    default:
+      return tiledb::sm::Status::RestError(
+          "Cannot copy capnp list; unhandled TileDB datatype.");
   }
 
   return tiledb::sm::Status::Ok();
