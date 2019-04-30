@@ -268,404 +268,312 @@ Status Query::capnp(rest::capnp::Query::Builder* queryBuilder) {
     return LOG_STATUS(Status::QueryError(
         "Cannot serialize; global order serialization not supported."));
 
-  queryBuilder->setType(query_type_str(this->type()));
-  queryBuilder->setLayout(layout_str(this->layout()));
-  queryBuilder->setStatus(query_status_str(this->status()));
+  const auto* schema = array_schema();
+  if (schema == nullptr)
+    return LOG_STATUS(
+        Status::QueryError("Cannot serialize; array schema is null."));
 
-  if (this->array_ != nullptr) {
-    rest::capnp::Array::Builder arrayBuilder = queryBuilder->initArray();
-    this->array_->capnp(&arrayBuilder);
+  const auto* domain = schema->domain();
+  if (domain == nullptr)
+    return LOG_STATUS(
+        Status::QueryError("Cannot serialize; array domain is null."));
+
+  // Serialize basic fields
+  queryBuilder->setType(query_type_str(type_));
+  queryBuilder->setLayout(layout_str(layout_));
+  queryBuilder->setStatus(query_status_str(status_));
+
+  // Serialize array
+  if (array_ != nullptr) {
+    auto builder = queryBuilder->initArray();
+    RETURN_NOT_OK(array_->capnp(&builder));
   }
 
   // Serialize subarray
-  rest::capnp::DomainArray::Builder subarrayBuilder =
-      queryBuilder->initSubarray();
-  if (this->array_schema() != nullptr) {
-    const auto* schema = array_schema();
-    if (schema->domain() == nullptr)
-      return tiledb::sm::Status::Error(
-          "Domain was null from array schema in query::capnp()");
-
-    const auto domain_type = schema->domain()->type();
-    const void* subarray =
-        type_ == QueryType::READ ? reader_.subarray() : writer_.subarray();
-    const uint64_t subarray_size = 2 * schema->coords_size();
-    const uint64_t subarray_length =
-        subarray_size / datatype_size(schema->coords_type());
-
-    switch (domain_type) {
-      case tiledb::sm::Datatype::CHAR:
-      case tiledb::sm::Datatype::STRING_ASCII:
-      case tiledb::sm::Datatype::STRING_UTF8:
-      case tiledb::sm::Datatype::STRING_UTF16:
-      case tiledb::sm::Datatype::STRING_UTF32:
-      case tiledb::sm::Datatype::STRING_UCS2:
-      case tiledb::sm::Datatype::STRING_UCS4:
-      case tiledb::sm::Datatype::ANY:
-        // String dimensions not yet supported
-        return Status::RestError(
-            "Cannot serialize query subarray; unsupported domain type");
-      default:
-        if (subarray != nullptr)
-          RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-              subarrayBuilder, domain_type, subarray, subarray_length));
-        break;
-    }
-  }
-
-  std::vector<std::string> attributes = this->attributes();
-
-  ::capnp::List<::tiledb::rest::capnp::AttributeBufferHeader>::Builder
-      attributeBufferHeaderBuilder =
-          queryBuilder->initBuffers(attributes.size());
-
-  uint64_t totalNumOfBytesInBuffers = 0;
-  uint64_t totalNumOfBytesInOffsets = 0;
-  uint64_t totalNumOfBytesInVarBuffers = 0;
-  // for (auto attribute_name : attributes) {
-  for (uint64_t i = 0; i < attributes.size(); i++) {
-    std::string attribute_name = attributes[i];
-    ::tiledb::rest::capnp::AttributeBufferHeader::Builder
-        attributeBufferHeader = attributeBufferHeaderBuilder[i];
-    const tiledb::sm::Attribute* attribute =
-        this->array_schema()->attribute(attribute_name);
-    if (attribute != nullptr) {
-      attributeBufferHeader.setAttributeName(attributes[i]);
-      attributeBufferHeader.setType(datatype_str(attribute->type()));
-
-      auto attr_type = attribute->type();
-      auto buff = type_ == QueryType::READ ? reader_.buffer(attribute_name) :
-                                             writer_.buffer(attribute_name);
-
-      if (attribute->var_size() &&
-          (buff.buffer_var_ != nullptr && buff.buffer_var_size_ != nullptr)) {
-        // Variable-sized attribute.
-        if (buff.buffer_ == nullptr || buff.buffer_size_ == nullptr)
-          return Status::RestError(
-              "Cannot serialize query; variable-length attribute has no offset "
-              "buffer set.");
-        totalNumOfBytesInVarBuffers += *buff.buffer_var_size_;
-        attributeBufferHeader.setBufferSizeInBytes(*buff.buffer_var_size_);
-        attributeBufferHeader.setDatatypeSizeInBytes(datatype_size(attr_type));
-        totalNumOfBytesInOffsets += *buff.buffer_size_;
-        attributeBufferHeader.setOffsetBufferSizeInBytes(*buff.buffer_size_);
-        RETURN_NOT_OK(set_buffer(
-            attributes[i],
-            static_cast<uint64_t*>(buff.buffer_),
-            buff.buffer_size_,
-            buff.buffer_var_,
-            buff.buffer_var_size_))
-      } else if (buff.buffer_ != nullptr && buff.buffer_size_ != nullptr) {
-        totalNumOfBytesInBuffers += *buff.buffer_size_;
-        attributeBufferHeader.setBufferSizeInBytes(*buff.buffer_size_);
-        attributeBufferHeader.setDatatypeSizeInBytes(datatype_size(attr_type));
-        attributeBufferHeader.setOffsetBufferSizeInBytes(0);
-        RETURN_NOT_OK(
-            set_buffer(attributes[i], buff.buffer_, buff.buffer_size_))
+  const void* subarray =
+      type_ == QueryType::READ ? reader_.subarray() : writer_.subarray();
+  const uint64_t subarray_size = 2 * schema->coords_size();
+  const uint64_t subarray_length =
+      subarray_size / datatype_size(schema->coords_type());
+  const auto domain_type = domain->type();
+  switch (domain_type) {
+    case tiledb::sm::Datatype::CHAR:
+    case tiledb::sm::Datatype::STRING_ASCII:
+    case tiledb::sm::Datatype::STRING_UTF8:
+    case tiledb::sm::Datatype::STRING_UTF16:
+    case tiledb::sm::Datatype::STRING_UTF32:
+    case tiledb::sm::Datatype::STRING_UCS2:
+    case tiledb::sm::Datatype::STRING_UCS4:
+    case tiledb::sm::Datatype::ANY:
+      // String dimensions not yet supported
+      return LOG_STATUS(
+          Status::QueryError("Cannot serialize; unsupported domain type."));
+    default:
+      if (subarray != nullptr) {
+        auto subarray_builder = queryBuilder->initSubarray();
+        RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
+            subarray_builder, domain_type, subarray, subarray_length));
       }
+      break;
+  }
+
+  // Serialize attribute buffer metadata
+  const auto attr_names = attributes();
+  auto attr_buffers_builder =
+      queryBuilder->initAttributeBufferHeaders(attr_names.size());
+  uint64_t total_fixed_len_bytes = 0;
+  uint64_t total_var_len_bytes = 0;
+  for (uint64_t i = 0; i < attr_names.size(); i++) {
+    auto attr_buffer_builder = attr_buffers_builder[i];
+    const auto& attribute_name = attr_names[i];
+    const auto& buff = type_ == QueryType::READ ?
+                           reader_.buffer(attribute_name) :
+                           writer_.buffer(attribute_name);
+    const auto* attr = schema->attribute(attribute_name);
+    if (attr == nullptr)
+      return LOG_STATUS(Status::QueryError(
+          "Cannot serialize; no attribute named '" + attribute_name + "'."));
+
+    attr_buffer_builder.setName(attribute_name);
+    if (attr->var_size() &&
+        (buff.buffer_var_ != nullptr && buff.buffer_var_size_ != nullptr)) {
+      // Variable-sized attribute.
+      if (buff.buffer_ == nullptr || buff.buffer_size_ == nullptr)
+        return LOG_STATUS(Status::QueryError(
+            "Cannot serialize; no offset buffer set for attribute '" +
+            attribute_name + "'."));
+      total_var_len_bytes += *buff.buffer_var_size_;
+      attr_buffer_builder.setVarLenBufferSizeInBytes(*buff.buffer_var_size_);
+      total_fixed_len_bytes += *buff.buffer_size_;
+      attr_buffer_builder.setFixedLenBufferSizeInBytes(*buff.buffer_size_);
+    } else if (buff.buffer_ != nullptr && buff.buffer_size_ != nullptr) {
+      // Fixed-length attribute
+      total_fixed_len_bytes += *buff.buffer_size_;
+      attr_buffer_builder.setFixedLenBufferSizeInBytes(*buff.buffer_size_);
+      attr_buffer_builder.setVarLenBufferSizeInBytes(0);
     }
   }
 
-  queryBuilder->setTotalNumOfBytesInBuffers(totalNumOfBytesInBuffers);
-  queryBuilder->setTotalNumOfBytesInOffsets(totalNumOfBytesInOffsets);
-  queryBuilder->setTotalNumOfBytesInVarBuffers(totalNumOfBytesInVarBuffers);
+  queryBuilder->setTotalFixedLengthBufferBytes(total_fixed_len_bytes);
+  queryBuilder->setTotalVarLenBufferBytes(total_var_len_bytes);
 
-  if (this->layout() == tiledb::sm::Layout::GLOBAL_ORDER &&
-      this->type() == tiledb::sm::QueryType::WRITE) {
-    rest::capnp::Writer::Builder writerBuilder = queryBuilder->initWriter();
-    auto status = writer_.capnp(&writerBuilder);
-    if (!status.ok())
-      return status;
-  } else if (this->type() == tiledb::sm::QueryType::READ) {
-    rest::capnp::QueryReader::Builder queryReaderBuilder =
-        queryBuilder->initReader();
-    auto status = reader_.capnp(&queryReaderBuilder);
-    if (!status.ok())
-      return status;
+  if (type_ == QueryType::READ) {
+    auto builder = queryBuilder->initReader();
+    RETURN_NOT_OK(reader_.capnp(&builder));
+  } else {
+    auto builder = queryBuilder->initWriter();
+    RETURN_NOT_OK(writer_.capnp(&builder));
   }
 
   return Status::Ok();
+
   STATS_FUNC_OUT(serialization_query_capnp);
 }
 
 tiledb::sm::Status Query::from_capnp(
     rest::capnp::Query::Reader* query, void* buffer_start) {
   STATS_FUNC_IN(serialization_query_from_capnp);
-  tiledb::sm::Status status;
 
-  // QueryType to parse, set default to avoid compiler uninitialized warnings
+  const auto* schema = array_schema();
+  if (schema == nullptr)
+    return LOG_STATUS(
+        Status::QueryError("Cannot deserialize; array schema is null."));
+
+  const auto* domain = schema->domain();
+  if (domain == nullptr)
+    return LOG_STATUS(
+        Status::QueryError("Cannot deserialize; array domain is null."));
+
+  if (array_ == nullptr)
+    return LOG_STATUS(
+        Status::QueryError("Cannot deserialize; array pointer is null."));
+
+  // Deserialize query type (sanity check).
   QueryType query_type = QueryType::READ;
-  status = query_type_enum(query->getType().cStr(), &query_type);
-  if (!status.ok())
-    return status;
-  if (query_type != this->type())
-    return tiledb::sm::Status::QueryError(
-        "Query opened for " + query_type_str(this->type()) +
-        " but got serialized type for " + query->getType().cStr());
-  this->type_ = query_type;
+  RETURN_NOT_OK(query_type_enum(query->getType().cStr(), &query_type));
+  if (query_type != type_)
+    return LOG_STATUS(Status::QueryError(
+        "Cannot deserialize; Query opened for " + query_type_str(type_) +
+        " but got serialized type for " + query->getType().cStr()));
 
-  // Layout to parse, set default to avoid compiler uninitialized warnings
-  Layout layout = Layout::ROW_MAJOR;
-  status = layout_enum(query->getLayout().cStr(), &layout);
-  if (!status.ok())
-    return status;
-  this->set_layout(layout);
+  // Deserialize layout.
+  Layout layout = Layout::UNORDERED;
+  RETURN_NOT_OK(layout_enum(query->getLayout().cStr(), &layout));
+  RETURN_NOT_OK(set_layout(layout));
 
-  // Load array details
-  this->array_->from_capnp(query->getArray());
+  // Deserialize array instance.
+  RETURN_NOT_OK(array_->from_capnp(query->getArray()));
 
-  // Override any existing writer or reader first
-  // This prevents the set_subarray() from calling
-  // writer.reset() which will delete the fragement metadata!!
-  if (this->type() == QueryType::WRITE)
-    this->writer_.reset_global_write_state();
-
-  // If we are dense, unordered and writing, we can not set the subarray that
-  // was serialized thats okay because it is just domain, if we set to nullptr
-  // it will have same effect
-  if (this->layout() == Layout::UNORDERED && this->type() == QueryType::WRITE &&
-      this->array_schema()->dense()) {
-    status = this->set_subarray(nullptr);
+  // Deserialize and set subarray.
+  const bool sparse_write = !schema->dense() || layout_ == Layout::UNORDERED;
+  if (sparse_write) {
+    // Sparse writes cannot have a subarray; clear it here.
+    RETURN_NOT_OK(set_subarray(nullptr));
   } else {
-    // Set subarray
-    rest::capnp::DomainArray::Reader subarrayReader = query->getSubarray();
-    switch (array_schema()->domain()->type()) {
-      case tiledb::sm::Datatype::INT8: {
-        if (subarrayReader.hasInt8()) {
-          auto subarrayCapnp = subarrayReader.getInt8();
-          std::vector<int8_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::UINT8: {
-        if (subarrayReader.hasUint8()) {
-          auto subarrayCapnp = subarrayReader.getUint8();
-          std::vector<uint8_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::INT16: {
-        if (subarrayReader.hasInt16()) {
-          auto subarrayCapnp = subarrayReader.getInt16();
-          std::vector<int16_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::UINT16: {
-        if (subarrayReader.hasUint16()) {
-          auto subarrayCapnp = subarrayReader.getUint16();
-          std::vector<uint16_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::INT32: {
-        if (subarrayReader.hasInt32()) {
-          auto subarrayCapnp = subarrayReader.getInt32();
-          std::vector<int32_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::UINT32: {
-        if (subarrayReader.hasUint32()) {
-          auto subarrayCapnp = subarrayReader.getUint32();
-          std::vector<uint32_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::INT64: {
-        if (subarrayReader.hasInt64()) {
-          auto subarrayCapnp = subarrayReader.getInt64();
-          std::vector<int64_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::UINT64: {
-        if (subarrayReader.hasUint64()) {
-          auto subarrayCapnp = subarrayReader.getUint64();
-          std::vector<uint64_t> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::FLOAT32: {
-        if (subarrayReader.hasFloat32()) {
-          auto subarrayCapnp = subarrayReader.getFloat32();
-          std::vector<float> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::FLOAT64: {
-        if (subarrayReader.hasFloat64()) {
-          auto subarrayCapnp = subarrayReader.getFloat64();
-          std::vector<double> subarray(subarrayCapnp.size());
-          for (size_t i = 0; i < subarrayCapnp.size(); i++)
-            subarray[i] = subarrayCapnp[i];
-          status = this->set_subarray(subarray.data());
-        }
-        break;
-      }
-      case tiledb::sm::Datatype::CHAR:
-      case tiledb::sm::Datatype::STRING_ASCII:
-      case tiledb::sm::Datatype::STRING_UTF8:
-      case tiledb::sm::Datatype::STRING_UTF16:
-      case tiledb::sm::Datatype::STRING_UTF32:
-      case tiledb::sm::Datatype::STRING_UCS2:
-      case tiledb::sm::Datatype::STRING_UCS4:
-      case tiledb::sm::Datatype::ANY:
-        // Not supported domain type
-        return Status::Error("Unsupport domain type");
-        break;
-    }
+    auto subarray_reader = query->getSubarray();
+    Buffer subarray_buff;
+    RETURN_NOT_OK(rest::capnp::utils::copy_capnp_list(
+        subarray_reader, domain->type(), &subarray_buff));
+    RETURN_NOT_OK(set_subarray(subarray_buff.data()));
   }
 
-  if (!status.ok()) {
-    LOG_STATUS(status);
-    throw std::runtime_error(status.to_string());
-  }
-
-  if (query->hasBuffers()) {
-    ::capnp::List<rest::capnp::AttributeBufferHeader>::Reader buffers =
-        query->getBuffers();
-
+  // Deserialize and set attribute buffers.
+  if (query->hasAttributeBufferHeaders()) {
+    auto buffer_headers = query->getAttributeBufferHeaders();
     auto attribute_buffer_start = static_cast<char*>(buffer_start);
-    for (rest::capnp::AttributeBufferHeader::Reader buffer : buffers) {
-      auto attributeName = buffer.getAttributeName().cStr();
-      if (std::string(attributeName).empty()) {
-        continue;
-      }
+    for (auto buffer_header : buffer_headers) {
+      std::string attribute_name = buffer_header.getName().cStr();
+      const auto* attr = schema->attribute(attribute_name);
+      if (attr == nullptr)
+        return LOG_STATUS(Status::QueryError(
+            "Cannot deserialize; no attribute named '" + attribute_name +
+            "' in array schema."));
 
-      auto offset_buffer_size_in_bytes = new uint64_t;
-      *offset_buffer_size_in_bytes = buffer.getOffsetBufferSizeInBytes();
-      auto buffer_size_in_bytes = new uint64_t;
-      *buffer_size_in_bytes = buffer.getBufferSizeInBytes();
-
-      // check to see if the query already has said buffer
-      uint64_t* existingBufferOffset = nullptr;
-      uint64_t* existingBufferOffsetSize = nullptr;
-      void* existingBuffer = nullptr;
-      uint64_t* existingBufferSize = nullptr;
-      if (*offset_buffer_size_in_bytes) {
-        this->get_buffer(
-            attributeName,
-            &existingBufferOffset,
-            &existingBufferOffsetSize,
-            &existingBuffer,
-            &existingBufferSize);
+      // Get any buffers already set on this query object.
+      uint64_t* existing_offset_buffer = nullptr;
+      uint64_t* existing_offset_buffer_size = nullptr;
+      void* existing_buffer = nullptr;
+      uint64_t* existing_buffer_size = nullptr;
+      if (attr->var_size()) {
+        RETURN_NOT_OK(get_buffer(
+            attribute_name.c_str(),
+            &existing_offset_buffer,
+            &existing_offset_buffer_size,
+            &existing_buffer,
+            &existing_buffer_size));
       } else {
-        this->get_buffer(attributeName, &existingBuffer, &existingBufferSize);
+        RETURN_NOT_OK(get_buffer(
+            attribute_name.c_str(), &existing_buffer, &existing_buffer_size));
       }
 
-      const tiledb::sm::Attribute* attr =
-          array_schema()->attribute(attributeName);
-      if (attr == nullptr) {
-        return Status::Error(
-            "Attribute " + std::string(attributeName) +
-            " is null in query from_capnp");
-      }
+      if (existing_buffer == nullptr) {
+        // No buffers set on this query object
+        auto& attr_state =
+            serialization_state_.attribute_states[attribute_name];
+        if (attr->var_size()) {
+          uint64_t offset_size = buffer_header.getFixedLenBufferSizeInBytes();
+          uint64_t varlen_size = buffer_header.getVarLenBufferSizeInBytes();
+          auto* offsets = reinterpret_cast<uint64_t*>(attribute_buffer_start);
+          auto* varlen_data = attribute_buffer_start + offset_size;
+          attribute_buffer_start += offset_size + varlen_size;
 
-      Datatype buffer_datatype = Datatype::ANY;
-      status = datatype_enum(buffer.getType().cStr(), &buffer_datatype);
-      if (!status.ok())
-        return status;
+          // Set the buffer information in the attribute's serialization state.
+          if (type_ == QueryType::READ) {
+            // TODO: On READ queries with no buffers set, currently we allocate
+            // buffers for the user, and copy the attribute data into them.
+            // Eventually it should be an error on reads if no buffers are set.
+            // https://github.com/Shelnutt2/TileDB/issues/34
+            Buffer offsets_buff;
+            RETURN_NOT_OK(offsets_buff.write(offsets, offset_size));
+            Buffer varlen_buff;
+            RETURN_NOT_OK(varlen_buff.write(varlen_data, varlen_size));
 
-      if (attr->type() != buffer_datatype)
-        return Status::Error(
-            "Attribute from array_schema and buffer do not have same "
-            "datatype. " +
-            datatype_str(attr->type()) + " != " + buffer.getType().cStr());
+            attr_state.fixed_len_size = offset_size;
+            attr_state.var_len_size = varlen_size;
 
-      if (existingBuffer != nullptr) {
-        if (*existingBufferSize < *buffer_size_in_bytes) {
-          return Status::QueryError(
-              "Existing buffer in query object is smaller size (" +
-              std::to_string(*existingBufferSize) +
-              ") vs new query object buffer size (" +
-              std::to_string(*buffer_size_in_bytes) + ")");
-        }
-        if (*offset_buffer_size_in_bytes) {
-          if (*existingBufferOffsetSize < *offset_buffer_size_in_bytes) {
-            return Status::QueryError(
-                "Existing buffer_var_ in query object is smaller size "
-                "(" +
-                std::to_string(*existingBufferOffsetSize) +
-                ") vs new query object buffer_var size (" +
-                std::to_string(*offset_buffer_size_in_bytes) + ")");
+            RETURN_NOT_OK(set_buffer(
+                attribute_name,
+                reinterpret_cast<uint64_t*>(offsets_buff.data()),
+                &attr_state.fixed_len_size,
+                varlen_buff.data(),
+                &attr_state.var_len_size));
+
+            attr_state.fixed_len_data.swap(offsets_buff);
+            attr_state.var_len_data.swap(varlen_buff);
+          } else {
+            // For write queries just set buffers to point into
+            // the serialized data (zero-copy here).
+            Buffer offsets_buff(offsets, offset_size, false);
+            Buffer varlen_buff(varlen_data, varlen_size, false);
+
+            attr_state.fixed_len_size = offset_size;
+            attr_state.var_len_size = varlen_size;
+
+            RETURN_NOT_OK(set_buffer(
+                attribute_name,
+                reinterpret_cast<uint64_t*>(offsets_buff.data()),
+                &attr_state.fixed_len_size,
+                varlen_buff.data(),
+                &attr_state.var_len_size));
+
+            attr_state.fixed_len_data.swap(offsets_buff);
+            attr_state.var_len_data.swap(varlen_buff);
           }
-          memcpy(
-              existingBufferOffset,
-              attribute_buffer_start,
-              *offset_buffer_size_in_bytes);
-          attribute_buffer_start += *offset_buffer_size_in_bytes;
-        }
-        memcpy(existingBuffer, attribute_buffer_start, *buffer_size_in_bytes);
-        attribute_buffer_start += *buffer_size_in_bytes;
-      } else {
-        if (*offset_buffer_size_in_bytes) {
-          // variable size attribute buffer
-          set_buffer(
-              attributeName,
-              reinterpret_cast<uint64_t*>(attribute_buffer_start),
-              offset_buffer_size_in_bytes,
-              attribute_buffer_start + *offset_buffer_size_in_bytes,
-              buffer_size_in_bytes);
-          attribute_buffer_start +=
-              *offset_buffer_size_in_bytes + *buffer_size_in_bytes;
         } else {
-          // fixed size attribute buffer
-          set_buffer(
-              attributeName, attribute_buffer_start, buffer_size_in_bytes);
-          attribute_buffer_start += *buffer_size_in_bytes;
+          uint64_t data_size = buffer_header.getFixedLenBufferSizeInBytes();
+          auto* data = attribute_buffer_start;
+          attribute_buffer_start += data_size;
+
+          // Set the buffer information in the attribute's serialization state.
+          if (type_ == QueryType::READ) {
+            Buffer data_buff;
+            RETURN_NOT_OK(data_buff.write(data, data_size));
+            attr_state.fixed_len_size = data_size;
+            attr_state.var_len_size = 0;
+            RETURN_NOT_OK(set_buffer(
+                attribute_name, data_buff.data(), &attr_state.fixed_len_size));
+            attr_state.fixed_len_data.swap(data_buff);
+          } else {
+            Buffer data_buff(data, data_size, false);
+            attr_state.fixed_len_size = data_size;
+            attr_state.var_len_size = 0;
+            RETURN_NOT_OK(
+                set_buffer(attribute_name, data, &attr_state.fixed_len_size));
+            attr_state.fixed_len_data.swap(data_buff);
+          }
+        }
+      } else {
+        // Buffers already set; check sizes and then memcpy.
+        if (attr->var_size()) {
+          uint64_t offset_size = buffer_header.getFixedLenBufferSizeInBytes();
+          uint64_t varlen_size = buffer_header.getVarLenBufferSizeInBytes();
+          if (existing_offset_buffer == nullptr ||
+              existing_offset_buffer_size == nullptr ||
+              *existing_offset_buffer_size < offset_size)
+            return LOG_STATUS(Status::QueryError(
+                "Cannot deserialize; offset buffer for attribute '" +
+                attribute_name + "' is null or too small."));
+          if (existing_buffer == nullptr || existing_buffer_size == nullptr ||
+              *existing_buffer_size < varlen_size)
+            return LOG_STATUS(Status::QueryError(
+                "Cannot deserialize; buffer for attribute '" + attribute_name +
+                "' is null or too small."));
+          std::memcpy(
+              existing_offset_buffer, attribute_buffer_start, offset_size);
+          attribute_buffer_start += offset_size;
+          std::memcpy(existing_buffer, attribute_buffer_start, varlen_size);
+          attribute_buffer_start += varlen_size;
+        } else {
+          auto buffer_size = buffer_header.getFixedLenBufferSizeInBytes();
+          if (existing_buffer == nullptr || existing_buffer_size == nullptr ||
+              *existing_buffer_size < buffer_size)
+            return LOG_STATUS(Status::QueryError(
+                "Cannot deserialize; buffer for attribute '" + attribute_name +
+                "' is null or too small."));
+          std::memcpy(existing_buffer, attribute_buffer_start, buffer_size);
+          attribute_buffer_start += buffer_size;
         }
       }
     }
   }
 
-  // This has to come after set_subarray because they remove global write state
-  if (this->type() == tiledb::sm::QueryType::WRITE && query->hasWriter()) {
-    rest::capnp::Writer::Reader writerReader = query->getWriter();
-    status = writer_.from_capnp(&writerReader);
-  } else if (
-      this->type() == tiledb::sm::QueryType::READ && query->hasReader()) {
-    rest::capnp::QueryReader::Reader queryReader = query->getReader();
-    status = reader_.from_capnp(&queryReader);
+  // Deserialize reader/writer.
+  if (type_ == QueryType::READ) {
+    auto reader = query->getReader();
+    RETURN_NOT_OK(reader_.from_capnp(&reader));
+  } else {
+    auto writer = query->getWriter();
+    RETURN_NOT_OK(writer_.from_capnp(&writer));
   }
-  if (!status.ok())
-    return status;
 
-  // This must come last because set_subarray overrides query status
+  // Deserialize status. This must come last because various setters above
+  // will reset it.
   QueryStatus query_status = QueryStatus::UNINITIALIZED;
-  status = query_status_enum(query->getStatus().cStr(), &query_status);
-  if (!status.ok())
-    return status;
-  this->set_status(query_status);
+  RETURN_NOT_OK(query_status_enum(query->getStatus().cStr(), &query_status));
+  set_status(query_status);
 
-  return status;
+  return Status::Ok();
+
   STATS_FUNC_OUT(serialization_query_from_capnp);
 }
 
