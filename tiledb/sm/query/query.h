@@ -403,6 +403,34 @@ class Query {
 
  private:
   /* ********************************* */
+  /*         PRIVATE DATATYPES         */
+  /* ********************************* */
+  /**
+   * Contains any current state related to (de)serialization of this query.
+   * Mostly this supports setting buffers on this query that were allocated
+   * internally as a part of deserialization (as opposed to user-set buffers).
+   */
+  struct SerializationState {
+    /** Serialization state for a single attribute. */
+    struct AttrState {
+      /**
+       * Buffer holding (or wrapping) fixed-length data, either attribute or
+       * offset data.
+       */
+      Buffer fixed_len_data;
+      /** Buffer holding (or wrapping) variable-length data. */
+      Buffer var_len_data;
+      /** Value holding the length of the fixed-length data. */
+      uint64_t fixed_len_size = 0;
+      /** Value holding the length of the variable-length data. */
+      uint64_t var_len_size = 0;
+    };
+
+    /** Serialization state per attribute. */
+    std::unordered_map<std::string, AttrState> attribute_states;
+  };
+
+  /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */
 
@@ -432,6 +460,9 @@ class Query {
 
   /** Query writer. */
   Writer writer_;
+
+  /** The current serialization state. */
+  SerializationState serialization_state_;
 
   /* ********************************* */
   /*           PRIVATE METHODS         */
