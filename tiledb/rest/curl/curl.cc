@@ -205,11 +205,14 @@ tiledb::sm::Status post_data(
   curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
   if (ret != CURLE_OK || httpCode >= 400) {
     // TODO: Should see if message has error data object
-    return LOG_STATUS(tiledb::sm::Status::RestError(
-        std::string("Error posting data: ") +
-        ((returned_data->size() > 0) ?
-             static_cast<const char*>(returned_data->data()) :
-             " No error message from server")));
+    std::string response =
+        returned_data->size() == 0 ?
+            "No error message from server" :
+            std::string(
+                static_cast<const char*>(returned_data->data()),
+                returned_data->size());
+    return LOG_STATUS(
+        tiledb::sm::Status::RestError("Error posting data: " + response));
   }
 
   return tiledb::sm::Status::Ok();
@@ -245,11 +248,14 @@ tiledb::sm::Status get_data(
   curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
   if (ret != CURLE_OK || httpCode >= 400) {
     // TODO: Should see if message has error data object
-    return LOG_STATUS(tiledb::sm::Status::RestError(
-        std::string("Error getting data: ") +
-        ((returned_data->size() > 0) ?
-             static_cast<const char*>(returned_data->data()) :
-             " No error message from server")));
+    std::string response =
+        returned_data->size() == 0 ?
+            "No error message from server" :
+            std::string(
+                static_cast<const char*>(returned_data->data()),
+                returned_data->size());
+    return LOG_STATUS(
+        tiledb::sm::Status::RestError("Error getting data: " + response));
   }
   return tiledb::sm::Status::Ok();
 
@@ -287,11 +293,14 @@ tiledb::sm::Status delete_data(
   curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
   if (ret != CURLE_OK || httpCode >= 400) {
     // TODO: Should see if message has error data object
-    return LOG_STATUS(tiledb::sm::Status::RestError(
-        std::string("Error deleting data: ") +
-        ((returned_data->size() > 0) ?
-             static_cast<const char*>(returned_data->data()) :
-             " No error message from server")));
+    std::string response =
+        returned_data->size() == 0 ?
+            "No error message from server" :
+            std::string(
+                static_cast<const char*>(returned_data->data()),
+                returned_data->size());
+    return LOG_STATUS(
+        tiledb::sm::Status::RestError("Error deleting data: " + response));
   }
   return tiledb::sm::Status::Ok();
 
