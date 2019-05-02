@@ -329,13 +329,15 @@ Status Query::capnp(rest::capnp::Query::Builder* queryBuilder) {
     const auto& buff = type_ == QueryType::READ ?
                            reader_.buffer(attribute_name) :
                            writer_.buffer(attribute_name);
+    const bool is_coords = attribute_name == constants::coords;
     const auto* attr = schema->attribute(attribute_name);
-    if (attr == nullptr)
+    if (!is_coords && attr == nullptr)
       return LOG_STATUS(Status::QueryError(
           "Cannot serialize; no attribute named '" + attribute_name + "'."));
 
+    const bool var_size = !is_coords && attr->var_size();
     attr_buffer_builder.setName(attribute_name);
-    if (attr->var_size() &&
+    if (var_size &&
         (buff.buffer_var_ != nullptr && buff.buffer_var_size_ != nullptr)) {
       // Variable-sized attribute.
       if (buff.buffer_ == nullptr || buff.buffer_size_ == nullptr)
@@ -422,9 +424,10 @@ tiledb::sm::Status Query::from_capnp(
     auto buffer_headers = query->getAttributeBufferHeaders();
     auto attribute_buffer_start = static_cast<char*>(buffer_start);
     for (auto buffer_header : buffer_headers) {
-      std::string attribute_name = buffer_header.getName().cStr();
+      const std::string attribute_name = buffer_header.getName().cStr();
+      const bool is_coords = attribute_name == constants::coords;
       const auto* attr = schema->attribute(attribute_name);
-      if (attr == nullptr)
+      if (!is_coords && attr == nullptr)
         return LOG_STATUS(Status::QueryError(
             "Cannot deserialize; no attribute named '" + attribute_name +
             "' in array schema."));
@@ -434,7 +437,8 @@ tiledb::sm::Status Query::from_capnp(
       uint64_t* existing_offset_buffer_size = nullptr;
       void* existing_buffer = nullptr;
       uint64_t* existing_buffer_size = nullptr;
-      if (attr->var_size()) {
+      const bool var_size = !is_coords && attr->var_size();
+      if (var_size) {
         RETURN_NOT_OK(get_buffer(
             attribute_name.c_str(),
             &existing_offset_buffer,
@@ -450,7 +454,7 @@ tiledb::sm::Status Query::from_capnp(
         // No buffers set on this query object
         auto& attr_state =
             serialization_state_.attribute_states[attribute_name];
-        if (attr->var_size()) {
+        if (var_size) {
           uint64_t offset_size = buffer_header.getFixedLenBufferSizeInBytes();
           uint64_t varlen_size = buffer_header.getVarLenBufferSizeInBytes();
           auto* offsets = reinterpret_cast<uint64_t*>(attribute_buffer_start);
@@ -524,7 +528,7 @@ tiledb::sm::Status Query::from_capnp(
         }
       } else {
         // Buffers already set; check sizes and then memcpy.
-        if (attr->var_size()) {
+        if (var_size) {
           uint64_t offset_size = buffer_header.getFixedLenBufferSizeInBytes();
           uint64_t varlen_size = buffer_header.getVarLenBufferSizeInBytes();
           if (existing_offset_buffer == nullptr ||
@@ -543,6 +547,13 @@ tiledb::sm::Status Query::from_capnp(
           attribute_buffer_start += offset_size;
           std::memcpy(existing_buffer, attribute_buffer_start, varlen_size);
           attribute_buffer_start += varlen_size;
+
+          // Need to update the buffer size to the actual data size so that
+          // the user can check the result size on reads.
+          if (type_ == QueryType::READ) {
+            *existing_offset_buffer_size = offset_size;
+            *existing_buffer_size = varlen_size;
+          }
         } else {
           auto buffer_size = buffer_header.getFixedLenBufferSizeInBytes();
           if (existing_buffer == nullptr || existing_buffer_size == nullptr ||
@@ -552,6 +563,11 @@ tiledb::sm::Status Query::from_capnp(
                 "' is null or too small."));
           std::memcpy(existing_buffer, attribute_buffer_start, buffer_size);
           attribute_buffer_start += buffer_size;
+
+          // Need to update the buffer size to the actual data size so that
+          // the user can check the result size on reads.
+          if (type_ == QueryType::READ)
+            *existing_buffer_size = buffer_size;
         }
       }
     }
