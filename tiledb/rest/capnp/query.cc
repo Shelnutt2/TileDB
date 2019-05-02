@@ -92,14 +92,18 @@ tiledb::sm::Status query_serialize(
         // Iterate in attributes and concatenate buffers to end of message
         auto attr_buffer_builders = query_builder.getAttributeBufferHeaders();
         for (auto attr_buffer_builder : attr_buffer_builders) {
-          std::string attribute_name = attr_buffer_builder.getName().cStr();
+          const std::string attribute_name =
+              attr_buffer_builder.getName().cStr();
+          const bool is_coords =
+              attribute_name == tiledb::sm::constants::coords;
           const auto* attr = array_schema->attribute(attribute_name);
-          if (attr == nullptr)
+          if (!is_coords && attr == nullptr)
             return LOG_STATUS(tiledb::sm::Status::QueryError(
                 "Cannot serialize; no attribute named '" + attribute_name +
                 "'."));
 
-          if (attr->var_size()) {
+          const bool var_size = !is_coords && attr->var_size();
+          if (var_size) {
             // Variable size attribute buffer
             uint64_t* offset_buffer = nullptr;
             uint64_t* offset_buffer_size = nullptr;
