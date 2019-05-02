@@ -2129,78 +2129,6 @@ int32_t tiledb_array_schema_get_attribute_from_name(
   return TILEDB_OK;
 }
 
-int tiledb_array_schema_serialize(
-    tiledb_ctx_t* ctx,
-    const tiledb_array_schema_t* array_schema,
-    tiledb_serialization_type_t serialize_type,
-    char** serialized_string,
-    uint64_t* serialized_string_length) {
-  // Sanity check
-  if (sanity_check(ctx) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  // Sanity check
-  if (sanity_check(ctx, array_schema) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  tiledb::sm::Buffer buffer;
-  auto st = tiledb::rest::capnp::array_schema_serialize(
-      array_schema->array_schema_,
-      (tiledb::sm::SerializationType)serialize_type,
-      &buffer);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    save_error(ctx, st);
-    return TILEDB_ERR;
-  }
-
-  // TODO(ttd): This memcpy can be removed once the serialization C API
-  // consumes a tiledb_buffer_t.
-  *serialized_string = (char*)std::malloc(buffer.size());
-  *serialized_string_length = buffer.size();
-  std::memcpy(*serialized_string, buffer.data(), buffer.size());
-
-  return TILEDB_OK;
-}
-
-int tiledb_array_schema_deserialize(
-    tiledb_ctx_t* ctx,
-    tiledb_array_schema_t** array_schema,
-    tiledb_serialization_type_t serialize_type,
-    const char* serialized_string,
-    const uint64_t serialized_string_length) {
-  // Sanity check
-  if (sanity_check(ctx) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  // Create array schema struct
-  *array_schema = new (std::nothrow) tiledb_array_schema_t;
-  if (*array_schema == nullptr) {
-    auto st = tiledb::sm::Status::Error(
-        "Failed to allocate TileDB array schema object");
-    LOG_STATUS(st);
-    save_error(ctx, st);
-    return TILEDB_OOM;
-  }
-
-  // TODO(ttd): This buffer wrapper can be removed once the serialization C API
-  // consumes a tiledb_buffer_t.
-  tiledb::sm::Buffer buffer(
-      (void*)serialized_string, serialized_string_length, false);
-
-  if (SAVE_ERROR_CATCH(
-          ctx,
-          tiledb::rest::capnp::array_schema_deserialize(
-              &((*array_schema)->array_schema_),
-              (tiledb::sm::SerializationType)serialize_type,
-              buffer))) {
-    delete *array_schema;
-    return TILEDB_ERR;
-  }
-
-  return TILEDB_OK;
-}
-
 int32_t tiledb_array_schema_has_attribute(
     tiledb_ctx_t* ctx,
     const tiledb_array_schema_t* array_schema,
@@ -2526,68 +2454,6 @@ int32_t tiledb_query_get_type(
     return TILEDB_ERR;
 
   *query_type = static_cast<tiledb_query_type_t>(query->query_->type());
-
-  return TILEDB_OK;
-}
-
-int tiledb_query_serialize(
-    tiledb_ctx_t* ctx,
-    const tiledb_query_t* query,
-    tiledb_serialization_type_t serialize_type,
-    char** serialized_string,
-    uint64_t* serialized_string_length) {
-  // Sanity check
-  if (sanity_check(ctx) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  // Sanity check
-  if (sanity_check(ctx, query) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  tiledb::sm::Buffer buffer;
-  tiledb::sm::Status st = tiledb::rest::capnp::query_serialize(
-      query->query_, (tiledb::sm::SerializationType)serialize_type, &buffer);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    save_error(ctx, st);
-    return TILEDB_ERR;
-  }
-
-  // TODO(ttd): This memcpy can be removed once the serialization C API
-  // consumes a tiledb_buffer_t.
-  *serialized_string = (char*)std::malloc(buffer.size());
-  *serialized_string_length = buffer.size();
-  std::memcpy(*serialized_string, buffer.data(), buffer.size());
-
-  return TILEDB_OK;
-}
-
-int tiledb_query_deserialize(
-    tiledb_ctx_t* ctx,
-    tiledb_query_t* query,
-    tiledb_serialization_type_t serialize_type,
-    const char* serialized_string,
-    const uint64_t serialized_string_length) {
-  // Sanity check
-  if (sanity_check(ctx) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  // Sanity check
-  if (sanity_check(ctx, query) == TILEDB_ERR)
-    return TILEDB_ERR;
-
-  // TODO(ttd): This buffer wrapper can be removed once the serialization C API
-  // consumes a tiledb_buffer_t.
-  tiledb::sm::Buffer buffer(
-      (void*)serialized_string, serialized_string_length, false);
-
-  if (SAVE_ERROR_CATCH(
-          ctx,
-          tiledb::rest::capnp::query_deserialize(
-              query->query_,
-              (tiledb::sm::SerializationType)serialize_type,
-              buffer)))
-    return TILEDB_ERR;
 
   return TILEDB_OK;
 }
@@ -5114,6 +4980,109 @@ int32_t tiledb_stats_free_str(char** out) {
     std::free(*out);
     *out = nullptr;
   }
+  return TILEDB_OK;
+}
+
+/* ****************************** */
+/*          Serialization         */
+/* ****************************** */
+
+int tiledb_serialize_array_schema(
+    tiledb_ctx_t* ctx,
+    const tiledb_array_schema_t* array_schema,
+    tiledb_serialization_type_t serialize_type,
+    tiledb_buffer_t* buffer) {
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, array_schema) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::array_schema_serialize(
+              array_schema->array_schema_,
+              (tiledb::sm::SerializationType)serialize_type,
+              buffer->buffer_)))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int tiledb_deserialize_array_schema(
+    tiledb_ctx_t* ctx,
+    tiledb_array_schema_t** array_schema,
+    tiledb_serialization_type_t serialize_type,
+    const tiledb_buffer_t* buffer) {
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  // Create array schema struct
+  *array_schema = new (std::nothrow) tiledb_array_schema_t;
+  if (*array_schema == nullptr) {
+    auto st = tiledb::sm::Status::Error(
+        "Failed to allocate TileDB array schema object");
+    LOG_STATUS(st);
+    save_error(ctx, st);
+    return TILEDB_OOM;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::array_schema_deserialize(
+              &((*array_schema)->array_schema_),
+              (tiledb::sm::SerializationType)serialize_type,
+              *buffer->buffer_))) {
+    delete *array_schema;
+    return TILEDB_ERR;
+  }
+
+  return TILEDB_OK;
+}
+
+int tiledb_serialize_query(
+    tiledb_ctx_t* ctx,
+    const tiledb_query_t* query,
+    tiledb_serialization_type_t serialize_type,
+    tiledb_buffer_t* buffer) {
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, query) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::query_serialize(
+              query->query_,
+              (tiledb::sm::SerializationType)serialize_type,
+              buffer->buffer_)))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int tiledb_deserialize_query(
+    tiledb_ctx_t* ctx,
+    tiledb_query_t* query,
+    tiledb_serialization_type_t serialize_type,
+    const tiledb_buffer_t* buffer) {
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, query) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::rest::capnp::query_deserialize(
+              query->query_,
+              (tiledb::sm::SerializationType)serialize_type,
+              *buffer->buffer_)))
+    return TILEDB_ERR;
+
   return TILEDB_OK;
 }
 
