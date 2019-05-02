@@ -2878,6 +2878,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, sparse writes",
     "[capi], [dense], [dense-sparse-writes]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   if (supports_s3_) {
     // S3
     create_temp_dir(S3_TEMP_DIR);
@@ -2948,6 +2955,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, return coordinates",
     "[capi], [dense], [return-coords]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir;
   if (supports_s3_) {
     temp_dir = S3_TEMP_DIR;
@@ -2965,6 +2979,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, non-empty domain",
     "[capi], [dense], [dense-non-empty]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   create_temp_dir(temp_dir);
   check_non_empty_domain(temp_dir);
@@ -3295,6 +3316,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, reset write subarray",
     "[capi], [dense], [reset-write-subarray]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   std::string array_name = temp_dir + "reset_write_subarray";
   create_temp_dir(temp_dir);
@@ -3397,6 +3425,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, URI ending in a slash",
     "[capi], [dense], [uri-ending-slash]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   std::string array_name = temp_dir + "with_ending_slash/";
   create_temp_dir(temp_dir);
@@ -3516,6 +3551,13 @@ TEST_CASE_METHOD(
     "C API: Test dense array, read subarrays with empty areas around sparse "
     "cells",
     "[capi], [dense], [dense-read-empty], [dense-read-empty-sparse]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   std::string array_name = temp_dir + "dense_read_empty_sparse/";
   create_temp_dir(temp_dir);
@@ -3934,6 +3976,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, check if coords exist in unordered writes",
     "[capi], [dense], [dense-coords-exist-unordered]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string array_name =
       FILE_URI_PREFIX + FILE_TEMP_DIR + "dense_coords_exist_unordered";
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;

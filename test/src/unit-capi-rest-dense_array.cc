@@ -1316,6 +1316,93 @@ TEST_CASE_METHOD(
 
 TEST_CASE_METHOD(
     DenseArrayRESTFx,
+    "C API: REST Test dense array, read subarrays with empty areas around "
+    "sparse cells",
+    "[capi], [dense], [rest], [dense-read-empty], [dense-read-empty-sparse]") {
+  std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
+  std::string array_name = temp_dir + "dense_read_empty_sparse/";
+  create_temp_dir(temp_dir);
+
+  create_dense_array_1_attribute(array_name);
+
+  // Write a slice
+  int write_a1[] = {1, 2, 3, 4};
+  uint64_t write_a1_size = sizeof(write_a1);
+  uint64_t write_coords[] = {1, 2, 2, 1, 4, 3, 1, 4};
+  uint64_t write_coords_size = sizeof(write_coords);
+  tiledb_array_t* array;
+  int rc = tiledb_array_alloc(ctx_, array_name.c_str(), &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx_, array, TILEDB_WRITE);
+  CHECK(rc == TILEDB_OK);
+  tiledb_query_t* query;
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_WRITE, &query);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_layout(ctx_, query, TILEDB_UNORDERED);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(ctx_, query, "a1", write_a1, &write_a1_size);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(
+      ctx_, query, TILEDB_COORDS, write_coords, &write_coords_size);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_submit(ctx_, query);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_close(ctx_, array);
+  CHECK(rc == TILEDB_OK);
+  tiledb_array_free(&array);
+  tiledb_query_free(&query);
+
+  // Read whole array
+  int c_a1[] = {INT_MIN,
+                1,
+                INT_MIN,
+                4,
+                2,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                INT_MIN,
+                3,
+                INT_MIN};
+  uint64_t c_coords[] = {1, 1, 1, 2, 1, 3, 1, 4, 2, 1, 2, 2, 2, 3, 2, 4,
+                         3, 1, 3, 2, 3, 3, 3, 4, 4, 1, 4, 2, 4, 3, 4, 4};
+  int read_a1[16];
+  uint64_t read_a1_size = sizeof(read_a1);
+  uint64_t read_coords[32];
+  uint64_t read_coords_size = sizeof(read_coords);
+  rc = tiledb_array_alloc(ctx_, array_name.c_str(), &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx_, array, TILEDB_READ);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_READ, &query);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_layout(ctx_, query, TILEDB_ROW_MAJOR);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(ctx_, query, "a1", read_a1, &read_a1_size);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(
+      ctx_, query, TILEDB_COORDS, read_coords, &read_coords_size);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_submit(ctx_, query);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_close(ctx_, array);
+  CHECK(rc == TILEDB_OK);
+  tiledb_array_free(&array);
+  tiledb_query_free(&query);
+
+  CHECK(!memcmp(c_a1, read_a1, sizeof(c_a1)));
+  CHECK(!memcmp(c_coords, read_coords, sizeof(c_coords)));
+
+  remove_temp_dir(temp_dir);
+}
+
+TEST_CASE_METHOD(
+    DenseArrayRESTFx,
     "C API: REST Test dense array, read subarrays with empty areas, merging "
     "adjacent cell ranges",
     "[capi], [dense], [rest], [dense-read-empty], [dense-read-empty-merge]") {
@@ -1599,6 +1686,74 @@ TEST_CASE_METHOD(
   CHECK(rc == TILEDB_OK);
   rc = tiledb_query_set_subarray(ctx, query, subarray);
   CHECK(rc == TILEDB_ERR);
+
+  // Close array
+  CHECK(tiledb_array_close(ctx, array) == TILEDB_OK);
+
+  // Clean up
+  tiledb_query_free(&query);
+  tiledb_array_free(&array);
+  tiledb_ctx_free(&ctx);
+
+  remove_temp_dir(temp_dir);
+}
+
+TEST_CASE_METHOD(
+    DenseArrayRESTFx,
+    "C API: REST Test dense array, check if coords exist in unordered writes",
+    "[capi], [dense], [rest], [dense-coords-exist-unordered]") {
+  std::string array_name =
+      FILE_URI_PREFIX + FILE_TEMP_DIR + "dense_coords_exist_unordered";
+  std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
+  create_temp_dir(temp_dir);
+  create_dense_array(array_name);
+
+  // Create TileDB context
+  tiledb_ctx_t* ctx = nullptr;
+  REQUIRE(tiledb_ctx_alloc(nullptr, &ctx) == TILEDB_OK);
+
+  // Open array
+  tiledb_array_t* array;
+  int rc = tiledb_array_alloc(ctx, array_name.c_str(), &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx, array, TILEDB_WRITE);
+  CHECK(rc == TILEDB_OK);
+
+  // Create WRITE query
+  tiledb_query_t* query;
+  rc = tiledb_query_alloc(ctx, array, TILEDB_WRITE, &query);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_query_set_layout(ctx, query, TILEDB_UNORDERED);
+  CHECK(rc == TILEDB_OK);
+
+  // Set attribute buffers
+  int a1[] = {1, 2};
+  uint64_t a1_size = sizeof(a1);
+  rc = tiledb_query_set_buffer(ctx, query, "a1", a1, &a1_size);
+  CHECK(rc == TILEDB_OK);
+  char a2[] = {'a', 'b'};
+  uint64_t a2_size = sizeof(a2);
+  uint64_t a2_off[] = {0, 1};
+  uint64_t a2_off_size = sizeof(a2_off);
+  rc = tiledb_query_set_buffer_var(
+      ctx, query, "a2", a2_off, &a2_off_size, a2, &a2_size);
+  CHECK(rc == TILEDB_OK);
+  float a3[] = {1.1f, 1.2f, 2.1f, 2.2f};
+  uint64_t a3_size = sizeof(a3);
+  rc = tiledb_query_set_buffer(ctx, query, "a3", a3, &a3_size);
+  CHECK(rc == TILEDB_OK);
+
+  // Submit query - should error
+  CHECK(tiledb_query_submit(ctx, query) == TILEDB_ERR);
+
+  // Set coordinates
+  uint64_t coords[] = {1, 2, 1, 1};
+  uint64_t coords_size = sizeof(coords);
+  rc = tiledb_query_set_buffer(ctx, query, TILEDB_COORDS, coords, &coords_size);
+  CHECK(rc == TILEDB_OK);
+
+  // Submit query - ok
+  CHECK(tiledb_query_submit(ctx, query) == TILEDB_OK);
 
   // Close array
   CHECK(tiledb_array_close(ctx, array) == TILEDB_OK);
