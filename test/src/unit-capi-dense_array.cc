@@ -2728,10 +2728,9 @@ int DenseArrayFx::submit_query_wrapper(
     REQUIRE(tiledb_query_get_layout(ctx_, query, &layout) == TILEDB_OK);
 
     // Serialize the query
-    char* buff = nullptr;
-    uint64_t buff_len = 0;
-    int rc =
-        tiledb_query_serialize(ctx_, query, TILEDB_CAPNP, &buff, &buff_len);
+    tiledb_buffer_t* buff1;
+    REQUIRE(tiledb_buffer_alloc(ctx_, &buff1) == TILEDB_OK);
+    int rc = tiledb_serialize_query(ctx_, query, TILEDB_CAPNP, buff1);
 
     // Global order queries are not (yet) supported for serialization. Just
     // check that serialization is an error, and then execute the regular query.
@@ -2741,6 +2740,25 @@ int DenseArrayFx::submit_query_wrapper(
     } else {
       REQUIRE(rc == TILEDB_OK);
     }
+
+    // Copy the data to a temporary memory region ("send over the network").
+    uint64_t buff1_size;
+    void* buff1_data;
+    REQUIRE(
+        tiledb_buffer_get_data(ctx_, buff1, &buff1_data, &buff1_size) ==
+        TILEDB_OK);
+    void* buff1_copy = std::malloc(buff1_size);
+    REQUIRE(buff1_copy != nullptr);
+    std::memcpy(buff1_copy, buff1_data, buff1_size);
+    tiledb_buffer_free(&buff1);
+
+    // Create a new buffer that wraps the data from the temporary buffer.
+    // This mimics what the REST server side would do.
+    tiledb_buffer_t* buff2;
+    REQUIRE(tiledb_buffer_alloc(ctx_, &buff2) == TILEDB_OK);
+    REQUIRE(
+        tiledb_buffer_set_data(ctx_, buff2, buff1_copy, buff1_size) ==
+        TILEDB_OK);
 
     // Open a new array instance.
     tiledb_array_t* new_array = nullptr;
@@ -2754,29 +2772,49 @@ int DenseArrayFx::submit_query_wrapper(
         tiledb_query_alloc(ctx_, new_array, query_type, &new_query) ==
         TILEDB_OK);
     REQUIRE(
-        tiledb_query_deserialize(
-            ctx_, new_query, TILEDB_CAPNP, buff, buff_len) == TILEDB_OK);
+        tiledb_deserialize_query(ctx_, new_query, TILEDB_CAPNP, buff2) ==
+        TILEDB_OK);
 
     // Submit the new query.
     rc = tiledb_query_submit(ctx_, new_query);
 
-    // Serialize the new query and deserialize into the original query.
-    char* buff2 = nullptr;
-    uint64_t buff2_len = 0;
+    // Serialize the new query and "send it over the network".
+    tiledb_buffer_t* buff3;
+    REQUIRE(tiledb_buffer_alloc(ctx_, &buff3) == TILEDB_OK);
     REQUIRE(
-        tiledb_query_serialize(
-            ctx_, new_query, TILEDB_CAPNP, &buff2, &buff2_len) == TILEDB_OK);
-    std::free(buff);
+        tiledb_serialize_query(ctx_, new_query, TILEDB_CAPNP, buff3) ==
+        TILEDB_OK);
+    uint64_t buff3_size;
+    void* buff3_data;
+    REQUIRE(
+        tiledb_buffer_get_data(ctx_, buff3, &buff3_data, &buff3_size) ==
+        TILEDB_OK);
+    void* buff3_copy = std::malloc(buff3_size);
+    REQUIRE(buff3_copy != nullptr);
+    std::memcpy(buff3_copy, buff3_data, buff3_size);
+    tiledb_buffer_free(&buff2);
+    tiledb_buffer_free(&buff3);
 
+    // Create a new buffer that wraps the data from the temporary buffer.
+    // This mimics what the REST client side would do.
+    tiledb_buffer_t* buff4;
+    REQUIRE(tiledb_buffer_alloc(ctx_, &buff4) == TILEDB_OK);
     REQUIRE(
-        tiledb_query_deserialize(ctx_, query, TILEDB_CAPNP, buff2, buff2_len) ==
+        tiledb_buffer_set_data(ctx_, buff4, buff3_copy, buff3_size) ==
+        TILEDB_OK);
+
+    // Deserialize into the original query.
+    REQUIRE(
+        tiledb_deserialize_query(ctx_, query, TILEDB_CAPNP, buff4) ==
         TILEDB_OK);
 
     // Clean up.
     REQUIRE(tiledb_array_close(ctx_, new_array) == TILEDB_OK);
     tiledb_query_free(&new_query);
     tiledb_array_free(&new_array);
-    std::free(buff2);
+    tiledb_buffer_free(&buff4);
+    std::free(buff1_copy);
+    std::free(buff3_copy);
 
     return rc;
   } else {
