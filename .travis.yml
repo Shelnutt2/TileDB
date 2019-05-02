@@ -8,19 +8,19 @@ matrix:
   include:
     - os: linux
 
-    - os: linux
-      env: TILEDB_TBB="OFF"
-
-    - os: linux
-      env: TILEDB_HDFS="ON"
-
-    - os: linux
-      env: TILEDB_S3="ON"
+#    - os: linux
+#      env: TILEDB_TBB="OFF"
+#
+#    - os: linux
+#      env: TILEDB_HDFS="ON"
+#
+#    - os: linux
+#      env: TILEDB_S3="ON"
 
     - os: linux
       env: TILEDB_SERIALIZATION="ON"
 
-    - os: osx
+#    - os: osx
 
 before_install:
     - git clone https://github.com/TileDB-Inc/TileDB-Unit-Test-Arrays.git test/inputs/arrays/read_compatibility_test
