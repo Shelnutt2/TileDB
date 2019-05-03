@@ -101,6 +101,7 @@ struct DenseArrayRESTFx {
   void create_temp_dir(const std::string& path);
   void remove_temp_dir(const std::string& path);
   void check_sorted_reads(const std::string& path);
+  void check_incomplete_reads(const std::string& path);
   void check_sorted_writes(const std::string& path);
   void check_simultaneous_writes(const std::string& path);
   void create_dense_array(const std::string& array_name);
@@ -772,6 +773,107 @@ void DenseArrayRESTFx::check_sorted_reads(const std::string& path) {
   // Close array
   rc = tiledb_array_close(ctx_, array);
   CHECK(rc == TILEDB_OK);
+
+  // Clean up
+  tiledb_array_free(&array);
+  tiledb_query_free(&query);
+}
+
+void DenseArrayRESTFx::check_incomplete_reads(const std::string& path) {
+  // Parameters used in this test
+  int64_t domain_size_0 = 5000;
+  int64_t domain_size_1 = 10000;
+  int64_t tile_extent_0 = 1000;
+  int64_t tile_extent_1 = 1000;
+  int64_t domain_0_lo = 0;
+  int64_t domain_0_hi = domain_size_0 - 1;
+  int64_t domain_1_lo = 0;
+  int64_t domain_1_hi = domain_size_1 - 1;
+  uint64_t capacity = 1000000;
+  tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
+  tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
+  std::string array_name = path + "incomplete_reads_array";
+
+  // Create a dense integer array
+  create_dense_array_2D(
+      array_name,
+      tile_extent_0,
+      tile_extent_1,
+      domain_0_lo,
+      domain_0_hi,
+      domain_1_lo,
+      domain_1_hi,
+      capacity,
+      cell_order,
+      tile_order);
+
+  // Write array cells with value = row id * COLUMNS + col id
+  // to disk tile by tile
+  write_dense_array_by_tiles(
+      array_name, domain_size_0, domain_size_1, tile_extent_0, tile_extent_1);
+
+  // Open array
+  tiledb_array_t* array;
+  REQUIRE(tiledb_array_alloc(ctx_, array_name.c_str(), &array) == TILEDB_OK);
+  REQUIRE(tiledb_array_open(ctx_, array, TILEDB_READ) == TILEDB_OK);
+
+  // Create query
+  tiledb_query_t* query;
+  REQUIRE(tiledb_query_alloc(ctx_, array, TILEDB_READ, &query) == TILEDB_OK);
+  int64_t subarray[] = {0, 50, 0, 50};
+  int32_t attr_buffer[100];
+  uint64_t attr_buffer_size = sizeof(attr_buffer);
+  REQUIRE(tiledb_query_set_subarray(ctx_, query, subarray) == TILEDB_OK);
+
+  unsigned num_incompletes = 0;
+  std::vector<int32_t> all_attr_values;
+  while (true) {
+    // Reset buffers and resubmit
+    REQUIRE(
+        tiledb_query_set_buffer(
+            ctx_, query, ATTR_NAME, attr_buffer, &attr_buffer_size) ==
+        TILEDB_OK);
+    REQUIRE(tiledb_query_submit(ctx_, query) == TILEDB_OK);
+    tiledb_query_status_t status;
+    REQUIRE(tiledb_query_get_status(ctx_, query, &status) == TILEDB_OK);
+    REQUIRE(attr_buffer_size > 0);
+    for (uint64_t i = 0; i < (attr_buffer_size / sizeof(int32_t)); i++)
+      all_attr_values.push_back(attr_buffer[i]);
+
+    if (status == TILEDB_INCOMPLETE)
+      num_incompletes++;
+    else
+      break;
+  }
+
+  // Check size of results
+  REQUIRE(num_incompletes > 1);
+  REQUIRE(
+      all_attr_values.size() ==
+      (subarray[1] - subarray[0] + 1) * (subarray[3] - subarray[2] + 1));
+
+  // Check all attribute values from all queries.
+  bool allok = true;
+  uint64_t index = 0;
+  for (int64_t i = subarray[0]; i <= subarray[1]; ++i) {
+    for (int64_t j = subarray[2]; j <= subarray[3]; ++j) {
+      bool match = (all_attr_values[index] == i * domain_size_1 + j);
+      if (!match) {
+        allok = false;
+        std::cout << "mismatch: " << i << "," << j << "="
+                  << all_attr_values[index] << "!=" << ((i * domain_size_1 + j))
+                  << "\n";
+        break;
+      }
+      ++index;
+    }
+    if (!allok)
+      break;
+  }
+  REQUIRE(allok);
+
+  // Close array
+  REQUIRE(tiledb_array_close(ctx_, array) == TILEDB_OK);
 
   // Clean up
   tiledb_array_free(&array);
@@ -1759,4 +1861,26 @@ TEST_CASE_METHOD(
   tiledb_ctx_free(&ctx);
 
   remove_temp_dir(temp_dir);
+}
+
+TEST_CASE_METHOD(
+    DenseArrayRESTFx,
+    "C API: REST Test dense array, incomplete reads",
+    "[capi], [dense], [rest], [incomplete]") {
+  if (supports_s3_) {
+    // S3
+    create_temp_dir(S3_TEMP_DIR);
+    check_incomplete_reads(S3_TEMP_DIR);
+    remove_temp_dir(S3_TEMP_DIR);
+  } else if (supports_hdfs_) {
+    // HDFS
+    create_temp_dir(HDFS_TEMP_DIR);
+    check_incomplete_reads(HDFS_TEMP_DIR);
+    remove_temp_dir(HDFS_TEMP_DIR);
+  } else {
+    // File
+    create_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
+    check_incomplete_reads(FILE_URI_PREFIX + FILE_TEMP_DIR);
+    remove_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
+  }
 }

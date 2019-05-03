@@ -37,7 +37,6 @@ CAPNP_DECLARE_SCHEMA(eaf0905463c23b94);
 CAPNP_DECLARE_SCHEMA(d666e60b155ca48f);
 CAPNP_DECLARE_SCHEMA(8ba60147a0e6735e);
 CAPNP_DECLARE_SCHEMA(cbe1e7c13508aa2c);
-CAPNP_DECLARE_SCHEMA(bc07b09812d262fa);
 CAPNP_DECLARE_SCHEMA(e19754f813ccf79c);
 CAPNP_DECLARE_SCHEMA(96ba49d0f8b23ccc);
 CAPNP_DECLARE_SCHEMA(9df6f2a42c4e5f0b);
@@ -473,39 +472,9 @@ struct ReadState {
   class Reader;
   class Builder;
   class Pipeline;
-  struct SubarrayPartitions;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(cbe1e7c13508aa2c, 1, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
-  };
-};
-
-struct ReadState::SubarrayPartitions {
-  SubarrayPartitions() = delete;
-
-  class Reader;
-  class Builder;
-  class Pipeline;
-  enum Which : uint16_t {
-    INT8,
-    UINT8,
-    INT16,
-    UINT16,
-    INT32,
-    UINT32,
-    INT64,
-    UINT64,
-    FLOAT32,
-    FLOAT64,
-  };
-
-  struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(bc07b09812d262fa, 1, 2)
+    CAPNP_DECLARE_STRUCT_HEADER(cbe1e7c13508aa2c, 1, 3)
 #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() {
       return &schema->defaultBrand;
@@ -3424,11 +3393,18 @@ class ReadState::Reader {
 
   inline bool getOverflowed() const;
 
+  inline bool getUnsplittable() const;
+
+  inline bool hasSubarray() const;
+  inline ::tiledb::rest::capnp::DomainArray::Reader getSubarray() const;
+
   inline bool hasCurSubarrayPartition() const;
   inline ::tiledb::rest::capnp::DomainArray::Reader getCurSubarrayPartition()
       const;
 
-  inline typename SubarrayPartitions::Reader getSubarrayPartitions() const;
+  inline bool hasSubarrayPartitions() const;
+  inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Reader
+  getSubarrayPartitions() const;
 
  private:
   ::capnp::_::StructReader _reader;
@@ -3475,6 +3451,17 @@ class ReadState::Builder {
   inline bool getOverflowed();
   inline void setOverflowed(bool value);
 
+  inline bool getUnsplittable();
+  inline void setUnsplittable(bool value);
+
+  inline bool hasSubarray();
+  inline ::tiledb::rest::capnp::DomainArray::Builder getSubarray();
+  inline void setSubarray(::tiledb::rest::capnp::DomainArray::Reader value);
+  inline ::tiledb::rest::capnp::DomainArray::Builder initSubarray();
+  inline void adoptSubarray(
+      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray> disownSubarray();
+
   inline bool hasCurSubarrayPartition();
   inline ::tiledb::rest::capnp::DomainArray::Builder getCurSubarrayPartition();
   inline void setCurSubarrayPartition(
@@ -3485,8 +3472,18 @@ class ReadState::Builder {
   inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
   disownCurSubarrayPartition();
 
-  inline typename SubarrayPartitions::Builder getSubarrayPartitions();
-  inline typename SubarrayPartitions::Builder initSubarrayPartitions();
+  inline bool hasSubarrayPartitions();
+  inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Builder
+  getSubarrayPartitions();
+  inline void setSubarrayPartitions(
+      ::capnp::List<::tiledb::rest::capnp::DomainArray>::Reader value);
+  inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Builder
+  initSubarrayPartitions(unsigned int size);
+  inline void adoptSubarrayPartitions(
+      ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::DomainArray>>&&
+          value);
+  inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::DomainArray>>
+  disownSubarrayPartitions();
 
  private:
   ::capnp::_::StructBuilder _builder;
@@ -3509,260 +3506,8 @@ class ReadState::Pipeline {
       : _typeless(kj::mv(typeless)) {
   }
 
+  inline ::tiledb::rest::capnp::DomainArray::Pipeline getSubarray();
   inline ::tiledb::rest::capnp::DomainArray::Pipeline getCurSubarrayPartition();
-  inline typename SubarrayPartitions::Pipeline getSubarrayPartitions();
-
- private:
-  ::capnp::AnyPointer::Pipeline _typeless;
-  friend class ::capnp::PipelineHook;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-};
-#endif  // !CAPNP_LITE
-
-class ReadState::SubarrayPartitions::Reader {
- public:
-  typedef SubarrayPartitions Reads;
-
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return _reader.totalSize().asPublic();
-  }
-
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
-  }
-#endif  // !CAPNP_LITE
-
-  inline Which which() const;
-  inline bool isInt8() const;
-  inline bool hasInt8() const;
-  inline ::capnp::List<::capnp::List<::int8_t>>::Reader getInt8() const;
-
-  inline bool isUint8() const;
-  inline bool hasUint8() const;
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Reader getUint8() const;
-
-  inline bool isInt16() const;
-  inline bool hasInt16() const;
-  inline ::capnp::List<::capnp::List<::int16_t>>::Reader getInt16() const;
-
-  inline bool isUint16() const;
-  inline bool hasUint16() const;
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Reader getUint16() const;
-
-  inline bool isInt32() const;
-  inline bool hasInt32() const;
-  inline ::capnp::List<::capnp::List<::int32_t>>::Reader getInt32() const;
-
-  inline bool isUint32() const;
-  inline bool hasUint32() const;
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Reader getUint32() const;
-
-  inline bool isInt64() const;
-  inline bool hasInt64() const;
-  inline ::capnp::List<::capnp::List<::int64_t>>::Reader getInt64() const;
-
-  inline bool isUint64() const;
-  inline bool hasUint64() const;
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Reader getUint64() const;
-
-  inline bool isFloat32() const;
-  inline bool hasFloat32() const;
-  inline ::capnp::List<::capnp::List<float>>::Reader getFloat32() const;
-
-  inline bool isFloat64() const;
-  inline bool hasFloat64() const;
-  inline ::capnp::List<::capnp::List<double>>::Reader getFloat64() const;
-
- private:
-  ::capnp::_::StructReader _reader;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::List;
-  friend class ::capnp::MessageBuilder;
-  friend class ::capnp::Orphanage;
-};
-
-class ReadState::SubarrayPartitions::Builder {
- public:
-  typedef SubarrayPartitions Builds;
-
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
-#endif  // !CAPNP_LITE
-
-  inline Which which();
-  inline bool isInt8();
-  inline bool hasInt8();
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder getInt8();
-  inline void setInt8(::capnp::List<::capnp::List<::int8_t>>::Reader value);
-  inline void setInt8(
-      ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int8_t>>::Builder initInt8(
-      unsigned int size);
-  inline void adoptInt8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>> disownInt8();
-
-  inline bool isUint8();
-  inline bool hasUint8();
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder getUint8();
-  inline void setUint8(::capnp::List<::capnp::List<::uint8_t>>::Reader value);
-  inline void setUint8(
-      ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint8_t>>::Builder initUint8(
-      unsigned int size);
-  inline void adoptUint8(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>> disownUint8();
-
-  inline bool isInt16();
-  inline bool hasInt16();
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder getInt16();
-  inline void setInt16(::capnp::List<::capnp::List<::int16_t>>::Reader value);
-  inline void setInt16(
-      ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int16_t>>::Builder initInt16(
-      unsigned int size);
-  inline void adoptInt16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>> disownInt16();
-
-  inline bool isUint16();
-  inline bool hasUint16();
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder getUint16();
-  inline void setUint16(::capnp::List<::capnp::List<::uint16_t>>::Reader value);
-  inline void setUint16(
-      ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint16_t>>::Builder initUint16(
-      unsigned int size);
-  inline void adoptUint16(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-  disownUint16();
-
-  inline bool isInt32();
-  inline bool hasInt32();
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder getInt32();
-  inline void setInt32(::capnp::List<::capnp::List<::int32_t>>::Reader value);
-  inline void setInt32(
-      ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int32_t>>::Builder initInt32(
-      unsigned int size);
-  inline void adoptInt32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>> disownInt32();
-
-  inline bool isUint32();
-  inline bool hasUint32();
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder getUint32();
-  inline void setUint32(::capnp::List<::capnp::List<::uint32_t>>::Reader value);
-  inline void setUint32(
-      ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint32_t>>::Builder initUint32(
-      unsigned int size);
-  inline void adoptUint32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-  disownUint32();
-
-  inline bool isInt64();
-  inline bool hasInt64();
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder getInt64();
-  inline void setInt64(::capnp::List<::capnp::List<::int64_t>>::Reader value);
-  inline void setInt64(
-      ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::int64_t>>::Builder initInt64(
-      unsigned int size);
-  inline void adoptInt64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>> disownInt64();
-
-  inline bool isUint64();
-  inline bool hasUint64();
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder getUint64();
-  inline void setUint64(::capnp::List<::capnp::List<::uint64_t>>::Reader value);
-  inline void setUint64(
-      ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value);
-  inline ::capnp::List<::capnp::List<::uint64_t>>::Builder initUint64(
-      unsigned int size);
-  inline void adoptUint64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-  disownUint64();
-
-  inline bool isFloat32();
-  inline bool hasFloat32();
-  inline ::capnp::List<::capnp::List<float>>::Builder getFloat32();
-  inline void setFloat32(::capnp::List<::capnp::List<float>>::Reader value);
-  inline void setFloat32(
-      ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value);
-  inline ::capnp::List<::capnp::List<float>>::Builder initFloat32(
-      unsigned int size);
-  inline void adoptFloat32(
-      ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>> disownFloat32();
-
-  inline bool isFloat64();
-  inline bool hasFloat64();
-  inline ::capnp::List<::capnp::List<double>>::Builder getFloat64();
-  inline void setFloat64(::capnp::List<::capnp::List<double>>::Reader value);
-  inline void setFloat64(
-      ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value);
-  inline ::capnp::List<::capnp::List<double>>::Builder initFloat64(
-      unsigned int size);
-  inline void adoptFloat64(
-      ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value);
-  inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>> disownFloat64();
-
- private:
-  ::capnp::_::StructBuilder _builder;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  friend class ::capnp::Orphanage;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-};
-
-#if !CAPNP_LITE
-class ReadState::SubarrayPartitions::Pipeline {
- public:
-  typedef SubarrayPartitions Pipelines;
-
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
 
  private:
   ::capnp::AnyPointer::Pipeline _typeless;
@@ -7541,891 +7286,160 @@ inline void ReadState::Builder::setOverflowed(bool value) {
   _builder.setDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool ReadState::Reader::hasCurSubarrayPartition() const {
+inline bool ReadState::Reader::getUnsplittable() const {
+  return _reader.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+
+inline bool ReadState::Builder::getUnsplittable() {
+  return _builder.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
+}
+inline void ReadState::Builder::setUnsplittable(bool value) {
+  _builder.setDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool ReadState::Reader::hasSubarray() const {
   return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
               .isNull();
 }
-inline bool ReadState::Builder::hasCurSubarrayPartition() {
+inline bool ReadState::Builder::hasSubarray() {
   return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
               .isNull();
 }
 inline ::tiledb::rest::capnp::DomainArray::Reader
-ReadState::Reader::getCurSubarrayPartition() const {
+ReadState::Reader::getSubarray() const {
   return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
       _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline ::tiledb::rest::capnp::DomainArray::Builder
-ReadState::Builder::getCurSubarrayPartition() {
+ReadState::Builder::getSubarray() {
   return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
       _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
 inline ::tiledb::rest::capnp::DomainArray::Pipeline
-ReadState::Pipeline::getCurSubarrayPartition() {
+ReadState::Pipeline::getSubarray() {
   return ::tiledb::rest::capnp::DomainArray::Pipeline(
       _typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
-inline void ReadState::Builder::setCurSubarrayPartition(
+inline void ReadState::Builder::setSubarray(
     ::tiledb::rest::capnp::DomainArray::Reader value) {
   ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
       _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
       value);
 }
 inline ::tiledb::rest::capnp::DomainArray::Builder
-ReadState::Builder::initCurSubarrayPartition() {
+ReadState::Builder::initSubarray() {
   return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
       _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void ReadState::Builder::adoptCurSubarrayPartition(
+inline void ReadState::Builder::adoptSubarray(
     ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
   ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
       _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
       kj::mv(value));
 }
 inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-ReadState::Builder::disownCurSubarrayPartition() {
+ReadState::Builder::disownSubarray() {
   return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
       _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline typename ReadState::SubarrayPartitions::Reader
-ReadState::Reader::getSubarrayPartitions() const {
-  return typename ReadState::SubarrayPartitions::Reader(_reader);
+inline bool ReadState::Reader::hasCurSubarrayPartition() const {
+  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
+              .isNull();
 }
-inline typename ReadState::SubarrayPartitions::Builder
-ReadState::Builder::getSubarrayPartitions() {
-  return typename ReadState::SubarrayPartitions::Builder(_builder);
+inline bool ReadState::Builder::hasCurSubarrayPartition() {
+  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
+              .isNull();
+}
+inline ::tiledb::rest::capnp::DomainArray::Reader
+ReadState::Reader::getCurSubarrayPartition() const {
+  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
+      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+}
+inline ::tiledb::rest::capnp::DomainArray::Builder
+ReadState::Builder::getCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline typename ReadState::SubarrayPartitions::Pipeline
-ReadState::Pipeline::getSubarrayPartitions() {
-  return typename ReadState::SubarrayPartitions::Pipeline(_typeless.noop());
+inline ::tiledb::rest::capnp::DomainArray::Pipeline
+ReadState::Pipeline::getCurSubarrayPartition() {
+  return ::tiledb::rest::capnp::DomainArray::Pipeline(
+      _typeless.getPointerField(1));
 }
 #endif  // !CAPNP_LITE
-inline typename ReadState::SubarrayPartitions::Builder
-ReadState::Builder::initSubarrayPartitions() {
-  _builder.setDataField<::uint16_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 0);
-  _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS).clear();
-  return typename ReadState::SubarrayPartitions::Builder(_builder);
-}
-inline ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which
-ReadState::SubarrayPartitions::Reader::which() const {
-  return _reader.getDataField<Which>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-inline ::tiledb::rest::capnp::ReadState::SubarrayPartitions::Which
-ReadState::SubarrayPartitions::Builder::which() {
-  return _builder.getDataField<Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isInt8() const {
-  return which() == ReadState::SubarrayPartitions::INT8;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isInt8() {
-  return which() == ReadState::SubarrayPartitions::INT8;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasInt8() const {
-  if (which() != ReadState::SubarrayPartitions::INT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasInt8() {
-  if (which() != ReadState::SubarrayPartitions::INT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::int8_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt8() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt8(
-    ::capnp::List<::capnp::List<::int8_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
+inline void ReadState::Builder::setCurSubarrayPartition(
+    ::tiledb::rest::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
       _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
       value);
 }
-inline void ReadState::SubarrayPartitions::Builder::setInt8(
-    ::kj::ArrayPtr<const ::capnp::List<::int8_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::int8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt8(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptInt8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int8_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isUint8() const {
-  return which() == ReadState::SubarrayPartitions::UINT8;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isUint8() {
-  return which() == ReadState::SubarrayPartitions::UINT8;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasUint8() const {
-  if (which() != ReadState::SubarrayPartitions::UINT8)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasUint8() {
-  if (which() != ReadState::SubarrayPartitions::UINT8)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::uint8_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint8() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint8(
-    ::capnp::List<::capnp::List<::uint8_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint8(
-    ::kj::ArrayPtr<const ::capnp::List<::uint8_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::uint8_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint8(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptUint8(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT8);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint8_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint8() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT8),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint8_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isInt16() const {
-  return which() == ReadState::SubarrayPartitions::INT16;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isInt16() {
-  return which() == ReadState::SubarrayPartitions::INT16;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasInt16() const {
-  if (which() != ReadState::SubarrayPartitions::INT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasInt16() {
-  if (which() != ReadState::SubarrayPartitions::INT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::int16_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt16() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt16(
-    ::capnp::List<::capnp::List<::int16_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt16(
-    ::kj::ArrayPtr<const ::capnp::List<::int16_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::int16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt16(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptInt16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int16_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isUint16() const {
-  return which() == ReadState::SubarrayPartitions::UINT16;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isUint16() {
-  return which() == ReadState::SubarrayPartitions::UINT16;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasUint16() const {
-  if (which() != ReadState::SubarrayPartitions::UINT16)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasUint16() {
-  if (which() != ReadState::SubarrayPartitions::UINT16)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::uint16_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint16() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint16(
-    ::capnp::List<::capnp::List<::uint16_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint16(
-    ::kj::ArrayPtr<const ::capnp::List<::uint16_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::uint16_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint16(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptUint16(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT16);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint16_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint16() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT16),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint16_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isInt32() const {
-  return which() == ReadState::SubarrayPartitions::INT32;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isInt32() {
-  return which() == ReadState::SubarrayPartitions::INT32;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasInt32() const {
-  if (which() != ReadState::SubarrayPartitions::INT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasInt32() {
-  if (which() != ReadState::SubarrayPartitions::INT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::int32_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt32(
-    ::capnp::List<::capnp::List<::int32_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt32(
-    ::kj::ArrayPtr<const ::capnp::List<::int32_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::int32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt32(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptInt32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int32_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isUint32() const {
-  return which() == ReadState::SubarrayPartitions::UINT32;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isUint32() {
-  return which() == ReadState::SubarrayPartitions::UINT32;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasUint32() const {
-  if (which() != ReadState::SubarrayPartitions::UINT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasUint32() {
-  if (which() != ReadState::SubarrayPartitions::UINT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::uint32_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint32(
-    ::capnp::List<::capnp::List<::uint32_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint32(
-    ::kj::ArrayPtr<const ::capnp::List<::uint32_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::uint32_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint32(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptUint32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint32_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint32_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isInt64() const {
-  return which() == ReadState::SubarrayPartitions::INT64;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isInt64() {
-  return which() == ReadState::SubarrayPartitions::INT64;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasInt64() const {
-  if (which() != ReadState::SubarrayPartitions::INT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasInt64() {
-  if (which() != ReadState::SubarrayPartitions::INT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::int64_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getInt64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getInt64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt64(
-    ::capnp::List<::capnp::List<::int64_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setInt64(
-    ::kj::ArrayPtr<const ::capnp::List<::int64_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::int64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initInt64(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptInt64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::INT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::int64_t>>>
-ReadState::SubarrayPartitions::Builder::disownInt64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::INT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::int64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isUint64() const {
-  return which() == ReadState::SubarrayPartitions::UINT64;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isUint64() {
-  return which() == ReadState::SubarrayPartitions::UINT64;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasUint64() const {
-  if (which() != ReadState::SubarrayPartitions::UINT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasUint64() {
-  if (which() != ReadState::SubarrayPartitions::UINT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<::uint64_t>>::Reader
-ReadState::SubarrayPartitions::Reader::getUint64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::getUint64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      get(_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint64(
-    ::capnp::List<::capnp::List<::uint64_t>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setUint64(
-    ::kj::ArrayPtr<const ::capnp::List<::uint64_t>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<::uint64_t>>::Builder
-ReadState::SubarrayPartitions::Builder::initUint64(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-          size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptUint64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::UINT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::List<::capnp::List<::uint64_t>>>
-ReadState::SubarrayPartitions::Builder::disownUint64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::UINT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<::uint64_t>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isFloat32() const {
-  return which() == ReadState::SubarrayPartitions::FLOAT32;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isFloat32() {
-  return which() == ReadState::SubarrayPartitions::FLOAT32;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasFloat32() const {
-  if (which() != ReadState::SubarrayPartitions::FLOAT32)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasFloat32() {
-  if (which() != ReadState::SubarrayPartitions::FLOAT32)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<float>>::Reader
-ReadState::SubarrayPartitions::Reader::getFloat32() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<float>>::Builder
-ReadState::SubarrayPartitions::Builder::getFloat32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::get(
+inline ::tiledb::rest::capnp::DomainArray::Builder
+ReadState::Builder::initCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
       _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat32(
-    ::capnp::List<::capnp::List<float>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline void ReadState::SubarrayPartitions::Builder::setFloat32(
-    ::kj::ArrayPtr<const ::capnp::List<float>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::List<::capnp::List<float>>::Builder
-ReadState::SubarrayPartitions::Builder::initFloat32(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
-}
-inline void ReadState::SubarrayPartitions::Builder::adoptFloat32(
-    ::capnp::Orphan<::capnp::List<::capnp::List<float>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT32);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::adopt(
+inline void ReadState::Builder::adoptCurSubarrayPartition(
+    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
       _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
       kj::mv(value));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<float>>>
-ReadState::SubarrayPartitions::Builder::disownFloat32() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT32),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<float>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool ReadState::SubarrayPartitions::Reader::isFloat64() const {
-  return which() == ReadState::SubarrayPartitions::FLOAT64;
-}
-inline bool ReadState::SubarrayPartitions::Builder::isFloat64() {
-  return which() == ReadState::SubarrayPartitions::FLOAT64;
-}
-inline bool ReadState::SubarrayPartitions::Reader::hasFloat64() const {
-  if (which() != ReadState::SubarrayPartitions::FLOAT64)
-    return false;
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool ReadState::SubarrayPartitions::Builder::hasFloat64() {
-  if (which() != ReadState::SubarrayPartitions::FLOAT64)
-    return false;
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::capnp::List<double>>::Reader
-ReadState::SubarrayPartitions::Reader::getFloat64() const {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::capnp::List<double>>::Builder
-ReadState::SubarrayPartitions::Builder::getFloat64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::get(
+inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
+ReadState::Builder::disownCurSubarrayPartition() {
+  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
       _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat64(
-    ::capnp::List<::capnp::List<double>>::Reader value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+
+inline bool ReadState::Reader::hasSubarrayPartitions() const {
+  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
+              .isNull();
 }
-inline void ReadState::SubarrayPartitions::Builder::setFloat64(
-    ::kj::ArrayPtr<const ::capnp::List<double>::Reader> value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
+inline bool ReadState::Builder::hasSubarrayPartitions() {
+  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
+              .isNull();
 }
-inline ::capnp::List<::capnp::List<double>>::Builder
-ReadState::SubarrayPartitions::Builder::initFloat64(unsigned int size) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
+inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Reader
+ReadState::Reader::getSubarrayPartitions() const {
+  return ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::get(
+          _reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline void ReadState::SubarrayPartitions::Builder::adoptFloat64(
-    ::capnp::Orphan<::capnp::List<::capnp::List<double>>>&& value) {
-  _builder.setDataField<ReadState::SubarrayPartitions::Which>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS,
-      ReadState::SubarrayPartitions::FLOAT64);
-  ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
+inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Builder
+ReadState::Builder::getSubarrayPartitions() {
+  return ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::get(
+          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-inline ::capnp::Orphan<::capnp::List<::capnp::List<double>>>
-ReadState::SubarrayPartitions::Builder::disownFloat64() {
-  KJ_IREQUIRE(
-      (which() == ReadState::SubarrayPartitions::FLOAT64),
-      "Must check which() before get()ing a union member.");
-  return ::capnp::_::PointerHelpers<::capnp::List<::capnp::List<double>>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
+inline void ReadState::Builder::setSubarrayPartitions(
+    ::capnp::List<::tiledb::rest::capnp::DomainArray>::Reader value) {
+  ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::set(
+          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
+          value);
+}
+inline ::capnp::List<::tiledb::rest::capnp::DomainArray>::Builder
+ReadState::Builder::initSubarrayPartitions(unsigned int size) {
+  return ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::init(
+          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
+          size);
+}
+inline void ReadState::Builder::adoptSubarrayPartitions(
+    ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::DomainArray>>&&
+        value) {
+  ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::adopt(
+          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
+          kj::mv(value));
+}
+inline ::capnp::Orphan<::capnp::List<::tiledb::rest::capnp::DomainArray>>
+ReadState::Builder::disownSubarrayPartitions() {
+  return ::capnp::_::
+      PointerHelpers<::capnp::List<::tiledb::rest::capnp::DomainArray>>::disown(
+          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
 inline bool QueryReader::Reader::hasReadState() const {
