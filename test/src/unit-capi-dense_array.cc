@@ -3034,6 +3034,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, invalid set query buffer",
     "[capi], [dense], [dense-invalid-set-query-buffer]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   create_temp_dir(temp_dir);
 
@@ -3293,6 +3300,13 @@ TEST_CASE_METHOD(
     DenseArrayFx,
     "C API: Test dense array, reset read subarray",
     "[capi], [dense], [reset-read-subarray]") {
+  SECTION("- No serialization") {
+    serialize_query = false;
+  }
+  SECTION("- Serialization") {
+    serialize_query = true;
+  }
+
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   std::string array_name = temp_dir + "reset_read_subarray";
   create_temp_dir(temp_dir);
