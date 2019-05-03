@@ -60,6 +60,7 @@ struct IncompleteFx {
   void write_dense_full();
   void write_sparse_full();
   void check_dense_incomplete();
+  void check_dense_incomplete_serialized();
   void check_dense_until_complete();
   void check_dense_shrink_buffer_size();
   void check_dense_unsplittable_overflow();
@@ -483,6 +484,103 @@ void IncompleteFx::check_dense_incomplete() {
   // Clean up
   tiledb_array_free(&array);
   tiledb_query_free(&query);
+
+  // Check buffer
+  int c_buffer_a1[2] = {0, 1};
+  CHECK(!memcmp(buffer_a1, c_buffer_a1, sizeof(c_buffer_a1)));
+  CHECK(buffer_sizes[0] == 2 * sizeof(int));
+}
+
+void IncompleteFx::check_dense_incomplete_serialized() {
+  // Initialize a subarray
+  const uint64_t subarray[] = {1, 2, 1, 2};
+
+  // Subset over a specific attribute
+  const char* attributes[] = {"a1"};
+
+  // Prepare the buffers that will store the result
+  int buffer_a1[2];
+  void* buffers[] = {buffer_a1};
+  uint64_t buffer_sizes[] = {sizeof(buffer_a1)};
+
+  // Open array
+  tiledb_array_t* array;
+  int rc = tiledb_array_alloc(ctx_, DENSE_ARRAY_NAME, &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx_, array, TILEDB_READ);
+  CHECK(rc == TILEDB_OK);
+
+  // Create query
+  tiledb_query_t* query;
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_READ, &query);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(
+      ctx_, query, attributes[0], buffers[0], &buffer_sizes[0]);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_query_set_subarray(ctx_, query, subarray);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_query_set_layout(ctx_, query, TILEDB_ROW_MAJOR);
+  REQUIRE(rc == TILEDB_OK);
+
+  // Serialize/deserialize into new query using new array
+  tiledb_buffer_t* buff;
+  rc = tiledb_buffer_alloc(ctx_, &buff);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_serialize_query(ctx_, query, TILEDB_CAPNP, buff);
+  REQUIRE(rc == TILEDB_OK);
+  tiledb_array_t* array2;
+  rc = tiledb_array_alloc(ctx_, DENSE_ARRAY_NAME, &array2);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx_, array2, TILEDB_READ);
+  CHECK(rc == TILEDB_OK);
+  tiledb_query_t* query2;
+  rc = tiledb_query_alloc(ctx_, array2, TILEDB_READ, &query2);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_deserialize_query(ctx_, query2, TILEDB_CAPNP, buff);
+  REQUIRE(rc == TILEDB_OK);
+
+  // Submit new query
+  rc = tiledb_query_submit(ctx_, query2);
+  REQUIRE(rc == TILEDB_OK);
+
+  // Deserialize back to a third query
+  tiledb_buffer_t* buff2;
+  rc = tiledb_buffer_alloc(ctx_, &buff2);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_serialize_query(ctx_, query2, TILEDB_CAPNP, buff2);
+  REQUIRE(rc == TILEDB_OK);
+  tiledb_query_t* query3;
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_READ, &query3);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_query_set_buffer(
+      ctx_, query3, attributes[0], buffers[0], &buffer_sizes[0]);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_deserialize_query(ctx_, query3, TILEDB_CAPNP, buff2);
+  REQUIRE(rc == TILEDB_OK);
+
+  // Check status
+  tiledb_query_status_t status;
+  rc = tiledb_query_get_status(ctx_, query, &status);
+  CHECK(rc == TILEDB_OK);
+  CHECK(status == TILEDB_UNINITIALIZED);
+  rc = tiledb_query_get_status(ctx_, query3, &status);
+  CHECK(rc == TILEDB_OK);
+  CHECK(status == TILEDB_INCOMPLETE);
+
+  // Close arrays
+  rc = tiledb_array_close(ctx_, array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_close(ctx_, array2);
+  CHECK(rc == TILEDB_OK);
+
+  // Clean up
+  tiledb_array_free(&array);
+  tiledb_array_free(&array2);
+  tiledb_query_free(&query);
+  tiledb_query_free(&query2);
+  tiledb_query_free(&query3);
+  tiledb_buffer_free(&buff);
+  tiledb_buffer_free(&buff2);
 
   // Check buffer
   int c_buffer_a1[2] = {0, 1};
@@ -1117,4 +1215,15 @@ TEST_CASE_METHOD(
   check_sparse_unsplittable_overflow();
   check_sparse_unsplittable_complete();
   remove_sparse_array();
+}
+
+TEST_CASE_METHOD(
+    IncompleteFx,
+    "C API: Test incomplete read queries, dense, serialized",
+    "[capi], [incomplete], [dense-incomplete]") {
+  remove_dense_array();
+  create_dense_array();
+  write_dense_full();
+  check_dense_incomplete_serialized();
+  remove_dense_array();
 }
