@@ -800,6 +800,8 @@ class Query {
   }
 
  private:
+  friend class Serialization;
+
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */
