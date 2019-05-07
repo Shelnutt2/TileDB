@@ -53,7 +53,6 @@
 #include "object_iter.h"
 #include "query.h"
 #include "schema_base.h"
-#include "serialization.h"
 #include "stats.h"
 #include "subarray.h"
 #include "tiledb.h"
