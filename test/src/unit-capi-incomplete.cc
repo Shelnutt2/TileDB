@@ -32,7 +32,9 @@
 
 #include "catch.hpp"
 #include "test/src/helpers.h"
+#include "tiledb/rest/capnp/query.h"
 #include "tiledb/sm/c_api/tiledb.h"
+#include "tiledb/sm/c_api/tiledb_struct_def.h"
 
 #include <cstring>
 #include <iostream>
@@ -522,12 +524,14 @@ void IncompleteFx::check_dense_incomplete_serialized() {
   rc = tiledb_query_set_layout(ctx_, query, TILEDB_ROW_MAJOR);
   REQUIRE(rc == TILEDB_OK);
 
-  // Serialize/deserialize into new query using new array
+  // Serialize/deserialize into new query using new array (client-side, so avoid
+  // the C API).
   tiledb_buffer_t* buff;
   rc = tiledb_buffer_alloc(ctx_, &buff);
   REQUIRE(rc == TILEDB_OK);
-  rc = tiledb_serialize_query(ctx_, query, TILEDB_CAPNP, buff);
-  REQUIRE(rc == TILEDB_OK);
+  auto st = tiledb::rest::capnp::query_serialize(
+      true, query->query_, tiledb::sm::SerializationType::CAPNP, buff->buffer_);
+  REQUIRE(st.ok());
   tiledb_array_t* array2;
   rc = tiledb_array_alloc(ctx_, DENSE_ARRAY_NAME, &array2);
   CHECK(rc == TILEDB_OK);
@@ -538,33 +542,35 @@ void IncompleteFx::check_dense_incomplete_serialized() {
   REQUIRE(rc == TILEDB_OK);
   rc = tiledb_deserialize_query(ctx_, query2, TILEDB_CAPNP, buff);
   REQUIRE(rc == TILEDB_OK);
+  // Allocate and set buffers on the "server".
+  int buffer_a1_server[2];
+  void* buffers_server[] = {buffer_a1_server};
+  uint64_t buffer_sizes_server[] = {sizeof(buffer_a1_server)};
+  rc = tiledb_query_set_buffer(
+      ctx_, query2, attributes[0], buffers_server[0], &buffer_sizes_server[0]);
+  REQUIRE(rc == TILEDB_OK);
 
   // Submit new query
   rc = tiledb_query_submit(ctx_, query2);
   REQUIRE(rc == TILEDB_OK);
 
-  // Deserialize back to a third query
+  // Deserialize back to the original query.
   tiledb_buffer_t* buff2;
   rc = tiledb_buffer_alloc(ctx_, &buff2);
   REQUIRE(rc == TILEDB_OK);
   rc = tiledb_serialize_query(ctx_, query2, TILEDB_CAPNP, buff2);
   REQUIRE(rc == TILEDB_OK);
-  tiledb_query_t* query3;
-  rc = tiledb_query_alloc(ctx_, array, TILEDB_READ, &query3);
-  REQUIRE(rc == TILEDB_OK);
-  rc = tiledb_query_set_buffer(
-      ctx_, query3, attributes[0], buffers[0], &buffer_sizes[0]);
-  REQUIRE(rc == TILEDB_OK);
-  rc = tiledb_deserialize_query(ctx_, query3, TILEDB_CAPNP, buff2);
-  REQUIRE(rc == TILEDB_OK);
+  // Client-side, so avoid C API.
+  REQUIRE(tiledb::rest::capnp::query_deserialize(
+              true,
+              query->query_,
+              tiledb::sm::SerializationType::CAPNP,
+              *buff2->buffer_)
+              .ok());
 
   // Check status
   tiledb_query_status_t status;
   rc = tiledb_query_get_status(ctx_, query, &status);
-  CHECK(rc == TILEDB_OK);
-  CHECK(status == TILEDB_UNINITIALIZED);
-  rc = tiledb_query_get_status(ctx_, query3, &status);
-  CHECK(rc == TILEDB_OK);
   CHECK(status == TILEDB_INCOMPLETE);
 
   // Close arrays
@@ -578,7 +584,6 @@ void IncompleteFx::check_dense_incomplete_serialized() {
   tiledb_array_free(&array2);
   tiledb_query_free(&query);
   tiledb_query_free(&query2);
-  tiledb_query_free(&query3);
   tiledb_buffer_free(&buff);
   tiledb_buffer_free(&buff2);
 
