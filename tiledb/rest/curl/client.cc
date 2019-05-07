@@ -345,8 +345,8 @@ tiledb::sm::Status submit_query_to_rest(
 
   // Serialize data to send
   tiledb::sm::Buffer serialized;
-  RETURN_NOT_OK(
-      rest::capnp::query_serialize(query, serialization_type, &serialized));
+  RETURN_NOT_OK(rest::capnp::query_serialize(
+      true, query, serialization_type, &serialized));
 
   // Init curl and form the URL
   Curl curlc(config);
@@ -365,7 +365,7 @@ tiledb::sm::Status submit_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      query, serialization_type, returned_data);
+      true, query, serialization_type, returned_data);
 
   STATS_FUNC_OUT(serialization_submit_query_to_rest);
 }
@@ -383,8 +383,8 @@ tiledb::sm::Status finalize_query_to_rest(
 
   // Serialize data to send
   tiledb::sm::Buffer serialized;
-  RETURN_NOT_OK(
-      rest::capnp::query_serialize(query, serialization_type, &serialized));
+  RETURN_NOT_OK(rest::capnp::query_serialize(
+      true, query, serialization_type, &serialized));
 
   // Init curl and form the URL
   Curl curlc(config);
@@ -403,7 +403,7 @@ tiledb::sm::Status finalize_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      query, serialization_type, returned_data);
+      true, query, serialization_type, returned_data);
 
   STATS_FUNC_OUT(serialization_finalize_query_to_rest);
 }
