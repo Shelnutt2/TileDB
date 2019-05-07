@@ -45,6 +45,7 @@ namespace rest {
 namespace capnp {
 
 tiledb::sm::Status query_serialize(
+    bool clientside,
     tiledb::sm::Query* query,
     tiledb::sm::SerializationType serialize_type,
     tiledb::sm::Buffer* serialized_buffer) {
@@ -54,6 +55,11 @@ tiledb::sm::Status query_serialize(
     ::capnp::MallocMessageBuilder message;
     Query::Builder query_builder = message.initRoot<Query>();
     RETURN_NOT_OK(query->capnp(&query_builder));
+
+    // Determine whether we should be serializing the buffer data.
+    const bool serialize_buffers =
+        (clientside && query->type() == tiledb::sm::QueryType::WRITE) ||
+        (!clientside && query->type() == tiledb::sm::QueryType::READ);
 
     serialized_buffer->reset_size();
     serialized_buffer->reset_offset();
@@ -77,56 +83,74 @@ tiledb::sm::Status query_serialize(
         kj::Array<::capnp::word> protomessage = messageToFlatArray(message);
         kj::ArrayPtr<const char> message_chars = protomessage.asChars();
 
+        auto total_nbytes = message_chars.size();
+        if (serialize_buffers)
+          total_nbytes += total_fixed_len_bytes + total_var_len_bytes;
+
         // Write the serialized query
-        const auto total_nbytes =
-            message_chars.size() + total_fixed_len_bytes + total_var_len_bytes;
         RETURN_NOT_OK(serialized_buffer->realloc(total_nbytes));
         RETURN_NOT_OK(serialized_buffer->write(
             message_chars.begin(), message_chars.size()));
 
         const auto* array_schema = query->array_schema();
-        if (array_schema == nullptr)
+        if (array_schema == nullptr || query->array() == nullptr)
           return LOG_STATUS(tiledb::sm::Status::QueryError(
-              "Cannot serialize; array schema is null."));
+              "Cannot serialize; array or array schema is null."));
 
-        // Iterate in attributes and concatenate buffers to end of message
-        auto attr_buffer_builders = query_builder.getAttributeBufferHeaders();
-        for (auto attr_buffer_builder : attr_buffer_builders) {
-          const std::string attribute_name =
-              attr_buffer_builder.getName().cStr();
-          const bool is_coords =
-              attribute_name == tiledb::sm::constants::coords;
-          const auto* attr = array_schema->attribute(attribute_name);
-          if (!is_coords && attr == nullptr)
-            return LOG_STATUS(tiledb::sm::Status::QueryError(
-                "Cannot serialize; no attribute named '" + attribute_name +
-                "'."));
+        // Iterate over attributes and concatenate buffers to end of message.
+        if (serialize_buffers) {
+          auto attr_buffer_builders = query_builder.getAttributeBufferHeaders();
+          for (auto attr_buffer_builder : attr_buffer_builders) {
+            const std::string attribute_name =
+                attr_buffer_builder.getName().cStr();
+            const bool is_coords =
+                attribute_name == tiledb::sm::constants::coords;
+            const auto* attr = array_schema->attribute(attribute_name);
+            if (!is_coords && attr == nullptr)
+              return LOG_STATUS(tiledb::sm::Status::QueryError(
+                  "Cannot serialize; no attribute named '" + attribute_name +
+                  "'."));
 
-          const bool var_size = !is_coords && attr->var_size();
-          if (var_size) {
-            // Variable size attribute buffer
-            uint64_t* offset_buffer = nullptr;
-            uint64_t* offset_buffer_size = nullptr;
-            void* buffer = nullptr;
-            uint64_t* buffer_size = nullptr;
-            RETURN_NOT_OK(query->get_buffer(
-                attribute_name.c_str(),
-                &offset_buffer,
-                &offset_buffer_size,
-                &buffer,
-                &buffer_size));
-            RETURN_NOT_OK(
-                serialized_buffer->write(offset_buffer, *offset_buffer_size));
-            RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
-          } else {
-            // Fixed size attribute buffer
-            void* buffer = nullptr;
-            uint64_t* buffer_size = nullptr;
-            RETURN_NOT_OK(query->get_buffer(
-                attribute_name.c_str(), &buffer, &buffer_size));
-            RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
+            const bool var_size = !is_coords && attr->var_size();
+            if (var_size) {
+              // Variable size attribute buffer
+              uint64_t* offset_buffer = nullptr;
+              uint64_t* offset_buffer_size = nullptr;
+              void* buffer = nullptr;
+              uint64_t* buffer_size = nullptr;
+              RETURN_NOT_OK(query->get_buffer(
+                  attribute_name.c_str(),
+                  &offset_buffer,
+                  &offset_buffer_size,
+                  &buffer,
+                  &buffer_size));
+
+              if (offset_buffer != nullptr) {
+                if (offset_buffer_size == nullptr || buffer == nullptr ||
+                    buffer_size == nullptr)
+                  return LOG_STATUS(tiledb::sm::Status::QueryError(
+                      "Cannot serialize; unexpected null buffers."));
+                RETURN_NOT_OK(serialized_buffer->write(
+                    offset_buffer, *offset_buffer_size));
+                RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
+              }
+            } else {
+              // Fixed size attribute buffer
+              void* buffer = nullptr;
+              uint64_t* buffer_size = nullptr;
+              RETURN_NOT_OK(query->get_buffer(
+                  attribute_name.c_str(), &buffer, &buffer_size));
+
+              if (buffer != nullptr) {
+                if (buffer_size == nullptr)
+                  return LOG_STATUS(tiledb::sm::Status::QueryError(
+                      "Cannot serialize; unexpected null buffer size."));
+                RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
+              }
+            }
           }
         }
+
         break;
       }
       default:
@@ -148,6 +172,7 @@ tiledb::sm::Status query_serialize(
 }
 
 tiledb::sm::Status query_deserialize(
+    bool clientside,
     tiledb::sm::Query* query,
     tiledb::sm::SerializationType serialize_type,
     const tiledb::sm::Buffer& serialized_buffer) {
@@ -164,7 +189,7 @@ tiledb::sm::Status query_deserialize(
             kj::StringPtr(static_cast<const char*>(serialized_buffer.data())),
             query_builder);
         rest::capnp::Query::Reader query_reader = query_builder.asReader();
-        return query->from_capnp(&query_reader, nullptr);
+        return query->from_capnp(clientside, &query_reader, nullptr);
       }
       case tiledb::sm::SerializationType::CAPNP: {
         // Capnp FlatArrayMessageReader requires 64-bit alignment.
@@ -188,7 +213,7 @@ tiledb::sm::Status query_deserialize(
         // was concatenated after the CapnP message on serialization).
         auto attribute_buffer_start = reader.getEnd();
         auto buffer_start = const_cast<::capnp::word*>(attribute_buffer_start);
-        return query->from_capnp(&query_reader, buffer_start);
+        return query->from_capnp(clientside, &query_reader, buffer_start);
       }
       default:
         return LOG_STATUS(tiledb::sm::Status::QueryError(
