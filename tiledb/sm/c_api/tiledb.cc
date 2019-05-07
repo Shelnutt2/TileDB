@@ -4718,6 +4718,7 @@ int tiledb_serialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_serialize(
+              false, /* Serialize C API only called by server by definition. */
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
               buffer->buffer_)))
@@ -4740,6 +4741,7 @@ int tiledb_deserialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_deserialize(
+              false, /* Serialize C API only called by server by definition. */
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
               *buffer->buffer_)))
