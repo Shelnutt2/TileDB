@@ -83,6 +83,9 @@ class Query {
   /*                 API               */
   /* ********************************* */
 
+  /** Returns the array. */
+  const Array* array() const;
+
   /** Returns the array schema. */
   const ArraySchema* array_schema() const;
 
@@ -232,7 +235,8 @@ class Query {
    * @param buffer_start A pointer ot the start of buffer for all attributes
    * @return
    */
-  Status from_capnp(rest::capnp::Query::Reader* query, void* buffer_start);
+  Status from_capnp(
+      bool clientside, rest::capnp::Query::Reader* query, void* buffer_start);
 
   /**
    * Returns `true` if the query has results. Applicable only to read
@@ -262,10 +266,14 @@ class Query {
    *     in bytes. In the case of reads, this initially contains the allocated
    *     size of `buffer`, but after the termination of the query
    *     it will contain the size of the useful (read) data in `buffer`.
+   * @param check_null_buffers If true (default), null buffers are not allowed.
    * @return Status
    */
   Status set_buffer(
-      const std::string& attribute, void* buffer, uint64_t* buffer_size);
+      const std::string& attribute,
+      void* buffer,
+      uint64_t* buffer_size,
+      bool check_null_buffers = true);
 
   /**
    * Sets the buffer for a var-sized attribute.
@@ -287,6 +295,7 @@ class Query {
    *     the allocated size of `buffer_val`, but after the termination of the
    *     query it will contain the size of the useful (read) data in
    *     `buffer_val`.
+   * @param check_null_buffers If true (default), null buffers are not allowed.
    * @return Status
    */
   Status set_buffer(
@@ -294,7 +303,8 @@ class Query {
       uint64_t* buffer_off,
       uint64_t* buffer_off_size,
       void* buffer_val,
-      uint64_t* buffer_val_size);
+      uint64_t* buffer_val_size,
+      bool check_null_buffers = true);
 
   /**
    * Sets the cell layout of the query. The function will return an error
