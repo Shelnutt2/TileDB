@@ -292,29 +292,10 @@ Status Query::capnp(rest::capnp::Query::Builder* queryBuilder) {
   // Serialize subarray
   const void* subarray =
       type_ == QueryType::READ ? reader_.subarray() : writer_.subarray();
-  const uint64_t subarray_size = 2 * schema->coords_size();
-  const uint64_t subarray_length =
-      subarray_size / datatype_size(schema->coords_type());
-  const auto domain_type = domain->type();
-  switch (domain_type) {
-    case tiledb::sm::Datatype::CHAR:
-    case tiledb::sm::Datatype::STRING_ASCII:
-    case tiledb::sm::Datatype::STRING_UTF8:
-    case tiledb::sm::Datatype::STRING_UTF16:
-    case tiledb::sm::Datatype::STRING_UTF32:
-    case tiledb::sm::Datatype::STRING_UCS2:
-    case tiledb::sm::Datatype::STRING_UCS4:
-    case tiledb::sm::Datatype::ANY:
-      // String dimensions not yet supported
-      return LOG_STATUS(
-          Status::QueryError("Cannot serialize; unsupported domain type."));
-    default:
-      if (subarray != nullptr) {
-        auto subarray_builder = queryBuilder->initSubarray();
-        RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-            subarray_builder, domain_type, subarray, subarray_length));
-      }
-      break;
+  if (subarray != nullptr) {
+    auto subarray_builder = queryBuilder->initSubarray();
+    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+        subarray_builder, schema, subarray));
   }
 
   // Serialize attribute buffer metadata
@@ -413,10 +394,11 @@ tiledb::sm::Status Query::from_capnp(
     RETURN_NOT_OK(set_subarray(nullptr));
   } else {
     auto subarray_reader = query->getSubarray();
-    Buffer subarray_buff;
-    RETURN_NOT_OK(rest::capnp::utils::copy_capnp_list(
-        subarray_reader, domain->type(), &subarray_buff));
-    RETURN_NOT_OK(set_subarray(subarray_buff.data()));
+    void* subarray;
+    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+        subarray_reader, schema, &subarray));
+    RETURN_NOT_OK_ELSE(set_subarray(subarray), std::free(subarray));
+    std::free(subarray);
   }
 
   // Deserialize and set attribute buffers.

@@ -86,41 +86,30 @@ const URI& Array::array_uri() const {
   return array_uri_;
 }
 
-Status Array::capnp(rest::capnp::Array::Builder* arrayBuilder) const {
+Status Array::capnp(rest::capnp::Array::Builder* array_builder) const {
   STATS_FUNC_IN(serialization_array_to_capnp);
-  // arrayBuilder->setQueryType(query_type_str(this->open_array_->query_type()));
-  arrayBuilder->setUri(this->array_uri_.to_string());
-  arrayBuilder->setTimestamp(this->timestamp());
-  arrayBuilder->setEncryptionKey(kj::arrayPtr(
-      static_cast<const kj::byte*>(this->encryption_key_.key().data()),
-      this->encryption_key_.key().size()));
-  arrayBuilder->setEncryptionType(
-      encryption_type_str(this->encryption_key_.encryption_type()));
-  if (!this->last_max_buffer_sizes_.empty()) {
-    rest::capnp::MapMaxBufferSizes::Builder lastMaxBufferSizesBuilder =
-        arrayBuilder->initLastMaxBufferSizes();
-    capnp::List<rest::capnp::MapMaxBufferSizes::Entry>::Builder entries =
-        lastMaxBufferSizesBuilder.initEntries(
-            this->last_max_buffer_sizes_.size());
-    size_t i = 0;
-    for (auto maxBufferSize : this->last_max_buffer_sizes_) {
-      rest::capnp::MapMaxBufferSizes::Entry::Builder entry = entries[i++];
-      entry.setKey(maxBufferSize.first);
-      rest::capnp::MaxBufferSize::Builder maxBufferSizeBuilder =
-          entry.initValue();
-      maxBufferSizeBuilder.setBufferOffsetSize(maxBufferSize.second.first);
-      maxBufferSizeBuilder.setBufferSize(maxBufferSize.second.second);
-    }
 
-    if (last_max_buffer_sizes_subarray_ != nullptr) {
-      auto subarray_builder = arrayBuilder->initLastMaxBufferSizesSubarray();
-      const auto* schema = array_schema();
-      RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-          subarray_builder,
-          schema->domain()->type(),
-          last_max_buffer_sizes_subarray_,
-          schema->dim_num() * 2));
+  array_builder->setUri(array_uri_.to_string());
+  array_builder->setTimestamp(timestamp_);
+
+  if (!last_max_buffer_sizes_.empty()) {
+    auto buffer_sizes_builder = array_builder->initLastMaxBufferSizes();
+    auto entries =
+        buffer_sizes_builder.initEntries(last_max_buffer_sizes_.size());
+    size_t i = 0;
+    for (const auto& max_buffer_size : last_max_buffer_sizes_) {
+      auto entry_builder = entries[i++];
+      entry_builder.setKey(max_buffer_size.first);
+      auto value_builder = entry_builder.initValue();
+      value_builder.setBufferOffsetSize(max_buffer_size.second.first);
+      value_builder.setBufferSize(max_buffer_size.second.second);
     }
+  }
+
+  if (last_max_buffer_sizes_subarray_ != nullptr) {
+    auto subarray_builder = array_builder->initLastMaxBufferSizesSubarray();
+    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+        subarray_builder, array_schema_, last_max_buffer_sizes_subarray_));
   }
 
   return Status::Ok();
@@ -128,48 +117,18 @@ Status Array::capnp(rest::capnp::Array::Builder* arrayBuilder) const {
   STATS_FUNC_OUT(serialization_array_to_capnp);
 }
 
-tiledb::sm::Status Array::from_capnp(rest::capnp::Array::Reader array) {
+Status Array::from_capnp(rest::capnp::Array::Reader array_reader) {
   STATS_FUNC_IN(serialization_array_from_capnp);
-  this->timestamp_ = array.getTimestamp();
-  this->array_uri_ = tiledb::sm::URI(array.getUri().cStr());
 
-  /*  // set default encryption to avoid uninitialized warnings
-    QueryType queryType = QueryType::READ;
-    auto st = query_type_enum(array.getQueryType(), &queryType);
-    if (!st.ok()) {
-      return st;
-    }*/
+  timestamp_ = array_reader.getTimestamp();
+  array_uri_ = tiledb::sm::URI(array_reader.getUri().cStr());
 
-  /*  if (this->open_array_ != nullptr) {
-      tiledb::sm::ArraySchema *arraySchema = new
-    tiledb::sm::ArraySchema(this->array_schema()); delete this->open_array_;
-      this->open_array_ = new tiledb::sm::OpenArray(this->array_uri_,
-    queryType); this->open_array_->set_array_schema(arraySchema);
-    }*/
-
-  // set default encryption to avoid uninitialized warnings
-  EncryptionType encryptionType = EncryptionType::NO_ENCRYPTION;
-  auto st = encryption_type_enum(array.getEncryptionType(), &encryptionType);
-  if (!st.ok()) {
-    return st;
-  }
-
-  st = this->encryption_key_.set_key(
-      encryptionType,
-      array.getEncryptionKey().begin(),
-      array.getEncryptionKey().size());
-  if (!st.ok()) {
-    return st;
-  }
-
-  if (array.hasLastMaxBufferSizes()) {
-    rest::capnp::MapMaxBufferSizes::Reader lastMaxBufferSizesBuilder =
-        array.getLastMaxBufferSizes();
-    if (lastMaxBufferSizesBuilder.hasEntries()) {
-      capnp::List<rest::capnp::MapMaxBufferSizes::Entry>::Reader entries =
-          lastMaxBufferSizesBuilder.getEntries();
-      for (rest::capnp::MapMaxBufferSizes::Entry::Reader entry : entries) {
-        this->last_max_buffer_sizes_.emplace(
+  if (array_reader.hasLastMaxBufferSizes()) {
+    auto buffer_sizes_reader = array_reader.getLastMaxBufferSizes();
+    if (buffer_sizes_reader.hasEntries()) {
+      auto entries_reader = buffer_sizes_reader.getEntries();
+      for (auto entry : entries_reader) {
+        last_max_buffer_sizes_.emplace(
             entry.getKey().cStr(),
             std::make_pair(
                 entry.getValue().getBufferOffsetSize(),
@@ -178,168 +137,14 @@ tiledb::sm::Status Array::from_capnp(rest::capnp::Array::Reader array) {
     }
   }
 
-  if (array.hasLastMaxBufferSizesSubarray()) {
-    rest::capnp::DomainArray::Reader lastMaxBuffserSizesSubArray =
-        array.getLastMaxBufferSizesSubarray();
-    switch (this->array_schema()->domain()->type()) {
-      case Datatype::INT8: {
-        if (lastMaxBuffserSizesSubArray.hasInt8()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getInt8();
-          int8_t* lastMaxBuffserSizesSubArrayLocal =
-              new int8_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::UINT8: {
-        if (lastMaxBuffserSizesSubArray.hasUint8()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getUint8();
-          uint8_t* lastMaxBuffserSizesSubArrayLocal =
-              new uint8_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::INT16: {
-        if (lastMaxBuffserSizesSubArray.hasInt16()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getInt16();
-          int16_t* lastMaxBuffserSizesSubArrayLocal =
-              new int16_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::UINT16: {
-        if (lastMaxBuffserSizesSubArray.hasUint16()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getUint16();
-          uint16_t* lastMaxBuffserSizesSubArrayLocal =
-              new uint16_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::INT32: {
-        if (lastMaxBuffserSizesSubArray.hasInt32()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getInt32();
-          int32_t* lastMaxBuffserSizesSubArrayLocal =
-              new int32_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::UINT32: {
-        if (lastMaxBuffserSizesSubArray.hasUint32()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getUint32();
-          uint32_t* lastMaxBuffserSizesSubArrayLocal =
-              new uint32_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::INT64: {
-        if (lastMaxBuffserSizesSubArray.hasInt64()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getInt64();
-          int64_t* lastMaxBuffserSizesSubArrayLocal =
-              new int64_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::UINT64: {
-        if (lastMaxBuffserSizesSubArray.hasUint64()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getUint64();
-          uint64_t* lastMaxBuffserSizesSubArrayLocal =
-              new uint64_t[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::FLOAT32: {
-        if (lastMaxBuffserSizesSubArray.hasFloat32()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getFloat32();
-          float* lastMaxBuffserSizesSubArrayLocal =
-              new float[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      case Datatype::FLOAT64: {
-        if (lastMaxBuffserSizesSubArray.hasFloat64()) {
-          auto lastMaxBuffserSizesSubArrayList =
-              lastMaxBuffserSizesSubArray.getFloat64();
-          double* lastMaxBuffserSizesSubArrayLocal =
-              new double[lastMaxBuffserSizesSubArrayList.size()];
-          for (size_t i = 0; i < lastMaxBuffserSizesSubArrayList.size(); i++)
-            lastMaxBuffserSizesSubArrayLocal[i] =
-                lastMaxBuffserSizesSubArrayList[i];
-
-          this->last_max_buffer_sizes_subarray_ =
-              lastMaxBuffserSizesSubArrayLocal;
-        }
-        break;
-      }
-      default: {
-        return Status::Error(
-            "Unknown/Unsupported domain datatype in from_capnp");
-      }
-    }
+  if (array_reader.hasLastMaxBufferSizesSubarray()) {
+    auto subarray_reader = array_reader.getLastMaxBufferSizesSubarray();
+    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+        subarray_reader, array_schema_, &last_max_buffer_sizes_subarray_));
   }
 
   return Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_from_capnp);
 }
 
@@ -447,7 +252,7 @@ Status Array::open(
 
   query_type_ = QueryType::READ;
   if (remote_) {
-    Config config = this->storage_manager_->config();
+    Config config = storage_manager_->config();
     RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
         config, array_uri_.to_string(), &array_schema_));
   } else {
@@ -490,7 +295,7 @@ Status Array::open(
 
   query_type_ = query_type;
   if (remote_) {
-    Config config = this->storage_manager_->config();
+    Config config = storage_manager_->config();
     RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
         config, array_uri_.to_string(), &array_schema_));
   } else {
@@ -699,10 +504,10 @@ Status Array::reopen(uint64_t timestamp) {
 
   if (remote_) {
     return open(
-        this->query_type_,
-        this->encryption_key_.encryption_type(),
-        this->encryption_key_.key().data(),
-        this->encryption_key_.key().size());
+        query_type_,
+        encryption_key_.encryption_type(),
+        encryption_key_.key().data(),
+        encryption_key_.key().size());
   }
   return storage_manager_->array_reopen(
       array_uri_,
