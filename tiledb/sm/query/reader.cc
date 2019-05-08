@@ -129,23 +129,17 @@ Status Reader::capnp(rest::capnp::QueryReader::Builder* reader_builder) const {
   read_state_builder.setUnsplittable(read_state_.unsplittable_);
 
   // Subarray
-  const auto coords_type = array_schema_->coords_type();
-  const uint64_t subarray_size = 2 * array_schema_->coords_size();
-  const uint64_t subarray_length = subarray_size / datatype_size(coords_type);
   if (read_state_.subarray_ != nullptr) {
     auto subarray_builder = read_state_builder.initSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-        subarray_builder, coords_type, read_state_.subarray_, subarray_length));
+    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+        subarray_builder, array_schema_, read_state_.subarray_));
   }
 
   // Current partition
   if (read_state_.cur_subarray_partition_ != nullptr) {
     auto subarray_builder = read_state_builder.initCurSubarrayPartition();
-    RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-        subarray_builder,
-        coords_type,
-        read_state_.cur_subarray_partition_,
-        subarray_length));
+    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+        subarray_builder, array_schema_, read_state_.cur_subarray_partition_));
   }
 
   // Subarray partitions
@@ -155,8 +149,8 @@ Status Reader::capnp(rest::capnp::QueryReader::Builder* reader_builder) const {
     size_t i = 0;
     for (const void* subarray : read_state_.subarray_partitions_) {
       tiledb::rest::capnp::DomainArray::Builder builder = partitions_builder[i];
-      RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-          builder, coords_type, subarray, subarray_length));
+      RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+          builder, array_schema_, subarray));
       i++;
     }
   }
@@ -221,19 +215,13 @@ Status Reader::from_capnp(rest::capnp::QueryReader::Reader* reader_reader) {
   read_state_.overflowed_ = read_state_reader.getOverflowed();
   read_state_.unsplittable_ = read_state_reader.getUnsplittable();
 
-  const auto coords_type = array_schema_->coords_type();
-  const uint64_t subarray_size = 2 * array_schema_->coords_size();
-
   // Deserialize subarray
   std::free(read_state_.subarray_);
   read_state_.subarray_ = nullptr;
   if (read_state_reader.hasSubarray()) {
     auto subarray_reader = read_state_reader.getSubarray();
-    Buffer subarray_buff;
-    RETURN_NOT_OK(rest::capnp::utils::copy_capnp_list(
-        subarray_reader, coords_type, &subarray_buff));
-    read_state_.subarray_ = std::malloc(subarray_size);
-    std::memcpy(read_state_.subarray_, subarray_buff.data(), subarray_size);
+    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+        subarray_reader, array_schema_, &read_state_.subarray_));
   }
 
   // Deserialize current partition
@@ -241,14 +229,8 @@ Status Reader::from_capnp(rest::capnp::QueryReader::Reader* reader_reader) {
   read_state_.cur_subarray_partition_ = nullptr;
   if (read_state_reader.hasCurSubarrayPartition()) {
     auto subarray_reader = read_state_reader.getCurSubarrayPartition();
-    Buffer subarray_buff;
-    RETURN_NOT_OK(rest::capnp::utils::copy_capnp_list(
-        subarray_reader, coords_type, &subarray_buff));
-    read_state_.cur_subarray_partition_ = std::malloc(subarray_size);
-    std::memcpy(
-        read_state_.cur_subarray_partition_,
-        subarray_buff.data(),
-        subarray_size);
+    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+        subarray_reader, array_schema_, &read_state_.cur_subarray_partition_));
   }
 
   // Deserialize partitions
@@ -259,12 +241,10 @@ Status Reader::from_capnp(rest::capnp::QueryReader::Reader* reader_reader) {
     auto partitions_reader = read_state_reader.getSubarrayPartitions();
     const size_t num_partitions = partitions_reader.size();
     for (size_t i = 0; i < num_partitions; i++) {
-      auto partition_reader = partitions_reader[i];
-      Buffer subarray_buff;
-      RETURN_NOT_OK(rest::capnp::utils::copy_capnp_list(
-          partition_reader, coords_type, &subarray_buff));
-      void* partition = std::malloc(subarray_size);
-      std::memcpy(partition, subarray_buff.data(), subarray_size);
+      auto subarray_reader = partitions_reader[i];
+      void* partition;
+      RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+          subarray_reader, array_schema_, &partition));
       read_state_.subarray_partitions_.push_back(partition);
     }
   }

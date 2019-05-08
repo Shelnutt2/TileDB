@@ -5,8 +5,7 @@
  *
  * The MIT License
  *
- * @copyright Copyright (c) 2017-2018 TileDB, Inc.
- * @copyright Copyright (c) 2016 MIT and Intel Corporation
+ * @copyright Copyright (c) 2018-2019 TileDB, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -145,4 +144,5 @@ tiledb::sm::Status array_schema_deserialize(
 }  // namespace capnp
 }  // namespace rest
 }  // namespace tiledb
+
 #endif  // TILEDB_REST_CAPNP_ARRAY_H
