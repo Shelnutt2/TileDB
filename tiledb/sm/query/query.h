@@ -33,7 +33,6 @@
 #ifndef TILEDB_QUERY_H
 #define TILEDB_QUERY_H
 
-#include "tiledb/rest/capnp/tiledb-rest.capnp.h"
 #include "tiledb/sm/enums/query_status.h"
 #include "tiledb/sm/enums/query_type.h"
 #include "tiledb/sm/fragment/fragment_metadata.h"
@@ -46,7 +45,6 @@
 #include "tiledb/sm/storage_manager/storage_manager.h"
 #include "tiledb/sm/subarray/subarray.h"
 
-#include <capnp/message.h>
 #include <functional>
 #include <utility>
 #include <vector>
@@ -59,6 +57,35 @@ class Array;
 /** Processes a (read/write) query. */
 class Query {
  public:
+  /* ********************************* */
+  /*          PUBLIC DATATYPES         */
+  /* ********************************* */
+
+  /**
+   * Contains any current state related to (de)serialization of this query.
+   * Mostly this supports setting buffers on this query that were allocated
+   * internally as a part of deserialization (as opposed to user-set buffers).
+   */
+  struct SerializationState {
+    /** Serialization state for a single attribute. */
+    struct AttrState {
+      /**
+       * Buffer holding (or wrapping) fixed-length data, either attribute or
+       * offset data.
+       */
+      Buffer fixed_len_data;
+      /** Buffer holding (or wrapping) variable-length data. */
+      Buffer var_len_data;
+      /** Value holding the length of the fixed-length data. */
+      uint64_t fixed_len_size = 0;
+      /** Value holding the length of the variable-length data. */
+      uint64_t var_len_size = 0;
+    };
+
+    /** Serialization state per attribute. */
+    std::unordered_map<std::string, AttrState> attribute_states;
+  };
+
   /* ********************************* */
   /*     CONSTRUCTORS & DESTRUCTORS    */
   /* ********************************* */
@@ -86,6 +113,9 @@ class Query {
   /** Returns the array. */
   const Array* array() const;
 
+  /** Returns the array. */
+  Array* array();
+
   /** Returns the array schema. */
   const ArraySchema* array_schema() const;
 
@@ -95,6 +125,9 @@ class Query {
    */
   std::vector<std::string> attributes() const;
 
+  /** Gets the AttributeBuffer for an attribute. */
+  AttributeBuffer attribute_buffer(const std::string& attribute_name) const;
+
   /**
    * Marks a query that has not yet been started as failed. This should not be
    * called asynchronously to cancel an in-progress query; for that use the
@@ -102,12 +135,6 @@ class Query {
    * @return Status
    */
   Status cancel();
-
-  /**
-   *
-   * @return
-   */
-  Status capnp(rest::capnp::Query::Builder* queryBuilder);
 
   /**
    * Check the validity of the provided buffer offsets for a variable attribute.
@@ -159,13 +186,14 @@ class Query {
       uint64_t** buffer_val_size) const;
 
   /**
+   * Returns the serialization state associated with the given attribute.
    *
-   * @param query
-   * @param buffer_start A pointer ot the start of buffer for all attributes
-   * @return
+   * @param attribute Attribute to get serialization state for
+   * @param state Set to point to the serialization state
+   * @return Status
    */
-  Status from_capnp(
-      bool clientside, rest::capnp::Query::Reader* query, void* buffer_start);
+  Status get_attr_serialization_state(
+      const std::string& attribute, SerializationState::AttrState** state);
 
   /**
    * Returns `true` if the query has results. Applicable only to read
@@ -184,6 +212,18 @@ class Query {
 
   /** Processes a query. */
   Status process();
+
+  /** Returns the Reader. */
+  const Reader* reader() const;
+
+  /** Returns the Reader. */
+  Reader* reader();
+
+  /** Returns the Writer. */
+  const Writer* writer() const;
+
+  /** Returns the Writer. */
+  Writer* writer();
 
   /**
    * Sets the buffer for a fixed-sized attribute.
@@ -293,38 +333,13 @@ class Query {
   /** Returns the query status. */
   QueryStatus status() const;
 
+  /** Returns the subarray. */
+  const void* subarray() const;
+
   /** Returns the query type. */
   QueryType type() const;
 
  private:
-  /* ********************************* */
-  /*         PRIVATE DATATYPES         */
-  /* ********************************* */
-  /**
-   * Contains any current state related to (de)serialization of this query.
-   * Mostly this supports setting buffers on this query that were allocated
-   * internally as a part of deserialization (as opposed to user-set buffers).
-   */
-  struct SerializationState {
-    /** Serialization state for a single attribute. */
-    struct AttrState {
-      /**
-       * Buffer holding (or wrapping) fixed-length data, either attribute or
-       * offset data.
-       */
-      Buffer fixed_len_data;
-      /** Buffer holding (or wrapping) variable-length data. */
-      Buffer var_len_data;
-      /** Value holding the length of the fixed-length data. */
-      uint64_t fixed_len_size = 0;
-      /** Value holding the length of the variable-length data. */
-      uint64_t var_len_size = 0;
-    };
-
-    /** Serialization state per attribute. */
-    std::unordered_map<std::string, AttrState> attribute_states;
-  };
-
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */

@@ -1,5 +1,5 @@
 /**
- * @file   array.cc
+ * @file   array_schema.cc
  *
  * @section LICENSE
  *
@@ -27,11 +27,9 @@
  *
  * @section DESCRIPTION
  *
- * This file defines serialization for
- * tiledb::sm::Attribute/Dimension/Domain/ArraySchema
+ * This file defines serialization functions for ArraySchema.
  */
 
-#include "tiledb/rest/capnp/array.h"
 #include "capnp/compat/json.h"
 #include "capnp/serialize.h"
 #include "tiledb/rest/capnp/utils.h"
@@ -43,7 +41,6 @@
 #include "tiledb/sm/misc/constants.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
-#include "tiledb/sm/serialization/filter_serializer.h"
 
 namespace tiledb {
 namespace rest {
@@ -59,13 +56,48 @@ tiledb::sm::Status filter_pipeline_to_capnp(
     for (unsigned index = 0; index < f->size(); index++) {
       tiledb::sm::Filter* filter = f->get_filter(index);
       Filter::Builder filterBuilder = filterList[index];
-      tiledb::sm::FilterSerializer serializer;
-      RETURN_NOT_OK(serializer.init(&filterBuilder));
-      RETURN_NOT_OK(filter->serialize(&serializer));
+      filterBuilder.setType(filter_type_str(filter->type()));
+
+      switch (filter->type()) {
+        case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
+          uint32_t window;
+          RETURN_NOT_OK(filter->get_option(
+              tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window));
+          auto data = filterBuilder.initData();
+          data.setUint32(window);
+          break;
+        }
+        case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
+          uint32_t window;
+          RETURN_NOT_OK(filter->get_option(
+              tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window));
+          auto data = filterBuilder.initData();
+          data.setUint32(window);
+          break;
+        }
+        case tiledb::sm::FilterType::FILTER_GZIP:
+        case tiledb::sm::FilterType::FILTER_ZSTD:
+        case tiledb::sm::FilterType::FILTER_LZ4:
+        case tiledb::sm::FilterType::FILTER_RLE:
+        case tiledb::sm::FilterType::FILTER_BZIP2:
+        case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
+          int32_t level;
+          RETURN_NOT_OK(filter->get_option(
+              tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level));
+          auto data = filterBuilder.initData();
+          data.setInt32(level);
+          break;
+        }
+        default:
+          break;
+      }
     }
+
     return tiledb::sm::Status::Ok();
   }
+
   return tiledb::sm::Status::Error("FilterPipeline passed was null");
+
   STATS_FUNC_OUT(serialization_filter_pipeline_to_capnp);
 }
 
@@ -78,10 +110,42 @@ tiledb::sm::Status filter_pipeline_from_capnp(
     ::capnp::List<Filter>::Reader filterList =
         filterPipelineReader->getFilters();
     for (const Filter::Reader& filterReader : filterList) {
-      tiledb::sm::FilterSerializer serializer;
-      RETURN_NOT_OK(serializer.init(&filterReader));
-      std::unique_ptr<tiledb::sm::Filter> filter;
-      RETURN_NOT_OK(tiledb::sm::Filter::deserialize(&serializer, &filter));
+      tiledb::sm::FilterType type = tiledb::sm::FilterType::FILTER_NONE;
+      RETURN_NOT_OK(filter_type_enum(filterReader.getType().cStr(), &type));
+      std::unique_ptr<tiledb::sm::Filter> filter(
+          tiledb::sm::Filter::create(type));
+
+      switch (filter->type()) {
+        case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
+          auto data = filterReader.getData();
+          uint32_t window = data.getUint32();
+          filter->set_option(
+              tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window);
+          break;
+        }
+        case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
+          auto data = filterReader.getData();
+          uint32_t window = data.getUint32();
+          filter->set_option(
+              tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window);
+          break;
+        }
+        case tiledb::sm::FilterType::FILTER_GZIP:
+        case tiledb::sm::FilterType::FILTER_ZSTD:
+        case tiledb::sm::FilterType::FILTER_LZ4:
+        case tiledb::sm::FilterType::FILTER_RLE:
+        case tiledb::sm::FilterType::FILTER_BZIP2:
+        case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
+          auto data = filterReader.getData();
+          int32_t level = data.getInt32();
+          filter->set_option(
+              tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level);
+          break;
+        }
+        default:
+          break;
+      }
+
       RETURN_NOT_OK((*filterPipeline)->add_filter(*filter));
     }
   }

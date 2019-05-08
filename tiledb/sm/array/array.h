@@ -68,10 +68,6 @@ class Array {
   /** Returns the array URI. */
   const URI& array_uri() const;
 
-  Status capnp(rest::capnp::Array::Builder* array_builder) const;
-
-  Status from_capnp(rest::capnp::Array::Reader array_reader);
-
   /**
    * Computes an upper bound on the buffer sizes required for a read
    * query, for a given subarray and set of attributes.
@@ -224,6 +220,12 @@ class Array {
 
   /** Returns the timestamp at which the array was opened. */
   uint64_t timestamp() const;
+
+  /** Directly set the timestamp value. */
+  Status set_timestamp(uint64_t timestamp);
+
+  /** Directly set the array URI. */
+  Status set_uri(const std::string& uri);
 
  private:
   /* ********************************* */

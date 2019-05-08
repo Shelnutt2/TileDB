@@ -32,7 +32,7 @@
 
 #include "tiledb/rest/curl/client.h"
 #include "capnp/compat/json.h"
-#include "tiledb/rest/capnp/array.h"
+#include "tiledb/rest/capnp/array_schema.h"
 #include "tiledb/rest/capnp/query.h"
 #include "tiledb/rest/capnp/tiledb-rest.capnp.h"
 #include "tiledb/rest/curl/curl.h"

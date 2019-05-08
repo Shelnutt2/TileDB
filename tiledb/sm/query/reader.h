@@ -33,7 +33,6 @@
 #ifndef TILEDB_READER_H
 #define TILEDB_READER_H
 
-#include "tiledb/rest/capnp/tiledb-rest.capnp.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/filter/filter_pipeline.h"
 #include "tiledb/sm/fragment/fragment_metadata.h"
@@ -344,25 +343,11 @@ class Reader {
   AttributeBuffer buffer(const std::string& attribute) const;
 
   /**
-   * Serialize a writer to capnp format
-   * @param writerBuilder
-   * @return  Status
-   */
-  Status capnp(rest::capnp::QueryReader::Builder* reader_builder) const;
-
-  /**
    * Returns `true` if the query was incomplete, i.e., if all subarray
    * partitions in the read state have not been processed or there
    * was some buffer overflow.
    */
   bool incomplete() const;
-
-  /**
-   * Deserialize from a capnp message
-   * @param writerReader
-   * @return Status
-   */
-  Status from_capnp(rest::capnp::QueryReader::Reader* reader_reader);
 
   /**
    * Retrieves the buffer of a fixed-sized attribute.
@@ -416,6 +401,12 @@ class Reader {
 
   /** Returns `true` if no results were retrieved after a query. */
   bool no_results() const;
+
+  /** Returns the current read state. */
+  const ReadState* read_state() const;
+
+  /** Returns the current read state. */
+  ReadState* read_state();
 
   /** Performs a read query using its set members. */
   Status read();
