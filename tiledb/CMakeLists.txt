@@ -82,7 +82,7 @@ endif()
 
 # List of all core source files
 set(TILEDB_CORE_SOURCES
-  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/array.cc
+  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/array_schema.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/query.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/tiledb-rest.capnp.c++
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/curl/client.cc
@@ -151,7 +151,6 @@ set(TILEDB_CORE_SOURCES
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/query/writer.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/query/dense_cell_range_iter.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/rtree/rtree.cc
-  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/serialization/filter_serializer.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/context.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/config.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/config_iter.cc

@@ -31,7 +31,6 @@
  */
 
 #include "tiledb/sm/query/reader.h"
-#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/sm/misc/comparators.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/parallel_functions.h"
@@ -119,45 +118,6 @@ AttributeBuffer Reader::buffer(const std::string& attribute) const {
   return attrbuf->second;
 }
 
-Status Reader::capnp(rest::capnp::QueryReader::Builder* reader_builder) const {
-  if (!read_state_.initialized_)
-    return Status::Ok();
-
-  auto read_state_builder = reader_builder->initReadState();
-  read_state_builder.setInitialized(read_state_.initialized_);
-  read_state_builder.setOverflowed(read_state_.overflowed_);
-  read_state_builder.setUnsplittable(read_state_.unsplittable_);
-
-  // Subarray
-  if (read_state_.subarray_ != nullptr) {
-    auto subarray_builder = read_state_builder.initSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-        subarray_builder, array_schema_, read_state_.subarray_));
-  }
-
-  // Current partition
-  if (read_state_.cur_subarray_partition_ != nullptr) {
-    auto subarray_builder = read_state_builder.initCurSubarrayPartition();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-        subarray_builder, array_schema_, read_state_.cur_subarray_partition_));
-  }
-
-  // Subarray partitions
-  if (!read_state_.subarray_partitions_.empty()) {
-    auto partitions_builder = read_state_builder.initSubarrayPartitions(
-        read_state_.subarray_partitions_.size());
-    size_t i = 0;
-    for (const void* subarray : read_state_.subarray_partitions_) {
-      tiledb::rest::capnp::DomainArray::Builder builder = partitions_builder[i];
-      RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-          builder, array_schema_, subarray));
-      i++;
-    }
-  }
-
-  return Status::Ok();
-}
-
 bool Reader::incomplete() const {
   bool ret;
   if (read_state_2_.set_) {
@@ -202,53 +162,6 @@ Status Reader::get_buffer(
     *buffer_val = it->second.buffer_var_;
     *buffer_val_size = it->second.buffer_var_size_;
   }
-  return Status::Ok();
-}
-
-Status Reader::from_capnp(rest::capnp::QueryReader::Reader* reader_reader) {
-  if (!reader_reader->hasReadState())
-    return Status::Ok();
-
-  auto read_state_reader = reader_reader->getReadState();
-
-  read_state_.initialized_ = read_state_reader.getInitialized();
-  read_state_.overflowed_ = read_state_reader.getOverflowed();
-  read_state_.unsplittable_ = read_state_reader.getUnsplittable();
-
-  // Deserialize subarray
-  std::free(read_state_.subarray_);
-  read_state_.subarray_ = nullptr;
-  if (read_state_reader.hasSubarray()) {
-    auto subarray_reader = read_state_reader.getSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
-        subarray_reader, array_schema_, &read_state_.subarray_));
-  }
-
-  // Deserialize current partition
-  std::free(read_state_.cur_subarray_partition_);
-  read_state_.cur_subarray_partition_ = nullptr;
-  if (read_state_reader.hasCurSubarrayPartition()) {
-    auto subarray_reader = read_state_reader.getCurSubarrayPartition();
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
-        subarray_reader, array_schema_, &read_state_.cur_subarray_partition_));
-  }
-
-  // Deserialize partitions
-  for (auto* subarray : read_state_.subarray_partitions_)
-    std::free(subarray);
-  read_state_.subarray_partitions_.clear();
-  if (read_state_reader.hasSubarrayPartitions()) {
-    auto partitions_reader = read_state_reader.getSubarrayPartitions();
-    const size_t num_partitions = partitions_reader.size();
-    for (size_t i = 0; i < num_partitions; i++) {
-      auto subarray_reader = partitions_reader[i];
-      void* partition;
-      RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
-          subarray_reader, array_schema_, &partition));
-      read_state_.subarray_partitions_.push_back(partition);
-    }
-  }
-
   return Status::Ok();
 }
 
@@ -434,6 +347,14 @@ bool Reader::no_results() const {
       return false;
   }
   return true;
+}
+
+const Reader::ReadState* Reader::read_state() const {
+  return &read_state_;
+}
+
+Reader::ReadState* Reader::read_state() {
+  return &read_state_;
 }
 
 Status Reader::read() {

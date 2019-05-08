@@ -401,7 +401,7 @@ struct Writer {
   class Pipeline;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(8ba60147a0e6735e, 1, 1)
+    CAPNP_DECLARE_STRUCT_HEADER(8ba60147a0e6735e, 1, 0)
 #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() {
       return &schema->defaultBrand;
@@ -2835,12 +2835,9 @@ class Writer::Reader {
 
   inline bool getCheckCoordDups() const;
 
+  inline bool getCheckCoordOOB() const;
+
   inline bool getDedupCoords() const;
-
-  inline bool getInitialized() const;
-
-  inline bool hasFragmentUri() const;
-  inline ::capnp::Text::Reader getFragmentUri() const;
 
  private:
   ::capnp::_::StructReader _reader;
@@ -2884,18 +2881,11 @@ class Writer::Builder {
   inline bool getCheckCoordDups();
   inline void setCheckCoordDups(bool value);
 
+  inline bool getCheckCoordOOB();
+  inline void setCheckCoordOOB(bool value);
+
   inline bool getDedupCoords();
   inline void setDedupCoords(bool value);
-
-  inline bool getInitialized();
-  inline void setInitialized(bool value);
-
-  inline bool hasFragmentUri();
-  inline ::capnp::Text::Builder getFragmentUri();
-  inline void setFragmentUri(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initFragmentUri(unsigned int size);
-  inline void adoptFragmentUri(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownFragmentUri();
 
  private:
   ::capnp::_::StructBuilder _builder;
@@ -6308,64 +6298,26 @@ inline void Writer::Builder::setCheckCoordDups(bool value) {
   _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool Writer::Reader::getDedupCoords() const {
+inline bool Writer::Reader::getCheckCoordOOB() const {
   return _reader.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
 
-inline bool Writer::Builder::getDedupCoords() {
+inline bool Writer::Builder::getCheckCoordOOB() {
   return _builder.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
 }
-inline void Writer::Builder::setDedupCoords(bool value) {
+inline void Writer::Builder::setCheckCoordOOB(bool value) {
   _builder.setDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool Writer::Reader::getInitialized() const {
+inline bool Writer::Reader::getDedupCoords() const {
   return _reader.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
 
-inline bool Writer::Builder::getInitialized() {
+inline bool Writer::Builder::getDedupCoords() {
   return _builder.getDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS);
 }
-inline void Writer::Builder::setInitialized(bool value) {
+inline void Writer::Builder::setDedupCoords(bool value) {
   _builder.setDataField<bool>(::capnp::bounded<2>() * ::capnp::ELEMENTS, value);
-}
-
-inline bool Writer::Reader::hasFragmentUri() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool Writer::Builder::hasFragmentUri() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Text::Reader Writer::Reader::getFragmentUri() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::Text::Builder Writer::Builder::getFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void Writer::Builder::setFragmentUri(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Text::Builder Writer::Builder::initFragmentUri(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
-}
-inline void Writer::Builder::adoptFragmentUri(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Text> Writer::Builder::disownFragmentUri() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool ReadState::Reader::getInitialized() const {

@@ -31,7 +31,6 @@
  */
 
 #include "tiledb/sm/array/array.h"
-#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/rest/curl/client.h"
 #include "tiledb/sm/encryption/encryption.h"
 #include "tiledb/sm/enums/serialization_type.h"
@@ -84,28 +83,6 @@ ArraySchema* Array::array_schema() const {
 const URI& Array::array_uri() const {
   std::unique_lock<std::mutex> lck(mtx_);
   return array_uri_;
-}
-
-Status Array::capnp(rest::capnp::Array::Builder* array_builder) const {
-  STATS_FUNC_IN(serialization_array_to_capnp);
-
-  array_builder->setUri(array_uri_.to_string());
-  array_builder->setTimestamp(timestamp_);
-
-  return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_array_to_capnp);
-}
-
-Status Array::from_capnp(rest::capnp::Array::Reader array_reader) {
-  STATS_FUNC_IN(serialization_array_from_capnp);
-
-  timestamp_ = array_reader.getTimestamp();
-  array_uri_ = tiledb::sm::URI(array_reader.getUri().cStr());
-
-  return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_array_from_capnp);
 }
 
 Status Array::compute_max_buffer_sizes(
@@ -482,6 +459,18 @@ Status Array::reopen(uint64_t timestamp) {
 uint64_t Array::timestamp() const {
   std::unique_lock<std::mutex> lck(mtx_);
   return timestamp_;
+}
+
+Status Array::set_timestamp(uint64_t timestamp) {
+  std::unique_lock<std::mutex> lck(mtx_);
+  timestamp_ = timestamp;
+  return Status::Ok();
+}
+
+Status Array::set_uri(const std::string& uri) {
+  std::unique_lock<std::mutex> lck(mtx_);
+  array_uri_ = URI(uri);
+  return Status::Ok();
 }
 
 /* ********************************* */
