@@ -68,9 +68,9 @@ class Array {
   /** Returns the array URI. */
   const URI& array_uri() const;
 
-  Status capnp(rest::capnp::Array::Builder* arrayBuilder) const;
+  Status capnp(rest::capnp::Array::Builder* array_builder) const;
 
-  Status from_capnp(rest::capnp::Array::Reader array);
+  Status from_capnp(rest::capnp::Array::Reader array_reader);
 
   /**
    * Computes an upper bound on the buffer sizes required for a read

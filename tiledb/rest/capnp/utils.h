@@ -262,6 +262,84 @@ tiledb::sm::Status copy_capnp_list(
   return tiledb::sm::Status::Ok();
 }
 
+/**
+ * Serializes the given arbitrarily typed subarray into the given Capnp builder.
+ *
+ * @tparam CapnpT Capnp builder type
+ * @param builder Builder to set subarray onto
+ * @param array_schema Array schema of subarray
+ * @param subarray Subarray
+ * @return Status
+ */
+template <typename CapnpT>
+tiledb::sm::Status serialize_subarray(
+    CapnpT& builder,
+    const tiledb::sm::ArraySchema* array_schema,
+    const void* subarray) {
+  // Check coords type
+  const auto coords_type = array_schema->coords_type();
+  switch (coords_type) {
+    case tiledb::sm::Datatype::CHAR:
+    case tiledb::sm::Datatype::STRING_ASCII:
+    case tiledb::sm::Datatype::STRING_UTF8:
+    case tiledb::sm::Datatype::STRING_UTF16:
+    case tiledb::sm::Datatype::STRING_UTF32:
+    case tiledb::sm::Datatype::STRING_UCS2:
+    case tiledb::sm::Datatype::STRING_UCS4:
+    case tiledb::sm::Datatype::ANY:
+      // String dimensions not yet supported
+      return LOG_STATUS(tiledb::sm::Status::RestError(
+          "Cannot serialize subarray; unsupported domain type."));
+    default:
+      break;
+  }
+
+  const uint64_t subarray_size = 2 * array_schema->coords_size();
+  const uint64_t subarray_length = subarray_size / datatype_size(coords_type);
+  RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
+      builder, coords_type, subarray, subarray_length));
+
+  return tiledb::sm::Status::Ok();
+}
+
+template <typename CapnpT>
+tiledb::sm::Status deserialize_subarray(
+    const CapnpT& reader,
+    const tiledb::sm::ArraySchema* array_schema,
+    void** subarray) {
+  // Check coords type
+  const auto coords_type = array_schema->coords_type();
+  switch (coords_type) {
+    case tiledb::sm::Datatype::CHAR:
+    case tiledb::sm::Datatype::STRING_ASCII:
+    case tiledb::sm::Datatype::STRING_UTF8:
+    case tiledb::sm::Datatype::STRING_UTF16:
+    case tiledb::sm::Datatype::STRING_UTF32:
+    case tiledb::sm::Datatype::STRING_UCS2:
+    case tiledb::sm::Datatype::STRING_UCS4:
+    case tiledb::sm::Datatype::ANY:
+      // String dimensions not yet supported
+      return LOG_STATUS(tiledb::sm::Status::RestError(
+          "Cannot deserialize subarray; unsupported domain type."));
+    default:
+      break;
+  }
+
+  const uint64_t subarray_size = 2 * array_schema->coords_size();
+  tiledb::sm::Buffer subarray_buff;
+  RETURN_NOT_OK(
+      rest::capnp::utils::copy_capnp_list(reader, coords_type, &subarray_buff));
+
+  if (subarray_buff.size() == 0) {
+    *subarray = nullptr;
+  } else {
+    *subarray = std::malloc(subarray_size);
+    std::memcpy(*subarray, subarray_buff.data(), subarray_size);
+  }
+
+  return tiledb::sm::Status::Ok();
+}
+
 }  // namespace utils
 }  // namespace capnp
 }  // namespace rest
