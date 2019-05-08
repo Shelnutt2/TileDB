@@ -31,7 +31,7 @@
  * This file defines the C API of TileDB.
  */
 #include "tiledb/sm/c_api/tiledb.h"
-#include "tiledb/rest/capnp/array.h"
+#include "tiledb/rest/capnp/array_schema.h"
 #include "tiledb/rest/capnp/query.h"
 #include "tiledb/rest/curl/client.h"
 #include "tiledb/sm/array/array.h"
