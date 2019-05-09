@@ -92,26 +92,6 @@ Status Array::capnp(rest::capnp::Array::Builder* array_builder) const {
   array_builder->setUri(array_uri_.to_string());
   array_builder->setTimestamp(timestamp_);
 
-  if (!last_max_buffer_sizes_.empty()) {
-    auto buffer_sizes_builder = array_builder->initLastMaxBufferSizes();
-    auto entries =
-        buffer_sizes_builder.initEntries(last_max_buffer_sizes_.size());
-    size_t i = 0;
-    for (const auto& max_buffer_size : last_max_buffer_sizes_) {
-      auto entry_builder = entries[i++];
-      entry_builder.setKey(max_buffer_size.first);
-      auto value_builder = entry_builder.initValue();
-      value_builder.setBufferOffsetSize(max_buffer_size.second.first);
-      value_builder.setBufferSize(max_buffer_size.second.second);
-    }
-  }
-
-  if (last_max_buffer_sizes_subarray_ != nullptr) {
-    auto subarray_builder = array_builder->initLastMaxBufferSizesSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-        subarray_builder, array_schema_, last_max_buffer_sizes_subarray_));
-  }
-
   return Status::Ok();
 
   STATS_FUNC_OUT(serialization_array_to_capnp);
@@ -122,26 +102,6 @@ Status Array::from_capnp(rest::capnp::Array::Reader array_reader) {
 
   timestamp_ = array_reader.getTimestamp();
   array_uri_ = tiledb::sm::URI(array_reader.getUri().cStr());
-
-  if (array_reader.hasLastMaxBufferSizes()) {
-    auto buffer_sizes_reader = array_reader.getLastMaxBufferSizes();
-    if (buffer_sizes_reader.hasEntries()) {
-      auto entries_reader = buffer_sizes_reader.getEntries();
-      for (auto entry : entries_reader) {
-        last_max_buffer_sizes_.emplace(
-            entry.getKey().cStr(),
-            std::make_pair(
-                entry.getValue().getBufferOffsetSize(),
-                entry.getValue().getBufferSize()));
-      }
-    }
-  }
-
-  if (array_reader.hasLastMaxBufferSizesSubarray()) {
-    auto subarray_reader = array_reader.getLastMaxBufferSizesSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
-        subarray_reader, array_schema_, &last_max_buffer_sizes_subarray_));
-  }
 
   return Status::Ok();
 
@@ -165,10 +125,12 @@ Status Array::compute_max_buffer_sizes(
     return LOG_STATUS(
         Status::ArrayError("Cannot compute max read buffer sizes; "
                            "Array was not opened in read mode"));
-  if (remote_) {
-    return tiledb::sm::Status::ArrayError(
-        "compute_max_buffer_sizes not implemented for remote arrays");
-  }
+
+  // Error on remote arrays (user must handle incomplete queries).
+  if (remote_)
+    return LOG_STATUS(
+        Status::ArrayError("Cannot compute max read buffer sizes; not "
+                           "supported for remote arrays."));
 
   // Check attributes
   RETURN_NOT_OK(array_schema_->check_attributes(attributes));
