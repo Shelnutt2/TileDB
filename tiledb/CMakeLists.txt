@@ -281,7 +281,7 @@ if (NOT WIN32)
   # No Curl required on Windows.
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
     INTERFACE
-    Curl::Curl
+    CURL::libcurl
   )
 endif()
 
