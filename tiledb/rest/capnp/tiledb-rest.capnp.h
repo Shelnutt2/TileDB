@@ -32,15 +32,11 @@ CAPNP_DECLARE_SCHEMA(c6b5bb09d4611252);
 CAPNP_DECLARE_SCHEMA(884e0a5f2521a5c6);
 CAPNP_DECLARE_SCHEMA(a83707d3ba24dd32);
 CAPNP_DECLARE_SCHEMA(a9caccb4333a2baf);
-CAPNP_DECLARE_SCHEMA(b6bd2ac1f661bce7);
-CAPNP_DECLARE_SCHEMA(eaf0905463c23b94);
-CAPNP_DECLARE_SCHEMA(d666e60b155ca48f);
 CAPNP_DECLARE_SCHEMA(8ba60147a0e6735e);
 CAPNP_DECLARE_SCHEMA(cbe1e7c13508aa2c);
 CAPNP_DECLARE_SCHEMA(e19754f813ccf79c);
 CAPNP_DECLARE_SCHEMA(96ba49d0f8b23ccc);
 CAPNP_DECLARE_SCHEMA(9df6f2a42c4e5f0b);
-CAPNP_DECLARE_SCHEMA(91f5a1c793993019);
 
 }  // namespace schemas
 }  // namespace capnp
@@ -74,7 +70,7 @@ struct Array {
   class Pipeline;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(a45730f57e0460b4, 1, 6)
+    CAPNP_DECLARE_STRUCT_HEADER(a45730f57e0460b4, 1, 2)
 #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() {
       return &schema->defaultBrand;
@@ -397,58 +393,6 @@ struct MapInt64::Entry {
   };
 };
 
-struct MaxBufferSize {
-  MaxBufferSize() = delete;
-
-  class Reader;
-  class Builder;
-  class Pipeline;
-
-  struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(b6bd2ac1f661bce7, 2, 0)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
-  };
-};
-
-struct MapMaxBufferSizes {
-  MapMaxBufferSizes() = delete;
-
-  class Reader;
-  class Builder;
-  class Pipeline;
-  struct Entry;
-
-  struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(eaf0905463c23b94, 0, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
-  };
-};
-
-struct MapMaxBufferSizes::Entry {
-  Entry() = delete;
-
-  class Reader;
-  class Builder;
-  class Pipeline;
-
-  struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(d666e60b155ca48f, 0, 2)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
-  };
-};
-
 struct Writer {
   Writer() = delete;
 
@@ -526,23 +470,6 @@ struct NonEmptyDomain {
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(9df6f2a42c4e5f0b, 1, 1)
-#if !CAPNP_LITE
-    static constexpr ::capnp::_::RawBrandedSchema const* brand() {
-      return &schema->defaultBrand;
-    }
-#endif  // !CAPNP_LITE
-  };
-};
-
-struct MaxBufferSizeVar {
-  MaxBufferSizeVar() = delete;
-
-  class Reader;
-  class Builder;
-  class Pipeline;
-
-  struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(91f5a1c793993019, 2, 1)
 #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() {
       return &schema->defaultBrand;
@@ -771,20 +698,6 @@ class Array::Reader {
 
   inline ::uint64_t getTimestamp() const;
 
-  inline bool hasEncryptionKey() const;
-  inline ::capnp::Data::Reader getEncryptionKey() const;
-
-  inline bool hasEncryptionType() const;
-  inline ::capnp::Text::Reader getEncryptionType() const;
-
-  inline bool hasLastMaxBufferSizes() const;
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Reader
-  getLastMaxBufferSizes() const;
-
-  inline bool hasLastMaxBufferSizesSubarray() const;
-  inline ::tiledb::rest::capnp::DomainArray::Reader
-  getLastMaxBufferSizesSubarray() const;
-
   inline bool hasQueryType() const;
   inline ::capnp::Text::Reader getQueryType() const;
 
@@ -833,44 +746,6 @@ class Array::Builder {
   inline ::uint64_t getTimestamp();
   inline void setTimestamp(::uint64_t value);
 
-  inline bool hasEncryptionKey();
-  inline ::capnp::Data::Builder getEncryptionKey();
-  inline void setEncryptionKey(::capnp::Data::Reader value);
-  inline ::capnp::Data::Builder initEncryptionKey(unsigned int size);
-  inline void adoptEncryptionKey(::capnp::Orphan<::capnp::Data>&& value);
-  inline ::capnp::Orphan<::capnp::Data> disownEncryptionKey();
-
-  inline bool hasEncryptionType();
-  inline ::capnp::Text::Builder getEncryptionType();
-  inline void setEncryptionType(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initEncryptionType(unsigned int size);
-  inline void adoptEncryptionType(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownEncryptionType();
-
-  inline bool hasLastMaxBufferSizes();
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-  getLastMaxBufferSizes();
-  inline void setLastMaxBufferSizes(
-      ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value);
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-  initLastMaxBufferSizes();
-  inline void adoptLastMaxBufferSizes(
-      ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>
-  disownLastMaxBufferSizes();
-
-  inline bool hasLastMaxBufferSizesSubarray();
-  inline ::tiledb::rest::capnp::DomainArray::Builder
-  getLastMaxBufferSizesSubarray();
-  inline void setLastMaxBufferSizesSubarray(
-      ::tiledb::rest::capnp::DomainArray::Reader value);
-  inline ::tiledb::rest::capnp::DomainArray::Builder
-  initLastMaxBufferSizesSubarray();
-  inline void adoptLastMaxBufferSizesSubarray(
-      ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-  disownLastMaxBufferSizesSubarray();
-
   inline bool hasQueryType();
   inline ::capnp::Text::Builder getQueryType();
   inline void setQueryType(::capnp::Text::Reader value);
@@ -905,11 +780,6 @@ class Array::Pipeline {
   inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {
   }
-
-  inline ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline
-  getLastMaxBufferSizes();
-  inline ::tiledb::rest::capnp::DomainArray::Pipeline
-  getLastMaxBufferSizesSubarray();
 
  private:
   ::capnp::AnyPointer::Pipeline _typeless;
@@ -2944,320 +2814,6 @@ class MapInt64::Entry::Pipeline {
 };
 #endif  // !CAPNP_LITE
 
-class MaxBufferSize::Reader {
- public:
-  typedef MaxBufferSize Reads;
-
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return _reader.totalSize().asPublic();
-  }
-
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
-  }
-#endif  // !CAPNP_LITE
-
-  inline ::uint64_t getBufferOffsetSize() const;
-
-  inline ::uint64_t getBufferSize() const;
-
- private:
-  ::capnp::_::StructReader _reader;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::List;
-  friend class ::capnp::MessageBuilder;
-  friend class ::capnp::Orphanage;
-};
-
-class MaxBufferSize::Builder {
- public:
-  typedef MaxBufferSize Builds;
-
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
-#endif  // !CAPNP_LITE
-
-  inline ::uint64_t getBufferOffsetSize();
-  inline void setBufferOffsetSize(::uint64_t value);
-
-  inline ::uint64_t getBufferSize();
-  inline void setBufferSize(::uint64_t value);
-
- private:
-  ::capnp::_::StructBuilder _builder;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  friend class ::capnp::Orphanage;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-};
-
-#if !CAPNP_LITE
-class MaxBufferSize::Pipeline {
- public:
-  typedef MaxBufferSize Pipelines;
-
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
-
- private:
-  ::capnp::AnyPointer::Pipeline _typeless;
-  friend class ::capnp::PipelineHook;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-};
-#endif  // !CAPNP_LITE
-
-class MapMaxBufferSizes::Reader {
- public:
-  typedef MapMaxBufferSizes Reads;
-
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return _reader.totalSize().asPublic();
-  }
-
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasEntries() const;
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-  getEntries() const;
-
- private:
-  ::capnp::_::StructReader _reader;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::List;
-  friend class ::capnp::MessageBuilder;
-  friend class ::capnp::Orphanage;
-};
-
-class MapMaxBufferSizes::Builder {
- public:
-  typedef MapMaxBufferSizes Builds;
-
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasEntries();
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-  getEntries();
-  inline void setEntries(
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-          value);
-  inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-  initEntries(unsigned int size);
-  inline void adoptEntries(
-      ::capnp::Orphan<
-          ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&&
-          value);
-  inline ::capnp::Orphan<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>
-  disownEntries();
-
- private:
-  ::capnp::_::StructBuilder _builder;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  friend class ::capnp::Orphanage;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-};
-
-#if !CAPNP_LITE
-class MapMaxBufferSizes::Pipeline {
- public:
-  typedef MapMaxBufferSizes Pipelines;
-
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
-
- private:
-  ::capnp::AnyPointer::Pipeline _typeless;
-  friend class ::capnp::PipelineHook;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-};
-#endif  // !CAPNP_LITE
-
-class MapMaxBufferSizes::Entry::Reader {
- public:
-  typedef Entry Reads;
-
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return _reader.totalSize().asPublic();
-  }
-
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasKey() const;
-  inline ::capnp::Text::Reader getKey() const;
-
-  inline bool hasValue() const;
-  inline ::tiledb::rest::capnp::MaxBufferSize::Reader getValue() const;
-
- private:
-  ::capnp::_::StructReader _reader;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::List;
-  friend class ::capnp::MessageBuilder;
-  friend class ::capnp::Orphanage;
-};
-
-class MapMaxBufferSizes::Entry::Builder {
- public:
-  typedef Entry Builds;
-
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasKey();
-  inline ::capnp::Text::Builder getKey();
-  inline void setKey(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initKey(unsigned int size);
-  inline void adoptKey(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownKey();
-
-  inline bool hasValue();
-  inline ::tiledb::rest::capnp::MaxBufferSize::Builder getValue();
-  inline void setValue(::tiledb::rest::capnp::MaxBufferSize::Reader value);
-  inline ::tiledb::rest::capnp::MaxBufferSize::Builder initValue();
-  inline void adoptValue(
-      ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>&& value);
-  inline ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize> disownValue();
-
- private:
-  ::capnp::_::StructBuilder _builder;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  friend class ::capnp::Orphanage;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-};
-
-#if !CAPNP_LITE
-class MapMaxBufferSizes::Entry::Pipeline {
- public:
-  typedef Entry Pipelines;
-
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
-
-  inline ::tiledb::rest::capnp::MaxBufferSize::Pipeline getValue();
-
- private:
-  ::capnp::AnyPointer::Pipeline _typeless;
-  friend class ::capnp::PipelineHook;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-};
-#endif  // !CAPNP_LITE
-
 class Writer::Reader {
  public:
   typedef Writer Reads;
@@ -3931,113 +3487,6 @@ class NonEmptyDomain::Pipeline {
 };
 #endif  // !CAPNP_LITE
 
-class MaxBufferSizeVar::Reader {
- public:
-  typedef MaxBufferSizeVar Reads;
-
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base)
-      : _reader(base) {
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return _reader.totalSize().asPublic();
-  }
-
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasAttribute() const;
-  inline ::capnp::Text::Reader getAttribute() const;
-
-  inline ::uint64_t getBufferSize() const;
-
-  inline ::uint64_t getBufferOffsetSize() const;
-
- private:
-  ::capnp::_::StructReader _reader;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::List;
-  friend class ::capnp::MessageBuilder;
-  friend class ::capnp::Orphanage;
-};
-
-class MaxBufferSizeVar::Builder {
- public:
-  typedef MaxBufferSizeVar Builds;
-
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {
-  }
-  inline explicit Builder(::capnp::_::StructBuilder base)
-      : _builder(base) {
-  }
-  inline operator Reader() const {
-    return Reader(_builder.asReader());
-  }
-  inline Reader asReader() const {
-    return *this;
-  }
-
-  inline ::capnp::MessageSize totalSize() const {
-    return asReader().totalSize();
-  }
-#if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
-    return asReader().toString();
-  }
-#endif  // !CAPNP_LITE
-
-  inline bool hasAttribute();
-  inline ::capnp::Text::Builder getAttribute();
-  inline void setAttribute(::capnp::Text::Reader value);
-  inline ::capnp::Text::Builder initAttribute(unsigned int size);
-  inline void adoptAttribute(::capnp::Orphan<::capnp::Text>&& value);
-  inline ::capnp::Orphan<::capnp::Text> disownAttribute();
-
-  inline ::uint64_t getBufferSize();
-  inline void setBufferSize(::uint64_t value);
-
-  inline ::uint64_t getBufferOffsetSize();
-  inline void setBufferOffsetSize(::uint64_t value);
-
- private:
-  ::capnp::_::StructBuilder _builder;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-  friend class ::capnp::Orphanage;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::_::PointerHelpers;
-};
-
-#if !CAPNP_LITE
-class MaxBufferSizeVar::Pipeline {
- public:
-  typedef MaxBufferSizeVar Pipelines;
-
-  inline Pipeline(decltype(nullptr))
-      : _typeless(nullptr) {
-  }
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
-      : _typeless(kj::mv(typeless)) {
-  }
-
- private:
-  ::capnp::AnyPointer::Pipeline _typeless;
-  friend class ::capnp::PipelineHook;
-  template <typename, ::capnp::Kind>
-  friend struct ::capnp::ToDynamic_;
-};
-#endif  // !CAPNP_LITE
-
 // =======================================================================================
 
 inline bool DomainArray::Reader::hasInt8() const {
@@ -4517,250 +3966,77 @@ inline void Array::Builder::setTimestamp(::uint64_t value) {
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool Array::Reader::hasEncryptionKey() const {
+inline bool Array::Reader::hasQueryType() const {
   return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
               .isNull();
 }
-inline bool Array::Builder::hasEncryptionKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Data::Reader Array::Reader::getEncryptionKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::Data::Builder Array::Builder::getEncryptionKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void Array::Builder::setEncryptionKey(::capnp::Data::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Data>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Data::Builder Array::Builder::initEncryptionKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
-}
-inline void Array::Builder::adoptEncryptionKey(
-    ::capnp::Orphan<::capnp::Data>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Data>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Data> Array::Builder::disownEncryptionKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Data>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline bool Array::Reader::hasEncryptionType() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool Array::Builder::hasEncryptionType() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Text::Reader Array::Reader::getEncryptionType() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::capnp::Text::Builder Array::Builder::getEncryptionType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void Array::Builder::setEncryptionType(::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Text::Builder Array::Builder::initEncryptionType(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      size);
-}
-inline void Array::Builder::adoptEncryptionType(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownEncryptionType() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
-inline bool Array::Reader::hasLastMaxBufferSizes() const {
-  return !_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool Array::Builder::hasLastMaxBufferSizes() {
-  return !_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Reader
-Array::Reader::getLastMaxBufferSizes() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      get(_reader.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
-}
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-Array::Builder::getLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      get(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
-}
-#if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline
-Array::Pipeline::getLastMaxBufferSizes() {
-  return ::tiledb::rest::capnp::MapMaxBufferSizes::Pipeline(
-      _typeless.getPointerField(2));
-}
-#endif  // !CAPNP_LITE
-inline void Array::Builder::setLastMaxBufferSizes(
-    ::tiledb::rest::capnp::MapMaxBufferSizes::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::set(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      value);
-}
-inline ::tiledb::rest::capnp::MapMaxBufferSizes::Builder
-Array::Builder::initLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      init(_builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
-}
-inline void Array::Builder::adoptLastMaxBufferSizes(
-    ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::adopt(
-      _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::tiledb::rest::capnp::MapMaxBufferSizes>
-Array::Builder::disownLastMaxBufferSizes() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MapMaxBufferSizes>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
-}
-
-inline bool Array::Reader::hasLastMaxBufferSizesSubarray() const {
-  return !_reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool Array::Builder::hasLastMaxBufferSizesSubarray() {
-  return !_builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::tiledb::rest::capnp::DomainArray::Reader
-Array::Reader::getLastMaxBufferSizesSubarray() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _reader.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
-}
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Array::Builder::getLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::get(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
-}
-#if !CAPNP_LITE
-inline ::tiledb::rest::capnp::DomainArray::Pipeline
-Array::Pipeline::getLastMaxBufferSizesSubarray() {
-  return ::tiledb::rest::capnp::DomainArray::Pipeline(
-      _typeless.getPointerField(3));
-}
-#endif  // !CAPNP_LITE
-inline void Array::Builder::setLastMaxBufferSizesSubarray(
-    ::tiledb::rest::capnp::DomainArray::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::set(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      value);
-}
-inline ::tiledb::rest::capnp::DomainArray::Builder
-Array::Builder::initLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::init(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
-}
-inline void Array::Builder::adoptLastMaxBufferSizesSubarray(
-    ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::adopt(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::tiledb::rest::capnp::DomainArray>
-Array::Builder::disownLastMaxBufferSizesSubarray() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::DomainArray>::disown(
-      _builder.getPointerField(::capnp::bounded<3>() * ::capnp::POINTERS));
-}
-
-inline bool Array::Reader::hasQueryType() const {
-  return !_reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
-              .isNull();
-}
 inline bool Array::Builder::hasQueryType() {
-  return !_builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS)
+  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
               .isNull();
 }
 inline ::capnp::Text::Reader Array::Reader::getQueryType() const {
   return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline ::capnp::Text::Builder Array::Builder::getQueryType() {
   return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void Array::Builder::setQueryType(::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
       value);
 }
 inline ::capnp::Text::Builder Array::Builder::initQueryType(unsigned int size) {
   return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
       size);
 }
 inline void Array::Builder::adoptQueryType(
     ::capnp::Orphan<::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
       kj::mv(value));
 }
 inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownQueryType() {
   return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<4>() * ::capnp::POINTERS));
+      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
 inline bool Array::Reader::hasUri() const {
-  return !_reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
+  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
               .isNull();
 }
 inline bool Array::Builder::hasUri() {
-  return !_builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS)
+  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
               .isNull();
 }
 inline ::capnp::Text::Reader Array::Reader::getUri() const {
   return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline ::capnp::Text::Builder Array::Builder::getUri() {
   return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 inline void Array::Builder::setUri(::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
       value);
 }
 inline ::capnp::Text::Builder Array::Builder::initUri(unsigned int size) {
   return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
       size);
 }
 inline void Array::Builder::adoptUri(::capnp::Orphan<::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS),
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
       kj::mv(value));
 }
 inline ::capnp::Orphan<::capnp::Text> Array::Builder::disownUri() {
   return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<5>() * ::capnp::POINTERS));
+      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
 }
 
 inline bool ArraySchema::Reader::hasArrayType() const {
@@ -7021,178 +6297,6 @@ inline void MapInt64::Entry::Builder::setValue(::int64_t value) {
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
 
-inline ::uint64_t MaxBufferSize::Reader::getBufferOffsetSize() const {
-  return _reader.getDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-
-inline ::uint64_t MaxBufferSize::Builder::getBufferOffsetSize() {
-  return _builder.getDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-inline void MaxBufferSize::Builder::setBufferOffsetSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
-}
-
-inline ::uint64_t MaxBufferSize::Reader::getBufferSize() const {
-  return _reader.getDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-
-inline ::uint64_t MaxBufferSize::Builder::getBufferSize() {
-  return _builder.getDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-inline void MaxBufferSize::Builder::setBufferSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
-}
-
-inline bool MapMaxBufferSizes::Reader::hasEntries() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool MapMaxBufferSizes::Builder::hasEntries() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-MapMaxBufferSizes::Reader::getEntries() const {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-MapMaxBufferSizes::Builder::getEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void MapMaxBufferSizes::Builder::setEntries(
-    ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Reader
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          value);
-}
-inline ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>::Builder
-MapMaxBufferSizes::Builder::initEntries(unsigned int size) {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      init(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          size);
-}
-inline void MapMaxBufferSizes::Builder::adoptEntries(
-    ::capnp::Orphan<
-        ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>&&
-        value) {
-  ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      adopt(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-          kj::mv(value));
-}
-inline ::capnp::Orphan<
-    ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>
-MapMaxBufferSizes::Builder::disownEntries() {
-  return ::capnp::_::PointerHelpers<
-      ::capnp::List<::tiledb::rest::capnp::MapMaxBufferSizes::Entry>>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline bool MapMaxBufferSizes::Entry::Reader::hasKey() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool MapMaxBufferSizes::Entry::Builder::hasKey() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Text::Reader MapMaxBufferSizes::Entry::Reader::getKey() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::getKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void MapMaxBufferSizes::Entry::Builder::setKey(
-    ::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Text::Builder MapMaxBufferSizes::Entry::Builder::initKey(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
-}
-inline void MapMaxBufferSizes::Entry::Builder::adoptKey(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Text>
-MapMaxBufferSizes::Entry::Builder::disownKey() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline bool MapMaxBufferSizes::Entry::Reader::hasValue() const {
-  return !_reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool MapMaxBufferSizes::Entry::Builder::hasValue() {
-  return !_builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::tiledb::rest::capnp::MaxBufferSize::Reader
-MapMaxBufferSizes::Entry::Reader::getValue() const {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::get(
-      _reader.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline ::tiledb::rest::capnp::MaxBufferSize::Builder
-MapMaxBufferSizes::Entry::Builder::getValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::get(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-#if !CAPNP_LITE
-inline ::tiledb::rest::capnp::MaxBufferSize::Pipeline
-MapMaxBufferSizes::Entry::Pipeline::getValue() {
-  return ::tiledb::rest::capnp::MaxBufferSize::Pipeline(
-      _typeless.getPointerField(1));
-}
-#endif  // !CAPNP_LITE
-inline void MapMaxBufferSizes::Entry::Builder::setValue(
-    ::tiledb::rest::capnp::MaxBufferSize::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::set(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      value);
-}
-inline ::tiledb::rest::capnp::MaxBufferSize::Builder
-MapMaxBufferSizes::Entry::Builder::initValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::init(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-inline void MapMaxBufferSizes::Entry::Builder::adoptValue(
-    ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::adopt(
-      _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::tiledb::rest::capnp::MaxBufferSize>
-MapMaxBufferSizes::Entry::Builder::disownValue() {
-  return ::capnp::_::PointerHelpers<::tiledb::rest::capnp::MaxBufferSize>::
-      disown(
-          _builder.getPointerField(::capnp::bounded<1>() * ::capnp::POINTERS));
-}
-
 inline bool Writer::Reader::getCheckCoordDups() const {
   return _reader.getDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
@@ -7949,74 +7053,6 @@ inline bool NonEmptyDomain::Builder::getIsEmpty() {
 }
 inline void NonEmptyDomain::Builder::setIsEmpty(bool value) {
   _builder.setDataField<bool>(::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
-}
-
-inline bool MaxBufferSizeVar::Reader::hasAttribute() const {
-  return !_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline bool MaxBufferSizeVar::Builder::hasAttribute() {
-  return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
-              .isNull();
-}
-inline ::capnp::Text::Reader MaxBufferSizeVar::Reader::getAttribute() const {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline ::capnp::Text::Builder MaxBufferSizeVar::Builder::getAttribute() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::get(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-inline void MaxBufferSizeVar::Builder::setAttribute(
-    ::capnp::Text::Reader value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::set(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      value);
-}
-inline ::capnp::Text::Builder MaxBufferSizeVar::Builder::initAttribute(
-    unsigned int size) {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::init(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      size);
-}
-inline void MaxBufferSizeVar::Builder::adoptAttribute(
-    ::capnp::Orphan<::capnp::Text>&& value) {
-  ::capnp::_::PointerHelpers<::capnp::Text>::adopt(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
-      kj::mv(value));
-}
-inline ::capnp::Orphan<::capnp::Text>
-MaxBufferSizeVar::Builder::disownAttribute() {
-  return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
-      _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
-}
-
-inline ::uint64_t MaxBufferSizeVar::Reader::getBufferSize() const {
-  return _reader.getDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-
-inline ::uint64_t MaxBufferSizeVar::Builder::getBufferSize() {
-  return _builder.getDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS);
-}
-inline void MaxBufferSizeVar::Builder::setBufferSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
-}
-
-inline ::uint64_t MaxBufferSizeVar::Reader::getBufferOffsetSize() const {
-  return _reader.getDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-
-inline ::uint64_t MaxBufferSizeVar::Builder::getBufferOffsetSize() {
-  return _builder.getDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
-}
-inline void MaxBufferSizeVar::Builder::setBufferOffsetSize(::uint64_t value) {
-  _builder.setDataField<::uint64_t>(
-      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 }  // namespace capnp
