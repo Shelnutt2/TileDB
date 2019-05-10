@@ -5404,99 +5404,79 @@ TILEDB_EXPORT int32_t tiledb_stats_free_str(char** out);
 /* ****************************** */
 
 /**
- * Serializes the array schema
- *
- * **Example:**
- *
- * The following serializes the array schema to give json string.
- *
- * @code{.c}
- * tiledb_array_schema_to_json(ctx, array_schema, TILEDB_JSON, &json_string);
- * @endcode
+ * Serializes the given array schema.
  *
  * @param ctx The TileDB context.
- * @param array_schema The array schema.
- * @param serialization_type format to serialization to
- * @param json_string char* pointer to store json string in
+ * @param array_schema The array schema to serialize.
+ * @param serialization_type Type of serialization to use
+ * @param client_side If set to 1, deserialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param buffer Buffer to serialize to
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int tiledb_serialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_array_schema_t* array_schema,
     tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
     tiledb_buffer_t* buffer);
 
 /**
- * Deserializes the array schema
- *
- * **Example:**
- *
- * The following de-serializes the array schema from a json string.
- *
- * @code{.c}
- * tiledb_array_schema_deserialize(ctx, &array_schema, TILEDB_JSON,
- * json_string);
- * @endcode
+ * Deserializes a new array schema from the given buffer.
  *
  * @param ctx The TileDB context.
- * @param array_schema The array schema.
- * @param serialization_type format to serialization to
- * @param json_string char* which stores the json string
+ * @param buffer Buffer to deserialize from
+ * @param serialization_type Type of serialization to use
+ * @param client_side If set to 1, deserialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param array_schema Will be set to a newly allocated array schema.
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int tiledb_deserialize_array_schema(
     tiledb_ctx_t* ctx,
-    tiledb_array_schema_t** array_schema,
+    const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
-    const tiledb_buffer_t* buffer);
+    int32_t client_side,
+    tiledb_array_schema_t** array_schema);
 
 /**
- * Serializes the query
- *
- * **Example:**
- *
- * The following serializes the query to give json string.
- *
- * @code{.c}
- * tiledb_query_serialize(ctx, query, TILEDB_JSON, &json_string,
- * &json_string_length);
- * @endcode
+ * Serializes the given query
  *
  * @param ctx The TileDB context.
  * @param query The query.
- * @param serialization_type format to serialization to
- * @param json_string char* pointer to store json string in
+ * @param serialization_type Type of serialization to use
+ * @param client_side If set to 1, deserialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param buffer Buffer to serialize to
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int tiledb_serialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_query_t* query,
     tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
     tiledb_buffer_t* buffer);
 
 /**
- * Deserializes the query
+ * Deserializes into an existing query from the given buffer.
  *
- * **Example:**
- *
- * The following de-serializes the query from a json string.
- *
- * @code{.c}
- * tiledb_query_deserialize(ctx, query, TILEDB_JSON, json_string,
- * json_string_length);
- * @endcode
+ * @note The deserialization is zero-copy, so the source buffer must exceed
+ * the lifetime of the query being deserialized to.
  *
  * @param ctx The TileDB context.
- * @param query The query object must be alloc'ed initially.
- * @param serialization_type format to serialization to
- * @param json_string char* which stores the json string
+ * @param buffer Buffer to deserialize from
+ * @param serialization_type Type of deserialization to use
+ * @param client_side If set to 1, deserialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param query The query object to deserialize into (must be pre-allocated).
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int tiledb_deserialize_query(
     tiledb_ctx_t* ctx,
-    tiledb_query_t* query,
+    const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
-    const tiledb_buffer_t* buffer);
+    int32_t client_side,
+    tiledb_query_t* query);
 
 #ifdef __cplusplus
 }

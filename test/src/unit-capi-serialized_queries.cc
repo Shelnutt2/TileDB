@@ -191,8 +191,8 @@ struct SerializationFx {
       ctx.handle_error(st.ok() ? TILEDB_OK : TILEDB_ERR);
     } else {
       // Server side uses the C API
-      ctx.handle_error(
-          tiledb_serialize_query(ctx, query.ptr().get(), TILEDB_CAPNP, c_buff));
+      ctx.handle_error(tiledb_serialize_query(
+          ctx, query.ptr().get(), TILEDB_CAPNP, 0, c_buff));
     }
 
     // Copy into user vector
@@ -241,7 +241,7 @@ struct SerializationFx {
     } else {
       // Server side uses the C API
       ctx.handle_error(tiledb_deserialize_query(
-          ctx, query->ptr().get(), TILEDB_CAPNP, c_buff));
+          ctx, c_buff, TILEDB_CAPNP, 0, query->ptr().get()));
     }
   }
 
