@@ -44,7 +44,7 @@ namespace tiledb {
 namespace rest {
 namespace capnp {
 
-tiledb::sm::Status array_capnp(
+tiledb::sm::Status array_to_capnp(
     const tiledb::sm::Array& array,
     rest::capnp::Array::Builder* array_builder) {
   array_builder->setUri(array.array_uri().to_string());
@@ -54,31 +54,34 @@ tiledb::sm::Status array_capnp(
 }
 
 tiledb::sm::Status array_from_capnp(
-    rest::capnp::Array::Reader array_reader, tiledb::sm::Array* array) {
+    const rest::capnp::Array::Reader& array_reader, tiledb::sm::Array* array) {
   RETURN_NOT_OK(array->set_uri(array_reader.getUri().cStr()));
   RETURN_NOT_OK(array->set_timestamp(array_reader.getTimestamp()));
 
   return tiledb::sm::Status::Ok();
 }
 
-tiledb::sm::Status writer_capnp(
+tiledb::sm::Status writer_to_capnp(
     const tiledb::sm::Writer& writer,
     rest::capnp::Writer::Builder* writer_builder) {
   writer_builder->setCheckCoordDups(writer.get_check_coord_dups());
   writer_builder->setCheckCoordOOB(writer.get_check_coord_oob());
   writer_builder->setDedupCoords(writer.get_dedup_coords());
+
   return tiledb::sm::Status::Ok();
 }
 
 tiledb::sm::Status writer_from_capnp(
-    rest::capnp::Writer::Reader* writer_reader, tiledb::sm::Writer* writer) {
-  writer->set_check_coord_dups(writer_reader->getCheckCoordDups());
-  writer->set_check_coord_oob(writer_reader->getCheckCoordOOB());
-  writer->set_dedup_coords(writer_reader->getDedupCoords());
+    const rest::capnp::Writer::Reader& writer_reader,
+    tiledb::sm::Writer* writer) {
+  writer->set_check_coord_dups(writer_reader.getCheckCoordDups());
+  writer->set_check_coord_oob(writer_reader.getCheckCoordOOB());
+  writer->set_dedup_coords(writer_reader.getDedupCoords());
+
   return tiledb::sm::Status::Ok();
 }
 
-tiledb::sm::Status reader_capnp(
+tiledb::sm::Status reader_to_capnp(
     const tiledb::sm::Reader& reader,
     rest::capnp::QueryReader::Builder* reader_builder) {
   auto read_state = reader.read_state();
@@ -123,12 +126,12 @@ tiledb::sm::Status reader_capnp(
 }
 
 tiledb::sm::Status reader_from_capnp(
-    rest::capnp::QueryReader::Reader* reader_reader,
+    const rest::capnp::QueryReader::Reader& reader_reader,
     tiledb::sm::Reader* reader) {
-  if (!reader_reader->hasReadState())
+  if (!reader_reader.hasReadState())
     return tiledb::sm::Status::Ok();
 
-  auto read_state_reader = reader_reader->getReadState();
+  auto read_state_reader = reader_reader.getReadState();
   auto read_state = reader->read_state();
   auto array_schema = reader->array_schema();
 
@@ -173,8 +176,9 @@ tiledb::sm::Status reader_from_capnp(
   return tiledb::sm::Status::Ok();
 }
 
-tiledb::sm::Status query_capnp(
-    const tiledb::sm::Query& query, rest::capnp::Query::Builder* queryBuilder) {
+tiledb::sm::Status query_to_capnp(
+    const tiledb::sm::Query& query,
+    rest::capnp::Query::Builder* query_builder) {
   using namespace tiledb::sm;
 
   // For easy reference
@@ -200,20 +204,20 @@ tiledb::sm::Status query_capnp(
         Status::QueryError("Cannot serialize; array domain is null."));
 
   // Serialize basic fields
-  queryBuilder->setType(query_type_str(type));
-  queryBuilder->setLayout(layout_str(layout));
-  queryBuilder->setStatus(query_status_str(query.status()));
+  query_builder->setType(query_type_str(type));
+  query_builder->setLayout(layout_str(layout));
+  query_builder->setStatus(query_status_str(query.status()));
 
   // Serialize array
   if (query.array() != nullptr) {
-    auto builder = queryBuilder->initArray();
-    RETURN_NOT_OK(array_capnp(*array, &builder));
+    auto builder = query_builder->initArray();
+    RETURN_NOT_OK(array_to_capnp(*array, &builder));
   }
 
   // Serialize subarray
   const void* subarray = query.subarray();
   if (subarray != nullptr) {
-    auto subarray_builder = queryBuilder->initSubarray();
+    auto subarray_builder = query_builder->initSubarray();
     RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
         subarray_builder, schema, subarray));
   }
@@ -221,7 +225,7 @@ tiledb::sm::Status query_capnp(
   // Serialize attribute buffer metadata
   const auto attr_names = query.attributes();
   auto attr_buffers_builder =
-      queryBuilder->initAttributeBufferHeaders(attr_names.size());
+      query_builder->initAttributeBufferHeaders(attr_names.size());
   uint64_t total_fixed_len_bytes = 0;
   uint64_t total_var_len_bytes = 0;
   for (uint64_t i = 0; i < attr_names.size(); i++) {
@@ -255,25 +259,25 @@ tiledb::sm::Status query_capnp(
     }
   }
 
-  queryBuilder->setTotalFixedLengthBufferBytes(total_fixed_len_bytes);
-  queryBuilder->setTotalVarLenBufferBytes(total_var_len_bytes);
+  query_builder->setTotalFixedLengthBufferBytes(total_fixed_len_bytes);
+  query_builder->setTotalVarLenBufferBytes(total_var_len_bytes);
 
   if (type == QueryType::READ) {
-    auto builder = queryBuilder->initReader();
+    auto builder = query_builder->initReader();
     auto reader = query.reader();
-    RETURN_NOT_OK(reader_capnp(*reader, &builder));
+    RETURN_NOT_OK(reader_to_capnp(*reader, &builder));
   } else {
-    auto builder = queryBuilder->initWriter();
+    auto builder = query_builder->initWriter();
     auto writer = query.writer();
-    RETURN_NOT_OK(writer_capnp(*writer, &builder));
+    RETURN_NOT_OK(writer_to_capnp(*writer, &builder));
   }
 
   return Status::Ok();
 }
 
 tiledb::sm::Status query_from_capnp(
+    const rest::capnp::Query::Reader& query_reader,
     bool clientside,
-    rest::capnp::Query::Reader* query_reader,
     void* buffer_start,
     tiledb::sm::Query* query) {
   using namespace tiledb::sm;
@@ -297,19 +301,19 @@ tiledb::sm::Status query_from_capnp(
 
   // Deserialize query type (sanity check).
   QueryType query_type = QueryType::READ;
-  RETURN_NOT_OK(query_type_enum(query_reader->getType().cStr(), &query_type));
+  RETURN_NOT_OK(query_type_enum(query_reader.getType().cStr(), &query_type));
   if (query_type != type)
     return LOG_STATUS(Status::QueryError(
         "Cannot deserialize; Query opened for " + query_type_str(type) +
-        " but got serialized type for " + query_reader->getType().cStr()));
+        " but got serialized type for " + query_reader.getType().cStr()));
 
   // Deserialize layout.
   Layout layout = Layout::UNORDERED;
-  RETURN_NOT_OK(layout_enum(query_reader->getLayout().cStr(), &layout));
+  RETURN_NOT_OK(layout_enum(query_reader.getLayout().cStr(), &layout));
   RETURN_NOT_OK(query->set_layout(layout));
 
   // Deserialize array instance.
-  RETURN_NOT_OK(array_from_capnp(query_reader->getArray(), array));
+  RETURN_NOT_OK(array_from_capnp(query_reader.getArray(), array));
 
   // Deserialize and set subarray.
   const bool sparse_write = !schema->dense() || layout == Layout::UNORDERED;
@@ -317,7 +321,7 @@ tiledb::sm::Status query_from_capnp(
     // Sparse writes cannot have a subarray; clear it here.
     RETURN_NOT_OK(query->set_subarray(nullptr));
   } else {
-    auto subarray_reader = query_reader->getSubarray();
+    auto subarray_reader = query_reader.getSubarray();
     void* subarray;
     RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
         subarray_reader, schema, &subarray));
@@ -326,11 +330,11 @@ tiledb::sm::Status query_from_capnp(
   }
 
   // Deserialize and set attribute buffers.
-  if (!query_reader->hasAttributeBufferHeaders())
+  if (!query_reader.hasAttributeBufferHeaders())
     return LOG_STATUS(Status::QueryError(
         "Cannot deserialize; no attribute buffer headers in message."));
 
-  auto buffer_headers = query_reader->getAttributeBufferHeaders();
+  auto buffer_headers = query_reader.getAttributeBufferHeaders();
   auto attribute_buffer_start = static_cast<char*>(buffer_start);
   for (auto buffer_header : buffer_headers) {
     const std::string attribute_name = buffer_header.getName().cStr();
@@ -477,36 +481,34 @@ tiledb::sm::Status query_from_capnp(
 
   // Deserialize reader/writer.
   if (type == QueryType::READ) {
-    auto reader_reader = query_reader->getReader();
-    auto reader = query->reader();
-    RETURN_NOT_OK(reader_from_capnp(&reader_reader, reader));
+    auto reader_reader = query_reader.getReader();
+    RETURN_NOT_OK(reader_from_capnp(reader_reader, query->reader()));
   } else {
-    auto writer_reader = query_reader->getWriter();
-    auto writer = query->writer();
-    RETURN_NOT_OK(writer_from_capnp(&writer_reader, writer));
+    auto writer_reader = query_reader.getWriter();
+    RETURN_NOT_OK(writer_from_capnp(writer_reader, query->writer()));
   }
 
   // Deserialize status. This must come last because various setters above
   // will reset it.
   QueryStatus query_status = QueryStatus::UNINITIALIZED;
   RETURN_NOT_OK(
-      query_status_enum(query_reader->getStatus().cStr(), &query_status));
+      query_status_enum(query_reader.getStatus().cStr(), &query_status));
   query->set_status(query_status);
 
   return Status::Ok();
 }
 
 tiledb::sm::Status query_serialize(
-    bool clientside,
     tiledb::sm::Query* query,
     tiledb::sm::SerializationType serialize_type,
+    bool clientside,
     tiledb::sm::Buffer* serialized_buffer) {
   STATS_FUNC_IN(serialization_query_serialize);
 
   try {
     ::capnp::MallocMessageBuilder message;
     Query::Builder query_builder = message.initRoot<Query>();
-    RETURN_NOT_OK(query_capnp(*query, &query_builder));
+    RETURN_NOT_OK(query_to_capnp(*query, &query_builder));
 
     // Determine whether we should be serializing the buffer data.
     const bool serialize_buffers =
@@ -624,10 +626,10 @@ tiledb::sm::Status query_serialize(
 }
 
 tiledb::sm::Status query_deserialize(
-    bool clientside,
-    tiledb::sm::Query* query,
+    const tiledb::sm::Buffer& serialized_buffer,
     tiledb::sm::SerializationType serialize_type,
-    const tiledb::sm::Buffer& serialized_buffer) {
+    bool clientside,
+    tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_query_deserialize);
 
   try {
@@ -641,7 +643,7 @@ tiledb::sm::Status query_deserialize(
             kj::StringPtr(static_cast<const char*>(serialized_buffer.data())),
             query_builder);
         rest::capnp::Query::Reader query_reader = query_builder.asReader();
-        return query_from_capnp(clientside, &query_reader, nullptr, query);
+        return query_from_capnp(query_reader, clientside, nullptr, query);
       }
       case tiledb::sm::SerializationType::CAPNP: {
         // Capnp FlatArrayMessageReader requires 64-bit alignment.
@@ -665,7 +667,7 @@ tiledb::sm::Status query_deserialize(
         // was concatenated after the CapnP message on serialization).
         auto attribute_buffer_start = reader.getEnd();
         auto buffer_start = const_cast<::capnp::word*>(attribute_buffer_start);
-        return query_from_capnp(clientside, &query_reader, buffer_start, query);
+        return query_from_capnp(query_reader, clientside, buffer_start, query);
       }
       default:
         return LOG_STATUS(tiledb::sm::Status::QueryError(

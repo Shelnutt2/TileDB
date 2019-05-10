@@ -181,19 +181,8 @@ struct SerializationFx {
         c_buff, deleter);
 
     // Serialize
-    if (clientside) {
-      // Client side avoids the C API
-      auto st = tiledb::rest::capnp::query_serialize(
-          true,
-          query.ptr().get()->query_,
-          tiledb::sm::SerializationType::CAPNP,
-          c_buff->buffer_);
-      ctx.handle_error(st.ok() ? TILEDB_OK : TILEDB_ERR);
-    } else {
-      // Server side uses the C API
-      ctx.handle_error(tiledb_serialize_query(
-          ctx, query.ptr().get(), TILEDB_CAPNP, 0, c_buff));
-    }
+    ctx.handle_error(tiledb_serialize_query(
+        ctx, query.ptr().get(), TILEDB_CAPNP, clientside ? 1 : 0, c_buff));
 
     // Copy into user vector
     void* data;
@@ -230,19 +219,8 @@ struct SerializationFx {
         static_cast<uint64_t>(serialized.size())));
 
     // Deserialize
-    if (clientside) {
-      // Client side avoids the C API
-      auto st = tiledb::rest::capnp::query_deserialize(
-          true,
-          query->ptr().get()->query_,
-          tiledb::sm::SerializationType::CAPNP,
-          *c_buff->buffer_);
-      ctx.handle_error(st.ok() ? TILEDB_OK : TILEDB_ERR);
-    } else {
-      // Server side uses the C API
-      ctx.handle_error(tiledb_deserialize_query(
-          ctx, c_buff, TILEDB_CAPNP, 0, query->ptr().get()));
-    }
+    ctx.handle_error(tiledb_deserialize_query(
+        ctx, c_buff, TILEDB_CAPNP, clientside ? 1 : 0, query->ptr().get()));
   }
 
   /**

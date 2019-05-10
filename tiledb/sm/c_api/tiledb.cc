@@ -4727,9 +4727,9 @@ int tiledb_serialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_serialize(
-              client_side == 1,
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
+              client_side == 1,
               buffer->buffer_)))
     return TILEDB_ERR;
 
@@ -4751,10 +4751,10 @@ int tiledb_deserialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_deserialize(
-              client_side == 1,
-              query->query_,
+              *buffer->buffer_,
               (tiledb::sm::SerializationType)serialize_type,
-              *buffer->buffer_)))
+              client_side == 1,
+              query->query_)))
     return TILEDB_ERR;
 
   return TILEDB_OK;
