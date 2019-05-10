@@ -31,7 +31,7 @@
  */
 
 #include "tiledb/sm/query/query.h"
-#include "tiledb/rest/curl/client.h"
+#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
@@ -115,10 +115,15 @@ Status Query::finalize() {
     return Status::Ok();
 
   if (array_->is_remote()) {
+    auto rest_client = storage_manager_->rest_client();
+    if (rest_client == nullptr)
+      return LOG_STATUS(Status::QueryError(
+          "Error in query finalize; remote array with no rest client."));
+
     array_->array_schema()->set_array_uri(array_->array_uri());
-    Config config = this->storage_manager_->config();
-    return tiledb::rest::finalize_query_to_rest(
-        config, array_->array_uri().to_string(), this);
+
+    return rest_client->finalize_query_to_rest(
+        array_->array_uri().to_string(), this);
   }
 
   RETURN_NOT_OK(writer_.finalize());
@@ -407,10 +412,15 @@ Status Query::set_subarray(const Subarray& subarray) {
 
 Status Query::submit() {  // Do nothing if the query is completed or failed
   if (array_->is_remote()) {
+    auto rest_client = storage_manager_->rest_client();
+    if (rest_client == nullptr)
+      return LOG_STATUS(Status::QueryError(
+          "Error in query submission; remote array with no rest client."));
+
     array_->array_schema()->set_array_uri(array_->array_uri());
-    Config config = this->storage_manager_->config();
-    return tiledb::rest::submit_query_to_rest(
-        config, array_->array_uri().to_string(), this);
+
+    return rest_client->submit_query_to_rest(
+        array_->array_uri().to_string(), this);
   }
   RETURN_NOT_OK(init());
   return storage_manager_->query_submit(this);

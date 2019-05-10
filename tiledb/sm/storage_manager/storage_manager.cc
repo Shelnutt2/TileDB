@@ -35,6 +35,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/global_state/global_state.h"
 #include "tiledb/sm/misc/logger.h"
@@ -948,6 +949,7 @@ Status StorageManager::init(Config* config) {
   tile_cache_ = new LRUCache(sm_params.tile_cache_size_);
   vfs_ = new VFS();
   RETURN_NOT_OK(vfs_->init(config_.vfs_params()));
+  RETURN_NOT_OK(init_rest_client());
   auto& global_state = global_state::GlobalState::GetGlobalState();
   RETURN_NOT_OK(global_state.initialize(config));
   global_state.register_storage_manager(this);
@@ -957,12 +959,8 @@ Status StorageManager::init(Config* config) {
   return Status::Ok();
 }
 
-bool StorageManager::rest_server_configured() const {
-  const char* str = nullptr;
-  if (!config_.get("rest.server_address", &str).ok())
-    return false;
-
-  return str != nullptr;
+tiledb::rest::RestClient* StorageManager::rest_client() const {
+  return rest_client_.get();
 }
 
 void StorageManager::increment_in_progress() {
@@ -1365,6 +1363,17 @@ void StorageManager::wait_for_zero_in_progress() {
   std::unique_lock<std::mutex> lck(queries_in_progress_mtx_);
   queries_in_progress_cv_.wait(
       lck, [this]() { return queries_in_progress_ == 0; });
+}
+
+Status StorageManager::init_rest_client() {
+  const char* server_address;
+  RETURN_NOT_OK(config_.get("rest.server_address", &server_address));
+  if (server_address != nullptr) {
+    rest_client_.reset(new tiledb::rest::RestClient);
+    RETURN_NOT_OK(rest_client_->init(&config_));
+  }
+
+  return Status::Ok();
 }
 
 Status StorageManager::write_to_cache(

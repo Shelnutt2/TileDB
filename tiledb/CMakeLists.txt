@@ -85,8 +85,8 @@ set(TILEDB_CORE_SOURCES
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/array_schema.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/query.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/capnp/tiledb-rest.capnp.c++
-  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/curl/client.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/curl/curl.cc
+  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/rest/curl/rest_client.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/array/array.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/array_schema/array_schema.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/array_schema/attribute.cc

@@ -70,13 +70,24 @@ size_t write_memory_callback(
   return content_nbytes;
 }
 
-Curl::Curl(const tiledb::sm::Config& config)
-    : config_(config)
+Curl::Curl()
+    : config_(nullptr)
     , curl_(nullptr, curl_easy_cleanup) {
 }
 
-tiledb::sm::Status Curl::init() {
+tiledb::sm::Status Curl::init(const tiledb::sm::Config* config) {
+  if (config == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error initializing libcurl; config is null."));
+
+  config_ = config;
   curl_.reset(curl_easy_init());
+
+  // See https://curl.haxx.se/libcurl/c/threadsafe.html
+  CURLcode rc = curl_easy_setopt(curl_.get(), CURLOPT_NOSIGNAL, 1);
+  if (rc != CURLE_OK)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error initializing libcurl; failed to set CURLOPT_NOSIGNAL"));
 
   return tiledb::sm::Status::Ok();
 }
@@ -91,15 +102,14 @@ std::string Curl::url_escape(const std::string& url) const {
   return escaped;
 }
 
-tiledb::sm::Status Curl::set_auth(
-    const tiledb::sm::Config& config, struct curl_slist** headers) const {
+tiledb::sm::Status Curl::set_auth(struct curl_slist** headers) const {
   CURL* curl = curl_.get();
   if (curl == nullptr)
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Cannot set auth; curl instance is null."));
 
   const char* token = nullptr;
-  RETURN_NOT_OK(config.get("rest.token", &token));
+  RETURN_NOT_OK(config_->get("rest.token", &token));
 
   if (token != nullptr) {
     *headers = curl_slist_append(
@@ -111,8 +121,8 @@ tiledb::sm::Status Curl::set_auth(
     // Try username+password instead of token
     const char* username = nullptr;
     const char* password = nullptr;
-    RETURN_NOT_OK(config.get("rest.username", &username));
-    RETURN_NOT_OK(config.get("rest.password", &password));
+    RETURN_NOT_OK(config_->get("rest.username", &username));
+    RETURN_NOT_OK(config_->get("rest.password", &password));
 
     // Check for no auth.
     if (username == nullptr || password == nullptr)
@@ -259,7 +269,7 @@ tiledb::sm::Status Curl::post_data(
 
   // Set auth and content-type for request
   struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(set_auth(&headers), curl_slist_free_all(headers));
   RETURN_NOT_OK_ELSE(
       set_content_type(serialization_type, &headers),
       curl_slist_free_all(headers));
@@ -298,7 +308,7 @@ tiledb::sm::Status Curl::get_data(
 
   // Set auth and content-type for request
   struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(set_auth(&headers), curl_slist_free_all(headers));
   RETURN_NOT_OK_ELSE(
       set_content_type(serialization_type, &headers),
       curl_slist_free_all(headers));
@@ -332,7 +342,7 @@ tiledb::sm::Status Curl::delete_data(
 
   // Set auth and content-type for request
   struct curl_slist* headers = nullptr;
-  RETURN_NOT_OK_ELSE(set_auth(config_, &headers), curl_slist_free_all(headers));
+  RETURN_NOT_OK_ELSE(set_auth(&headers), curl_slist_free_all(headers));
   RETURN_NOT_OK_ELSE(
       set_content_type(serialization_type, &headers),
       curl_slist_free_all(headers));

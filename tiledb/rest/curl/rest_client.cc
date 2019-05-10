@@ -30,7 +30,7 @@
  * This file implements curl client helper functions.
  */
 
-#include "tiledb/rest/curl/client.h"
+#include "tiledb/rest/curl/rest_client.h"
 #include "capnp/compat/json.h"
 #include "tiledb/rest/capnp/array_schema.h"
 #include "tiledb/rest/capnp/query.h"
@@ -41,129 +41,90 @@
 namespace tiledb {
 namespace rest {
 
-/**
- * Calls curl_easy_init(), wrapping the returned object in a safe pointer
- * that will be cleaned up automatically.
- */
-std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> init_curl_safe() {
-  return std::unique_ptr<CURL, decltype(&curl_easy_cleanup)>(
-      curl_easy_init(), curl_easy_cleanup);
-}
+tiledb::sm::Status RestClient::init(const tiledb::sm::Config* config) {
+  if (config == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error initializing rest client; config is null."));
 
-/**
- * Gets relevant REST config params from the given config object.
- *
- * @param config TileDB config instance
- * @param organization Set to `rest.organization`
- * @param rest_server Set to `rest.server_address`
- * @param serialization_type Set to `rest.server_serialization_format`
- * @return Status
- */
-tiledb::sm::Status get_rest_info_from_config(
-    const tiledb::sm::Config& config,
-    std::string* organization,
-    std::string* rest_server,
-    tiledb::sm::SerializationType* serialization_type) {
+  config_ = config;
+
   const char* c_str;
-
-  RETURN_NOT_OK(config.get("rest.organization", &c_str));
+  RETURN_NOT_OK(config_->get("rest.organization", &c_str));
   if (c_str == nullptr)
-    return LOG_STATUS(
-        tiledb::sm::Status::RestError("REST API error; `rest.organization` "
-                                      "config parameter cannot be null."));
-  *organization = std::string(c_str);
+    return LOG_STATUS(tiledb::sm::Status::RestError(
+        "Error initializing rest client; `rest.organization` "
+        "config parameter cannot be null."));
+  organization_ = std::string(c_str);
 
-  RETURN_NOT_OK(config.get("rest.server_address", &c_str));
+  RETURN_NOT_OK(config_->get("rest.server_address", &c_str));
   if (c_str != nullptr)
-    *rest_server = std::string(c_str);
+    rest_server_ = std::string(c_str);
 
-  RETURN_NOT_OK(config.get("rest.server_serialization_format", &c_str));
+  RETURN_NOT_OK(config_->get("rest.server_serialization_format", &c_str));
   if (c_str != nullptr)
     RETURN_NOT_OK(
-        tiledb::sm::serialization_type_enum(c_str, serialization_type));
+        tiledb::sm::serialization_type_enum(c_str, &serialization_type_));
 
   return tiledb::sm::Status::Ok();
 }
 
-tiledb::sm::Status get_array_schema_from_rest(
-    const tiledb::sm::Config& config,
-    const std::string& uri,
-    tiledb::sm::ArraySchema** array_schema) {
+tiledb::sm::Status RestClient::get_array_schema_from_rest(
+    const std::string& uri, tiledb::sm::ArraySchema** array_schema) {
   STATS_FUNC_IN(serialization_get_array_schema_from_rest);
 
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
-
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(uri);
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(uri);
 
   // Get the data
   tiledb::sm::Buffer returned_data;
-  RETURN_NOT_OK(curlc.get_data(url, serialization_type, &returned_data));
+  RETURN_NOT_OK(curlc.get_data(url, serialization_type_, &returned_data));
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Error getting array schema from REST; server returned no data."));
 
   return rest::capnp::array_schema_deserialize(
-      array_schema, serialization_type, returned_data);
+      array_schema, serialization_type_, returned_data);
 
   STATS_FUNC_OUT(serialization_get_array_schema_from_rest);
 }
 
-tiledb::sm::Status post_array_schema_to_rest(
-    const tiledb::sm::Config& config,
-    const std::string& uri,
-    tiledb::sm::ArraySchema* array_schema) {
+tiledb::sm::Status RestClient::post_array_schema_to_rest(
+    const std::string& uri, tiledb::sm::ArraySchema* array_schema) {
   STATS_FUNC_IN(serialization_post_array_schema_to_rest);
-
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
 
   tiledb::sm::Buffer serialized;
   RETURN_NOT_OK(rest::capnp::array_schema_serialize(
-      array_schema, serialization_type, &serialized));
+      array_schema, serialization_type_, &serialized));
 
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(uri);
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(uri);
 
   tiledb::sm::Buffer returned_data;
-  return curlc.post_data(url, serialization_type, &serialized, &returned_data);
+  return curlc.post_data(url, serialization_type_, &serialized, &returned_data);
 
   STATS_FUNC_OUT(serialization_post_array_schema_to_rest);
 }
 
-tiledb::sm::Status deregister_array_from_rest(
-    const tiledb::sm::Config& config, const std::string& uri) {
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
-
+tiledb::sm::Status RestClient::deregister_array_from_rest(
+    const std::string& uri) {
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(uri) + "/deregister";
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(uri) + "/deregister";
 
   tiledb::sm::Buffer returned_data;
-  return curlc.delete_data(url, serialization_type, &returned_data);
+  return curlc.delete_data(url, serialization_type_, &returned_data);
 }
 
-tiledb::sm::Status get_array_non_empty_domain(
-    const tiledb::sm::Config& config,
-    tiledb::sm::Array* array,
-    void* domain,
-    bool* is_empty) {
+tiledb::sm::Status RestClient::get_array_non_empty_domain(
+    tiledb::sm::Array* array, void* domain, bool* is_empty) {
   STATS_FUNC_IN(serialization_get_array_non_empty_domain);
 
   if (array == nullptr)
@@ -173,16 +134,11 @@ tiledb::sm::Status get_array_non_empty_domain(
     return LOG_STATUS(tiledb::sm::Status::RestError(
         "Cannot get array non-empty domain; array URI is empty"));
 
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
-
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(array->array_uri().to_string()) +
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(array->array_uri().to_string()) +
                     "/non_empty_domain";
 
   // Get the data
@@ -332,32 +288,25 @@ tiledb::sm::Status get_array_non_empty_domain(
   STATS_FUNC_OUT(serialization_get_array_non_empty_domain);
 }
 
-tiledb::sm::Status submit_query_to_rest(
-    const tiledb::sm::Config& config,
-    const std::string& uri,
-    tiledb::sm::Query* query) {
+tiledb::sm::Status RestClient::submit_query_to_rest(
+    const std::string& uri, tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_submit_query_to_rest);
-
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
 
   // Serialize data to send
   tiledb::sm::Buffer serialized;
   RETURN_NOT_OK(rest::capnp::query_serialize(
-      query, serialization_type, true, &serialized));
+      query, serialization_type_, true, &serialized));
 
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(uri) + "/query/submit?type=" +
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(uri) + "/query/submit?type=" +
                     tiledb::sm::query_type_str(query->type());
 
   tiledb::sm::Buffer returned_data;
-  auto st =
-      curlc.post_data(url, serialization_type, &serialized, &returned_data);
+  RETURN_NOT_OK(
+      curlc.post_data(url, serialization_type_, &serialized, &returned_data));
 
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(tiledb::sm::Status::RestError(
@@ -365,37 +314,30 @@ tiledb::sm::Status submit_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      returned_data, serialization_type, true, query);
+      returned_data, serialization_type_, true, query);
 
   STATS_FUNC_OUT(serialization_submit_query_to_rest);
 }
 
-tiledb::sm::Status finalize_query_to_rest(
-    const tiledb::sm::Config& config,
-    const std::string& uri,
-    tiledb::sm::Query* query) {
+tiledb::sm::Status RestClient::finalize_query_to_rest(
+    const std::string& uri, tiledb::sm::Query* query) {
   STATS_FUNC_IN(serialization_finalize_query_to_rest);
-
-  std::string organization, rest_server;
-  tiledb::sm::SerializationType serialization_type;
-  RETURN_NOT_OK(get_rest_info_from_config(
-      config, &organization, &rest_server, &serialization_type));
 
   // Serialize data to send
   tiledb::sm::Buffer serialized;
   RETURN_NOT_OK(rest::capnp::query_serialize(
-      query, serialization_type, true, &serialized));
+      query, serialization_type_, true, &serialized));
 
   // Init curl and form the URL
-  Curl curlc(config);
-  RETURN_NOT_OK(curlc.init());
-  std::string url = std::string(rest_server) + "/v1/arrays/" + organization +
-                    "/" + curlc.url_escape(uri) + "/query/finalize?type=" +
+  Curl curlc;
+  RETURN_NOT_OK(curlc.init(config_));
+  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
+                    curlc.url_escape(uri) + "/query/finalize?type=" +
                     tiledb::sm::query_type_str(query->type());
 
   tiledb::sm::Buffer returned_data;
-  auto st =
-      curlc.post_data(url, serialization_type, &serialized, &returned_data);
+  RETURN_NOT_OK(
+      curlc.post_data(url, serialization_type_, &serialized, &returned_data));
 
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(tiledb::sm::Status::RestError(
@@ -403,7 +345,7 @@ tiledb::sm::Status finalize_query_to_rest(
 
   // Deserialize data returned
   return rest::capnp::query_deserialize(
-      returned_data, serialization_type, true, query);
+      returned_data, serialization_type_, true, query);
 
   STATS_FUNC_OUT(serialization_finalize_query_to_rest);
 }
