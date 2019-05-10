@@ -49,9 +49,9 @@ namespace capnp {
  * @param serialized_buffer Buffer to store serialized query
  */
 tiledb::sm::Status query_serialize(
-    bool clientside,
     tiledb::sm::Query* query,
     tiledb::sm::SerializationType serialize_type,
+    bool clientside,
     tiledb::sm::Buffer* serialized_buffer);
 
 /**
@@ -62,10 +62,10 @@ tiledb::sm::Status query_serialize(
  * @param serialized_buffer Buffer storing serialized query
  */
 tiledb::sm::Status query_deserialize(
-    bool clientside,
-    tiledb::sm::Query* query,
+    const tiledb::sm::Buffer& serialized_buffer,
     tiledb::sm::SerializationType serialize_type,
-    const tiledb::sm::Buffer& serialized_buffer);
+    bool clientside,
+    tiledb::sm::Query* query);
 
 }  // namespace capnp
 }  // namespace rest

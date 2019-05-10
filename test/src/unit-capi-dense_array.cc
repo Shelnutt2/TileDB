@@ -2732,15 +2732,10 @@ int DenseArrayFx::submit_query_wrapper(
   REQUIRE(tiledb_query_get_type(ctx_, query, &query_type) == TILEDB_OK);
   REQUIRE(tiledb_query_get_layout(ctx_, query, &layout) == TILEDB_OK);
 
-  // Serialize the query (client-side, so avoid the C API).
+  // Serialize the query (client-side).
   tiledb_buffer_t* buff1;
   REQUIRE(tiledb_buffer_alloc(ctx_, &buff1) == TILEDB_OK);
-  auto st = tiledb::rest::capnp::query_serialize(
-      true,
-      query->query_,
-      tiledb::sm::SerializationType::CAPNP,
-      buff1->buffer_);
-  int rc = st.ok() ? TILEDB_OK : TILEDB_ERR;
+  int rc = tiledb_serialize_query(ctx_, query, TILEDB_CAPNP, 1, buff1);
 
   // Global order queries are not (yet) supported for serialization. Just
   // check that serialization is an error, and then execute the regular query.
@@ -2775,8 +2770,7 @@ int DenseArrayFx::submit_query_wrapper(
   REQUIRE(tiledb_array_alloc(ctx_, array_uri.c_str(), &new_array) == TILEDB_OK);
   REQUIRE(tiledb_array_open(ctx_, new_array, query_type) == TILEDB_OK);
 
-  // Create a new query and deserialize from the buffer (server-side,
-  // so use the C API).
+  // Create a new query and deserialize from the buffer (server-side)
   tiledb_query_t* new_query = nullptr;
   REQUIRE(
       tiledb_query_alloc(ctx_, new_array, query_type, &new_query) == TILEDB_OK);
@@ -2883,8 +2877,7 @@ int DenseArrayFx::submit_query_wrapper(
   // Submit the new query ("on the server").
   rc = tiledb_query_submit(ctx_, new_query);
 
-  // Serialize the new query and "send it over the network" (server-side,
-  // so use the C API).
+  // Serialize the new query and "send it over the network" (server-side)
   tiledb_buffer_t* buff3;
   REQUIRE(tiledb_buffer_alloc(ctx_, &buff3) == TILEDB_OK);
   REQUIRE(
@@ -2907,13 +2900,10 @@ int DenseArrayFx::submit_query_wrapper(
   REQUIRE(
       tiledb_buffer_set_data(ctx_, buff4, buff3_copy, buff3_size) == TILEDB_OK);
 
-  // Deserialize into the original query. Client-side, so avoid C API.
-  REQUIRE(tiledb::rest::capnp::query_deserialize(
-              true,
-              query->query_,
-              tiledb::sm::SerializationType::CAPNP,
-              *buff4->buffer_)
-              .ok());
+  // Deserialize into the original query. Client-side
+  REQUIRE(
+      tiledb_deserialize_query(ctx_, buff4, TILEDB_CAPNP, 1, query) ==
+      TILEDB_OK);
 
   // Clean up.
   REQUIRE(tiledb_array_close(ctx_, new_array) == TILEDB_OK);
