@@ -356,6 +356,21 @@ const std::string bzip2_str = "BZIP2";
 /** String describing DOUBLE_DELTA. */
 const std::string double_delta_str = "DOUBLE_DELTA";
 
+/** String describing FILTER_NONE. */
+const std::string filter_none_str = "NONE";
+
+/** String describing FILTER_BIT_WIDTH_REDUCTION. */
+const std::string filter_bit_width_reduction_str = "BIT_WIDTH_REDUCTION";
+
+/** String describing FILTER_BITSHUFFLE. */
+const std::string filter_bitshuffle_str = "BITSHUFFLE";
+
+/** String describing FILTER_BYTESHUFFLE. */
+const std::string filter_byteshuffle_str = "BYTESHUFFLE";
+
+/** String describing FILTER_POSITIVE_DELTA. */
+const std::string filter_positive_delta_str = "POSITIVE_DELTA";
+
 /** The string representation for type int32. */
 const std::string int32_str = "INT32";
 
