@@ -339,6 +339,21 @@ extern const std::string bzip2_str;
 /** String describing DOUBLE_DELTA. */
 extern const std::string double_delta_str;
 
+/** String describing FILTER_NONE. */
+extern const std::string filter_none_str;
+
+/** String describing FILTER_BIT_WIDTH_REDUCTION. */
+extern const std::string filter_bit_width_reduction_str;
+
+/** String describing FILTER_BITSHUFFLE. */
+extern const std::string filter_bitshuffle_str;
+
+/** String describing FILTER_BYTESHUFFLE. */
+extern const std::string filter_byteshuffle_str;
+
+/** String describing FILTER_POSITIVE_DELTA. */
+extern const std::string filter_positive_delta_str;
+
 /** The string representation for type int32. */
 extern const std::string int32_str;
 
