@@ -47,592 +47,436 @@ namespace rest {
 namespace capnp {
 
 tiledb::sm::Status filter_pipeline_to_capnp(
-    const tiledb::sm::FilterPipeline* f,
-    FilterPipeline::Builder* filterPipelineBuilder) {
+    const tiledb::sm::FilterPipeline* filter_pipeline,
+    FilterPipeline::Builder* filter_pipeline_builder) {
   STATS_FUNC_IN(serialization_filter_pipeline_to_capnp);
-  if (f != nullptr) {
-    ::capnp::List<Filter>::Builder filterList =
-        filterPipelineBuilder->initFilters(f->size());
-    for (unsigned index = 0; index < f->size(); index++) {
-      tiledb::sm::Filter* filter = f->get_filter(index);
-      Filter::Builder filterBuilder = filterList[index];
-      filterBuilder.setType(filter_type_str(filter->type()));
 
-      switch (filter->type()) {
-        case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
-          uint32_t window;
-          RETURN_NOT_OK(filter->get_option(
-              tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window));
-          auto data = filterBuilder.initData();
-          data.setUint32(window);
-          break;
-        }
-        case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
-          uint32_t window;
-          RETURN_NOT_OK(filter->get_option(
-              tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window));
-          auto data = filterBuilder.initData();
-          data.setUint32(window);
-          break;
-        }
-        case tiledb::sm::FilterType::FILTER_GZIP:
-        case tiledb::sm::FilterType::FILTER_ZSTD:
-        case tiledb::sm::FilterType::FILTER_LZ4:
-        case tiledb::sm::FilterType::FILTER_RLE:
-        case tiledb::sm::FilterType::FILTER_BZIP2:
-        case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
-          int32_t level;
-          RETURN_NOT_OK(filter->get_option(
-              tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level));
-          auto data = filterBuilder.initData();
-          data.setInt32(level);
-          break;
-        }
-        default:
-          break;
-      }
-    }
+  if (filter_pipeline == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing filter pipeline; filter pipeline is null."));
 
+  const unsigned num_filters = filter_pipeline->size();
+  if (num_filters == 0)
     return tiledb::sm::Status::Ok();
+
+  auto filter_list_builder = filter_pipeline_builder->initFilters(num_filters);
+  for (unsigned i = 0; i < num_filters; i++) {
+    const auto* filter = filter_pipeline->get_filter(i);
+    auto filter_builder = filter_list_builder[i];
+    filter_builder.setType(filter_type_str(filter->type()));
+
+    switch (filter->type()) {
+      case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
+        uint32_t window;
+        RETURN_NOT_OK(filter->get_option(
+            tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window));
+        auto data = filter_builder.initData();
+        data.setUint32(window);
+        break;
+      }
+      case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
+        uint32_t window;
+        RETURN_NOT_OK(filter->get_option(
+            tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window));
+        auto data = filter_builder.initData();
+        data.setUint32(window);
+        break;
+      }
+      case tiledb::sm::FilterType::FILTER_GZIP:
+      case tiledb::sm::FilterType::FILTER_ZSTD:
+      case tiledb::sm::FilterType::FILTER_LZ4:
+      case tiledb::sm::FilterType::FILTER_RLE:
+      case tiledb::sm::FilterType::FILTER_BZIP2:
+      case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
+        int32_t level;
+        RETURN_NOT_OK(filter->get_option(
+            tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level));
+        auto data = filter_builder.initData();
+        data.setInt32(level);
+        break;
+      }
+      default:
+        break;
+    }
   }
 
-  return tiledb::sm::Status::Error("FilterPipeline passed was null");
+  return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_filter_pipeline_to_capnp);
 }
 
 tiledb::sm::Status filter_pipeline_from_capnp(
-    FilterPipeline::Reader* filterPipelineReader,
-    std::unique_ptr<tiledb::sm::FilterPipeline>* filterPipeline) {
+    const FilterPipeline::Reader& filter_pipeline_reader,
+    std::unique_ptr<tiledb::sm::FilterPipeline>* filter_pipeline) {
   STATS_FUNC_IN(serialization_filter_pipeline_from_capnp);
-  filterPipeline->reset(new tiledb::sm::FilterPipeline);
-  if (filterPipelineReader->hasFilters()) {
-    ::capnp::List<Filter>::Reader filterList =
-        filterPipelineReader->getFilters();
-    for (const Filter::Reader& filterReader : filterList) {
-      tiledb::sm::FilterType type = tiledb::sm::FilterType::FILTER_NONE;
-      RETURN_NOT_OK(filter_type_enum(filterReader.getType().cStr(), &type));
-      std::unique_ptr<tiledb::sm::Filter> filter(
-          tiledb::sm::Filter::create(type));
 
-      switch (filter->type()) {
-        case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
-          auto data = filterReader.getData();
-          uint32_t window = data.getUint32();
-          filter->set_option(
-              tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window);
-          break;
-        }
-        case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
-          auto data = filterReader.getData();
-          uint32_t window = data.getUint32();
-          filter->set_option(
-              tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window);
-          break;
-        }
-        case tiledb::sm::FilterType::FILTER_GZIP:
-        case tiledb::sm::FilterType::FILTER_ZSTD:
-        case tiledb::sm::FilterType::FILTER_LZ4:
-        case tiledb::sm::FilterType::FILTER_RLE:
-        case tiledb::sm::FilterType::FILTER_BZIP2:
-        case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
-          auto data = filterReader.getData();
-          int32_t level = data.getInt32();
-          filter->set_option(
-              tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level);
-          break;
-        }
-        default:
-          break;
+  filter_pipeline->reset(new tiledb::sm::FilterPipeline);
+  if (!filter_pipeline_reader.hasFilters())
+    return tiledb::sm::Status::Ok();
+
+  auto filter_list_reader = filter_pipeline_reader.getFilters();
+  for (const auto& filter_reader : filter_list_reader) {
+    tiledb::sm::FilterType type = tiledb::sm::FilterType::FILTER_NONE;
+    RETURN_NOT_OK(filter_type_enum(filter_reader.getType().cStr(), &type));
+    std::unique_ptr<tiledb::sm::Filter> filter(
+        tiledb::sm::Filter::create(type));
+    if (filter == nullptr)
+      return LOG_STATUS(tiledb::sm::Status::RestError(
+          "Error deserializing filter pipeline; failed to create filter."));
+
+    switch (filter->type()) {
+      case tiledb::sm::FilterType::FILTER_BIT_WIDTH_REDUCTION: {
+        auto data = filter_reader.getData();
+        uint32_t window = data.getUint32();
+        RETURN_NOT_OK(filter->set_option(
+            tiledb::sm::FilterOption::BIT_WIDTH_MAX_WINDOW, &window));
+        break;
       }
-
-      RETURN_NOT_OK((*filterPipeline)->add_filter(*filter));
+      case tiledb::sm::FilterType::FILTER_POSITIVE_DELTA: {
+        auto data = filter_reader.getData();
+        uint32_t window = data.getUint32();
+        RETURN_NOT_OK(filter->set_option(
+            tiledb::sm::FilterOption::POSITIVE_DELTA_MAX_WINDOW, &window));
+        break;
+      }
+      case tiledb::sm::FilterType::FILTER_GZIP:
+      case tiledb::sm::FilterType::FILTER_ZSTD:
+      case tiledb::sm::FilterType::FILTER_LZ4:
+      case tiledb::sm::FilterType::FILTER_RLE:
+      case tiledb::sm::FilterType::FILTER_BZIP2:
+      case tiledb::sm::FilterType::FILTER_DOUBLE_DELTA: {
+        auto data = filter_reader.getData();
+        int32_t level = data.getInt32();
+        RETURN_NOT_OK(filter->set_option(
+            tiledb::sm::FilterOption::COMPRESSION_LEVEL, &level));
+        break;
+      }
+      default:
+        break;
     }
+
+    RETURN_NOT_OK((*filter_pipeline)->add_filter(*filter));
   }
+
   return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_filter_pipeline_from_capnp);
 }
 
 tiledb::sm::Status attribute_to_capnp(
-    const tiledb::sm::Attribute* a, Attribute::Builder* attributeBuilder) {
+    const tiledb::sm::Attribute* attribute,
+    Attribute::Builder* attribute_builder) {
   STATS_FUNC_IN(serialization_attribute_to_capnp);
-  if (a != nullptr) {
-    attributeBuilder->setName(a->name());
-    attributeBuilder->setType(tiledb::sm::datatype_str(a->type()));
-    const tiledb::sm::FilterPipeline* filters = a->filters();
-    FilterPipeline::Builder filterPipelineBuilder =
-        attributeBuilder->initFilterPipeline();
-    filter_pipeline_to_capnp(filters, &filterPipelineBuilder);
-    attributeBuilder->setCellValNum(a->cell_val_num());
-    return tiledb::sm::Status::Ok();
-  }
-  return tiledb::sm::Status::Error("Attribute passed was null");
+
+  if (attribute == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing attribute; attribute is null."));
+
+  attribute_builder->setName(attribute->name());
+  attribute_builder->setType(tiledb::sm::datatype_str(attribute->type()));
+  attribute_builder->setCellValNum(attribute->cell_val_num());
+
+  const auto* filters = attribute->filters();
+  auto filter_pipeline_builder = attribute_builder->initFilterPipeline();
+  RETURN_NOT_OK(filter_pipeline_to_capnp(filters, &filter_pipeline_builder));
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_attribute_to_capnp);
 }
 
-std::unique_ptr<tiledb::sm::Attribute> attribute_from_capnp(
-    Attribute::Reader* attribute) {
+tiledb::sm::Status attribute_from_capnp(
+    const Attribute::Reader& attribute_reader,
+    std::unique_ptr<tiledb::sm::Attribute>* attribute) {
   STATS_FUNC_IN(serialization_attribute_from_capnp);
-  // Set initial value to avoid compiler warnings
+
   tiledb::sm::Datatype datatype = tiledb::sm::Datatype::ANY;
-  auto st = tiledb::sm::datatype_enum(attribute->getType().cStr(), &datatype);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::Attribute>>(nullptr);
-  }
-  std::unique_ptr<tiledb::sm::Attribute> a =
-      std::unique_ptr<tiledb::sm::Attribute>(
-          new tiledb::sm::Attribute(attribute->getName(), datatype));
+  RETURN_NOT_OK(
+      tiledb::sm::datatype_enum(attribute_reader.getType(), &datatype));
+
+  attribute->reset(
+      new tiledb::sm::Attribute(attribute_reader.getName(), datatype));
+  RETURN_NOT_OK(
+      (*attribute)->set_cell_val_num(attribute_reader.getCellValNum()));
 
   // Set filter pipelines
-  if (attribute->hasFilterPipeline()) {
-    FilterPipeline::Reader filterPiperline = attribute->getFilterPipeline();
+  if (attribute_reader.hasFilterPipeline()) {
+    auto filter_pipeline_reader = attribute_reader.getFilterPipeline();
     std::unique_ptr<tiledb::sm::FilterPipeline> filters;
-    if (!filter_pipeline_from_capnp(&filterPiperline, &filters).ok()) {
-      return static_cast<std::unique_ptr<tiledb::sm::Attribute>>(nullptr);
-    }
-    a->set_filter_pipeline(filters.get());
+    RETURN_NOT_OK(filter_pipeline_from_capnp(filter_pipeline_reader, &filters));
+    RETURN_NOT_OK((*attribute)->set_filter_pipeline(filters.get()));
   }
 
-  st = a->set_cell_val_num(attribute->getCellValNum());
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::Attribute>>(nullptr);
-  }
-  return a;
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_attribute_from_capnp);
 }
 
 tiledb::sm::Status dimension_to_capnp(
-    const tiledb::sm::Dimension* d, Dimension::Builder* dimensionBuilder) {
+    const tiledb::sm::Dimension* dimension,
+    Dimension::Builder* dimension_builder) {
   STATS_FUNC_IN(serialization_dimension_to_capnp);
-  if (d != nullptr) {
-    dimensionBuilder->setName(d->name());
-    dimensionBuilder->setType(tiledb::sm::datatype_str(d->type()));
-    dimensionBuilder->setNullTileExtent(d->tile_extent() == nullptr);
-    DomainArray::Builder domain = dimensionBuilder->initDomain();
-    Dimension::TileExtent::Builder tile_extent =
-        dimensionBuilder->initTileExtent();
-    RETURN_NOT_OK(
-        utils::set_capnp_array_ptr(domain, d->type(), d->domain(), 2));
-    if (d->tile_extent() != nullptr)
-      RETURN_NOT_OK(
-          utils::set_capnp_scalar(tile_extent, d->type(), d->tile_extent()));
 
-    return tiledb::sm::Status::Ok();
+  if (dimension == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing dimension; dimension is null."));
+
+  dimension_builder->setName(dimension->name());
+  dimension_builder->setType(tiledb::sm::datatype_str(dimension->type()));
+  dimension_builder->setNullTileExtent(dimension->tile_extent() == nullptr);
+
+  auto domain_builder = dimension_builder->initDomain();
+  RETURN_NOT_OK(utils::set_capnp_array_ptr(
+      domain_builder, dimension->type(), dimension->domain(), 2));
+
+  if (dimension->tile_extent() != nullptr) {
+    auto tile_extent_builder = dimension_builder->initTileExtent();
+    RETURN_NOT_OK(utils::set_capnp_scalar(
+        tile_extent_builder, dimension->type(), dimension->tile_extent()));
   }
-  return tiledb::sm::Status::Error("Dimension passed was null");
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_dimension_to_capnp);
 }
 
-std::unique_ptr<tiledb::sm::Dimension> dimension_from_capnp(
-    Dimension::Reader* dimension) {
+tiledb::sm::Status dimension_from_capnp(
+    const Dimension::Reader& dimension_reader,
+    std::unique_ptr<tiledb::sm::Dimension>* dimension) {
   STATS_FUNC_IN(serialization_dimension_from_capnp);
-  tiledb::sm::Status st;
-  // Set initial value to avoid compiler warnings
-  tiledb::sm::Datatype datatype = tiledb::sm::Datatype::ANY;
-  st = tiledb::sm::datatype_enum(dimension->getType().cStr(), &datatype);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-  }
-  std::unique_ptr<tiledb::sm::Dimension> d =
-      std::unique_ptr<tiledb::sm::Dimension>(
-          new tiledb::sm::Dimension(dimension->getName(), datatype));
 
-  switch (d->type()) {
-    case tiledb::sm::Datatype::INT8: {
-      auto domainList = dimension->getDomain().getInt8();
-      std::vector<int8_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
+  tiledb::sm::Datatype dim_type = tiledb::sm::Datatype::ANY;
+  RETURN_NOT_OK(
+      tiledb::sm::datatype_enum(dimension_reader.getType().cStr(), &dim_type));
+  dimension->reset(
+      new tiledb::sm::Dimension(dimension_reader.getName(), dim_type));
+
+  auto domain_reader = dimension_reader.getDomain();
+  tiledb::sm::Buffer domain_buffer;
+  RETURN_NOT_OK(
+      utils::copy_capnp_list(domain_reader, dim_type, &domain_buffer));
+  RETURN_NOT_OK((*dimension)->set_domain(domain_buffer.data()));
+
+  if (!dimension_reader.getNullTileExtent()) {
+    auto tile_extent_reader = dimension_reader.getTileExtent();
+    switch (dim_type) {
+      case tiledb::sm::Datatype::INT8: {
+        auto val = tile_extent_reader.getInt8();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
       }
-      if (!dimension->getNullTileExtent()) {
-        int8_t extent = dimension->getTileExtent().getInt8();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
+      case tiledb::sm::Datatype::UINT8: {
+        auto val = tile_extent_reader.getUint8();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
       }
-      break;
+      case tiledb::sm::Datatype::INT16: {
+        auto val = tile_extent_reader.getInt16();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::UINT16: {
+        auto val = tile_extent_reader.getUint16();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::INT32: {
+        auto val = tile_extent_reader.getInt32();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::UINT32: {
+        auto val = tile_extent_reader.getUint32();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::INT64: {
+        auto val = tile_extent_reader.getInt64();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::UINT64: {
+        auto val = tile_extent_reader.getUint64();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::FLOAT32: {
+        auto val = tile_extent_reader.getFloat32();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      case tiledb::sm::Datatype::FLOAT64: {
+        auto val = tile_extent_reader.getFloat64();
+        RETURN_NOT_OK((*dimension)->set_tile_extent(&val));
+        break;
+      }
+      default:
+        return LOG_STATUS(tiledb::sm::Status::Error(
+            "Error deserializing dimension; unknown datatype."));
     }
-    case tiledb::sm::Datatype::UINT8: {
-      auto domainList = dimension->getDomain().getUint8();
-      std::vector<uint8_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        uint8_t extent = dimension->getTileExtent().getUint8();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::INT16: {
-      auto domainList = dimension->getDomain().getInt16();
-      std::vector<int16_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        int16_t extent = dimension->getTileExtent().getInt16();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::UINT16: {
-      auto domainList = dimension->getDomain().getUint16();
-      std::vector<uint16_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        uint16_t extent = dimension->getTileExtent().getUint16();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::INT32: {
-      auto domainList = dimension->getDomain().getInt32();
-      std::vector<int32_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        int32_t extent = dimension->getTileExtent().getInt32();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::UINT32: {
-      auto domainList = dimension->getDomain().getUint32();
-      std::vector<uint32_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        uint32_t extent = dimension->getTileExtent().getUint32();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::INT64: {
-      auto domainList = dimension->getDomain().getInt64();
-      std::vector<int64_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        int64_t extent = dimension->getTileExtent().getInt64();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::UINT64: {
-      auto domainList = dimension->getDomain().getUint64();
-      std::vector<uint64_t> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        uint64_t extent = dimension->getTileExtent().getUint64();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::FLOAT32: {
-      auto domainList = dimension->getDomain().getFloat32();
-      std::vector<float> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        float extent = dimension->getTileExtent().getFloat32();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    case tiledb::sm::Datatype::FLOAT64: {
-      auto domainList = dimension->getDomain().getFloat64();
-      std::vector<double> tmpDomain(domainList.size());
-      for (size_t i = 0; i < domainList.size(); i++)
-        tmpDomain[i] = domainList[i];
-      st = d->set_domain((void*)tmpDomain.data());
-      if (!st.ok()) {
-        LOG_STATUS(st);
-        return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-      }
-      if (!dimension->getNullTileExtent()) {
-        double extent = dimension->getTileExtent().getFloat64();
-        st = d->set_tile_extent((void*)&extent);
-        if (!st.ok()) {
-          LOG_STATUS(st);
-          return static_cast<std::unique_ptr<tiledb::sm::Dimension>>(nullptr);
-        }
-      }
-      break;
-    }
-    default:
-      break;
   }
-  return d;
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_dimension_from_capnp);
 }
 
 tiledb::sm::Status domain_to_capnp(
-    const tiledb::sm::Domain* d, Domain::Builder* domainBuilder) {
+    const tiledb::sm::Domain* domain, Domain::Builder* domainBuilder) {
   STATS_FUNC_IN(serialization_domain_to_capnp);
-  if (d != nullptr) {
-    domainBuilder->setType(tiledb::sm::datatype_str(d->type()));
-    domainBuilder->setTileOrder(tiledb::sm::layout_str(d->tile_order()));
-    domainBuilder->setCellOrder(tiledb::sm::layout_str(d->cell_order()));
-    ::capnp::List<Dimension>::Builder dimensions =
-        domainBuilder->initDimensions(d->dim_num());
-    for (unsigned int i = 0; i < d->dim_num(); i++) {
-      Dimension::Builder dimensionBuilder = dimensions[i];
-      auto status = dimension_to_capnp(d->dimension(i), &dimensionBuilder);
-      if (!status.ok())
-        return status;
-    }
-    return tiledb::sm::Status::Ok();
+
+  if (domain == nullptr)
+    return LOG_STATUS(
+        tiledb::sm::Status::Error("Error serializing domain; domain is null."));
+
+  domainBuilder->setType(tiledb::sm::datatype_str(domain->type()));
+  domainBuilder->setTileOrder(tiledb::sm::layout_str(domain->tile_order()));
+  domainBuilder->setCellOrder(tiledb::sm::layout_str(domain->cell_order()));
+
+  const unsigned ndims = domain->dim_num();
+  auto dimensions_builder = domainBuilder->initDimensions(ndims);
+  for (unsigned i = 0; i < ndims; i++) {
+    auto dim_builder = dimensions_builder[i];
+    RETURN_NOT_OK(dimension_to_capnp(domain->dimension(i), &dim_builder));
   }
-  return tiledb::sm::Status::Error("Domain passed was null");
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_domain_to_capnp);
 }
 
-std::unique_ptr<tiledb::sm::Domain> domain_from_capnp(Domain::Reader* domain) {
+tiledb::sm::Status domain_from_capnp(
+    const Domain::Reader& domain_reader,
+    std::unique_ptr<tiledb::sm::Domain>* domain) {
   STATS_FUNC_IN(serialization_domain_from_capnp);
-  // Set initial value to avoid compiler warnings
+
   tiledb::sm::Datatype datatype = tiledb::sm::Datatype::ANY;
-  auto st = tiledb::sm::datatype_enum(domain->getType().cStr(), &datatype);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::Domain>>(nullptr);
+  RETURN_NOT_OK(tiledb::sm::datatype_enum(domain_reader.getType(), &datatype));
+  domain->reset(new tiledb::sm::Domain(datatype));
+
+  auto dimensions = domain_reader.getDimensions();
+  for (const auto& dimension : dimensions) {
+    std::unique_ptr<tiledb::sm::Dimension> dim;
+    RETURN_NOT_OK(dimension_from_capnp(dimension, &dim));
+    RETURN_NOT_OK((*domain)->add_dimension(dim.get()));
   }
-  std::unique_ptr<tiledb::sm::Domain> d =
-      std::unique_ptr<tiledb::sm::Domain>(new tiledb::sm::Domain(datatype));
-  auto dimensions = domain->getDimensions();
-  for (auto dimension : dimensions) {
-    auto dim = dimension_from_capnp(&dimension);
-    if (dim == nullptr) {
-      LOG_STATUS(tiledb::sm::Status::Error(
-          "Could not deserialize dimension from domain"));
-      return static_cast<std::unique_ptr<tiledb::sm::Domain>>(nullptr);
-    }
-    st = d->add_dimension(dim.get());
-    if (!st.ok()) {
-      LOG_STATUS(st);
-      return static_cast<std::unique_ptr<tiledb::sm::Domain>>(nullptr);
-    }
-  }
-  return d;
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_domain_from_capnp);
 }
 
 tiledb::sm::Status array_schema_to_capnp(
-    const tiledb::sm::ArraySchema* a,
-    ArraySchema::Builder* arraySchemaBuilder) {
+    const tiledb::sm::ArraySchema* array_schema,
+    ArraySchema::Builder* array_schema_builder) {
   STATS_FUNC_IN(serialization_array_schema_to_capnp);
-  if (a != nullptr) {
-    arraySchemaBuilder->setVersion(
-        kj::arrayPtr(tiledb::sm::constants::library_version, 3));
-    arraySchemaBuilder->setArrayType(
-        tiledb::sm::array_type_str(a->array_type()));
-    arraySchemaBuilder->setTileOrder(tiledb::sm::layout_str(a->tile_order()));
-    arraySchemaBuilder->setCellOrder(tiledb::sm::layout_str(a->cell_order()));
-    arraySchemaBuilder->setCapacity(a->capacity());
 
-    // Set coordinate filters
-    const tiledb::sm::FilterPipeline* coordsFilters = a->coords_filters();
-    FilterPipeline::Builder coordsFilterPipelineBuilder =
-        arraySchemaBuilder->initCoordsFilterPipeline();
-    filter_pipeline_to_capnp(coordsFilters, &coordsFilterPipelineBuilder);
+  if (array_schema == nullptr)
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing array schema; array schema is null."));
 
-    // Set offset filters
-    const tiledb::sm::FilterPipeline* offsetFilters =
-        a->cell_var_offsets_filters();
-    FilterPipeline::Builder offsetFilterPipelineBuilder =
-        arraySchemaBuilder->initOffsetFilterPipeline();
-    filter_pipeline_to_capnp(offsetFilters, &offsetFilterPipelineBuilder);
+  array_schema_builder->setUri(array_schema->array_uri().to_string());
+  array_schema_builder->setVersion(
+      kj::arrayPtr(tiledb::sm::constants::library_version, 3));
+  array_schema_builder->setArrayType(
+      tiledb::sm::array_type_str(array_schema->array_type()));
+  array_schema_builder->setTileOrder(
+      tiledb::sm::layout_str(array_schema->tile_order()));
+  array_schema_builder->setCellOrder(
+      tiledb::sm::layout_str(array_schema->cell_order()));
+  array_schema_builder->setCapacity(array_schema->capacity());
 
-    arraySchemaBuilder->setUri(a->array_uri().to_string());
+  // Set coordinate filters
+  const tiledb::sm::FilterPipeline* coords_filters =
+      array_schema->coords_filters();
+  FilterPipeline::Builder coords_filters_builder =
+      array_schema_builder->initCoordsFilterPipeline();
+  RETURN_NOT_OK(
+      filter_pipeline_to_capnp(coords_filters, &coords_filters_builder));
 
-    Domain::Builder domainBuilder = arraySchemaBuilder->initDomain();
-    auto status = domain_to_capnp(a->domain(), &domainBuilder);
-    if (!status.ok())
-      return status;
+  // Set offset filters
+  const tiledb::sm::FilterPipeline* offsets_filters =
+      array_schema->cell_var_offsets_filters();
+  FilterPipeline::Builder offsets_filters_builder =
+      array_schema_builder->initOffsetFilterPipeline();
+  RETURN_NOT_OK(
+      filter_pipeline_to_capnp(offsets_filters, &offsets_filters_builder));
 
-    ::capnp::List<Attribute>::Builder attributes =
-        arraySchemaBuilder->initAttributes(a->attribute_num());
+  // Domain
+  auto domain_builder = array_schema_builder->initDomain();
+  RETURN_NOT_OK(domain_to_capnp(array_schema->domain(), &domain_builder));
 
-    for (size_t i = 0; i < a->attribute_num(); i++) {
-      rest::capnp::Attribute::Builder attributeBuilder = attributes[i];
-      status = attribute_to_capnp(a->attribute(i), &attributeBuilder);
-      if (!status.ok())
-        return status;
-    }
-    return tiledb::sm::Status::Ok();
+  // Attributes
+  const unsigned num_attrs = array_schema->attribute_num();
+  auto attributes_buidler = array_schema_builder->initAttributes(num_attrs);
+  for (size_t i = 0; i < num_attrs; i++) {
+    auto attribute_builder = attributes_buidler[i];
+    RETURN_NOT_OK(
+        attribute_to_capnp(array_schema->attribute(i), &attribute_builder));
   }
-  return tiledb::sm::Status::Error("ArraySchema passed was null");
+
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_schema_to_capnp);
 }
 
-std::unique_ptr<tiledb::sm::ArraySchema> array_schema_from_capnp(
-    ArraySchema::Reader* arraySchema) {
+tiledb::sm::Status array_schema_from_capnp(
+    const ArraySchema::Reader& schema_reader,
+    std::unique_ptr<tiledb::sm::ArraySchema>* array_schema) {
   STATS_FUNC_IN(serialization_array_schema_from_capnp);
-  tiledb::sm::Status st;
-  // Set initial value to avoid compiler warnings
+
   tiledb::sm::ArrayType array_type = tiledb::sm::ArrayType::DENSE;
-  st = tiledb::sm::array_type_enum(
-      arraySchema->getArrayType().cStr(), &array_type);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-  }
-  std::unique_ptr<tiledb::sm::ArraySchema> a =
-      std::unique_ptr<tiledb::sm::ArraySchema>(
-          new tiledb::sm::ArraySchema(array_type));
+  RETURN_NOT_OK(
+      tiledb::sm::array_type_enum(schema_reader.getArrayType(), &array_type));
+  array_schema->reset(new tiledb::sm::ArraySchema(array_type));
 
-  if (arraySchema->getUri() != "")
-    a->set_array_uri(tiledb::sm::URI(arraySchema->getUri().cStr()));
-  Domain::Reader domain = arraySchema->getDomain();
-  std::unique_ptr<tiledb::sm::Domain> d = domain_from_capnp(&domain);
-  st = a->set_domain(d.get());
-  // Log if domain did not get set correctly
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-  }
-
-  // Set initial value to avoid compiler warnings
   tiledb::sm::Layout layout = tiledb::sm::Layout::ROW_MAJOR;
-  st = tiledb::sm::layout_enum(arraySchema->getTileOrder().cStr(), &layout);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-  }
-  a->set_tile_order(layout);
+  RETURN_NOT_OK(
+      tiledb::sm::layout_enum(schema_reader.getTileOrder().cStr(), &layout));
+  (*array_schema)->set_tile_order(layout);
+  RETURN_NOT_OK(
+      tiledb::sm::layout_enum(schema_reader.getCellOrder().cStr(), &layout));
 
-  st = tiledb::sm::layout_enum(arraySchema->getCellOrder().cStr(), &layout);
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-  }
-  a->set_cell_order(layout);
-  a->set_capacity(arraySchema->getCapacity());
+  (*array_schema)
+      ->set_array_uri(tiledb::sm::URI(schema_reader.getUri().cStr()));
+  (*array_schema)->set_cell_order(layout);
+  (*array_schema)->set_capacity(schema_reader.getCapacity());
 
-  // Set Coords filter pipelines
-  if (arraySchema->hasCoordsFilterPipeline()) {
-    FilterPipeline::Reader filterPiperline =
-        arraySchema->getCoordsFilterPipeline();
+  auto domain_reader = schema_reader.getDomain();
+  std::unique_ptr<tiledb::sm::Domain> domain;
+  RETURN_NOT_OK(domain_from_capnp(domain_reader, &domain));
+  RETURN_NOT_OK((*array_schema)->set_domain(domain.get()));
+
+  // Set coords filter pipelines
+  if (schema_reader.hasCoordsFilterPipeline()) {
+    auto reader = schema_reader.getCoordsFilterPipeline();
     std::unique_ptr<tiledb::sm::FilterPipeline> filters;
-    st = filter_pipeline_from_capnp(&filterPiperline, &filters);
-    if (!st.ok()) {
-      LOG_STATUS(st);
-      return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-    }
-    a->set_coords_filter_pipeline(filters.get());
+    RETURN_NOT_OK(filter_pipeline_from_capnp(reader, &filters));
+    RETURN_NOT_OK((*array_schema)->set_coords_filter_pipeline(filters.get()));
   }
 
-  // Set Offset filter pipelines
-  if (arraySchema->hasOffsetFilterPipeline()) {
-    FilterPipeline::Reader filterPiperline =
-        arraySchema->getOffsetFilterPipeline();
+  // Set offsets filter pipelines
+  if (schema_reader.hasOffsetFilterPipeline()) {
+    auto reader = schema_reader.getOffsetFilterPipeline();
     std::unique_ptr<tiledb::sm::FilterPipeline> filters;
-    st = filter_pipeline_from_capnp(&filterPiperline, &filters);
-    if (!st.ok()) {
-      LOG_STATUS(st);
-      return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-    }
-    a->set_cell_var_offsets_filter_pipeline(filters.get());
+    RETURN_NOT_OK(filter_pipeline_from_capnp(reader, &filters));
+    RETURN_NOT_OK(
+        (*array_schema)->set_cell_var_offsets_filter_pipeline(filters.get()));
   }
 
-  ::capnp::List<Attribute>::Reader attributes = arraySchema->getAttributes();
-  for (auto attr : attributes) {
-    auto attribute = attribute_from_capnp(&attr);
-    st = a->add_attribute(attribute.get(), false);
-    if (!st.ok()) {
-      LOG_STATUS(st);
-      return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-    }
+  // Set attributes
+  auto attributes_reader = schema_reader.getAttributes();
+  for (const auto& attr_reader : attributes_reader) {
+    std::unique_ptr<tiledb::sm::Attribute> attribute;
+    RETURN_NOT_OK(attribute_from_capnp(attr_reader, &attribute));
+    RETURN_NOT_OK((*array_schema)->add_attribute(attribute.get(), false));
   }
 
-  st = a->init();
-  if (!st.ok()) {
-    LOG_STATUS(st);
-    return static_cast<std::unique_ptr<tiledb::sm::ArraySchema>>(nullptr);
-  }
+  // Initialize
+  RETURN_NOT_OK((*array_schema)->init());
 
-  return a;
+  return tiledb::sm::Status::Ok();
+
   STATS_FUNC_OUT(serialization_array_schema_from_capnp);
 }
 
@@ -645,12 +489,7 @@ tiledb::sm::Status array_schema_serialize(
   try {
     ::capnp::MallocMessageBuilder message;
     ArraySchema::Builder arraySchemaBuilder = message.initRoot<ArraySchema>();
-    tiledb::sm::Status status =
-        array_schema_to_capnp(array_schema, &arraySchemaBuilder);
-
-    if (!status.ok())
-      return tiledb::sm::Status::Error(
-          "Could not serialize array_schema: " + status.to_string());
+    RETURN_NOT_OK(array_schema_to_capnp(array_schema, &arraySchemaBuilder));
 
     serialized_buffer->reset_size();
     serialized_buffer->reset_offset();
@@ -676,18 +515,21 @@ tiledb::sm::Status array_schema_serialize(
         break;
       }
       default: {
-        return tiledb::sm::Status::Error("Unknown serialization type passed");
+        return LOG_STATUS(tiledb::sm::Status::Error(
+            "Error serializing array schema; Unknown serialization type "
+            "passed"));
       }
     }
 
   } catch (kj::Exception& e) {
-    return tiledb::sm::Status::Error(
-        std::string("Error serializing array schema: ") +
-        e.getDescription().cStr());
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing array schema; kj::Exception: " +
+        std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return tiledb::sm::Status::Error(
-        std::string("Error serializing array schema: ") + e.what());
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error serializing array schema; exception " + std::string(e.what())));
   }
+
   return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_array_schema_serialize);
@@ -713,8 +555,8 @@ tiledb::sm::Status array_schema_deserialize(
             array_schema_builder);
         rest::capnp::ArraySchema::Reader array_schema_reader =
             array_schema_builder.asReader();
-        decoded_array_schema =
-            rest::capnp::array_schema_from_capnp(&array_schema_reader);
+        RETURN_NOT_OK(rest::capnp::array_schema_from_capnp(
+            array_schema_reader, &decoded_array_schema));
         break;
       }
       case tiledb::sm::SerializationType::CAPNP: {
@@ -725,36 +567,32 @@ tiledb::sm::Status array_schema_deserialize(
             serialized_buffer.size() / sizeof(::capnp::word)));
         ArraySchema::Reader array_schema_reader =
             reader.getRoot<rest::capnp::ArraySchema>();
-        decoded_array_schema =
-            rest::capnp::array_schema_from_capnp(&array_schema_reader);
-
+        RETURN_NOT_OK(rest::capnp::array_schema_from_capnp(
+            array_schema_reader, &decoded_array_schema));
         break;
       }
       default: {
-        return tiledb::sm::Status::Error("Unknown serialization type passed");
+        return LOG_STATUS(tiledb::sm::Status::Error(
+            "Error deserializing array schema; Unknown serialization type "
+            "passed"));
       }
     }
 
-    if (decoded_array_schema == nullptr) {
-      return tiledb::sm::Status::Error(
-          "Failed to deserialize TileDB array schema object");
-    }
+    if (decoded_array_schema == nullptr)
+      return LOG_STATUS(tiledb::sm::Status::Error(
+          "Error serializing array schema; deserialized schema is null"));
 
-    // Create array schema struct
     *array_schema = decoded_array_schema.release();
-    if (*array_schema == nullptr) {
-      return tiledb::sm::Status::Error(
-          "Failed to allocate TileDB array schema object");
-    }
-
   } catch (kj::Exception& e) {
-    return tiledb::sm::Status::Error(
-        std::string("Error serializing array schema: ") +
-        e.getDescription().cStr());
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error deserializing array schema; kj::Exception: " +
+        std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return tiledb::sm::Status::Error(
-        std::string("Error serializing array schema: ") + e.what());
+    return LOG_STATUS(tiledb::sm::Status::Error(
+        "Error deserializing array schema; exception " +
+        std::string(e.what())));
   }
+
   return tiledb::sm::Status::Ok();
 
   STATS_FUNC_OUT(serialization_array_schema_deserialize);
