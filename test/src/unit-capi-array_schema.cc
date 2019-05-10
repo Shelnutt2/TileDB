@@ -251,6 +251,7 @@ int ArraySchemaFx::array_create_wrapper(
           ctx_,
           array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          1,
           buff) == TILEDB_OK);
 
   // Load array schema from the rest server
@@ -258,9 +259,10 @@ int ArraySchemaFx::array_create_wrapper(
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &new_array_schema,
+          buff,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff) == TILEDB_OK);
+          0,
+          &new_array_schema) == TILEDB_OK);
 
   // Create array from new schema
   int rc = tiledb_array_create(ctx_, path.c_str(), new_array_schema);
@@ -274,13 +276,15 @@ int ArraySchemaFx::array_create_wrapper(
           ctx_,
           new_array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          0,
           buff2) == TILEDB_OK);
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &array_schema,
+          buff2,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff2) == TILEDB_OK);
+          1,
+          &array_schema) == TILEDB_OK);
 
   // Clean up.
   tiledb_array_schema_free(&new_array_schema);
@@ -312,6 +316,7 @@ int ArraySchemaFx::array_schema_load_wrapper(
           ctx_,
           *array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          1,
           buff) == TILEDB_OK);
 
   // Load array schema from the rest server
@@ -319,9 +324,10 @@ int ArraySchemaFx::array_schema_load_wrapper(
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &new_array_schema,
+          buff,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff) == TILEDB_OK);
+          0,
+          &new_array_schema) == TILEDB_OK);
 
   // Serialize the new array schema and deserialize into the original array
   // schema.
@@ -332,13 +338,15 @@ int ArraySchemaFx::array_schema_load_wrapper(
           ctx_,
           new_array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          0,
           buff2) == TILEDB_OK);
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          array_schema,
+          buff2,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff2) == TILEDB_OK);
+          1,
+          array_schema) == TILEDB_OK);
 
   // Clean up.
   tiledb_array_schema_free(&new_array_schema);
@@ -369,6 +377,7 @@ int ArraySchemaFx::array_get_schema_wrapper(
           ctx_,
           *array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          1,
           buff) == TILEDB_OK);
 
   // Load array schema from the rest server
@@ -376,9 +385,10 @@ int ArraySchemaFx::array_get_schema_wrapper(
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &new_array_schema,
+          buff,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff) == TILEDB_OK);
+          0,
+          &new_array_schema) == TILEDB_OK);
 
   // Serialize the new array schema and deserialize into the original array
   // schema.
@@ -389,13 +399,15 @@ int ArraySchemaFx::array_get_schema_wrapper(
           ctx_,
           new_array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          0,
           buff2) == TILEDB_OK);
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          array_schema,
+          buff2,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff2) == TILEDB_OK);
+          1,
+          array_schema) == TILEDB_OK);
 
   // Clean up.
   tiledb_array_schema_free(&new_array_schema);
@@ -423,6 +435,7 @@ int ArraySchemaFx::array_schema_get_domain_wrapper(
           ctx_,
           array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          1,
           buff) == TILEDB_OK);
 
   // Load array schema from the rest server
@@ -430,9 +443,10 @@ int ArraySchemaFx::array_schema_get_domain_wrapper(
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &new_array_schema,
+          buff,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff) == TILEDB_OK);
+          0,
+          &new_array_schema) == TILEDB_OK);
 
   // Get domain from new array.
   int rc = tiledb_array_schema_get_domain(ctx_, new_array_schema, domain);
@@ -446,13 +460,15 @@ int ArraySchemaFx::array_schema_get_domain_wrapper(
           ctx_,
           new_array_schema,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
+          0,
           buff2) == TILEDB_OK);
   REQUIRE(
       tiledb_deserialize_array_schema(
           ctx_,
-          &array_schema,
+          buff2,
           (tiledb_serialization_type_t)tiledb::sm::SerializationType::CAPNP,
-          buff2) == TILEDB_OK);
+          1,
+          &array_schema) == TILEDB_OK);
 
   // Clean up.
   tiledb_array_schema_free(&new_array_schema);

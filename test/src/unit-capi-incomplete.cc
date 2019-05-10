@@ -540,7 +540,7 @@ void IncompleteFx::check_dense_incomplete_serialized() {
   tiledb_query_t* query2;
   rc = tiledb_query_alloc(ctx_, array2, TILEDB_READ, &query2);
   REQUIRE(rc == TILEDB_OK);
-  rc = tiledb_deserialize_query(ctx_, query2, TILEDB_CAPNP, buff);
+  rc = tiledb_deserialize_query(ctx_, buff, TILEDB_CAPNP, 0, query2);
   REQUIRE(rc == TILEDB_OK);
   // Allocate and set buffers on the "server".
   int buffer_a1_server[2];
@@ -558,7 +558,7 @@ void IncompleteFx::check_dense_incomplete_serialized() {
   tiledb_buffer_t* buff2;
   rc = tiledb_buffer_alloc(ctx_, &buff2);
   REQUIRE(rc == TILEDB_OK);
-  rc = tiledb_serialize_query(ctx_, query2, TILEDB_CAPNP, buff2);
+  rc = tiledb_serialize_query(ctx_, query2, TILEDB_CAPNP, 0, buff2);
   REQUIRE(rc == TILEDB_OK);
   // Client-side, so avoid C API.
   REQUIRE(tiledb::rest::capnp::query_deserialize(

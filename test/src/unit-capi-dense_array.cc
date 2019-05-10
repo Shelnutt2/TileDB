@@ -2781,7 +2781,7 @@ int DenseArrayFx::submit_query_wrapper(
   REQUIRE(
       tiledb_query_alloc(ctx_, new_array, query_type, &new_query) == TILEDB_OK);
   REQUIRE(
-      tiledb_deserialize_query(ctx_, new_query, TILEDB_CAPNP, buff2) ==
+      tiledb_deserialize_query(ctx_, buff2, TILEDB_CAPNP, 0, new_query) ==
       TILEDB_OK);
 
   // Next, for reads, allocate buffers for the new query.
@@ -2888,7 +2888,7 @@ int DenseArrayFx::submit_query_wrapper(
   tiledb_buffer_t* buff3;
   REQUIRE(tiledb_buffer_alloc(ctx_, &buff3) == TILEDB_OK);
   REQUIRE(
-      tiledb_serialize_query(ctx_, new_query, TILEDB_CAPNP, buff3) ==
+      tiledb_serialize_query(ctx_, new_query, TILEDB_CAPNP, 0, buff3) ==
       TILEDB_OK);
   uint64_t buff3_size;
   void* buff3_data;
