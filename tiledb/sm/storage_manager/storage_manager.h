@@ -60,6 +60,13 @@
 #include "tiledb/sm/storage_manager/open_array.h"
 
 namespace tiledb {
+namespace rest {
+
+class RestClient;
+}
+}  // namespace tiledb
+
+namespace tiledb {
 namespace sm {
 
 class Array;
@@ -373,12 +380,10 @@ class StorageManager {
   Status init(Config* config);
 
   /**
-   * Checks if the StorageManager was configured with a REST server.
-   *
-   * @return Status True if the StorageManager was configured with a
-   *    REST server.
+   * If the storage manager was configured with a REST server, return the
+   * client instance. Else, return nullptr.
    */
-  bool rest_server_configured() const;
+  tiledb::rest::RestClient* rest_client() const;
 
   /**
    * Checks if the input URI represents an array.
@@ -750,6 +755,9 @@ class StorageManager {
    */
   VFS* vfs_;
 
+  /** The rest client (may be null if none was configured). */
+  std::unique_ptr<tiledb::rest::RestClient> rest_client_;
+
   /* ********************************* */
   /*         PRIVATE METHODS           */
   /* ********************************* */
@@ -872,6 +880,9 @@ class StorageManager {
 
   /** Block until there are zero in-progress queries. */
   void wait_for_zero_in_progress();
+
+  /** Initializes a REST client, if one was configured. */
+  Status init_rest_client();
 };
 
 }  // namespace sm

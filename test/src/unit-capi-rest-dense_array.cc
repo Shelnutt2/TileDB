@@ -42,7 +42,7 @@
 #include "tiledb/sm/filesystem/posix.h"
 #endif
 #include "test/src/helpers.h"
-#include "tiledb/rest/curl/client.h"
+#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/sm/misc/utils.h"
 
@@ -296,8 +296,10 @@ DenseArrayRESTFx::~DenseArrayRESTFx() {
   config.set("rest.password", rest_server_password_);
   config.set("rest.organization", rest_server_username_);
 
+  tiledb::rest::RestClient rest_client;
+  REQUIRE(rest_client.init(&config).ok());
   for (const auto& uri : to_deregister_) {
-    CHECK(tiledb::rest::deregister_array_from_rest(config, uri).ok());
+    CHECK(rest_client.deregister_array_from_rest(uri).ok());
   }
 
   tiledb_vfs_free(&vfs_);
