@@ -4653,7 +4653,11 @@ int tiledb_serialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_array_schema_t* array_schema,
     tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
     tiledb_buffer_t* buffer) {
+  // Currently unused:
+  (void)client_side;
+
   // Sanity check
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, array_schema) == TILEDB_ERR ||
@@ -4673,9 +4677,13 @@ int tiledb_serialize_array_schema(
 
 int tiledb_deserialize_array_schema(
     tiledb_ctx_t* ctx,
-    tiledb_array_schema_t** array_schema,
+    const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
-    const tiledb_buffer_t* buffer) {
+    int32_t client_side,
+    tiledb_array_schema_t** array_schema) {
+  // Currently unused:
+  (void)client_side;
+
   // Sanity check
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, buffer) == TILEDB_ERR)
@@ -4708,6 +4716,7 @@ int tiledb_serialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_query_t* query,
     tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
     tiledb_buffer_t* buffer) {
   // Sanity check
   if (sanity_check(ctx) == TILEDB_ERR ||
@@ -4718,7 +4727,7 @@ int tiledb_serialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_serialize(
-              false, /* Serialize C API only called by server by definition. */
+              client_side == 1,
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
               buffer->buffer_)))
@@ -4729,9 +4738,10 @@ int tiledb_serialize_query(
 
 int tiledb_deserialize_query(
     tiledb_ctx_t* ctx,
-    tiledb_query_t* query,
+    const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
-    const tiledb_buffer_t* buffer) {
+    int32_t client_side,
+    tiledb_query_t* query) {
   // Sanity check
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, query) == TILEDB_ERR ||
@@ -4741,7 +4751,7 @@ int tiledb_deserialize_query(
   if (SAVE_ERROR_CATCH(
           ctx,
           tiledb::rest::capnp::query_deserialize(
-              false, /* Serialize C API only called by server by definition. */
+              client_side == 1,
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
               *buffer->buffer_)))
