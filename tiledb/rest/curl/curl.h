@@ -45,18 +45,23 @@ namespace rest {
 
 /**
  * Helper class offering a high-level wrapper over some libcurl functions.
+ *
+ * Note: because the underlying libcurl handle is not threadsafe, the interface
+ * presented by this class is not threadsafe either. See
+ * https://curl.haxx.se/libcurl/c/threadsafe.html
  */
 class Curl {
  public:
+  /** Constructor. */
+  Curl();
+
   /**
-   * Constructor.
+   * Initializes the class.
    *
    * @param config TileDB config storing server/auth information
+   * @return Status
    */
-  explicit Curl(const tiledb::sm::Config& config);
-
-  /** Initializes the class. */
-  tiledb::sm::Status init();
+  tiledb::sm::Status init(const tiledb::sm::Config* config);
 
   /**
    * Escapes the given URL.
@@ -110,7 +115,7 @@ class Curl {
 
  private:
   /** TileDB config parameters. */
-  const tiledb::sm::Config& config_;
+  const tiledb::sm::Config* config_;
 
   /** Underlying C curl instance. */
   std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> curl_;
@@ -119,12 +124,10 @@ class Curl {
    * Sets authorization (token or username+password) on the curl instance using
    * the given config instance.
    *
-   * @param config TileDB config instance
    * @param headers Headers (may be modified)
    * @return Status
    */
-  tiledb::sm::Status set_auth(
-      const tiledb::sm::Config& config, struct curl_slist** headers) const;
+  tiledb::sm::Status set_auth(struct curl_slist** headers) const;
 
   /**
    * Sets the appropriate Content-Type header for the given serialization type.

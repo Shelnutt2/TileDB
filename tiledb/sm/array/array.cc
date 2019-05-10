@@ -31,7 +31,7 @@
  */
 
 #include "tiledb/sm/array/array.h"
-#include "tiledb/rest/curl/client.h"
+#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/encryption/encryption.h"
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/misc/logger.h"
@@ -64,7 +64,7 @@ Array::Array(const URI& array_uri, StorageManager* storage_manager)
   last_max_buffer_sizes_subarray_ = nullptr;
 
   assert(storage_manager_ != nullptr);
-  remote_ = storage_manager_->rest_server_configured();
+  remote_ = storage_manager_->rest_client() != nullptr;
 };
 
 Array::~Array() {
@@ -142,9 +142,12 @@ Status Array::open(
       encryption_key_.set_key(encryption_type, encryption_key, key_length));
 
   if (remote_) {
-    Config config = storage_manager_->config();
-    RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        config, array_uri_.to_string(), &array_schema_));
+    auto rest_client = storage_manager_->rest_client();
+    if (rest_client == nullptr)
+      return LOG_STATUS(Status::ArrayError(
+          "Cannot open array; remote array with no REST client."));
+    RETURN_NOT_OK(rest_client->get_array_schema_from_rest(
+        array_uri_.to_string(), &array_schema_));
   } else if (query_type == QueryType::READ) {
     timestamp_ = utils::time::timestamp_now_ms();
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(
@@ -191,9 +194,12 @@ Status Array::open(
 
   query_type_ = QueryType::READ;
   if (remote_) {
-    Config config = storage_manager_->config();
-    RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        config, array_uri_.to_string(), &array_schema_));
+    auto rest_client = storage_manager_->rest_client();
+    if (rest_client == nullptr)
+      return LOG_STATUS(Status::ArrayError(
+          "Cannot open array; remote array with no REST client."));
+    RETURN_NOT_OK(rest_client->get_array_schema_from_rest(
+        array_uri_.to_string(), &array_schema_));
   } else {
     // Open the array.
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(
@@ -234,9 +240,12 @@ Status Array::open(
 
   query_type_ = query_type;
   if (remote_) {
-    Config config = storage_manager_->config();
-    RETURN_NOT_OK(tiledb::rest::get_array_schema_from_rest(
-        config, array_uri_.to_string(), &array_schema_));
+    auto rest_client = storage_manager_->rest_client();
+    if (rest_client == nullptr)
+      return LOG_STATUS(Status::ArrayError(
+          "Cannot open array; remote array with no REST client."));
+    RETURN_NOT_OK(rest_client->get_array_schema_from_rest(
+        array_uri_.to_string(), &array_schema_));
   } else {
     // Open the array.
     RETURN_NOT_OK(storage_manager_->array_open_for_reads(

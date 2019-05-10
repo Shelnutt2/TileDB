@@ -33,7 +33,7 @@
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/rest/capnp/array_schema.h"
 #include "tiledb/rest/capnp/query.h"
-#include "tiledb/rest/curl/client.h"
+#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/c_api/tiledb_struct_def.h"
@@ -1731,13 +1731,12 @@ int32_t tiledb_array_schema_load_with_key(
   }
 
   // If we have configured a REST server, use it
-  if (ctx->ctx_->storage_manager()->rest_server_configured()) {
+  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+  if (rest_client != nullptr) {
     if (SAVE_ERROR_CATCH(
             ctx,
-            tiledb::rest::get_array_schema_from_rest(
-                ctx->ctx_->storage_manager()->config(),
-                array_uri,
-                &(*array_schema)->array_schema_))) {
+            rest_client->get_array_schema_from_rest(
+                array_uri, &(*array_schema)->array_schema_))) {
       delete *array_schema;
       return TILEDB_ERR;
     }
@@ -2652,13 +2651,12 @@ int32_t tiledb_array_create_with_key(
   }
 
   // If we have configured a rest server address use it
-  if (ctx->ctx_->storage_manager()->rest_server_configured()) {
+  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+  if (rest_client != nullptr) {
     if (SAVE_ERROR_CATCH(
             ctx,
-            tiledb::rest::post_array_schema_to_rest(
-                ctx->ctx_->storage_manager()->config(),
-                array_uri,
-                array_schema->array_schema_)))
+            rest_client->post_array_schema_to_rest(
+                array_uri, array_schema->array_schema_)))
       return TILEDB_ERR;
   } else {
     // Create key
@@ -2719,14 +2717,12 @@ int32_t tiledb_array_get_non_empty_domain(
   bool is_empty_b;
 
   // Use REST server if configured.
-  if (ctx->ctx_->storage_manager()->rest_server_configured()) {
+  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+  if (rest_client != nullptr) {
     if (SAVE_ERROR_CATCH(
             ctx,
-            tiledb::rest::get_array_non_empty_domain(
-                ctx->ctx_->storage_manager()->config(),
-                array->array_,
-                domain,
-                &is_empty_b)))
+            rest_client->get_array_non_empty_domain(
+                array->array_, domain, &is_empty_b)))
       return TILEDB_ERR;
   } else {
     if (SAVE_ERROR_CATCH(
