@@ -39,21 +39,21 @@
 #include <memory>
 
 namespace tiledb {
-namespace rest {
-namespace capnp {
+namespace sm {
+namespace serialization {
 
-tiledb::sm::Status array_schema_serialize(
-    tiledb::sm::ArraySchema* array_schema,
-    tiledb::sm::SerializationType serialize_type,
-    tiledb::sm::Buffer* serialized_buffer);
+Status array_schema_serialize(
+    ArraySchema* array_schema,
+    SerializationType serialize_type,
+    Buffer* serialized_buffer);
 
-tiledb::sm::Status array_schema_deserialize(
-    tiledb::sm::ArraySchema** array_schema,
-    tiledb::sm::SerializationType serialize_type,
-    const tiledb::sm::Buffer& serialized_buffer);
+Status array_schema_deserialize(
+    ArraySchema** array_schema,
+    SerializationType serialize_type,
+    const Buffer& serialized_buffer);
 
-}  // namespace capnp
-}  // namespace rest
+}  // namespace serialization
+}  // namespace sm
 }  // namespace tiledb
 
 #endif  // TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
