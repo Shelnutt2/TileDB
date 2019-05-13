@@ -959,7 +959,7 @@ Status StorageManager::init(Config* config) {
   return Status::Ok();
 }
 
-tiledb::rest::RestClient* StorageManager::rest_client() const {
+RestClient* StorageManager::rest_client() const {
   return rest_client_.get();
 }
 
@@ -1369,7 +1369,7 @@ Status StorageManager::init_rest_client() {
   const char* server_address;
   RETURN_NOT_OK(config_.get("rest.server_address", &server_address));
   if (server_address != nullptr) {
-    rest_client_.reset(new tiledb::rest::RestClient);
+    rest_client_.reset(new RestClient);
     RETURN_NOT_OK(rest_client_->init(&config_));
   }
 

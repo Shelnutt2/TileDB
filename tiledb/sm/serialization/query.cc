@@ -28,8 +28,7 @@
  *
  * @section DESCRIPTION
  *
- * This file defines serialization for
- * tiledb::sm::Query
+ * This file defines serialization for the Query class
  */
 
 #include <capnp/compat/json.h>
@@ -42,54 +41,50 @@
 #include "tiledb/sm/serialization/query.h"
 
 namespace tiledb {
-namespace rest {
-namespace capnp {
+namespace sm {
+namespace serialization {
 
-tiledb::sm::Status array_to_capnp(
-    const tiledb::sm::Array& array,
-    rest::capnp::Array::Builder* array_builder) {
+Status array_to_capnp(
+    const Array& array, capnp::Array::Builder* array_builder) {
   array_builder->setUri(array.array_uri().to_string());
   array_builder->setTimestamp(array.timestamp());
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status array_from_capnp(
-    const rest::capnp::Array::Reader& array_reader, tiledb::sm::Array* array) {
+Status array_from_capnp(
+    const capnp::Array::Reader& array_reader, Array* array) {
   RETURN_NOT_OK(array->set_uri(array_reader.getUri().cStr()));
   RETURN_NOT_OK(array->set_timestamp(array_reader.getTimestamp()));
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status writer_to_capnp(
-    const tiledb::sm::Writer& writer,
-    rest::capnp::Writer::Builder* writer_builder) {
+Status writer_to_capnp(
+    const Writer& writer, capnp::Writer::Builder* writer_builder) {
   writer_builder->setCheckCoordDups(writer.get_check_coord_dups());
   writer_builder->setCheckCoordOOB(writer.get_check_coord_oob());
   writer_builder->setDedupCoords(writer.get_dedup_coords());
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status writer_from_capnp(
-    const rest::capnp::Writer::Reader& writer_reader,
-    tiledb::sm::Writer* writer) {
+Status writer_from_capnp(
+    const capnp::Writer::Reader& writer_reader, Writer* writer) {
   writer->set_check_coord_dups(writer_reader.getCheckCoordDups());
   writer->set_check_coord_oob(writer_reader.getCheckCoordOOB());
   writer->set_dedup_coords(writer_reader.getDedupCoords());
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status reader_to_capnp(
-    const tiledb::sm::Reader& reader,
-    rest::capnp::QueryReader::Builder* reader_builder) {
+Status reader_to_capnp(
+    const Reader& reader, capnp::QueryReader::Builder* reader_builder) {
   auto read_state = reader.read_state();
   auto array_schema = reader.array_schema();
 
   if (!read_state->initialized_)
-    return tiledb::sm::Status::Ok();
+    return Status::Ok();
 
   auto read_state_builder = reader_builder->initReadState();
   read_state_builder.setInitialized(read_state->initialized_);
@@ -99,14 +94,14 @@ tiledb::sm::Status reader_to_capnp(
   // Subarray
   if (read_state->subarray_ != nullptr) {
     auto subarray_builder = read_state_builder.initSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+    RETURN_NOT_OK(utils::serialize_subarray(
         subarray_builder, array_schema, read_state->subarray_));
   }
 
   // Current partition
   if (read_state->cur_subarray_partition_ != nullptr) {
     auto subarray_builder = read_state_builder.initCurSubarrayPartition();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
+    RETURN_NOT_OK(utils::serialize_subarray(
         subarray_builder, array_schema, read_state->cur_subarray_partition_));
   }
 
@@ -116,21 +111,19 @@ tiledb::sm::Status reader_to_capnp(
         read_state->subarray_partitions_.size());
     size_t i = 0;
     for (const void* subarray : read_state->subarray_partitions_) {
-      tiledb::rest::capnp::DomainArray::Builder builder = partitions_builder[i];
-      RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-          builder, array_schema, subarray));
+      capnp::DomainArray::Builder builder = partitions_builder[i];
+      RETURN_NOT_OK(utils::serialize_subarray(builder, array_schema, subarray));
       i++;
     }
   }
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status reader_from_capnp(
-    const rest::capnp::QueryReader::Reader& reader_reader,
-    tiledb::sm::Reader* reader) {
+Status reader_from_capnp(
+    const capnp::QueryReader::Reader& reader_reader, Reader* reader) {
   if (!reader_reader.hasReadState())
-    return tiledb::sm::Status::Ok();
+    return Status::Ok();
 
   auto read_state_reader = reader_reader.getReadState();
   auto read_state = reader->read_state();
@@ -145,7 +138,7 @@ tiledb::sm::Status reader_from_capnp(
   read_state->subarray_ = nullptr;
   if (read_state_reader.hasSubarray()) {
     auto subarray_reader = read_state_reader.getSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+    RETURN_NOT_OK(utils::deserialize_subarray(
         subarray_reader, array_schema, &read_state->subarray_));
   }
 
@@ -154,7 +147,7 @@ tiledb::sm::Status reader_from_capnp(
   read_state->cur_subarray_partition_ = nullptr;
   if (read_state_reader.hasCurSubarrayPartition()) {
     auto subarray_reader = read_state_reader.getCurSubarrayPartition();
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+    RETURN_NOT_OK(utils::deserialize_subarray(
         subarray_reader, array_schema, &read_state->cur_subarray_partition_));
   }
 
@@ -168,18 +161,17 @@ tiledb::sm::Status reader_from_capnp(
     for (size_t i = 0; i < num_partitions; i++) {
       auto subarray_reader = partitions_reader[i];
       void* partition;
-      RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
+      RETURN_NOT_OK(utils::deserialize_subarray(
           subarray_reader, array_schema, &partition));
       read_state->subarray_partitions_.push_back(partition);
     }
   }
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 }
 
-tiledb::sm::Status query_to_capnp(
-    const tiledb::sm::Query& query,
-    rest::capnp::Query::Builder* query_builder) {
+Status query_to_capnp(
+    const Query& query, capnp::Query::Builder* query_builder) {
   using namespace tiledb::sm;
 
   // For easy reference
@@ -219,8 +211,8 @@ tiledb::sm::Status query_to_capnp(
   const void* subarray = query.subarray();
   if (subarray != nullptr) {
     auto subarray_builder = query_builder->initSubarray();
-    RETURN_NOT_OK(rest::capnp::utils::serialize_subarray(
-        subarray_builder, schema, subarray));
+    RETURN_NOT_OK(
+        utils::serialize_subarray(subarray_builder, schema, subarray));
   }
 
   // Serialize attribute buffer metadata
@@ -276,11 +268,11 @@ tiledb::sm::Status query_to_capnp(
   return Status::Ok();
 }
 
-tiledb::sm::Status query_from_capnp(
-    const rest::capnp::Query::Reader& query_reader,
+Status query_from_capnp(
+    const capnp::Query::Reader& query_reader,
     bool clientside,
     void* buffer_start,
-    tiledb::sm::Query* query) {
+    Query* query) {
   using namespace tiledb::sm;
 
   auto type = query->type();
@@ -324,8 +316,8 @@ tiledb::sm::Status query_from_capnp(
   } else {
     auto subarray_reader = query_reader.getSubarray();
     void* subarray;
-    RETURN_NOT_OK(rest::capnp::utils::deserialize_subarray(
-        subarray_reader, schema, &subarray));
+    RETURN_NOT_OK(
+        utils::deserialize_subarray(subarray_reader, schema, &subarray));
     RETURN_NOT_OK_ELSE(query->set_subarray(subarray), std::free(subarray));
     std::free(subarray);
   }
@@ -422,7 +414,7 @@ tiledb::sm::Status query_from_capnp(
             Status::QueryError("Error deserializing read query; unexpected "
                                "buffer set on server-side."));
 
-      tiledb::sm::Query::SerializationState::AttrState* attr_state;
+      Query::SerializationState::AttrState* attr_state;
       RETURN_NOT_OK(
           query->get_attr_serialization_state(attribute_name, &attr_state));
       if (type == QueryType::READ) {
@@ -499,22 +491,22 @@ tiledb::sm::Status query_from_capnp(
   return Status::Ok();
 }
 
-tiledb::sm::Status query_serialize(
-    tiledb::sm::Query* query,
-    tiledb::sm::SerializationType serialize_type,
+Status query_serialize(
+    Query* query,
+    SerializationType serialize_type,
     bool clientside,
-    tiledb::sm::Buffer* serialized_buffer) {
+    Buffer* serialized_buffer) {
   STATS_FUNC_IN(serialization_query_serialize);
 
   try {
     ::capnp::MallocMessageBuilder message;
-    Query::Builder query_builder = message.initRoot<Query>();
+    capnp::Query::Builder query_builder = message.initRoot<capnp::Query>();
     RETURN_NOT_OK(query_to_capnp(*query, &query_builder));
 
     // Determine whether we should be serializing the buffer data.
     const bool serialize_buffers =
-        (clientside && query->type() == tiledb::sm::QueryType::WRITE) ||
-        (!clientside && query->type() == tiledb::sm::QueryType::READ);
+        (clientside && query->type() == QueryType::WRITE) ||
+        (!clientside && query->type() == QueryType::READ);
 
     serialized_buffer->reset_size();
     serialized_buffer->reset_offset();
@@ -523,7 +515,7 @@ tiledb::sm::Status query_serialize(
         query_builder.getTotalFixedLengthBufferBytes();
     uint64_t total_var_len_bytes = query_builder.getTotalVarLenBufferBytes();
     switch (serialize_type) {
-      case tiledb::sm::SerializationType::JSON: {
+      case SerializationType::JSON: {
         ::capnp::JsonCodec json;
         kj::String capnp_json = json.encode(query_builder);
         const auto json_len = capnp_json.size();
@@ -534,7 +526,7 @@ tiledb::sm::Status query_serialize(
         RETURN_NOT_OK(serialized_buffer->write(&nul, 1));
         break;
       }
-      case tiledb::sm::SerializationType::CAPNP: {
+      case SerializationType::CAPNP: {
         kj::Array<::capnp::word> protomessage = messageToFlatArray(message);
         kj::ArrayPtr<const char> message_chars = protomessage.asChars();
 
@@ -549,7 +541,7 @@ tiledb::sm::Status query_serialize(
 
         const auto* array_schema = query->array_schema();
         if (array_schema == nullptr || query->array() == nullptr)
-          return LOG_STATUS(tiledb::sm::Status::QueryError(
+          return LOG_STATUS(Status::QueryError(
               "Cannot serialize; array or array schema is null."));
 
         // Iterate over attributes and concatenate buffers to end of message.
@@ -558,11 +550,10 @@ tiledb::sm::Status query_serialize(
           for (auto attr_buffer_builder : attr_buffer_builders) {
             const std::string attribute_name =
                 attr_buffer_builder.getName().cStr();
-            const bool is_coords =
-                attribute_name == tiledb::sm::constants::coords;
+            const bool is_coords = attribute_name == constants::coords;
             const auto* attr = array_schema->attribute(attribute_name);
             if (!is_coords && attr == nullptr)
-              return LOG_STATUS(tiledb::sm::Status::QueryError(
+              return LOG_STATUS(Status::QueryError(
                   "Cannot serialize; no attribute named '" + attribute_name +
                   "'."));
 
@@ -583,7 +574,7 @@ tiledb::sm::Status query_serialize(
               if (offset_buffer != nullptr) {
                 if (offset_buffer_size == nullptr || buffer == nullptr ||
                     buffer_size == nullptr)
-                  return LOG_STATUS(tiledb::sm::Status::QueryError(
+                  return LOG_STATUS(Status::QueryError(
                       "Cannot serialize; unexpected null buffers."));
                 RETURN_NOT_OK(serialized_buffer->write(
                     offset_buffer, *offset_buffer_size));
@@ -598,7 +589,7 @@ tiledb::sm::Status query_serialize(
 
               if (buffer != nullptr) {
                 if (buffer_size == nullptr)
-                  return LOG_STATUS(tiledb::sm::Status::QueryError(
+                  return LOG_STATUS(Status::QueryError(
                       "Cannot serialize; unexpected null buffer size."));
                 RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
               }
@@ -609,47 +600,47 @@ tiledb::sm::Status query_serialize(
         break;
       }
       default:
-        return LOG_STATUS(tiledb::sm::Status::QueryError(
-            "Cannot serialize; unknown serialization type"));
+        return LOG_STATUS(
+            Status::QueryError("Cannot serialize; unknown serialization type"));
     }
   } catch (kj::Exception& e) {
-    return LOG_STATUS(tiledb::sm::Status::QueryError(
+    return LOG_STATUS(Status::QueryError(
         "Cannot serialize; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(tiledb::sm::Status::QueryError(
+    return LOG_STATUS(Status::QueryError(
         "Cannot serialize; exception: " + std::string(e.what())));
   }
 
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 
   STATS_FUNC_OUT(serialization_query_serialize);
 }
 
-tiledb::sm::Status query_deserialize(
-    const tiledb::sm::Buffer& serialized_buffer,
-    tiledb::sm::SerializationType serialize_type,
+Status query_deserialize(
+    const Buffer& serialized_buffer,
+    SerializationType serialize_type,
     bool clientside,
-    tiledb::sm::Query* query) {
+    Query* query) {
   STATS_FUNC_IN(serialization_query_deserialize);
 
   try {
     switch (serialize_type) {
-      case tiledb::sm::SerializationType::JSON: {
+      case SerializationType::JSON: {
         ::capnp::JsonCodec json;
         ::capnp::MallocMessageBuilder message_builder;
-        rest::capnp::Query::Builder query_builder =
-            message_builder.initRoot<rest::capnp::Query>();
+        capnp::Query::Builder query_builder =
+            message_builder.initRoot<capnp::Query>();
         json.decode(
             kj::StringPtr(static_cast<const char*>(serialized_buffer.data())),
             query_builder);
-        rest::capnp::Query::Reader query_reader = query_builder.asReader();
+        capnp::Query::Reader query_reader = query_builder.asReader();
         return query_from_capnp(query_reader, clientside, nullptr, query);
       }
-      case tiledb::sm::SerializationType::CAPNP: {
+      case SerializationType::CAPNP: {
         // Capnp FlatArrayMessageReader requires 64-bit alignment.
         if (!utils::is_aligned<sizeof(uint64_t)>(serialized_buffer.data()))
-          return LOG_STATUS(tiledb::sm::Status::RestError(
+          return LOG_STATUS(Status::RestError(
               "Could not deserialize query; buffer is not 8-byte aligned."));
 
         // Set traversal limit to 10GI (TODO: make this a config option)
@@ -662,7 +653,7 @@ tiledb::sm::Status query_deserialize(
                 serialized_buffer.size() / sizeof(::capnp::word)),
             readerOptions);
 
-        Query::Reader query_reader = reader.getRoot<rest::capnp::Query>();
+        capnp::Query::Reader query_reader = reader.getRoot<capnp::Query>();
 
         // Get a pointer to the start of the attribute buffer data (which
         // was concatenated after the CapnP message on serialization).
@@ -671,22 +662,22 @@ tiledb::sm::Status query_deserialize(
         return query_from_capnp(query_reader, clientside, buffer_start, query);
       }
       default:
-        return LOG_STATUS(tiledb::sm::Status::QueryError(
+        return LOG_STATUS(Status::QueryError(
             "Cannot deserialize; unknown serialization type."));
     }
   } catch (kj::Exception& e) {
-    return LOG_STATUS(tiledb::sm::Status::QueryError(
+    return LOG_STATUS(Status::QueryError(
         "Cannot deserialize; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(tiledb::sm::Status::QueryError(
+    return LOG_STATUS(Status::QueryError(
         "Cannot deserialize; exception: " + std::string(e.what())));
   }
-  return tiledb::sm::Status::Ok();
+  return Status::Ok();
 
   STATS_FUNC_OUT(serialization_query_deserialize);
 }
 
-}  // namespace capnp
-}  // namespace rest
+}  // namespace serialization
+}  // namespace sm
 }  // namespace tiledb

@@ -296,7 +296,7 @@ DenseArrayRESTFx::~DenseArrayRESTFx() {
   config.set("rest.password", rest_server_password_);
   config.set("rest.organization", rest_server_username_);
 
-  tiledb::rest::RestClient rest_client;
+  tiledb::sm::RestClient rest_client;
   REQUIRE(rest_client.init(&config).ok());
   for (const auto& uri : to_deregister_) {
     CHECK(rest_client.deregister_array_from_rest(uri).ok());

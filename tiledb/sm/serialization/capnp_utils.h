@@ -40,8 +40,8 @@
 #include "tiledb/sm/serialization/tiledb-rest.capnp.h"
 
 namespace tiledb {
-namespace rest {
-namespace capnp {
+namespace sm {
+namespace serialization {
 namespace utils {
 
 /**
@@ -298,8 +298,8 @@ tiledb::sm::Status serialize_subarray(
 
   const uint64_t subarray_size = 2 * array_schema->coords_size();
   const uint64_t subarray_length = subarray_size / datatype_size(coords_type);
-  RETURN_NOT_OK(rest::capnp::utils::set_capnp_array_ptr(
-      builder, coords_type, subarray, subarray_length));
+  RETURN_NOT_OK(
+      set_capnp_array_ptr(builder, coords_type, subarray, subarray_length));
 
   return tiledb::sm::Status::Ok();
 }
@@ -329,8 +329,7 @@ tiledb::sm::Status deserialize_subarray(
 
   const uint64_t subarray_size = 2 * array_schema->coords_size();
   tiledb::sm::Buffer subarray_buff;
-  RETURN_NOT_OK(
-      rest::capnp::utils::copy_capnp_list(reader, coords_type, &subarray_buff));
+  RETURN_NOT_OK(copy_capnp_list(reader, coords_type, &subarray_buff));
 
   if (subarray_buff.size() == 0) {
     *subarray = nullptr;
@@ -343,8 +342,8 @@ tiledb::sm::Status deserialize_subarray(
 }
 
 }  // namespace utils
-}  // namespace capnp
-}  // namespace rest
+}  // namespace serialization
+}  // namespace sm
 }  // namespace tiledb
 
 #endif  // TILEDB_CAPNP_UTILS_H
