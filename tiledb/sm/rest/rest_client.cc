@@ -35,6 +35,7 @@
 #include "tiledb/sm/misc/stats.h"
 #include "tiledb/sm/rest/rest_client.h"
 #include "tiledb/sm/serialization/array_schema.h"
+#include "tiledb/sm/serialization/capnp_utils.h"
 #include "tiledb/sm/serialization/query.h"
 #include "tiledb/sm/serialization/tiledb-rest.capnp.h"
 
@@ -128,9 +129,15 @@ Status RestClient::get_array_non_empty_domain(
   if (array == nullptr)
     return LOG_STATUS(
         Status::RestError("Cannot get array non-empty domain; array is null"));
+  if (array->array_schema() == nullptr)
+    return LOG_STATUS(Status::RestError(
+        "Cannot get array non-empty domain; array schema is null"));
   if (array->array_uri().to_string().empty())
     return LOG_STATUS(Status::RestError(
         "Cannot get array non-empty domain; array URI is empty"));
+
+  // For easy reference
+  const auto coords_type = array->array_schema()->coords_type();
 
   // Init curl and form the URL
   Curl curlc;
@@ -148,138 +155,29 @@ Status RestClient::get_array_non_empty_domain(
         Status::RestError("Error getting array non-empty domain "
                           "from REST; server returned no data."));
 
-  // Currently only json data is supported, so let's decode it here.
+  // Currently only json data is supported, so decode it here.
   ::capnp::JsonCodec json;
   ::capnp::MallocMessageBuilder message_builder;
-  serialization::capnp::NonEmptyDomain::Builder nonEmptyDomainBuilder =
+  auto non_empty_domain_builder =
       message_builder.initRoot<serialization::capnp::NonEmptyDomain>();
   json.decode(
       kj::StringPtr(static_cast<const char*>(returned_data.data())),
-      nonEmptyDomainBuilder);
-  serialization::capnp::NonEmptyDomain::Reader nonEmptyDomainReader =
-      nonEmptyDomainBuilder.asReader();
-  *is_empty = nonEmptyDomainReader.getIsEmpty();
+      non_empty_domain_builder);
 
-  Datatype domainType = array->array_schema()->domain()->type();
+  auto non_empty_domain_reader = non_empty_domain_builder.asReader();
+  *is_empty = non_empty_domain_reader.getIsEmpty();
 
   // If there is a nonEmptyDomain we need to set domain variables
-  if (nonEmptyDomainReader.hasNonEmptyDomain()) {
-    serialization::capnp::Map<
-        ::capnp::Text,
-        serialization::capnp::DomainArray>::Reader nonEmptyDomainList =
-        nonEmptyDomainReader.getNonEmptyDomain();
+  if (non_empty_domain_reader.hasNonEmptyDomain()) {
+    auto non_empty_domain_list = non_empty_domain_reader.getNonEmptyDomain();
 
-    size_t domainPosition = 0;
     // Loop through dimension's domain in order
-    for (auto entry : nonEmptyDomainList.getEntries()) {
-      serialization::capnp::DomainArray::Reader domainArrayReader =
-          entry.getValue();
-      switch (domainType) {
-        case Datatype::INT8: {
-          if (domainArrayReader.hasInt8()) {
-            ::capnp::List<int8_t>::Reader domainList =
-                domainArrayReader.getInt8();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<int8_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::UINT8: {
-          if (domainArrayReader.hasUint8()) {
-            ::capnp::List<uint8_t>::Reader domainList =
-                domainArrayReader.getUint8();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<uint8_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::INT16: {
-          if (domainArrayReader.hasInt16()) {
-            ::capnp::List<int16_t>::Reader domainList =
-                domainArrayReader.getInt16();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<int16_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::UINT16: {
-          if (domainArrayReader.hasUint16()) {
-            ::capnp::List<uint16_t>::Reader domainList =
-                domainArrayReader.getUint16();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<uint16_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::INT32: {
-          if (domainArrayReader.hasInt32()) {
-            ::capnp::List<int32_t>::Reader domainList =
-                domainArrayReader.getInt32();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<int32_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::UINT32: {
-          if (domainArrayReader.hasUint32()) {
-            ::capnp::List<uint32_t>::Reader domainList =
-                domainArrayReader.getUint32();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<uint32_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::INT64: {
-          if (domainArrayReader.hasInt64()) {
-            ::capnp::List<int64_t>::Reader domainList =
-                domainArrayReader.getInt64();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<int64_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::UINT64: {
-          if (domainArrayReader.hasUint64()) {
-            ::capnp::List<uint64_t>::Reader domainList =
-                domainArrayReader.getUint64();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<uint64_t*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::FLOAT32: {
-          if (domainArrayReader.hasFloat32()) {
-            ::capnp::List<float>::Reader domainList =
-                domainArrayReader.getFloat32();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<float*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        case Datatype::FLOAT64: {
-          if (domainArrayReader.hasFloat64()) {
-            ::capnp::List<double>::Reader domainList =
-                domainArrayReader.getFloat64();
-            for (size_t i = 0; i < domainList.size(); i++, domainPosition++) {
-              static_cast<double*>(domain)[domainPosition] = domainList[i];
-            }
-          }
-          break;
-        }
-        default:
-          return Status::Error(
-              "unknown domain type in trying to get non_empty_domain from "
-              "rest");
-      }
+    Buffer buffer;
+    for (const auto& entry : non_empty_domain_list.getEntries()) {
+      auto entry_reader = entry.getValue();
+      RETURN_NOT_OK(serialization::utils::copy_capnp_list(
+          entry_reader, coords_type, &buffer));
+      std::memcpy(domain, buffer.data(), buffer.size());
     }
   }
 
