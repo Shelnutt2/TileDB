@@ -1,5 +1,5 @@
 /**
- * @file   client.cc
+ * @file   rest_client.cc
  *
  * @section LICENSE
  *
@@ -27,12 +27,13 @@
  *
  * @section DESCRIPTION
  *
- * This file implements curl client helper functions.
+ * This file declares a REST client class.
  */
 
-#include "tiledb/sm/rest/rest_client.h"
-#include "capnp/compat/json.h"
+#include <capnp/compat/json.h>
+
 #include "tiledb/sm/misc/stats.h"
+#include "tiledb/sm/rest/rest_client.h"
 #include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/query.h"
 #include "tiledb/sm/serialization/tiledb-rest.capnp.h"

@@ -30,8 +30,9 @@
  * This file defines serialization functions for ArraySchema.
  */
 
-#include "capnp/compat/json.h"
-#include "capnp/serialize.h"
+#include <capnp/compat/json.h>
+#include <capnp/serialize.h>
+
 #include "tiledb/sm/enums/array_type.h"
 #include "tiledb/sm/enums/compressor.h"
 #include "tiledb/sm/enums/datatype.h"
@@ -40,7 +41,7 @@
 #include "tiledb/sm/misc/constants.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
-#include "tiledb/sm/serialization/utils.h"
+#include "tiledb/sm/serialization/capnp_utils.h"
 
 namespace tiledb {
 namespace rest {

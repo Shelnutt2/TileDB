@@ -1,5 +1,5 @@
 /**
- * @file   utils.h
+ * @file   capnp_utils.h
  *
  * @section LICENSE
  *
@@ -30,8 +30,8 @@
  * This file declares utility functions for CapnProto.
  */
 
-#ifndef TILEDB_REST_CAPNP_UTILS_H
-#define TILEDB_REST_CAPNP_UTILS_H
+#ifndef TILEDB_CAPNP_UTILS_H
+#define TILEDB_CAPNP_UTILS_H
 
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/buffer/buffer.h"
@@ -347,4 +347,4 @@ tiledb::sm::Status deserialize_subarray(
 }  // namespace rest
 }  // namespace tiledb
 
-#endif  // TILEDB_REST_CAPNP_UTILS_H
+#endif  // TILEDB_CAPNP_UTILS_H
