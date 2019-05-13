@@ -30,13 +30,12 @@
  * This file implements curl client helper functions.
  */
 
-#include "tiledb/rest/curl/rest_client.h"
+#include "tiledb/sm/rest/rest_client.h"
 #include "capnp/compat/json.h"
-#include "tiledb/rest/capnp/array_schema.h"
-#include "tiledb/rest/capnp/query.h"
-#include "tiledb/rest/capnp/tiledb-rest.capnp.h"
-#include "tiledb/rest/curl/curl.h"
 #include "tiledb/sm/misc/stats.h"
+#include "tiledb/sm/serialization/array_schema.h"
+#include "tiledb/sm/serialization/query.h"
+#include "tiledb/sm/serialization/tiledb-rest.capnp.h"
 
 namespace tiledb {
 namespace rest {

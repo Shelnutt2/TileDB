@@ -33,11 +33,11 @@
 #ifndef TILEDB_REST_CAPNP_UTILS_H
 #define TILEDB_REST_CAPNP_UTILS_H
 
-#include "tiledb/rest/capnp/tiledb-rest.capnp.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/buffer/buffer.h"
 #include "tiledb/sm/enums/datatype.h"
 #include "tiledb/sm/misc/status.h"
+#include "tiledb/sm/serialization/tiledb-rest.capnp.h"
 
 namespace tiledb {
 namespace rest {
