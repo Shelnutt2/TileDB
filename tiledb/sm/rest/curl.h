@@ -30,12 +30,13 @@
  * This file declares a high-level libcurl helper class.
  */
 
-#ifndef TILEDB_REST_CURL_H
-#define TILEDB_REST_CURL_H
+#ifndef TILEDB_CURL_H
+#define TILEDB_CURL_H
 
 #include <curl/curl.h>
 #include <cstdlib>
 #include <string>
+
 #include "tiledb/sm/buffer/buffer.h"
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/storage_manager/config.h"
@@ -172,4 +173,4 @@ class Curl {
 }  // namespace rest
 }  // namespace tiledb
 
-#endif  // TILEDB_REST_CURL_H
+#endif  // TILEDB_CURL_H
