@@ -32,9 +32,9 @@
 
 #include "catch.hpp"
 
-#include "tiledb/rest/capnp/query.h"
 #include "tiledb/sm/c_api/tiledb_struct_def.h"
 #include "tiledb/sm/cpp_api/tiledb"
+#include "tiledb/sm/serialization/query.h"
 
 using namespace tiledb;
 
