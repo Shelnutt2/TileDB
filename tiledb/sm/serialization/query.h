@@ -31,8 +31,8 @@
  * tiledb::sm::Query
  */
 
-#ifndef TILEDB_REST_CAPNP_QUERY_H
-#define TILEDB_REST_CAPNP_QUERY_H
+#ifndef TILEDB_SERIALIZATION_QUERY_H
+#define TILEDB_SERIALIZATION_QUERY_H
 
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/query/query.h"
@@ -71,4 +71,4 @@ tiledb::sm::Status query_deserialize(
 }  // namespace rest
 }  // namespace tiledb
 
-#endif  // TILEDB_REST_CAPNP_QUERY_H
+#endif  // TILEDB_SERIALIZATION_QUERY_H

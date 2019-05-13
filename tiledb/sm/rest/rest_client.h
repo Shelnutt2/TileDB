@@ -27,7 +27,7 @@
  *
  * @section DESCRIPTION
  *
- * This file defines the REST client class.
+ * This file defines a REST client class.
  */
 
 #ifndef TILEDB_REST_CLIENT_H

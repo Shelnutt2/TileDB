@@ -30,8 +30,8 @@
  * This file declares serialization functions for ArraySchema.
  */
 
-#ifndef TILEDB_REST_CAPNP_ARRAY_SCHEMA_H
-#define TILEDB_REST_CAPNP_ARRAY_SCHEMA_H
+#ifndef TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
+#define TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
 
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/enums/serialization_type.h"
@@ -56,4 +56,4 @@ tiledb::sm::Status array_schema_deserialize(
 }  // namespace rest
 }  // namespace tiledb
 
-#endif  // TILEDB_REST_CAPNP_ARRAY_SCHEMA_H
+#endif  // TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
