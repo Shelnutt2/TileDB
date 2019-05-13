@@ -1503,7 +1503,7 @@ static const ::capnp::_::RawSchema* const d_f179c194ae71718c[] = {
 static const uint16_t m_f179c194ae71718c[] = {0};
 static const uint16_t i_f179c194ae71718c[] = {0};
 KJ_CONSTEXPR(const) ::capnp::_::RawBrandedSchema::Dependency bd_f179c194ae71718c[] = {
-  { 16777216,  ::tiledb::rest::capnp::Map< ::capnp::AnyPointer,  ::capnp::AnyPointer>::Entry::_capnpPrivate::brand() },
+  { 16777216,  ::tiledb::sm::serialization::capnp::Map< ::capnp::AnyPointer,  ::capnp::AnyPointer>::Entry::_capnpPrivate::brand() },
 };
 const ::capnp::_::RawSchema s_f179c194ae71718c = {
   0xf179c194ae71718c, b_f179c194ae71718c.words, 50, d_f179c194ae71718c, m_f179c194ae71718c,
@@ -2336,7 +2336,7 @@ static const ::capnp::_::RawSchema* const d_9df6f2a42c4e5f0b[] = {
 static const uint16_t m_9df6f2a42c4e5f0b[] = {1, 0};
 static const uint16_t i_9df6f2a42c4e5f0b[] = {0, 1};
 KJ_CONSTEXPR(const) ::capnp::_::RawBrandedSchema::Dependency bd_9df6f2a42c4e5f0b[] = {
-  { 16777216,  ::tiledb::rest::capnp::Map< ::capnp::Text,  ::tiledb::rest::capnp::DomainArray>::_capnpPrivate::brand() },
+  { 16777216,  ::tiledb::sm::serialization::capnp::Map< ::capnp::Text,  ::tiledb::sm::serialization::capnp::DomainArray>::_capnpPrivate::brand() },
 };
 const ::capnp::_::RawSchema s_9df6f2a42c4e5f0b = {
   0x9df6f2a42c4e5f0b, b_9df6f2a42c4e5f0b.words, 68, d_9df6f2a42c4e5f0b, m_9df6f2a42c4e5f0b,
@@ -2349,7 +2349,8 @@ const ::capnp::_::RawSchema s_9df6f2a42c4e5f0b = {
 // =======================================================================================
 
 namespace tiledb {
-namespace rest {
+namespace sm {
+namespace serialization {
 namespace capnp {
 
 // DomainArray
@@ -2521,6 +2522,7 @@ constexpr ::capnp::_::RawSchema const* NonEmptyDomain::_capnpPrivate::schema;
 #endif  // !CAPNP_LITE
 
 
+}  // namespace
 }  // namespace
 }  // namespace
 }  // namespace

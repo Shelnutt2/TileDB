@@ -60,17 +60,11 @@
 #include "tiledb/sm/storage_manager/open_array.h"
 
 namespace tiledb {
-namespace rest {
-
-class RestClient;
-}
-}  // namespace tiledb
-
-namespace tiledb {
 namespace sm {
 
 class Array;
 class Consolidator;
+class RestClient;
 
 /** The storage manager that manages pretty much everything in TileDB. */
 class StorageManager {
@@ -383,7 +377,7 @@ class StorageManager {
    * If the storage manager was configured with a REST server, return the
    * client instance. Else, return nullptr.
    */
-  tiledb::rest::RestClient* rest_client() const;
+  RestClient* rest_client() const;
 
   /**
    * Checks if the input URI represents an array.
@@ -756,7 +750,7 @@ class StorageManager {
   VFS* vfs_;
 
   /** The rest client (may be null if none was configured). */
-  std::unique_ptr<tiledb::rest::RestClient> rest_client_;
+  std::unique_ptr<RestClient> rest_client_;
 
   /* ********************************* */
   /*         PRIVATE METHODS           */

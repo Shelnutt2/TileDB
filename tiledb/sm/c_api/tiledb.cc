@@ -4662,7 +4662,7 @@ int tiledb_serialize_array_schema(
 
   if (SAVE_ERROR_CATCH(
           ctx,
-          tiledb::rest::capnp::array_schema_serialize(
+          tiledb::sm::serialization::array_schema_serialize(
               array_schema->array_schema_,
               (tiledb::sm::SerializationType)serialize_type,
               buffer->buffer_)))
@@ -4697,7 +4697,7 @@ int tiledb_deserialize_array_schema(
 
   if (SAVE_ERROR_CATCH(
           ctx,
-          tiledb::rest::capnp::array_schema_deserialize(
+          tiledb::sm::serialization::array_schema_deserialize(
               &((*array_schema)->array_schema_),
               (tiledb::sm::SerializationType)serialize_type,
               *buffer->buffer_))) {
@@ -4722,7 +4722,7 @@ int tiledb_serialize_query(
 
   if (SAVE_ERROR_CATCH(
           ctx,
-          tiledb::rest::capnp::query_serialize(
+          tiledb::sm::serialization::query_serialize(
               query->query_,
               (tiledb::sm::SerializationType)serialize_type,
               client_side == 1,
@@ -4746,7 +4746,7 @@ int tiledb_deserialize_query(
 
   if (SAVE_ERROR_CATCH(
           ctx,
-          tiledb::rest::capnp::query_deserialize(
+          tiledb::sm::serialization::query_deserialize(
               *buffer->buffer_,
               (tiledb::sm::SerializationType)serialize_type,
               client_side == 1,

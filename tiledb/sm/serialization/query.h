@@ -27,8 +27,7 @@
  *
  * @section DESCRIPTION
  *
- * This file declares serialization for
- * tiledb::sm::Query
+ * This file declares serialization for the Query class
  */
 
 #ifndef TILEDB_SERIALIZATION_QUERY_H
@@ -38,8 +37,8 @@
 #include "tiledb/sm/query/query.h"
 
 namespace tiledb {
-namespace rest {
-namespace capnp {
+namespace sm {
+namespace serialization {
 
 /**
  * Serialize a query
@@ -48,11 +47,11 @@ namespace capnp {
  * @param serialize_type format to serialize to
  * @param serialized_buffer Buffer to store serialized query
  */
-tiledb::sm::Status query_serialize(
-    tiledb::sm::Query* query,
-    tiledb::sm::SerializationType serialize_type,
+Status query_serialize(
+    Query* query,
+    SerializationType serialize_type,
     bool clientside,
-    tiledb::sm::Buffer* serialized_buffer);
+    Buffer* serialized_buffer);
 
 /**
  * Deserialize a query
@@ -61,14 +60,14 @@ tiledb::sm::Status query_serialize(
  * @param serialize_type format to deserialize from
  * @param serialized_buffer Buffer storing serialized query
  */
-tiledb::sm::Status query_deserialize(
-    const tiledb::sm::Buffer& serialized_buffer,
-    tiledb::sm::SerializationType serialize_type,
+Status query_deserialize(
+    const Buffer& serialized_buffer,
+    SerializationType serialize_type,
     bool clientside,
-    tiledb::sm::Query* query);
+    Query* query);
 
-}  // namespace capnp
-}  // namespace rest
+}  // namespace serialization
+}  // namespace sm
 }  // namespace tiledb
 
 #endif  // TILEDB_SERIALIZATION_QUERY_H

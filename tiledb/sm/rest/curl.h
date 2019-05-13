@@ -42,7 +42,7 @@
 #include "tiledb/sm/storage_manager/config.h"
 
 namespace tiledb {
-namespace rest {
+namespace sm {
 
 /**
  * Helper class offering a high-level wrapper over some libcurl functions.
@@ -62,7 +62,7 @@ class Curl {
    * @param config TileDB config storing server/auth information
    * @return Status
    */
-  tiledb::sm::Status init(const tiledb::sm::Config* config);
+  Status init(const Config* config);
 
   /**
    * Escapes the given URL.
@@ -81,11 +81,11 @@ class Curl {
    * @param returned_data Buffer to store response data
    * @return Status
    */
-  tiledb::sm::Status post_data(
+  Status post_data(
       const std::string& url,
-      tiledb::sm::SerializationType serialization_type,
-      tiledb::sm::Buffer* data,
-      tiledb::sm::Buffer* returned_data);
+      SerializationType serialization_type,
+      Buffer* data,
+      Buffer* returned_data);
 
   /**
    * Simple wrapper for getting data from server
@@ -95,10 +95,10 @@ class Curl {
    * @param returned_data Buffer to store response data
    * @return Status
    */
-  tiledb::sm::Status get_data(
+  Status get_data(
       const std::string& url,
-      tiledb::sm::SerializationType serialization_type,
-      tiledb::sm::Buffer* returned_data);
+      SerializationType serialization_type,
+      Buffer* returned_data);
 
   /**
    * Simple wrapper for sending delete requests to server
@@ -109,14 +109,14 @@ class Curl {
    * @param returned_data Buffer to store response data
    * @return Status
    */
-  tiledb::sm::Status delete_data(
+  Status delete_data(
       const std::string& url,
-      tiledb::sm::SerializationType serialization_type,
-      tiledb::sm::Buffer* returned_data);
+      SerializationType serialization_type,
+      Buffer* returned_data);
 
  private:
   /** TileDB config parameters. */
-  const tiledb::sm::Config* config_;
+  const Config* config_;
 
   /** Underlying C curl instance. */
   std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> curl_;
@@ -128,7 +128,7 @@ class Curl {
    * @param headers Headers (may be modified)
    * @return Status
    */
-  tiledb::sm::Status set_auth(struct curl_slist** headers) const;
+  Status set_auth(struct curl_slist** headers) const;
 
   /**
    * Sets the appropriate Content-Type header for the given serialization type.
@@ -137,9 +137,8 @@ class Curl {
    * @param headers Headers to be modified
    * @return Status
    */
-  tiledb::sm::Status set_content_type(
-      tiledb::sm::SerializationType serialization_type,
-      struct curl_slist** headers) const;
+  Status set_content_type(
+      SerializationType serialization_type, struct curl_slist** headers) const;
 
   /**
    * Makes the configured curl request to the given URL, storing response data
@@ -150,10 +149,8 @@ class Curl {
    * @param returned_data Buffer that will store the response data
    * @return Status
    */
-  tiledb::sm::Status make_curl_request(
-      const char* url,
-      CURLcode* curl_code,
-      tiledb::sm::Buffer* returned_data) const;
+  Status make_curl_request(
+      const char* url, CURLcode* curl_code, Buffer* returned_data) const;
 
   /**
    * Check the given curl code for errors, returning a TileDB error status if
@@ -164,13 +161,13 @@ class Curl {
    * @param returned_data Buffer containing any response data from server
    * @return Status
    */
-  tiledb::sm::Status check_curl_errors(
+  Status check_curl_errors(
       CURLcode curl_code,
       const std::string& operation,
-      const tiledb::sm::Buffer* returned_data) const;
+      const Buffer* returned_data) const;
 };
 
-}  // namespace rest
+}  // namespace sm
 }  // namespace tiledb
 
 #endif  // TILEDB_CURL_H

@@ -40,12 +40,12 @@
 #include "tiledb/sm/rest/curl.h"
 
 namespace tiledb {
-namespace rest {
+namespace sm {
 
 class RestClient {
  public:
   /** Initialize the REST client with the given config. */
-  tiledb::sm::Status init(const tiledb::sm::Config* config);
+  Status init(const Config* config);
 
   /**
    * Get a data encoded array schema from rest server
@@ -54,8 +54,8 @@ class RestClient {
    * @param array_schema array schema to send to server
    * @return Status Ok() on success Error() on failures
    */
-  tiledb::sm::Status get_array_schema_from_rest(
-      const std::string& uri, tiledb::sm::ArraySchema** array_schema);
+  Status get_array_schema_from_rest(
+      const std::string& uri, ArraySchema** array_schema);
 
   /**
    * Post a data array schema to rest server
@@ -64,8 +64,8 @@ class RestClient {
    * @param array_schema array schema to load into
    * @return Status Ok() on success Error() on failures
    */
-  tiledb::sm::Status post_array_schema_to_rest(
-      const std::string& uri, tiledb::sm::ArraySchema* array_schema);
+  Status post_array_schema_to_rest(
+      const std::string& uri, ArraySchema* array_schema);
 
   /**
    * Deregisters an array at the given URI from the REST server.
@@ -73,7 +73,7 @@ class RestClient {
    * @param uri Array URI to deregister
    * @return Status
    */
-  tiledb::sm::Status deregister_array_from_rest(const std::string& uri);
+  Status deregister_array_from_rest(const std::string& uri);
 
   /**
    * Get array's non_empty domain from rest server
@@ -85,8 +85,7 @@ class RestClient {
    * otherwise.
    * @return Status Ok() on success Error() on failures
    */
-  tiledb::sm::Status get_array_non_empty_domain(
-      tiledb::sm::Array* array, void* domain, bool* is_empty);
+  Status get_array_non_empty_domain(Array* array, void* domain, bool* is_empty);
 
   /**
    * Post a data query to rest server
@@ -95,8 +94,7 @@ class RestClient {
    * @param query to send to server and store results in, this qill be modified
    * @return Status Ok() on success Error() on failures
    */
-  tiledb::sm::Status submit_query_to_rest(
-      const std::string& uri, tiledb::sm::Query* query);
+  Status submit_query_to_rest(const std::string& uri, Query* query);
 
   /**
    * Post a data query to rest server
@@ -105,12 +103,11 @@ class RestClient {
    * @param query to send to server and store results in, this qill be modified
    * @return Status Ok() on success Error() on failures
    */
-  tiledb::sm::Status finalize_query_to_rest(
-      const std::string& uri, tiledb::sm::Query* query);
+  Status finalize_query_to_rest(const std::string& uri, Query* query);
 
  private:
   /** The TileDB config options (contains server and auth info). */
-  const tiledb::sm::Config* config_;
+  const Config* config_;
 
   /** Organization config param. */
   std::string organization_;
@@ -119,10 +116,10 @@ class RestClient {
   std::string rest_server_;
 
   /** Serialization type. */
-  tiledb::sm::SerializationType serialization_type_;
+  SerializationType serialization_type_;
 };
 
-}  // namespace rest
+}  // namespace sm
 }  // namespace tiledb
 
 #endif  // TILEDB_REST_CLIENT_H
