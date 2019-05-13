@@ -30,7 +30,7 @@
  * This file defines a high-level libcurl helper class.
  */
 
-#include "tiledb/rest/curl/curl.h"
+#include "tiledb/sm/rest/curl.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
 

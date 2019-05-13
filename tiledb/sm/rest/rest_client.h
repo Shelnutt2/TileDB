@@ -33,11 +33,11 @@
 #ifndef TILEDB_REST_CLIENT_H
 #define TILEDB_REST_CLIENT_H
 
-#include "tiledb/rest/curl/curl.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/misc/status.h"
 #include "tiledb/sm/query/query.h"
+#include "tiledb/sm/rest/curl.h"
 
 namespace tiledb {
 namespace rest {

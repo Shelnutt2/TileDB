@@ -31,10 +31,10 @@
  */
 
 #include "tiledb/sm/query/query.h"
-#include "tiledb/rest/curl/rest_client.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
+#include "tiledb/sm/rest/rest_client.h"
 
 #include <cassert>
 #include <iostream>

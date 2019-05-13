@@ -38,10 +38,10 @@
 #include "tiledb/sm/filesystem/posix.h"
 #endif
 #include "test/src/helpers.h"
-#include "tiledb/rest/capnp/query.h"
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/sm/c_api/tiledb_struct_def.h"
 #include "tiledb/sm/misc/utils.h"
+#include "tiledb/sm/serialization/query.h"
 
 #include <array>
 #include <cassert>

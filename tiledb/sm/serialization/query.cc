@@ -32,13 +32,13 @@
  * tiledb::sm::Query
  */
 
-#include "tiledb/rest/capnp/query.h"
+#include "tiledb/sm/serialization/query.h"
 #include "capnp/compat/json.h"
 #include "capnp/message.h"
 #include "capnp/serialize.h"
-#include "tiledb/rest/capnp/utils.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
+#include "tiledb/sm/serialization/utils.h"
 
 namespace tiledb {
 namespace rest {
