@@ -1886,3 +1886,96 @@ TEST_CASE_METHOD(
     remove_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
   }
 }
+
+TEST_CASE_METHOD(
+    DenseArrayRESTFx,
+    "C API: REST Test dense array, get nonempty domain",
+    "[capi], [dense], [rest]") {
+  // Parameters used in this test
+  int64_t domain_size_0 = 100;
+  int64_t domain_size_1 = 100;
+  int64_t tile_extent_0 = 10;
+  int64_t tile_extent_1 = 10;
+  int64_t domain_0_lo = 0;
+  int64_t domain_0_hi = domain_size_0 - 1;
+  int64_t domain_1_lo = 0;
+  int64_t domain_1_hi = domain_size_1 - 1;
+  uint64_t capacity = 1000;
+  tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
+  tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
+  std::string array_name =
+      FILE_URI_PREFIX + FILE_TEMP_DIR + "nonempty_domain_array";
+
+  create_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
+
+  // Create a dense integer array
+  create_dense_array_2D(
+      array_name,
+      tile_extent_0,
+      tile_extent_1,
+      domain_0_lo,
+      domain_0_hi,
+      domain_1_lo,
+      domain_1_hi,
+      capacity,
+      cell_order,
+      tile_order);
+
+  // Check nonempty domain before writing
+  tiledb_array_t* array;
+  REQUIRE(tiledb_array_alloc(ctx_, array_name.c_str(), &array) == TILEDB_OK);
+  REQUIRE(tiledb_array_open(ctx_, array, TILEDB_READ) == TILEDB_OK);
+  int64_t nonempty_domain[4];
+  int32_t is_empty;
+  REQUIRE(
+      tiledb_array_get_non_empty_domain(
+          ctx_, array, &nonempty_domain, &is_empty) == TILEDB_OK);
+  REQUIRE(is_empty == 1);
+  REQUIRE(tiledb_array_close(ctx_, array) == TILEDB_OK);
+  tiledb_array_free(&array);
+
+  // Create a subarray of data
+  int64_t subarray[] = {10, 50, 20, 60};
+  int64_t subarray_length[2] = {subarray[1] - subarray[0] + 1,
+                                subarray[3] - subarray[2] + 1};
+  int64_t cell_num_in_subarray = subarray_length[0] * subarray_length[1];
+  auto buffer = new int[cell_num_in_subarray];
+  int64_t index = 0;
+  uint64_t buffer_size = cell_num_in_subarray * sizeof(int);
+  uint64_t buffer_sizes[] = {buffer_size};
+  for (int64_t r = 0; r < subarray_length[0]; ++r)
+    for (int64_t c = 0; c < subarray_length[1]; ++c)
+      buffer[index++] = -(std::rand() % 999999);
+
+  // Write 2D subarray
+  write_dense_subarray_2D(
+      array_name,
+      subarray,
+      TILEDB_WRITE,
+      TILEDB_ROW_MAJOR,
+      buffer,
+      buffer_sizes);
+
+  // Clean up
+  delete[] buffer;
+
+  // Open array
+  int rc = tiledb_array_alloc(ctx_, array_name.c_str(), &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx_, array, TILEDB_READ);
+  CHECK(rc == TILEDB_OK);
+
+  // Check nonempty domain after writing
+  REQUIRE(
+      tiledb_array_get_non_empty_domain(
+          ctx_, array, &nonempty_domain, &is_empty) == TILEDB_OK);
+  REQUIRE(is_empty == 0);
+  for (unsigned i = 0; i < 4; i++)
+    REQUIRE(nonempty_domain[i] == subarray[i]);
+
+  // Clean up
+  REQUIRE(tiledb_array_close(ctx_, array) == TILEDB_OK);
+  tiledb_array_free(&array);
+
+  remove_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
+}

@@ -3441,9 +3441,7 @@ class NonEmptyDomain::Reader {
 #endif  // !CAPNP_LITE
 
   inline bool hasNonEmptyDomain() const;
-  inline ::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>::Reader
+  inline ::tiledb::sm::serialization::capnp::DomainArray::Reader
   getNonEmptyDomain() const;
 
   inline bool getIsEmpty() const;
@@ -3488,25 +3486,15 @@ class NonEmptyDomain::Builder {
 #endif  // !CAPNP_LITE
 
   inline bool hasNonEmptyDomain();
-  inline ::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>::Builder
+  inline ::tiledb::sm::serialization::capnp::DomainArray::Builder
   getNonEmptyDomain();
   inline void setNonEmptyDomain(
-      ::tiledb::sm::serialization::capnp::Map<
-          ::capnp::Text,
-          ::tiledb::sm::serialization::capnp::DomainArray>::Reader value);
-  inline ::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>::Builder
+      ::tiledb::sm::serialization::capnp::DomainArray::Reader value);
+  inline ::tiledb::sm::serialization::capnp::DomainArray::Builder
   initNonEmptyDomain();
   inline void adoptNonEmptyDomain(
-      ::capnp::Orphan<::tiledb::sm::serialization::capnp::Map<
-          ::capnp::Text,
-          ::tiledb::sm::serialization::capnp::DomainArray>>&& value);
-  inline ::capnp::Orphan<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>
+      ::capnp::Orphan<::tiledb::sm::serialization::capnp::DomainArray>&& value);
+  inline ::capnp::Orphan<::tiledb::sm::serialization::capnp::DomainArray>
   disownNonEmptyDomain();
 
   inline bool getIsEmpty();
@@ -3533,9 +3521,7 @@ class NonEmptyDomain::Pipeline {
       : _typeless(kj::mv(typeless)) {
   }
 
-  inline ::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>::Pipeline
+  inline ::tiledb::sm::serialization::capnp::DomainArray::Pipeline
   getNonEmptyDomain();
 
  private:
@@ -7110,69 +7096,48 @@ inline bool NonEmptyDomain::Builder::hasNonEmptyDomain() {
   return !_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS)
               .isNull();
 }
-inline ::tiledb::sm::serialization::capnp::
-    Map<::capnp::Text, ::tiledb::sm::serialization::capnp::DomainArray>::Reader
-    NonEmptyDomain::Reader::getNonEmptyDomain() const {
-  return ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
-      get(_reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::tiledb::sm::serialization::capnp::DomainArray::Reader
+NonEmptyDomain::Reader::getNonEmptyDomain() const {
+  return ::capnp::_::
+      PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::get(
+          _reader.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline ::tiledb::sm::serialization::capnp::
-    Map<::capnp::Text, ::tiledb::sm::serialization::capnp::DomainArray>::Builder
-    NonEmptyDomain::Builder::getNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
-      get(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::tiledb::sm::serialization::capnp::DomainArray::Builder
+NonEmptyDomain::Builder::getNonEmptyDomain() {
+  return ::capnp::_::
+      PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::get(
+          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 #if !CAPNP_LITE
-inline ::tiledb::sm::serialization::capnp::Map<
-    ::capnp::Text,
-    ::tiledb::sm::serialization::capnp::DomainArray>::Pipeline
+inline ::tiledb::sm::serialization::capnp::DomainArray::Pipeline
 NonEmptyDomain::Pipeline::getNonEmptyDomain() {
-  return ::tiledb::sm::serialization::capnp::
-      Map<::capnp::Text, ::tiledb::sm::serialization::capnp::DomainArray>::
-          Pipeline(_typeless.getPointerField(0));
+  return ::tiledb::sm::serialization::capnp::DomainArray::Pipeline(
+      _typeless.getPointerField(0));
 }
 #endif  // !CAPNP_LITE
 inline void NonEmptyDomain::Builder::setNonEmptyDomain(
-    ::tiledb::sm::serialization::capnp::Map<
-        ::capnp::Text,
-        ::tiledb::sm::serialization::capnp::DomainArray>::Reader value) {
-  ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
+    ::tiledb::sm::serialization::capnp::DomainArray::Reader value) {
+  ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::
       set(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
           value);
 }
-inline ::tiledb::sm::serialization::capnp::
-    Map<::capnp::Text, ::tiledb::sm::serialization::capnp::DomainArray>::Builder
-    NonEmptyDomain::Builder::initNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
-      init(_builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
+inline ::tiledb::sm::serialization::capnp::DomainArray::Builder
+NonEmptyDomain::Builder::initNonEmptyDomain() {
+  return ::capnp::_::
+      PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::init(
+          _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 inline void NonEmptyDomain::Builder::adoptNonEmptyDomain(
-    ::capnp::Orphan<::tiledb::sm::serialization::capnp::Map<
-        ::capnp::Text,
-        ::tiledb::sm::serialization::capnp::DomainArray>>&& value) {
-  ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
+    ::capnp::Orphan<::tiledb::sm::serialization::capnp::DomainArray>&& value) {
+  ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::
       adopt(
           _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS),
           kj::mv(value));
 }
-inline ::capnp::Orphan<::tiledb::sm::serialization::capnp::Map<
-    ::capnp::Text,
-    ::tiledb::sm::serialization::capnp::DomainArray>>
+inline ::capnp::Orphan<::tiledb::sm::serialization::capnp::DomainArray>
 NonEmptyDomain::Builder::disownNonEmptyDomain() {
-  return ::capnp::_::PointerHelpers<::tiledb::sm::serialization::capnp::Map<
-      ::capnp::Text,
-      ::tiledb::sm::serialization::capnp::DomainArray>>::
-      disown(
+  return ::capnp::_::
+      PointerHelpers<::tiledb::sm::serialization::capnp::DomainArray>::disown(
           _builder.getPointerField(::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
