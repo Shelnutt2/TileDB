@@ -30,10 +30,8 @@
  * This file declares a REST client class.
  */
 
-#include <capnp/compat/json.h>
-
-#include "tiledb/sm/misc/stats.h"
 #include "tiledb/sm/rest/rest_client.h"
+#include "tiledb/sm/misc/stats.h"
 #include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/capnp_utils.h"
 #include "tiledb/sm/serialization/query.h"
@@ -136,9 +134,6 @@ Status RestClient::get_array_non_empty_domain(
     return LOG_STATUS(Status::RestError(
         "Cannot get array non-empty domain; array URI is empty"));
 
-  // For easy reference
-  const auto coords_type = array->array_schema()->coords_type();
-
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
@@ -148,38 +143,16 @@ Status RestClient::get_array_non_empty_domain(
 
   // Get the data
   Buffer returned_data;
-  RETURN_NOT_OK(curlc.get_data(url, SerializationType::JSON, &returned_data));
+  RETURN_NOT_OK(curlc.get_data(url, serialization_type_, &returned_data));
 
   if (returned_data.data() == nullptr || returned_data.size() == 0)
     return LOG_STATUS(
         Status::RestError("Error getting array non-empty domain "
                           "from REST; server returned no data."));
 
-  // Currently only json data is supported, so decode it here.
-  ::capnp::JsonCodec json;
-  ::capnp::MallocMessageBuilder message_builder;
-  auto non_empty_domain_builder =
-      message_builder.initRoot<serialization::capnp::NonEmptyDomain>();
-  json.decode(
-      kj::StringPtr(static_cast<const char*>(returned_data.data())),
-      non_empty_domain_builder);
-
-  auto non_empty_domain_reader = non_empty_domain_builder.asReader();
-  *is_empty = non_empty_domain_reader.getIsEmpty();
-
-  // If there is a nonEmptyDomain we need to set domain variables
-  if (non_empty_domain_reader.hasNonEmptyDomain()) {
-    auto non_empty_domain_list = non_empty_domain_reader.getNonEmptyDomain();
-
-    // Loop through dimension's domain in order
-    Buffer buffer;
-    for (const auto& entry : non_empty_domain_list.getEntries()) {
-      auto entry_reader = entry.getValue();
-      RETURN_NOT_OK(serialization::utils::copy_capnp_list(
-          entry_reader, coords_type, &buffer));
-      std::memcpy(domain, buffer.data(), buffer.size());
-    }
-  }
+  // Deserialize data returned
+  return serialization::nonempty_domain_deserialize(
+      array, returned_data, serialization_type_, domain, is_empty);
 
   return Status::Ok();
 

@@ -5478,6 +5478,50 @@ TILEDB_EXPORT int tiledb_deserialize_query(
     int32_t client_side,
     tiledb_query_t* query);
 
+/**
+ * Serializes the given non-empty domain information into the given buffer.
+ *
+ * @param ctx The TileDB context.
+ * @param array Array to which the domain belongs to
+ * @param nonempty_domain The domain to serialize
+ * @param is_empty 1 if the domain is empty
+ * @param serialization_type Type of serialization to use
+ * @param client_side If set to 1, serialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param buffer Buffer to serialize to
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ */
+TILEDB_EXPORT int tiledb_serialize_array_nonempty_domain(
+    tiledb_ctx_t* ctx,
+    const tiledb_array_t* array,
+    const void* nonempty_domain,
+    int32_t is_empty,
+    tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
+    tiledb_buffer_t* buffer);
+
+/**
+ * Deserializes non-empty domain information from the given buffer.
+ *
+ * @param ctx The TileDB context.
+ * @param array Array to which the domain belongs to
+ * @param buffer Buffer to deserialize from
+ * @param serialization_type Type of deserialization to use
+ * @param client_side If set to 1, deserialize from "client-side" perspective.
+ *    Else, "server-side."
+ * @param nonempty_domain The buffer to deserialize into
+ * @param is_empty Will be set to 1 if the domain is empty
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ */
+TILEDB_EXPORT int tiledb_deserialize_array_nonempty_domain(
+    tiledb_ctx_t* ctx,
+    const tiledb_array_t* array,
+    const tiledb_buffer_t* buffer,
+    tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
+    void* nonempty_domain,
+    int32_t* is_empty);
+
 #ifdef __cplusplus
 }
 #endif
