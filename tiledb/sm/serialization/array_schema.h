@@ -33,10 +33,9 @@
 #ifndef TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
 #define TILEDB_SERIALIZATION_ARRAY_SCHEMA_H
 
+#include "tiledb/sm/array/array.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/enums/serialization_type.h"
-
-#include <memory>
 
 namespace tiledb {
 namespace sm {
@@ -51,6 +50,20 @@ Status array_schema_deserialize(
     ArraySchema** array_schema,
     SerializationType serialize_type,
     const Buffer& serialized_buffer);
+
+Status nonempty_domain_serialize(
+    const Array* array,
+    const void* nonempty_domain,
+    bool is_empty,
+    SerializationType serialize_type,
+    Buffer* serialized_buffer);
+
+Status nonempty_domain_deserialize(
+    const Array* array,
+    const Buffer& serialized_buffer,
+    SerializationType serialize_type,
+    void* nonempty_domain,
+    bool* is_empty);
 
 }  // namespace serialization
 }  // namespace sm

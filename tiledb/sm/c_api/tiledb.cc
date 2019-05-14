@@ -4756,6 +4756,69 @@ int tiledb_deserialize_query(
   return TILEDB_OK;
 }
 
+int tiledb_serialize_array_nonempty_domain(
+    tiledb_ctx_t* ctx,
+    const tiledb_array_t* array,
+    const void* nonempty_domain,
+    int32_t is_empty,
+    tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
+    tiledb_buffer_t* buffer) {
+  // Currently unused:
+  (void)client_side;
+
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, array) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::sm::serialization::nonempty_domain_serialize(
+              array->array_,
+              nonempty_domain,
+              is_empty,
+              (tiledb::sm::SerializationType)serialize_type,
+              buffer->buffer_)))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int tiledb_deserialize_array_nonempty_domain(
+    tiledb_ctx_t* ctx,
+    const tiledb_array_t* array,
+    const tiledb_buffer_t* buffer,
+    tiledb_serialization_type_t serialize_type,
+    int32_t client_side,
+    void* nonempty_domain,
+    int32_t* is_empty) {
+  // Currently unused:
+  (void)client_side;
+
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, array) == TILEDB_ERR ||
+      sanity_check(ctx, buffer) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  bool is_empty_bool;
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          tiledb::sm::serialization::nonempty_domain_deserialize(
+              array->array_,
+              *buffer->buffer_,
+              (tiledb::sm::SerializationType)serialize_type,
+              nonempty_domain,
+              &is_empty_bool)))
+    return TILEDB_ERR;
+
+  *is_empty = is_empty_bool ? 1 : 0;
+
+  return TILEDB_OK;
+}
+
 /* ****************************** */
 /*            C++ API             */
 /* ****************************** */
