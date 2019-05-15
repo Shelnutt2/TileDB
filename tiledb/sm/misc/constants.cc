@@ -51,6 +51,7 @@
 
 #include "tiledb/sm/enums/compressor.h"
 #include "tiledb/sm/enums/datatype.h"
+#include "tiledb/sm/enums/serialization_type.h"
 
 namespace tiledb {
 namespace sm {
@@ -336,7 +337,7 @@ const std::string serialization_type_json_str = "JSON";
 const std::string serialization_type_capnp_str = "CAPNP";
 
 /** The default format for serialization. */
-const std::string serialization_default_format = serialization_type_capnp_str;
+const SerializationType serialization_default_format = SerializationType::CAPNP;
 
 /** String describing GZIP. */
 const std::string gzip_str = "GZIP";

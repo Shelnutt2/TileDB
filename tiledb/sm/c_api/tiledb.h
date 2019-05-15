@@ -5414,7 +5414,7 @@ TILEDB_EXPORT int32_t tiledb_stats_free_str(char** out);
  * @param buffer Buffer to serialize to
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_serialize_array_schema(
+TILEDB_EXPORT int32_t tiledb_serialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_array_schema_t* array_schema,
     tiledb_serialization_type_t serialize_type,
@@ -5432,7 +5432,7 @@ TILEDB_EXPORT int tiledb_serialize_array_schema(
  * @param array_schema Will be set to a newly allocated array schema.
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_deserialize_array_schema(
+TILEDB_EXPORT int32_t tiledb_deserialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
@@ -5450,7 +5450,7 @@ TILEDB_EXPORT int tiledb_deserialize_array_schema(
  * @param buffer Buffer to serialize to
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_serialize_query(
+TILEDB_EXPORT int32_t tiledb_serialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_query_t* query,
     tiledb_serialization_type_t serialize_type,
@@ -5471,7 +5471,7 @@ TILEDB_EXPORT int tiledb_serialize_query(
  * @param query The query object to deserialize into (must be pre-allocated).
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_deserialize_query(
+TILEDB_EXPORT int32_t tiledb_deserialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
@@ -5491,7 +5491,7 @@ TILEDB_EXPORT int tiledb_deserialize_query(
  * @param buffer Buffer to serialize to
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_serialize_array_nonempty_domain(
+TILEDB_EXPORT int32_t tiledb_serialize_array_nonempty_domain(
     tiledb_ctx_t* ctx,
     const tiledb_array_t* array,
     const void* nonempty_domain,
@@ -5513,7 +5513,7 @@ TILEDB_EXPORT int tiledb_serialize_array_nonempty_domain(
  * @param is_empty Will be set to 1 if the domain is empty
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int tiledb_deserialize_array_nonempty_domain(
+TILEDB_EXPORT int32_t tiledb_deserialize_array_nonempty_domain(
     tiledb_ctx_t* ctx,
     const tiledb_array_t* array,
     const tiledb_buffer_t* buffer,
