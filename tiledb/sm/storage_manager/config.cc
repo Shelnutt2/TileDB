@@ -179,8 +179,6 @@ Status Config::set(const std::string& param, const std::string& value) {
     RETURN_NOT_OK(set_rest_password(value));
   } else if (param == "rest.token") {
     RETURN_NOT_OK(set_rest_token(value));
-  } else if (param == "rest.organization") {
-    RETURN_NOT_OK(set_rest_organization(value));
   } else if (param == "sm.dedup_coords") {
     RETURN_NOT_OK(set_sm_dedup_coords(value));
   } else if (param == "sm.check_coord_dups") {
@@ -777,12 +775,6 @@ Status Config::set_rest_password(const std::string& value) {
 
 Status Config::set_rest_token(const std::string& value) {
   rest_params_.token_ = value;
-
-  return Status::Ok();
-}
-
-Status Config::set_rest_organization(const std::string& value) {
-  rest_params_.organization_ = value;
 
   return Status::Ok();
 }
