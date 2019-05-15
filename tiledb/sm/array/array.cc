@@ -135,6 +135,10 @@ Status Array::open(
     return LOG_STATUS(
         Status::ArrayError("Cannot open array; Array already open"));
 
+  if (remote_ && encryption_type != EncryptionType::NO_ENCRYPTION)
+    return LOG_STATUS(Status::ArrayError(
+        "Cannot open array; encrypted remote arrays are not supported."));
+
   // Copy the key bytes.
   RETURN_NOT_OK(
       encryption_key_.set_key(encryption_type, encryption_key, key_length));
@@ -184,6 +188,10 @@ Status Array::open(
         Status::ArrayError("Cannot open array with fragments; The array can "
                            "opened at a timestamp only in read mode"));
 
+  if (remote_ && encryption_type != EncryptionType::NO_ENCRYPTION)
+    return LOG_STATUS(Status::ArrayError(
+        "Cannot open array; encrypted remote arrays are not supported."));
+
   // Copy the key bytes.
   RETURN_NOT_OK(
       encryption_key_.set_key(encryption_type, encryption_key, key_length));
@@ -229,6 +237,10 @@ Status Array::open(
     return LOG_STATUS(
         Status::ArrayError("Cannot open array at timestamp; The array can "
                            "opened at a timestamp only in read mode"));
+
+  if (remote_ && encryption_type != EncryptionType::NO_ENCRYPTION)
+    return LOG_STATUS(Status::ArrayError(
+        "Cannot open array; encrypted remote arrays are not supported."));
 
   // Copy the key bytes.
   RETURN_NOT_OK(
