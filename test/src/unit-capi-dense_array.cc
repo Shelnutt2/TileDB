@@ -2723,6 +2723,10 @@ void DenseArrayFx::check_non_empty_domain(const std::string& path) {
 
 int DenseArrayFx::submit_query_wrapper(
     const std::string& array_uri, tiledb_query_t* query) {
+#ifndef TILEDB_SERIALIZATION
+  return tiledb_query_submit(ctx_, query);
+#endif
+
   if (!serialize_query)
     return tiledb_query_submit(ctx_, query);
 
