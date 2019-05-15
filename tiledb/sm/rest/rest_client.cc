@@ -35,10 +35,16 @@
 #include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/capnp_utils.h"
 #include "tiledb/sm/serialization/query.h"
+
+#ifdef TILEDB_SERIALIZATION
+#include "tiledb/sm/rest/curl.h"
 #include "tiledb/sm/serialization/tiledb-rest.capnp.h"
+#endif
 
 namespace tiledb {
 namespace sm {
+
+#ifdef TILEDB_SERIALIZATION
 
 RestClient::RestClient()
     : config_(nullptr)
@@ -222,6 +228,51 @@ Status RestClient::finalize_query_to_rest(const URI& uri, Query* query) {
   return serialization::query_deserialize(
       returned_data, serialization_type_, true, query);
 }
+
+#else
+
+RestClient::RestClient() {
+  (void)config_;
+  (void)rest_server_;
+  (void)serialization_type_;
+}
+
+Status RestClient::init(const Config*) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::get_array_schema_from_rest(const URI&, ArraySchema**) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::post_array_schema_to_rest(const URI&, ArraySchema*) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::deregister_array_from_rest(const URI&) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::get_array_non_empty_domain(Array*, void*, bool*) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::submit_query_to_rest(const URI&, Query*) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+Status RestClient::finalize_query_to_rest(const URI&, Query*) {
+  return LOG_STATUS(
+      Status::RestError("Cannot use rest client; serialization not enabled."));
+}
+
+#endif  // TILEDB_SERIALIZATION
 
 }  // namespace sm
 }  // namespace tiledb

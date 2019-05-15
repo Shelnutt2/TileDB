@@ -37,7 +37,6 @@
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/misc/status.h"
 #include "tiledb/sm/query/query.h"
-#include "tiledb/sm/rest/curl.h"
 
 namespace tiledb {
 namespace sm {

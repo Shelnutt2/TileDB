@@ -33,6 +33,8 @@
 #ifndef TILEDB_CAPNP_UTILS_H
 #define TILEDB_CAPNP_UTILS_H
 
+#ifdef TILEDB_SERIALIZATION
+
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/buffer/buffer.h"
 #include "tiledb/sm/enums/datatype.h"
@@ -345,5 +347,7 @@ tiledb::sm::Status deserialize_subarray(
 }  // namespace serialization
 }  // namespace sm
 }  // namespace tiledb
+
+#endif  // TILEDB_SERIALIZATION
 
 #endif  // TILEDB_CAPNP_UTILS_H

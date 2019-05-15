@@ -30,9 +30,7 @@
  * This file defines serialization functions for ArraySchema.
  */
 
-#include <capnp/compat/json.h>
-#include <capnp/serialize.h>
-
+#include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/enums/array_type.h"
 #include "tiledb/sm/enums/compressor.h"
 #include "tiledb/sm/enums/datatype.h"
@@ -41,12 +39,18 @@
 #include "tiledb/sm/misc/constants.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
-#include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/capnp_utils.h"
+
+#ifdef TILEDB_SERIALIZATION
+#include <capnp/compat/json.h>
+#include <capnp/serialize.h>
+#endif
 
 namespace tiledb {
 namespace sm {
 namespace serialization {
+
+#ifdef TILEDB_SERIALIZATION
 
 Status filter_pipeline_to_capnp(
     const FilterPipeline* filter_pipeline,
@@ -693,6 +697,33 @@ Status nonempty_domain_deserialize(
 
   return Status::Ok();
 }
+
+#else
+
+Status array_schema_serialize(ArraySchema*, SerializationType, Buffer*) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+Status array_schema_deserialize(
+    ArraySchema**, SerializationType, const Buffer&) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+Status nonempty_domain_serialize(
+    const Array*, const void*, bool, SerializationType, Buffer*) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+Status nonempty_domain_deserialize(
+    const Array*, const Buffer&, SerializationType, void*, bool*) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+#endif  // TILEDB_SERIALIZATION
 
 }  // namespace serialization
 }  // namespace sm

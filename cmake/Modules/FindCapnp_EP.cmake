@@ -50,8 +50,8 @@ if (NOT CAPNP_FOUND)
       set(CFLAGS_DEF "")
       set(CXXFLAGS_DEF "")
     else()
-      set(CFLAGS_DEF "-DCMAKE_C_FLAGS=-fPIC")
-      set(CXXFLAGS_DEF "-DCMAKE_CXX_FLAGS=-fPIC")
+      set(CFLAGS_DEF "${CMAKE_C_FLAGS} -fPIC")
+      set(CXXFLAGS_DEF "${CMAKE_CXX_FLAGS} -fPIC")
     endif()
 
     ExternalProject_Add(ep_capnp
@@ -64,8 +64,8 @@ if (NOT CAPNP_FOUND)
           -DCMAKE_INSTALL_PREFIX=${TILEDB_EP_INSTALL_PREFIX}
           -DCMAKE_BUILD_TYPE=Release
           -DBUILD_TESTING=OFF
-          ${CXXFLAGS_DEF}
-          ${CFLAGS_DEF}
+          "-DCMAKE_C_FLAGS=${CFLAGS_DEF}"
+          "-DCMAKE_CXX_FLAGS=${CXXFLAGS_DEF}"
           ${TILEDB_EP_BASE}/src/ep_capnp/c++
       UPDATE_COMMAND ""
       LOG_DOWNLOAD TRUE
