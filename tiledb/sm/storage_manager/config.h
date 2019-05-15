@@ -71,7 +71,7 @@ class Config {
 
   struct RESTParams {
     std::string server_address_;
-    std::string server_serialization_format_;
+    SerializationType server_serialization_format_;
     std::string username_;
     std::string password_;
     std::string token_;

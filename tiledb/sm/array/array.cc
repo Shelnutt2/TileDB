@@ -493,6 +493,10 @@ void Array::clear_last_max_buffer_sizes() {
 }
 
 Status Array::compute_max_buffer_sizes(const void* subarray) {
+  if (remote_)
+    return LOG_STATUS(Status::ArrayError(
+        "Cannot compute max buffer sizes; not supported for remote arrays."));
+
   // Allocate space for max buffer sizes subarray
   auto subarray_size = 2 * array_schema_->coords_size();
   if (last_max_buffer_sizes_subarray_ == nullptr) {
@@ -500,11 +504,6 @@ Status Array::compute_max_buffer_sizes(const void* subarray) {
     if (last_max_buffer_sizes_subarray_ == nullptr)
       return LOG_STATUS(Status::ArrayError(
           "Cannot compute max buffer sizes; Subarray allocation failed"));
-  }
-
-  if (remote_) {
-    return tiledb::sm::Status::ArrayError(
-        "compute_max_buffer_sizes not implemented for remote arrays");
   }
 
   // Compute max buffer sizes

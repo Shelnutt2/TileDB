@@ -4645,7 +4645,7 @@ int32_t tiledb_stats_free_str(char** out) {
 /*          Serialization         */
 /* ****************************** */
 
-int tiledb_serialize_array_schema(
+int32_t tiledb_serialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_array_schema_t* array_schema,
     tiledb_serialization_type_t serialize_type,
@@ -4671,7 +4671,7 @@ int tiledb_serialize_array_schema(
   return TILEDB_OK;
 }
 
-int tiledb_deserialize_array_schema(
+int32_t tiledb_deserialize_array_schema(
     tiledb_ctx_t* ctx,
     const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
@@ -4708,7 +4708,7 @@ int tiledb_deserialize_array_schema(
   return TILEDB_OK;
 }
 
-int tiledb_serialize_query(
+int32_t tiledb_serialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_query_t* query,
     tiledb_serialization_type_t serialize_type,
@@ -4732,7 +4732,7 @@ int tiledb_serialize_query(
   return TILEDB_OK;
 }
 
-int tiledb_deserialize_query(
+int32_t tiledb_deserialize_query(
     tiledb_ctx_t* ctx,
     const tiledb_buffer_t* buffer,
     tiledb_serialization_type_t serialize_type,
@@ -4756,7 +4756,7 @@ int tiledb_deserialize_query(
   return TILEDB_OK;
 }
 
-int tiledb_serialize_array_nonempty_domain(
+int32_t tiledb_serialize_array_nonempty_domain(
     tiledb_ctx_t* ctx,
     const tiledb_array_t* array,
     const void* nonempty_domain,
@@ -4786,7 +4786,7 @@ int tiledb_serialize_array_nonempty_domain(
   return TILEDB_OK;
 }
 
-int tiledb_deserialize_array_nonempty_domain(
+int32_t tiledb_deserialize_array_nonempty_domain(
     tiledb_ctx_t* ctx,
     const tiledb_array_t* array,
     const tiledb_buffer_t* buffer,
