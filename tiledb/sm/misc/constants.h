@@ -41,6 +41,7 @@ namespace sm {
 
 enum class Datatype : uint8_t;
 enum class Compressor : uint8_t;
+enum class SerializationType : uint8_t;
 
 namespace constants {
 
@@ -280,7 +281,7 @@ extern const int num_tbb_threads;
 extern const uint64_t tile_cache_size;
 
 /** The default format for serialization. */
-extern const std::string serialization_default_format;
+extern const SerializationType serialization_default_format;
 
 /** Empty String reference **/
 extern const std::string empty_str;
