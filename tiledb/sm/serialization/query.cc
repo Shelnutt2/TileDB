@@ -180,21 +180,22 @@ Status query_to_capnp(
   auto array = query.array();
 
   if (layout == Layout::GLOBAL_ORDER)
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot serialize; global order serialization not supported."));
 
   if (array == nullptr)
-    return LOG_STATUS(Status::QueryError("Cannot serialize; array is null."));
+    return LOG_STATUS(
+        Status::SerializationError("Cannot serialize; array is null."));
 
   const auto* schema = query.array_schema();
   if (schema == nullptr)
     return LOG_STATUS(
-        Status::QueryError("Cannot serialize; array schema is null."));
+        Status::SerializationError("Cannot serialize; array schema is null."));
 
   const auto* domain = schema->domain();
   if (domain == nullptr)
     return LOG_STATUS(
-        Status::QueryError("Cannot serialize; array domain is null."));
+        Status::SerializationError("Cannot serialize; array domain is null."));
 
   // Serialize basic fields
   query_builder->setType(query_type_str(type));
@@ -228,7 +229,7 @@ Status query_to_capnp(
     const bool is_coords = attribute_name == constants::coords;
     const auto* attr = schema->attribute(attribute_name);
     if (!is_coords && attr == nullptr)
-      return LOG_STATUS(Status::QueryError(
+      return LOG_STATUS(Status::SerializationError(
           "Cannot serialize; no attribute named '" + attribute_name + "'."));
 
     const bool var_size = !is_coords && attr->var_size();
@@ -237,7 +238,7 @@ Status query_to_capnp(
         (buff.buffer_var_ != nullptr && buff.buffer_var_size_ != nullptr)) {
       // Variable-sized attribute.
       if (buff.buffer_ == nullptr || buff.buffer_size_ == nullptr)
-        return LOG_STATUS(Status::QueryError(
+        return LOG_STATUS(Status::SerializationError(
             "Cannot serialize; no offset buffer set for attribute '" +
             attribute_name + "'."));
       total_var_len_bytes += *buff.buffer_var_size_;
@@ -280,23 +281,23 @@ Status query_from_capnp(
 
   const auto* schema = query->array_schema();
   if (schema == nullptr)
-    return LOG_STATUS(
-        Status::QueryError("Cannot deserialize; array schema is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Cannot deserialize; array schema is null."));
 
   const auto* domain = schema->domain();
   if (domain == nullptr)
-    return LOG_STATUS(
-        Status::QueryError("Cannot deserialize; array domain is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Cannot deserialize; array domain is null."));
 
   if (array == nullptr)
-    return LOG_STATUS(
-        Status::QueryError("Cannot deserialize; array pointer is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Cannot deserialize; array pointer is null."));
 
   // Deserialize query type (sanity check).
   QueryType query_type = QueryType::READ;
   RETURN_NOT_OK(query_type_enum(query_reader.getType().cStr(), &query_type));
   if (query_type != type)
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot deserialize; Query opened for " + query_type_str(type) +
         " but got serialized type for " + query_reader.getType().cStr()));
 
@@ -324,7 +325,7 @@ Status query_from_capnp(
 
   // Deserialize and set attribute buffers.
   if (!query_reader.hasAttributeBufferHeaders())
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot deserialize; no attribute buffer headers in message."));
 
   auto buffer_headers = query_reader.getAttributeBufferHeaders();
@@ -334,7 +335,7 @@ Status query_from_capnp(
     const bool is_coords = attribute_name == constants::coords;
     const auto* attr = schema->attribute(attribute_name);
     if (!is_coords && attr == nullptr)
-      return LOG_STATUS(Status::QueryError(
+      return LOG_STATUS(Status::SerializationError(
           "Cannot deserialize; no attribute named '" + attribute_name +
           "' in array schema."));
 
@@ -370,13 +371,13 @@ Status query_from_capnp(
                                       existing_offset_buffer_size == nullptr;
       if ((var_size && (null_buffer || null_offset_buffer)) ||
           (!var_size && null_buffer))
-        return LOG_STATUS(Status::QueryError(
+        return LOG_STATUS(Status::SerializationError(
             "Error deserializing read query; buffer not set for attribute '" +
             attribute_name + "'."));
       if ((var_size && (*existing_offset_buffer_size < fixedlen_size ||
                         *existing_buffer_size < varlen_size)) ||
           (!var_size && *existing_buffer_size < fixedlen_size)) {
-        return LOG_STATUS(Status::QueryError(
+        return LOG_STATUS(Status::SerializationError(
             "Error deserializing read query; buffer too small for attribute "
             "'" +
             attribute_name + "'."));
@@ -410,9 +411,9 @@ Status query_from_capnp(
     } else {
       // Server-side; always expect null buffers when deserializing.
       if (existing_buffer != nullptr || existing_offset_buffer != nullptr)
-        return LOG_STATUS(
-            Status::QueryError("Error deserializing read query; unexpected "
-                               "buffer set on server-side."));
+        return LOG_STATUS(Status::SerializationError(
+            "Error deserializing read query; unexpected "
+            "buffer set on server-side."));
 
       Query::SerializationState::AttrState* attr_state;
       RETURN_NOT_OK(
@@ -541,7 +542,7 @@ Status query_serialize(
 
         const auto* array_schema = query->array_schema();
         if (array_schema == nullptr || query->array() == nullptr)
-          return LOG_STATUS(Status::QueryError(
+          return LOG_STATUS(Status::SerializationError(
               "Cannot serialize; array or array schema is null."));
 
         // Iterate over attributes and concatenate buffers to end of message.
@@ -553,7 +554,7 @@ Status query_serialize(
             const bool is_coords = attribute_name == constants::coords;
             const auto* attr = array_schema->attribute(attribute_name);
             if (!is_coords && attr == nullptr)
-              return LOG_STATUS(Status::QueryError(
+              return LOG_STATUS(Status::SerializationError(
                   "Cannot serialize; no attribute named '" + attribute_name +
                   "'."));
 
@@ -574,7 +575,7 @@ Status query_serialize(
               if (offset_buffer != nullptr) {
                 if (offset_buffer_size == nullptr || buffer == nullptr ||
                     buffer_size == nullptr)
-                  return LOG_STATUS(Status::QueryError(
+                  return LOG_STATUS(Status::SerializationError(
                       "Cannot serialize; unexpected null buffers."));
                 RETURN_NOT_OK(serialized_buffer->write(
                     offset_buffer, *offset_buffer_size));
@@ -589,7 +590,7 @@ Status query_serialize(
 
               if (buffer != nullptr) {
                 if (buffer_size == nullptr)
-                  return LOG_STATUS(Status::QueryError(
+                  return LOG_STATUS(Status::SerializationError(
                       "Cannot serialize; unexpected null buffer size."));
                 RETURN_NOT_OK(serialized_buffer->write(buffer, *buffer_size));
               }
@@ -600,15 +601,15 @@ Status query_serialize(
         break;
       }
       default:
-        return LOG_STATUS(
-            Status::QueryError("Cannot serialize; unknown serialization type"));
+        return LOG_STATUS(Status::SerializationError(
+            "Cannot serialize; unknown serialization type"));
     }
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot serialize; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot serialize; exception: " + std::string(e.what())));
   }
 
@@ -640,7 +641,7 @@ Status query_deserialize(
       case SerializationType::CAPNP: {
         // Capnp FlatArrayMessageReader requires 64-bit alignment.
         if (!utils::is_aligned<sizeof(uint64_t)>(serialized_buffer.data()))
-          return LOG_STATUS(Status::RestError(
+          return LOG_STATUS(Status::SerializationError(
               "Could not deserialize query; buffer is not 8-byte aligned."));
 
         // Set traversal limit to 10GI (TODO: make this a config option)
@@ -662,15 +663,15 @@ Status query_deserialize(
         return query_from_capnp(query_reader, clientside, buffer_start, query);
       }
       default:
-        return LOG_STATUS(Status::QueryError(
+        return LOG_STATUS(Status::SerializationError(
             "Cannot deserialize; unknown serialization type."));
     }
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot deserialize; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::QueryError(
+    return LOG_STATUS(Status::SerializationError(
         "Cannot deserialize; exception: " + std::string(e.what())));
   }
   return Status::Ok();

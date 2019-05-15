@@ -109,7 +109,7 @@ tiledb::sm::Status set_capnp_array_ptr(
       builder.setFloat64(kj::arrayPtr(static_cast<const double*>(ptr), size));
       break;
     default:
-      return tiledb::sm::Status::RestError(
+      return tiledb::sm::Status::SerializationError(
           "Cannot set capnp array pointer; unknown TileDB datatype.");
   }
 
@@ -162,7 +162,7 @@ tiledb::sm::Status set_capnp_scalar(
       builder.setFloat64(*static_cast<const double*>(value));
       break;
     default:
-      return tiledb::sm::Status::RestError(
+      return tiledb::sm::Status::SerializationError(
           "Cannot set capnp scalar; unknown TileDB datatype.");
   }
 
@@ -257,7 +257,7 @@ tiledb::sm::Status copy_capnp_list(
         RETURN_NOT_OK(copy_capnp_list<double>(reader.getFloat64(), buffer));
       break;
     default:
-      return tiledb::sm::Status::RestError(
+      return tiledb::sm::Status::SerializationError(
           "Cannot copy capnp list; unhandled TileDB datatype.");
   }
 
@@ -290,7 +290,7 @@ tiledb::sm::Status serialize_subarray(
     case tiledb::sm::Datatype::STRING_UCS4:
     case tiledb::sm::Datatype::ANY:
       // String dimensions not yet supported
-      return LOG_STATUS(tiledb::sm::Status::RestError(
+      return LOG_STATUS(tiledb::sm::Status::SerializationError(
           "Cannot serialize subarray; unsupported domain type."));
     default:
       break;
@@ -321,7 +321,7 @@ tiledb::sm::Status deserialize_subarray(
     case tiledb::sm::Datatype::STRING_UCS4:
     case tiledb::sm::Datatype::ANY:
       // String dimensions not yet supported
-      return LOG_STATUS(tiledb::sm::Status::RestError(
+      return LOG_STATUS(tiledb::sm::Status::SerializationError(
           "Cannot deserialize subarray; unsupported domain type."));
     default:
       break;

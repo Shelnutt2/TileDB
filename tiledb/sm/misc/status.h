@@ -117,7 +117,8 @@ enum class StatusCode : char {
   SubarrayPartitionerError,
   RTreeError,
   CellSlabIterError,
-  RestError
+  RestError,
+  SerializationError
 };
 
 class Status {
@@ -358,6 +359,11 @@ class Status {
   /** Return a RestError error class Status with a given message **/
   static Status RestError(const std::string& msg) {
     return Status(StatusCode::RestError, msg, -1);
+  }
+
+  /** Return a SerializationError error class Status with a given message **/
+  static Status SerializationError(const std::string& msg) {
+    return Status(StatusCode::SerializationError, msg, -1);
   }
 
   /** Returns true iff the status indicates success **/
