@@ -146,12 +146,10 @@ set(TILEDB_CORE_SOURCES
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/query/reader.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/query/writer.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/query/dense_cell_range_iter.cc
-  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/rest/curl.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/rest/rest_client.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/rtree/rtree.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/serialization/array_schema.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/serialization/query.cc
-  ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/serialization/tiledb-rest.capnp.c++
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/context.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/config.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/storage_manager/config_iter.cc
@@ -164,6 +162,13 @@ set(TILEDB_CORE_SOURCES
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/tile/tile.cc
   ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/tile/tile_io.cc
 )
+
+if (TILEDB_SERIALIZATION)
+  list(APPEND TILEDB_CORE_SOURCES
+    ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/rest/curl.cc
+    ${TILEDB_CORE_INCLUDE_DIR}/tiledb/sm/serialization/tiledb-rest.capnp.c++
+  )
+endif()
 
 # 'External' source files included in the source tree.
 set(TILEDB_EXTERNALS_INCLUDE_DIRS
@@ -273,13 +278,16 @@ if (NOT WIN32)
   find_package(OpenSSL_EP REQUIRED)
 endif()
 
-find_package(Curl_EP REQUIRED)
-if (NOT WIN32)
-  # No Curl required on Windows.
-  target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
-    INTERFACE
-    Curl::Curl
-  )
+# Libcurl
+if (TILEDB_S3 OR TILEDB_SERIALIZATION)
+  find_package(Curl_EP REQUIRED)
+  if (NOT WIN32)
+    # No Curl required on Windows.
+    target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
+      INTERFACE
+        Curl::Curl
+    )
+  endif()
 endif()
 
 # S3 dependencies
@@ -317,6 +325,17 @@ if (TILEDB_TBB)
   add_definitions(-DHAVE_TBB)
 endif()
 
+# Serialization
+if (TILEDB_SERIALIZATION)
+  find_package(Capnp_EP REQUIRED)
+  target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
+    INTERFACE
+      CapnProto::capnp
+      CapnProto::capnp-json
+      CapnProto::kj
+  )
+endif()
+
 # Sanitizer linker flags
 if (SANITIZER)
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
@@ -347,7 +366,6 @@ find_package(LZ4_EP REQUIRED)
 find_package(Spdlog_EP REQUIRED)
 find_package(Zlib_EP REQUIRED)
 find_package(Zstd_EP REQUIRED)
-find_package(Capnp_EP REQUIRED)
 target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
   INTERFACE
     Bzip2::Bzip2
@@ -355,9 +373,6 @@ target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
     Spdlog::Spdlog
     Zlib::Zlib
     Zstd::Zstd
-    CapnProto::capnp
-    CapnProto::capnp-json
-    CapnProto::kj
 )
 if (NOT WIN32)
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB

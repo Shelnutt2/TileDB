@@ -31,18 +31,22 @@
  * This file defines serialization for the Query class
  */
 
-#include <capnp/compat/json.h>
-#include <capnp/message.h>
-#include <capnp/serialize.h>
-
+#include "tiledb/sm/serialization/query.h"
 #include "tiledb/sm/misc/logger.h"
 #include "tiledb/sm/misc/stats.h"
 #include "tiledb/sm/serialization/capnp_utils.h"
-#include "tiledb/sm/serialization/query.h"
+
+#ifdef TILEDB_SERIALIZATION
+#include <capnp/compat/json.h>
+#include <capnp/message.h>
+#include <capnp/serialize.h>
+#endif
 
 namespace tiledb {
 namespace sm {
 namespace serialization {
+
+#ifdef TILEDB_SERIALIZATION
 
 Status array_to_capnp(
     const Array& array, capnp::Array::Builder* array_builder) {
@@ -678,6 +682,20 @@ Status query_deserialize(
 
   STATS_FUNC_OUT(serialization_query_deserialize);
 }
+
+#else
+
+Status query_serialize(Query*, SerializationType, bool, Buffer*) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+Status query_deserialize(const Buffer&, SerializationType, bool, Query*) {
+  return LOG_STATUS(Status::SerializationError(
+      "Cannot serialize; serialization not enabled."));
+}
+
+#endif  // TILEDB_SERIALIZATION
 
 }  // namespace serialization
 }  // namespace sm

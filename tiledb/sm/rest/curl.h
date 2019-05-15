@@ -33,6 +33,8 @@
 #ifndef TILEDB_CURL_H
 #define TILEDB_CURL_H
 
+#ifdef TILEDB_SERIALIZATION
+
 #include <curl/curl.h>
 #include <cstdlib>
 #include <string>
@@ -169,5 +171,7 @@ class Curl {
 
 }  // namespace sm
 }  // namespace tiledb
+
+#endif  // TILEDB_SERIALIZATION
 
 #endif  // TILEDB_CURL_H
