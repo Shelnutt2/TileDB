@@ -538,6 +538,7 @@ Status array_schema_deserialize(
         ::capnp::MallocMessageBuilder message_builder;
         capnp::ArraySchema::Builder array_schema_builder =
             message_builder.initRoot<capnp::ArraySchema>();
+        std::cout << "deserializing json from " << static_cast<const char*>(serialized_buffer.data()) << std::endl;
         json.decode(
             kj::StringPtr(static_cast<const char*>(serialized_buffer.data())),
             array_schema_builder);
