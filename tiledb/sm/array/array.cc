@@ -267,10 +267,14 @@ Status Array::close() {
 
   is_open_ = false;
   clear_last_max_buffer_sizes();
-  array_schema_ = nullptr;
   fragment_metadata_.clear();
 
-  if (!remote_) {
+  if (remote_) {
+    // Storage manager does not own the array schema for remote arrays.
+    delete array_schema_;
+    array_schema_ = nullptr;
+  } else {
+    array_schema_ = nullptr;
     if (query_type_ == QueryType::READ) {
       RETURN_NOT_OK(storage_manager_->array_close_for_reads(array_uri_));
     } else {
