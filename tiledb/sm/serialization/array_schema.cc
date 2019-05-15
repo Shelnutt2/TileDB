@@ -54,7 +54,7 @@ Status filter_pipeline_to_capnp(
   STATS_FUNC_IN(serialization_filter_pipeline_to_capnp);
 
   if (filter_pipeline == nullptr)
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing filter pipeline; filter pipeline is null."));
 
   const unsigned num_filters = filter_pipeline->size();
@@ -122,7 +122,7 @@ Status filter_pipeline_from_capnp(
     RETURN_NOT_OK(filter_type_enum(filter_reader.getType().cStr(), &type));
     std::unique_ptr<Filter> filter(Filter::create(type));
     if (filter == nullptr)
-      return LOG_STATUS(Status::RestError(
+      return LOG_STATUS(Status::SerializationError(
           "Error deserializing filter pipeline; failed to create filter."));
 
     switch (filter->type()) {
@@ -169,8 +169,8 @@ Status attribute_to_capnp(
   STATS_FUNC_IN(serialization_attribute_to_capnp);
 
   if (attribute == nullptr)
-    return LOG_STATUS(
-        Status::Error("Error serializing attribute; attribute is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Error serializing attribute; attribute is null."));
 
   attribute_builder->setName(attribute->name());
   attribute_builder->setType(datatype_str(attribute->type()));
@@ -215,8 +215,8 @@ Status dimension_to_capnp(
   STATS_FUNC_IN(serialization_dimension_to_capnp);
 
   if (dimension == nullptr)
-    return LOG_STATUS(
-        Status::Error("Error serializing dimension; dimension is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Error serializing dimension; dimension is null."));
 
   dimension_builder->setName(dimension->name());
   dimension_builder->setType(datatype_str(dimension->type()));
@@ -306,8 +306,8 @@ Status dimension_from_capnp(
         break;
       }
       default:
-        return LOG_STATUS(
-            Status::Error("Error deserializing dimension; unknown datatype."));
+        return LOG_STATUS(Status::SerializationError(
+            "Error deserializing dimension; unknown datatype."));
     }
   }
 
@@ -321,8 +321,8 @@ Status domain_to_capnp(
   STATS_FUNC_IN(serialization_domain_to_capnp);
 
   if (domain == nullptr)
-    return LOG_STATUS(
-        Status::Error("Error serializing domain; domain is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Error serializing domain; domain is null."));
 
   domainBuilder->setType(datatype_str(domain->type()));
   domainBuilder->setTileOrder(layout_str(domain->tile_order()));
@@ -367,8 +367,8 @@ Status array_schema_to_capnp(
   STATS_FUNC_IN(serialization_array_schema_to_capnp);
 
   if (array_schema == nullptr)
-    return LOG_STATUS(
-        Status::Error("Error serializing array schema; array schema is null."));
+    return LOG_STATUS(Status::SerializationError(
+        "Error serializing array schema; array schema is null."));
 
   array_schema_builder->setUri(array_schema->array_uri().to_string());
   array_schema_builder->setVersion(kj::arrayPtr(constants::library_version, 3));
@@ -503,18 +503,18 @@ Status array_schema_serialize(
         break;
       }
       default: {
-        return LOG_STATUS(Status::Error(
+        return LOG_STATUS(Status::SerializationError(
             "Error serializing array schema; Unknown serialization type "
             "passed"));
       }
     }
 
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing array schema; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing array schema; exception " + std::string(e.what())));
   }
 
@@ -560,23 +560,23 @@ Status array_schema_deserialize(
         break;
       }
       default: {
-        return LOG_STATUS(Status::Error(
+        return LOG_STATUS(Status::SerializationError(
             "Error deserializing array schema; Unknown serialization type "
             "passed"));
       }
     }
 
     if (decoded_array_schema == nullptr)
-      return LOG_STATUS(Status::Error(
+      return LOG_STATUS(Status::SerializationError(
           "Error serializing array schema; deserialized schema is null"));
 
     *array_schema = decoded_array_schema.release();
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing array schema; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing array schema; exception " +
         std::string(e.what())));
   }
@@ -593,12 +593,12 @@ Status nonempty_domain_serialize(
     SerializationType serialize_type,
     Buffer* serialized_buffer) {
   if (!is_empty && nonempty_domain == nullptr)
-    return LOG_STATUS(Status::RestError(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing nonempty domain; nonempty domain is null."));
 
   const auto* schema = array->array_schema();
   if (nonempty_domain == nullptr)
-    return LOG_STATUS(Status::RestError(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing nonempty domain; array schema is null."));
 
   try {
@@ -638,18 +638,18 @@ Status nonempty_domain_serialize(
         break;
       }
       default: {
-        return LOG_STATUS(Status::Error(
+        return LOG_STATUS(Status::SerializationError(
             "Error serializing nonempty domain; Unknown serialization type "
             "passed"));
       }
     }
 
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing nonempty domain; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error serializing nonempty domain; exception " +
         std::string(e.what())));
   }
@@ -664,12 +664,12 @@ Status nonempty_domain_deserialize(
     void* nonempty_domain,
     bool* is_empty) {
   if (nonempty_domain == nullptr)
-    return LOG_STATUS(Status::RestError(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing nonempty domain; nonempty domain is null."));
 
   const auto* schema = array->array_schema();
   if (nonempty_domain == nullptr)
-    return LOG_STATUS(Status::RestError(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing nonempty domain; array schema is null."));
 
   try {
@@ -716,17 +716,17 @@ Status nonempty_domain_deserialize(
         break;
       }
       default: {
-        return LOG_STATUS(Status::Error(
+        return LOG_STATUS(Status::SerializationError(
             "Error deserializing nonempty domain; Unknown serialization type "
             "passed"));
       }
     }
   } catch (kj::Exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing nonempty domain; kj::Exception: " +
         std::string(e.getDescription().cStr())));
   } catch (std::exception& e) {
-    return LOG_STATUS(Status::Error(
+    return LOG_STATUS(Status::SerializationError(
         "Error deserializing nonempty domain; exception " +
         std::string(e.what())));
   }
