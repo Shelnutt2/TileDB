@@ -161,7 +161,6 @@ Status Curl::set_content_type(
 
 Status Curl::make_curl_request(
     const char* url, CURLcode* curl_code, Buffer* returned_data) const {
-  STATS_FUNC_IN(serialization_curl_fetch_url);
   CURL* curl = curl_.get();
   if (curl == nullptr)
     return LOG_STATUS(
@@ -207,8 +206,6 @@ Status Curl::make_curl_request(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_curl_fetch_url);
 }
 
 Status Curl::check_curl_errors(
@@ -251,7 +248,7 @@ Status Curl::post_data(
     SerializationType serialization_type,
     Buffer* data,
     Buffer* returned_data) {
-  STATS_FUNC_IN(serialization_post_data);
+  STATS_FUNC_IN(rest_curl_post);
 
   CURL* curl = curl_.get();
   if (curl == nullptr)
@@ -289,14 +286,14 @@ Status Curl::post_data(
 
   return Status::Ok();
 
-  STATS_FUNC_OUT(serialization_post_data);
+  STATS_FUNC_OUT(rest_curl_post);
 }
 
 Status Curl::get_data(
     const std::string& url,
     SerializationType serialization_type,
     Buffer* returned_data) {
-  STATS_FUNC_IN(serialization_get_data);
+  STATS_FUNC_IN(rest_curl_get);
 
   CURL* curl = curl_.get();
   if (curl == nullptr)
@@ -323,14 +320,14 @@ Status Curl::get_data(
 
   return Status::Ok();
 
-  STATS_FUNC_OUT(serialization_get_data);
+  STATS_FUNC_OUT(rest_curl_get);
 }
 
 Status Curl::delete_data(
     const std::string& url,
     SerializationType serialization_type,
     Buffer* returned_data) {
-  STATS_FUNC_IN(serialization_delete_data);
+  STATS_FUNC_IN(rest_curl_delete);
 
   CURL* curl = curl_.get();
   if (curl == nullptr)
@@ -360,7 +357,7 @@ Status Curl::delete_data(
 
   return Status::Ok();
 
-  STATS_FUNC_OUT(serialization_delete_data);
+  STATS_FUNC_OUT(rest_curl_delete);
 }
 
 }  // namespace sm
