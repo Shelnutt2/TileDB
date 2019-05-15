@@ -75,7 +75,6 @@ class Config {
     std::string username_;
     std::string password_;
     std::string token_;
-    std::string organization_;
 
     RESTParams() {
       server_address_ = "";
@@ -83,7 +82,6 @@ class Config {
       username_ = "";
       password_ = "";
       token_ = "";
-      organization_ = "";
     }
   };
 
@@ -428,9 +426,6 @@ class Config {
    *    Authentication token for REST server (used instead of
    *    username/password). <br>
    *    **Default**: ""
-   * - `rest.organization` <br>
-   *    Organization to use for remote arrays. <br>
-   *    **Default**: ""
    */
   Status set(const std::string& param, const std::string& value);
 
@@ -560,9 +555,6 @@ class Config {
 
   /** Set the rest server token for auth */
   Status set_rest_token(const std::string& value);
-
-  /** Set the rest server organization */
-  Status set_rest_organization(const std::string& value);
 
   /** Sets the number of VFS threads. */
   Status set_vfs_num_threads(const std::string& value);

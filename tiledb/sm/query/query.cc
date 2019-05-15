@@ -122,8 +122,7 @@ Status Query::finalize() {
 
     array_->array_schema()->set_array_uri(array_->array_uri());
 
-    return rest_client->finalize_query_to_rest(
-        array_->array_uri().to_string(), this);
+    return rest_client->finalize_query_to_rest(array_->array_uri(), this);
   }
 
   RETURN_NOT_OK(writer_.finalize());
@@ -419,8 +418,7 @@ Status Query::submit() {  // Do nothing if the query is completed or failed
 
     array_->array_schema()->set_array_uri(array_->array_uri());
 
-    return rest_client->submit_query_to_rest(
-        array_->array_uri().to_string(), this);
+    return rest_client->submit_query_to_rest(array_->array_uri(), this);
   }
   RETURN_NOT_OK(init());
   return storage_manager_->query_submit(this);

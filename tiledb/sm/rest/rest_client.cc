@@ -40,6 +40,11 @@
 namespace tiledb {
 namespace sm {
 
+RestClient::RestClient()
+    : config_(nullptr)
+    , serialization_type_(constants::serialization_default_format) {
+}
+
 Status RestClient::init(const Config* config) {
   if (config == nullptr)
     return LOG_STATUS(
@@ -48,16 +53,12 @@ Status RestClient::init(const Config* config) {
   config_ = config;
 
   const char* c_str;
-  RETURN_NOT_OK(config_->get("rest.organization", &c_str));
-  if (c_str == nullptr)
-    return LOG_STATUS(
-        Status::RestError("Error initializing rest client; `rest.organization` "
-                          "config parameter cannot be null."));
-  organization_ = std::string(c_str);
-
   RETURN_NOT_OK(config_->get("rest.server_address", &c_str));
   if (c_str != nullptr)
     rest_server_ = std::string(c_str);
+  if (rest_server_.empty())
+    return LOG_STATUS(Status::RestError(
+        "Error initializing rest client; server address is empty."));
 
   RETURN_NOT_OK(config_->get("rest.server_serialization_format", &c_str));
   if (c_str != nullptr)
@@ -67,14 +68,16 @@ Status RestClient::init(const Config* config) {
 }
 
 Status RestClient::get_array_schema_from_rest(
-    const std::string& uri, ArraySchema** array_schema) {
+    const URI& uri, ArraySchema** array_schema) {
   STATS_FUNC_IN(serialization_get_array_schema_from_rest);
 
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(uri);
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(uri.get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri);
 
   // Get the data
   Buffer returned_data;
@@ -90,7 +93,7 @@ Status RestClient::get_array_schema_from_rest(
 }
 
 Status RestClient::post_array_schema_to_rest(
-    const std::string& uri, ArraySchema* array_schema) {
+    const URI& uri, ArraySchema* array_schema) {
   STATS_FUNC_IN(serialization_post_array_schema_to_rest);
 
   Buffer serialized;
@@ -100,8 +103,10 @@ Status RestClient::post_array_schema_to_rest(
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(uri);
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(uri.get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri);
 
   Buffer returned_data;
   return curlc.post_data(url, serialization_type_, &serialized, &returned_data);
@@ -109,12 +114,14 @@ Status RestClient::post_array_schema_to_rest(
   STATS_FUNC_OUT(serialization_post_array_schema_to_rest);
 }
 
-Status RestClient::deregister_array_from_rest(const std::string& uri) {
+Status RestClient::deregister_array_from_rest(const URI& uri) {
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(uri) + "/deregister";
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(uri.get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri) + "/deregister";
 
   Buffer returned_data;
   return curlc.delete_data(url, serialization_type_, &returned_data);
@@ -137,9 +144,10 @@ Status RestClient::get_array_non_empty_domain(
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(array->array_uri().to_string()) +
-                    "/non_empty_domain";
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(array->array_uri().get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri) + "/non_empty_domain";
 
   // Get the data
   Buffer returned_data;
@@ -159,7 +167,7 @@ Status RestClient::get_array_non_empty_domain(
   STATS_FUNC_OUT(serialization_get_array_non_empty_domain);
 }
 
-Status RestClient::submit_query_to_rest(const std::string& uri, Query* query) {
+Status RestClient::submit_query_to_rest(const URI& uri, Query* query) {
   STATS_FUNC_IN(serialization_submit_query_to_rest);
 
   // Serialize data to send
@@ -170,8 +178,10 @@ Status RestClient::submit_query_to_rest(const std::string& uri, Query* query) {
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(uri) +
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(uri.get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri) +
                     "/query/submit?type=" + query_type_str(query->type());
 
   Buffer returned_data;
@@ -189,8 +199,7 @@ Status RestClient::submit_query_to_rest(const std::string& uri, Query* query) {
   STATS_FUNC_OUT(serialization_submit_query_to_rest);
 }
 
-Status RestClient::finalize_query_to_rest(
-    const std::string& uri, Query* query) {
+Status RestClient::finalize_query_to_rest(const URI& uri, Query* query) {
   STATS_FUNC_IN(serialization_finalize_query_to_rest);
 
   // Serialize data to send
@@ -201,8 +210,10 @@ Status RestClient::finalize_query_to_rest(
   // Init curl and form the URL
   Curl curlc;
   RETURN_NOT_OK(curlc.init(config_));
-  std::string url = rest_server_ + "/v1/arrays/" + organization_ + "/" +
-                    curlc.url_escape(uri) +
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK(uri.get_rest_components(&array_ns, &array_uri));
+  std::string url = rest_server_ + "/v1/arrays/" + array_ns + "/" +
+                    curlc.url_escape(array_uri) +
                     "/query/finalize?type=" + query_type_str(query->type());
 
   Buffer returned_data;

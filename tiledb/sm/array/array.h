@@ -278,7 +278,7 @@ class Array {
   /** Mutex for thread-safety. */
   mutable std::mutex mtx_;
 
-  /** defines if the array is remote */
+  /** True if the array is remote (has `tiledb://` URI scheme). */
   bool remote_;
 
   /* ********************************* */
