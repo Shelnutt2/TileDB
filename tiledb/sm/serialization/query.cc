@@ -503,6 +503,10 @@ Status query_serialize(
     Buffer* serialized_buffer) {
   STATS_FUNC_IN(serialization_query_serialize);
 
+  if (serialize_type == SerializationType::JSON)
+    return LOG_STATUS(Status::SerializationError(
+        "Cannot serialize query; json format not supported."));
+
   try {
     ::capnp::MallocMessageBuilder message;
     capnp::Query::Builder query_builder = message.initRoot<capnp::Query>();
@@ -529,6 +533,7 @@ Status query_serialize(
         RETURN_NOT_OK(serialized_buffer->realloc(json_len + 1));
         RETURN_NOT_OK(serialized_buffer->write(capnp_json.cStr(), json_len))
         RETURN_NOT_OK(serialized_buffer->write(&nul, 1));
+        // TODO: At this point the buffer data should also be serialized.
         break;
       }
       case SerializationType::CAPNP: {
@@ -628,6 +633,10 @@ Status query_deserialize(
     bool clientside,
     Query* query) {
   STATS_FUNC_IN(serialization_query_deserialize);
+
+  if (serialize_type == SerializationType::JSON)
+    return LOG_STATUS(Status::SerializationError(
+        "Cannot deserialize query; json format not supported."));
 
   try {
     switch (serialize_type) {
