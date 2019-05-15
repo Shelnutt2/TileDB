@@ -2669,6 +2669,15 @@ int32_t tiledb_array_create_with_key(
   }
 
   if (uri.is_tiledb()) {
+    // Check unencrypted
+    if (encryption_type != TILEDB_NO_ENCRYPTION) {
+      auto st = tiledb::sm::Status::Error(
+          "Failed to create array; encrypted remote arrays are not supported.");
+      LOG_STATUS(st);
+      save_error(ctx, st);
+      return TILEDB_ERR;
+    }
+
     // Check REST client
     auto rest_client = ctx->ctx_->storage_manager()->rest_client();
     if (rest_client == nullptr) {
