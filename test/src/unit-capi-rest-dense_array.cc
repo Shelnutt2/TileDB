@@ -92,6 +92,8 @@ struct DenseArrayRESTFx {
   const std::string rest_server_uri_ = "http://localhost:8080";
   const std::string rest_server_username_ = "unit";
   const std::string rest_server_password_ = "unittest";
+  const std::string TILEDB_URI_PREFIX =
+      "tiledb://" + rest_server_username_ + "/";
   std::set<std::string> to_deregister_;
 
   // Functions
@@ -237,10 +239,6 @@ DenseArrayRESTFx::DenseArrayRESTFx() {
       tiledb_config_set(
           config, "rest.password", rest_server_password_.c_str(), &error) ==
       TILEDB_OK);
-  REQUIRE(
-      tiledb_config_set(
-          config, "rest.organization", rest_server_username_.c_str(), &error) ==
-      TILEDB_OK);
 
   if (supports_s3_) {
 #ifndef TILEDB_TESTS_AWS_S3_CONFIG
@@ -294,12 +292,11 @@ DenseArrayRESTFx::~DenseArrayRESTFx() {
   config.set("rest.server_address", rest_server_uri_);
   config.set("rest.username", rest_server_username_);
   config.set("rest.password", rest_server_password_);
-  config.set("rest.organization", rest_server_username_);
 
   tiledb::sm::RestClient rest_client;
   REQUIRE(rest_client.init(&config).ok());
   for (const auto& uri : to_deregister_) {
-    CHECK(rest_client.deregister_array_from_rest(uri).ok());
+    CHECK(rest_client.deregister_array_from_rest(tiledb::sm::URI(uri)).ok());
   }
 
   tiledb_vfs_free(&vfs_);
@@ -670,7 +667,7 @@ void DenseArrayRESTFx::check_sorted_reads(const std::string& path) {
   uint64_t capacity = 1000000;
   tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
   tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
-  std::string array_name = path + "sorted_reads_array";
+  std::string array_name = TILEDB_URI_PREFIX + path + "sorted_reads_array";
 
   // Create a dense integer array
   create_dense_array_2D(
@@ -794,7 +791,7 @@ void DenseArrayRESTFx::check_incomplete_reads(const std::string& path) {
   uint64_t capacity = 1000000;
   tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
   tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
-  std::string array_name = path + "incomplete_reads_array";
+  std::string array_name = TILEDB_URI_PREFIX + path + "incomplete_reads_array";
 
   // Create a dense integer array
   create_dense_array_2D(
@@ -895,7 +892,7 @@ void DenseArrayRESTFx::check_sorted_writes(const std::string& path) {
   uint64_t capacity = 1000;
   tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
   tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
-  std::string array_name = path + "sorted_writes_array";
+  std::string array_name = TILEDB_URI_PREFIX + path + "sorted_writes_array";
 
   // Create a dense integer array
   create_dense_array_2D(
@@ -980,7 +977,8 @@ void DenseArrayRESTFx::check_simultaneous_writes(const std::string& path) {
   uint64_t capacity = 1000;
   tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
   tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
-  std::string array_name = path + "simultaneous_writes_array";
+  std::string array_name =
+      TILEDB_URI_PREFIX + path + "simultaneous_writes_array";
 
   // Create a dense integer array
   create_dense_array_2D(
@@ -1327,7 +1325,8 @@ TEST_CASE_METHOD(
     "C API: REST Test dense array, missing attributes in writes",
     "[capi], [dense], [rest], [dense-write-missing-attributes]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_write_missing_attributes/";
+  std::string array_name =
+      TILEDB_URI_PREFIX + temp_dir + "dense_write_missing_attributes/";
   create_temp_dir(temp_dir);
   create_dense_array(array_name);
   write_dense_array_missing_attributes(array_name);
@@ -1339,7 +1338,7 @@ TEST_CASE_METHOD(
     "C API: REST Test dense array, read subarrays with empty cells",
     "[capi], [dense], [rest], [dense-read-empty]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_read_empty/";
+  std::string array_name = TILEDB_URI_PREFIX + temp_dir + "dense_read_empty/";
   create_temp_dir(temp_dir);
 
   create_dense_array_1_attribute(array_name);
@@ -1419,7 +1418,8 @@ TEST_CASE_METHOD(
     "sparse cells",
     "[capi], [dense], [rest], [dense-read-empty], [dense-read-empty-sparse]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_read_empty_sparse/";
+  std::string array_name =
+      TILEDB_URI_PREFIX + temp_dir + "dense_read_empty_sparse/";
   create_temp_dir(temp_dir);
 
   create_dense_array_1_attribute(array_name);
@@ -1506,7 +1506,8 @@ TEST_CASE_METHOD(
     "adjacent cell ranges",
     "[capi], [dense], [rest], [dense-read-empty], [dense-read-empty-merge]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_read_empty_merge/";
+  std::string array_name =
+      TILEDB_URI_PREFIX + temp_dir + "dense_read_empty_merge/";
   create_temp_dir(temp_dir);
 
   create_dense_array_1_attribute(array_name);
@@ -1585,7 +1586,8 @@ TEST_CASE_METHOD(
     "C API: REST Test dense array, multi-fragment reads",
     "[capi], [dense], [rest], [dense-multi-fragment]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_multi_fragment/";
+  std::string array_name =
+      TILEDB_URI_PREFIX + temp_dir + "dense_multi_fragment/";
   create_temp_dir(temp_dir);
 
   create_dense_array_1_attribute(array_name);
@@ -1684,7 +1686,7 @@ TEST_CASE_METHOD(
     "C API: REST Test dense array, check if open",
     "[capi], [dense], [rest], [dense-is-open]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_is_open/";
+  std::string array_name = TILEDB_URI_PREFIX + temp_dir + "dense_is_open/";
   create_temp_dir(temp_dir);
   create_dense_array(array_name);
 
@@ -1721,7 +1723,7 @@ TEST_CASE_METHOD(
     "C API: REST Test dense array, get schema from opened array",
     "[capi], [dense], [rest], [dense-get-schema]") {
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
-  std::string array_name = temp_dir + "dense_get_schema/";
+  std::string array_name = TILEDB_URI_PREFIX + temp_dir + "dense_get_schema/";
   create_temp_dir(temp_dir);
   create_dense_array(array_name);
 
@@ -1752,47 +1754,42 @@ TEST_CASE_METHOD(
     DenseArrayRESTFx,
     "C API: REST Test dense array, set subarray in sparse writes should error",
     "[capi], [dense], [rest], [dense-set-subarray-sparse]") {
-  std::string array_name =
-      FILE_URI_PREFIX + FILE_TEMP_DIR + "dense_set_subarray_sparse";
+  std::string array_name = TILEDB_URI_PREFIX + FILE_URI_PREFIX + FILE_TEMP_DIR +
+                           "dense_set_subarray_sparse";
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   create_temp_dir(temp_dir);
   create_dense_array(array_name);
 
-  // Create TileDB context
-  tiledb_ctx_t* ctx = nullptr;
-  REQUIRE(tiledb_ctx_alloc(nullptr, &ctx) == TILEDB_OK);
-
   // Open array
   tiledb_array_t* array;
-  int rc = tiledb_array_alloc(ctx, array_name.c_str(), &array);
+  int rc = tiledb_array_alloc(ctx_, array_name.c_str(), &array);
   CHECK(rc == TILEDB_OK);
-  rc = tiledb_array_open(ctx, array, TILEDB_WRITE);
+  rc = tiledb_array_open(ctx_, array, TILEDB_WRITE);
   CHECK(rc == TILEDB_OK);
 
   // Create WRITE query
   tiledb_query_t* query;
-  rc = tiledb_query_alloc(ctx, array, TILEDB_WRITE, &query);
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_WRITE, &query);
   CHECK(rc == TILEDB_OK);
 
   uint64_t subarray[] = {1, 1, 1, 1};
 
   // Set some subarray BEFORE setting the layout to UNORDERED
-  rc = tiledb_query_set_subarray(ctx, query, subarray);
+  rc = tiledb_query_set_subarray(ctx_, query, subarray);
   CHECK(rc == TILEDB_OK);
 
   // Set some subarray AFTER setting the layout to UNORDERED
-  rc = tiledb_query_set_layout(ctx, query, TILEDB_UNORDERED);
+  rc = tiledb_query_set_layout(ctx_, query, TILEDB_UNORDERED);
   CHECK(rc == TILEDB_OK);
-  rc = tiledb_query_set_subarray(ctx, query, subarray);
+  rc = tiledb_query_set_subarray(ctx_, query, subarray);
   CHECK(rc == TILEDB_ERR);
 
   // Close array
-  CHECK(tiledb_array_close(ctx, array) == TILEDB_OK);
+  CHECK(tiledb_array_close(ctx_, array) == TILEDB_OK);
 
   // Clean up
   tiledb_query_free(&query);
   tiledb_array_free(&array);
-  tiledb_ctx_free(&ctx);
 
   remove_temp_dir(temp_dir);
 }
@@ -1801,66 +1798,62 @@ TEST_CASE_METHOD(
     DenseArrayRESTFx,
     "C API: REST Test dense array, check if coords exist in unordered writes",
     "[capi], [dense], [rest], [dense-coords-exist-unordered]") {
-  std::string array_name =
-      FILE_URI_PREFIX + FILE_TEMP_DIR + "dense_coords_exist_unordered";
+  std::string array_name = TILEDB_URI_PREFIX + FILE_URI_PREFIX + FILE_TEMP_DIR +
+                           "dense_coords_exist_unordered";
   std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
   create_temp_dir(temp_dir);
   create_dense_array(array_name);
 
-  // Create TileDB context
-  tiledb_ctx_t* ctx = nullptr;
-  REQUIRE(tiledb_ctx_alloc(nullptr, &ctx) == TILEDB_OK);
-
   // Open array
   tiledb_array_t* array;
-  int rc = tiledb_array_alloc(ctx, array_name.c_str(), &array);
+  int rc = tiledb_array_alloc(ctx_, array_name.c_str(), &array);
   CHECK(rc == TILEDB_OK);
-  rc = tiledb_array_open(ctx, array, TILEDB_WRITE);
+  rc = tiledb_array_open(ctx_, array, TILEDB_WRITE);
   CHECK(rc == TILEDB_OK);
 
   // Create WRITE query
   tiledb_query_t* query;
-  rc = tiledb_query_alloc(ctx, array, TILEDB_WRITE, &query);
+  rc = tiledb_query_alloc(ctx_, array, TILEDB_WRITE, &query);
   CHECK(rc == TILEDB_OK);
-  rc = tiledb_query_set_layout(ctx, query, TILEDB_UNORDERED);
+  rc = tiledb_query_set_layout(ctx_, query, TILEDB_UNORDERED);
   CHECK(rc == TILEDB_OK);
 
   // Set attribute buffers
   int a1[] = {1, 2};
   uint64_t a1_size = sizeof(a1);
-  rc = tiledb_query_set_buffer(ctx, query, "a1", a1, &a1_size);
+  rc = tiledb_query_set_buffer(ctx_, query, "a1", a1, &a1_size);
   CHECK(rc == TILEDB_OK);
   char a2[] = {'a', 'b'};
   uint64_t a2_size = sizeof(a2);
   uint64_t a2_off[] = {0, 1};
   uint64_t a2_off_size = sizeof(a2_off);
   rc = tiledb_query_set_buffer_var(
-      ctx, query, "a2", a2_off, &a2_off_size, a2, &a2_size);
+      ctx_, query, "a2", a2_off, &a2_off_size, a2, &a2_size);
   CHECK(rc == TILEDB_OK);
   float a3[] = {1.1f, 1.2f, 2.1f, 2.2f};
   uint64_t a3_size = sizeof(a3);
-  rc = tiledb_query_set_buffer(ctx, query, "a3", a3, &a3_size);
+  rc = tiledb_query_set_buffer(ctx_, query, "a3", a3, &a3_size);
   CHECK(rc == TILEDB_OK);
 
   // Submit query - should error
-  CHECK(tiledb_query_submit(ctx, query) == TILEDB_ERR);
+  CHECK(tiledb_query_submit(ctx_, query) == TILEDB_ERR);
 
   // Set coordinates
   uint64_t coords[] = {1, 2, 1, 1};
   uint64_t coords_size = sizeof(coords);
-  rc = tiledb_query_set_buffer(ctx, query, TILEDB_COORDS, coords, &coords_size);
+  rc =
+      tiledb_query_set_buffer(ctx_, query, TILEDB_COORDS, coords, &coords_size);
   CHECK(rc == TILEDB_OK);
 
   // Submit query - ok
-  CHECK(tiledb_query_submit(ctx, query) == TILEDB_OK);
+  CHECK(tiledb_query_submit(ctx_, query) == TILEDB_OK);
 
   // Close array
-  CHECK(tiledb_array_close(ctx, array) == TILEDB_OK);
+  CHECK(tiledb_array_close(ctx_, array) == TILEDB_OK);
 
   // Clean up
   tiledb_query_free(&query);
   tiledb_array_free(&array);
-  tiledb_ctx_free(&ctx);
 
   remove_temp_dir(temp_dir);
 }
@@ -1903,8 +1896,8 @@ TEST_CASE_METHOD(
   uint64_t capacity = 1000;
   tiledb_layout_t cell_order = TILEDB_ROW_MAJOR;
   tiledb_layout_t tile_order = TILEDB_ROW_MAJOR;
-  std::string array_name =
-      FILE_URI_PREFIX + FILE_TEMP_DIR + "nonempty_domain_array";
+  std::string array_name = TILEDB_URI_PREFIX + FILE_URI_PREFIX + FILE_TEMP_DIR +
+                           "nonempty_domain_array";
 
   create_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
 
@@ -1978,4 +1971,30 @@ TEST_CASE_METHOD(
   tiledb_array_free(&array);
 
   remove_temp_dir(FILE_URI_PREFIX + FILE_TEMP_DIR);
+}
+
+TEST_CASE_METHOD(
+    DenseArrayRESTFx,
+    "C API: REST Test dense array, error without rest server configured",
+    "[capi], [dense], [rest], [dense-set-subarray-sparse]") {
+  std::string array_name = TILEDB_URI_PREFIX + FILE_URI_PREFIX + FILE_TEMP_DIR +
+                           "dense_set_subarray_sparse";
+  std::string temp_dir = FILE_URI_PREFIX + FILE_TEMP_DIR;
+  create_temp_dir(temp_dir);
+  create_dense_array(array_name);
+
+  // Create context without a REST config
+  tiledb_ctx_t* ctx;
+  REQUIRE(tiledb_ctx_alloc(nullptr, &ctx) == TILEDB_OK);
+
+  tiledb_array_t* array;
+  int rc = tiledb_array_alloc(ctx, array_name.c_str(), &array);
+  CHECK(rc == TILEDB_OK);
+  rc = tiledb_array_open(ctx, array, TILEDB_WRITE);
+  CHECK(rc == TILEDB_ERR);
+
+  // Clean up
+  CHECK(tiledb_array_close(ctx_, array) == TILEDB_OK);
+  tiledb_array_free(&array);
+  tiledb_ctx_free(&ctx);
 }

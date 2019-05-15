@@ -1730,13 +1730,31 @@ int32_t tiledb_array_schema_load_with_key(
     return TILEDB_OOM;
   }
 
-  // If we have configured a REST server, use it
-  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
-  if (rest_client != nullptr) {
+  // Check array name
+  tiledb::sm::URI uri(array_uri);
+  if (uri.is_invalid()) {
+    auto st = tiledb::sm::Status::Error(
+        "Failed to load array schema; Invalid array URI");
+    LOG_STATUS(st);
+    save_error(ctx, st);
+    return TILEDB_ERR;
+  }
+
+  if (uri.is_tiledb()) {
+    // Check REST client
+    auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+    if (rest_client == nullptr) {
+      auto st = tiledb::sm::Status::Error(
+          "Failed to load array schema; remote array with no REST client.");
+      LOG_STATUS(st);
+      save_error(ctx, st);
+      return TILEDB_ERR;
+    }
+
     if (SAVE_ERROR_CATCH(
             ctx,
             rest_client->get_array_schema_from_rest(
-                array_uri, &(*array_schema)->array_schema_))) {
+                uri, &(*array_schema)->array_schema_))) {
       delete *array_schema;
       return TILEDB_ERR;
     }
@@ -1756,7 +1774,7 @@ int32_t tiledb_array_schema_load_with_key(
     if (SAVE_ERROR_CATCH(
             ctx,
             storage_manager->load_array_schema(
-                tiledb::sm::URI(array_uri),
+                uri,
                 tiledb::sm::ObjectType::ARRAY,
                 key,
                 &((*array_schema)->array_schema_)))) {
@@ -2650,13 +2668,21 @@ int32_t tiledb_array_create_with_key(
     return TILEDB_ERR;
   }
 
-  // If we have configured a rest server address use it
-  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
-  if (rest_client != nullptr) {
+  if (uri.is_tiledb()) {
+    // Check REST client
+    auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+    if (rest_client == nullptr) {
+      auto st = tiledb::sm::Status::Error(
+          "Failed to create array; remote array with no REST client.");
+      LOG_STATUS(st);
+      save_error(ctx, st);
+      return TILEDB_ERR;
+    }
+
     if (SAVE_ERROR_CATCH(
             ctx,
             rest_client->post_array_schema_to_rest(
-                array_uri, array_schema->array_schema_)))
+                uri, array_schema->array_schema_)))
       return TILEDB_ERR;
   } else {
     // Create key
@@ -2716,9 +2742,17 @@ int32_t tiledb_array_get_non_empty_domain(
 
   bool is_empty_b;
 
-  // Use REST server if configured.
-  auto rest_client = ctx->ctx_->storage_manager()->rest_client();
-  if (rest_client != nullptr) {
+  if (array->array_->is_remote()) {
+    // Check REST client
+    auto rest_client = ctx->ctx_->storage_manager()->rest_client();
+    if (rest_client == nullptr) {
+      auto st = tiledb::sm::Status::Error(
+          "Failed to get non-empty domain; remote array with no REST client.");
+      LOG_STATUS(st);
+      save_error(ctx, st);
+      return TILEDB_ERR;
+    }
+
     if (SAVE_ERROR_CATCH(
             ctx,
             rest_client->get_array_non_empty_domain(

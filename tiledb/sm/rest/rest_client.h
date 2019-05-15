@@ -44,6 +44,9 @@ namespace sm {
 
 class RestClient {
  public:
+  /** Constructor. */
+  RestClient();
+
   /** Initialize the REST client with the given config. */
   Status init(const Config* config);
 
@@ -54,8 +57,7 @@ class RestClient {
    * @param array_schema array schema to send to server
    * @return Status Ok() on success Error() on failures
    */
-  Status get_array_schema_from_rest(
-      const std::string& uri, ArraySchema** array_schema);
+  Status get_array_schema_from_rest(const URI& uri, ArraySchema** array_schema);
 
   /**
    * Post a data array schema to rest server
@@ -64,8 +66,7 @@ class RestClient {
    * @param array_schema array schema to load into
    * @return Status Ok() on success Error() on failures
    */
-  Status post_array_schema_to_rest(
-      const std::string& uri, ArraySchema* array_schema);
+  Status post_array_schema_to_rest(const URI& uri, ArraySchema* array_schema);
 
   /**
    * Deregisters an array at the given URI from the REST server.
@@ -73,7 +74,7 @@ class RestClient {
    * @param uri Array URI to deregister
    * @return Status
    */
-  Status deregister_array_from_rest(const std::string& uri);
+  Status deregister_array_from_rest(const URI& uri);
 
   /**
    * Get array's non_empty domain from rest server
@@ -94,7 +95,7 @@ class RestClient {
    * @param query to send to server and store results in, this qill be modified
    * @return Status Ok() on success Error() on failures
    */
-  Status submit_query_to_rest(const std::string& uri, Query* query);
+  Status submit_query_to_rest(const URI& uri, Query* query);
 
   /**
    * Post a data query to rest server
@@ -103,14 +104,11 @@ class RestClient {
    * @param query to send to server and store results in, this qill be modified
    * @return Status Ok() on success Error() on failures
    */
-  Status finalize_query_to_rest(const std::string& uri, Query* query);
+  Status finalize_query_to_rest(const URI& uri, Query* query);
 
  private:
   /** The TileDB config options (contains server and auth info). */
   const Config* config_;
-
-  /** Organization config param. */
-  std::string organization_;
 
   /** Rest server config param. */
   std::string rest_server_;

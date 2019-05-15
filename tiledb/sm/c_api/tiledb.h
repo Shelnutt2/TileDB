@@ -704,9 +704,6 @@ TILEDB_EXPORT void tiledb_config_free(tiledb_config_t** config);
  *    Authentication token for REST server (used instead of
  *    username/password). <br>
  *    **Default**: ""
- * - `rest.organization` <br>
- *    Organization to use for remote arrays. <br>
- *    **Default**: ""
  *
  * **Example:**
  *
