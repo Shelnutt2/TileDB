@@ -51,8 +51,6 @@ namespace serialization {
 Status filter_pipeline_to_capnp(
     const FilterPipeline* filter_pipeline,
     capnp::FilterPipeline::Builder* filter_pipeline_builder) {
-  STATS_FUNC_IN(serialization_filter_pipeline_to_capnp);
-
   if (filter_pipeline == nullptr)
     return LOG_STATUS(Status::SerializationError(
         "Error serializing filter pipeline; filter pipeline is null."));
@@ -103,15 +101,11 @@ Status filter_pipeline_to_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_filter_pipeline_to_capnp);
 }
 
 Status filter_pipeline_from_capnp(
     const capnp::FilterPipeline::Reader& filter_pipeline_reader,
     std::unique_ptr<FilterPipeline>* filter_pipeline) {
-  STATS_FUNC_IN(serialization_filter_pipeline_from_capnp);
-
   filter_pipeline->reset(new FilterPipeline);
   if (!filter_pipeline_reader.hasFilters())
     return Status::Ok();
@@ -160,14 +154,10 @@ Status filter_pipeline_from_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_filter_pipeline_from_capnp);
 }
 
 Status attribute_to_capnp(
     const Attribute* attribute, capnp::Attribute::Builder* attribute_builder) {
-  STATS_FUNC_IN(serialization_attribute_to_capnp);
-
   if (attribute == nullptr)
     return LOG_STATUS(Status::SerializationError(
         "Error serializing attribute; attribute is null."));
@@ -181,15 +171,11 @@ Status attribute_to_capnp(
   RETURN_NOT_OK(filter_pipeline_to_capnp(filters, &filter_pipeline_builder));
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_attribute_to_capnp);
 }
 
 Status attribute_from_capnp(
     const capnp::Attribute::Reader& attribute_reader,
     std::unique_ptr<Attribute>* attribute) {
-  STATS_FUNC_IN(serialization_attribute_from_capnp);
-
   Datatype datatype = Datatype::ANY;
   RETURN_NOT_OK(datatype_enum(attribute_reader.getType(), &datatype));
 
@@ -206,14 +192,10 @@ Status attribute_from_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_attribute_from_capnp);
 }
 
 Status dimension_to_capnp(
     const Dimension* dimension, capnp::Dimension::Builder* dimension_builder) {
-  STATS_FUNC_IN(serialization_dimension_to_capnp);
-
   if (dimension == nullptr)
     return LOG_STATUS(Status::SerializationError(
         "Error serializing dimension; dimension is null."));
@@ -233,15 +215,11 @@ Status dimension_to_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_dimension_to_capnp);
 }
 
 Status dimension_from_capnp(
     const capnp::Dimension::Reader& dimension_reader,
     std::unique_ptr<Dimension>* dimension) {
-  STATS_FUNC_IN(serialization_dimension_from_capnp);
-
   Datatype dim_type = Datatype::ANY;
   RETURN_NOT_OK(datatype_enum(dimension_reader.getType().cStr(), &dim_type));
   dimension->reset(new Dimension(dimension_reader.getName(), dim_type));
@@ -312,14 +290,10 @@ Status dimension_from_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_dimension_from_capnp);
 }
 
 Status domain_to_capnp(
     const Domain* domain, capnp::Domain::Builder* domainBuilder) {
-  STATS_FUNC_IN(serialization_domain_to_capnp);
-
   if (domain == nullptr)
     return LOG_STATUS(Status::SerializationError(
         "Error serializing domain; domain is null."));
@@ -336,15 +310,11 @@ Status domain_to_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_domain_to_capnp);
 }
 
 Status domain_from_capnp(
     const capnp::Domain::Reader& domain_reader,
     std::unique_ptr<Domain>* domain) {
-  STATS_FUNC_IN(serialization_domain_from_capnp);
-
   Datatype datatype = Datatype::ANY;
   RETURN_NOT_OK(datatype_enum(domain_reader.getType(), &datatype));
   domain->reset(new Domain(datatype));
@@ -357,15 +327,11 @@ Status domain_from_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_domain_from_capnp);
 }
 
 Status array_schema_to_capnp(
     const ArraySchema* array_schema,
     capnp::ArraySchema::Builder* array_schema_builder) {
-  STATS_FUNC_IN(serialization_array_schema_to_capnp);
-
   if (array_schema == nullptr)
     return LOG_STATUS(Status::SerializationError(
         "Error serializing array schema; array schema is null."));
@@ -407,15 +373,11 @@ Status array_schema_to_capnp(
   }
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_array_schema_to_capnp);
 }
 
 Status array_schema_from_capnp(
     const capnp::ArraySchema::Reader& schema_reader,
     std::unique_ptr<ArraySchema>* array_schema) {
-  STATS_FUNC_IN(serialization_array_schema_from_capnp);
-
   ArrayType array_type = ArrayType::DENSE;
   RETURN_NOT_OK(array_type_enum(schema_reader.getArrayType(), &array_type));
   array_schema->reset(new ArraySchema(array_type));
@@ -463,8 +425,6 @@ Status array_schema_from_capnp(
   RETURN_NOT_OK((*array_schema)->init());
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_array_schema_from_capnp);
 }
 
 Status array_schema_serialize(

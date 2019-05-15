@@ -69,7 +69,7 @@ Status RestClient::init(const Config* config) {
 
 Status RestClient::get_array_schema_from_rest(
     const URI& uri, ArraySchema** array_schema) {
-  STATS_FUNC_IN(serialization_get_array_schema_from_rest);
+  STATS_FUNC_IN(rest_array_get_schema);
 
   // Init curl and form the URL
   Curl curlc;
@@ -89,12 +89,12 @@ Status RestClient::get_array_schema_from_rest(
   return serialization::array_schema_deserialize(
       array_schema, serialization_type_, returned_data);
 
-  STATS_FUNC_OUT(serialization_get_array_schema_from_rest);
+  STATS_FUNC_OUT(rest_array_get_schema);
 }
 
 Status RestClient::post_array_schema_to_rest(
     const URI& uri, ArraySchema* array_schema) {
-  STATS_FUNC_IN(serialization_post_array_schema_to_rest);
+  STATS_FUNC_IN(rest_array_create);
 
   Buffer serialized;
   RETURN_NOT_OK(serialization::array_schema_serialize(
@@ -111,7 +111,7 @@ Status RestClient::post_array_schema_to_rest(
   Buffer returned_data;
   return curlc.post_data(url, serialization_type_, &serialized, &returned_data);
 
-  STATS_FUNC_OUT(serialization_post_array_schema_to_rest);
+  STATS_FUNC_OUT(rest_array_create);
 }
 
 Status RestClient::deregister_array_from_rest(const URI& uri) {
@@ -129,8 +129,6 @@ Status RestClient::deregister_array_from_rest(const URI& uri) {
 
 Status RestClient::get_array_non_empty_domain(
     Array* array, void* domain, bool* is_empty) {
-  STATS_FUNC_IN(serialization_get_array_non_empty_domain);
-
   if (array == nullptr)
     return LOG_STATUS(
         Status::RestError("Cannot get array non-empty domain; array is null"));
@@ -163,12 +161,10 @@ Status RestClient::get_array_non_empty_domain(
       array, returned_data, serialization_type_, domain, is_empty);
 
   return Status::Ok();
-
-  STATS_FUNC_OUT(serialization_get_array_non_empty_domain);
 }
 
 Status RestClient::submit_query_to_rest(const URI& uri, Query* query) {
-  STATS_FUNC_IN(serialization_submit_query_to_rest);
+  STATS_FUNC_IN(rest_query_submit);
 
   // Serialize data to send
   Buffer serialized;
@@ -196,12 +192,10 @@ Status RestClient::submit_query_to_rest(const URI& uri, Query* query) {
   return serialization::query_deserialize(
       returned_data, serialization_type_, true, query);
 
-  STATS_FUNC_OUT(serialization_submit_query_to_rest);
+  STATS_FUNC_OUT(rest_query_submit);
 }
 
 Status RestClient::finalize_query_to_rest(const URI& uri, Query* query) {
-  STATS_FUNC_IN(serialization_finalize_query_to_rest);
-
   // Serialize data to send
   Buffer serialized;
   RETURN_NOT_OK(serialization::query_serialize(
@@ -227,8 +221,6 @@ Status RestClient::finalize_query_to_rest(const URI& uri, Query* query) {
   // Deserialize data returned
   return serialization::query_deserialize(
       returned_data, serialization_type_, true, query);
-
-  STATS_FUNC_OUT(serialization_finalize_query_to_rest);
 }
 
 }  // namespace sm
