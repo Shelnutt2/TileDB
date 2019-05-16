@@ -278,18 +278,6 @@ if (NOT WIN32)
   find_package(OpenSSL_EP REQUIRED)
 endif()
 
-# Libcurl
-if (TILEDB_S3 OR TILEDB_SERIALIZATION)
-  find_package(Curl_EP REQUIRED)
-  if (NOT WIN32)
-    # No Curl required on Windows.
-    target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
-      INTERFACE
-        Curl::Curl
-    )
-  endif()
-endif()
-
 # S3 dependencies
 if (TILEDB_S3)
   message(STATUS "The TileDB library is compiled with S3 support.")
@@ -303,6 +291,18 @@ if (TILEDB_S3)
       AWSSDK::aws-c-common
   )
   add_definitions(-DHAVE_S3)
+endif()
+
+# Libcurl
+if (TILEDB_S3 OR TILEDB_SERIALIZATION)
+  if (NOT WIN32)
+    # No Curl required on Windows.
+    find_package(Curl_EP REQUIRED)
+    target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
+      INTERFACE
+        Curl::Curl
+    )
+  endif()
 endif()
 
 # HDFS dependencies

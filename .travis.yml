@@ -8,19 +8,19 @@ matrix:
   include:
     - os: linux
 
-#    - os: linux
-#      env: TILEDB_TBB="OFF"
-#
-#    - os: linux
-#      env: TILEDB_HDFS="ON"
-#
-#    - os: linux
-#      env: TILEDB_S3="ON"
+    - os: linux
+      env: TILEDB_TBB="OFF"
+
+    - os: linux
+      env: TILEDB_HDFS="ON"
+
+    - os: linux
+      env: TILEDB_S3="ON"
 
     - os: linux
       env: TILEDB_SERIALIZATION="ON"
 
-#    - os: osx
+    - os: osx
 
 before_install:
     - git clone https://github.com/TileDB-Inc/TileDB-Unit-Test-Arrays.git test/inputs/arrays/read_compatibility_test
@@ -39,14 +39,6 @@ install:
     # Install libpng for the PNG ingestion example.
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         sudo apt-get install libpng-dev;
-      fi
-
-    # TODO: Linking with CapnProto (?) caused linker issues on the Travis macOS
-    # build images:
-    #   dyld: Symbol not found: __cg_jpeg_resync_to_restart
-    #   Expected in: /usr/local/lib/libJPEG.dylib
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        brew uninstall --ignore-dependencies gdal giflib libjpeg libtiff libpng;
       fi
 
     # Set up arguments for bootstrap.sh
