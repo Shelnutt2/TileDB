@@ -30,6 +30,7 @@
  *
  * This file defines the C API of TileDB.
  */
+
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/array_schema/array_schema.h"
@@ -2422,7 +2423,6 @@ int32_t tiledb_array_alloc(
   // Allocate an array object
   (*array)->array_ =
       new (std::nothrow) tiledb::sm::Array(uri, ctx->ctx_->storage_manager());
-
   if ((*array)->array_ == nullptr) {
     delete *array;
     *array = nullptr;

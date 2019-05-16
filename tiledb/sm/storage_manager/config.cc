@@ -53,7 +53,11 @@ const std::set<std::string> Config::unserialized_params_ = {
     "vfs.s3.proxy_username",
     "vfs.s3.proxy_password",
     "vfs.s3.aws_access_key_id",
-    "vfs.s3.aws_secret_access_key"};
+    "vfs.s3.aws_secret_access_key",
+    "rest.username",
+    "rest.password",
+    "rest.token",
+};
 
 /* ****************************** */
 /*   CONSTRUCTORS & DESTRUCTORS   */

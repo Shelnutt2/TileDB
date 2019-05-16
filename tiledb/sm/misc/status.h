@@ -55,25 +55,25 @@
 #include <cstring>
 #include <string>
 
-#define RETURN_NOT_OK(s)         \
-  do {                           \
-    tiledb::sm::Status _s = (s); \
-    if (!_s.ok()) {              \
-      return _s;                 \
-    }                            \
+namespace tiledb {
+namespace sm {
+
+#define RETURN_NOT_OK(s) \
+  do {                   \
+    Status _s = (s);     \
+    if (!_s.ok()) {      \
+      return _s;         \
+    }                    \
   } while (false);
 
 #define RETURN_NOT_OK_ELSE(s, else_) \
   do {                               \
-    tiledb::sm::Status _s = (s);     \
+    Status _s = (s);                 \
     if (!_s.ok()) {                  \
       else_;                         \
       return _s;                     \
     }                                \
   } while (false);
-
-namespace tiledb {
-namespace sm {
 
 enum class StatusCode : char {
   Ok,

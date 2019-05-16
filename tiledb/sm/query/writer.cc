@@ -199,11 +199,6 @@ void Writer::set_array(const Array* array) {
   array_ = array;
 }
 
-void Writer::reset_global_write_state() {
-  if (global_write_state_ != nullptr)
-    global_write_state_.reset(nullptr);
-}
-
 void Writer::set_array_schema(const ArraySchema* array_schema) {
   array_schema_ = array_schema;
   if (array_schema->is_kv())

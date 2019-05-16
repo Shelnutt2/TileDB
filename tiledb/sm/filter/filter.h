@@ -142,7 +142,7 @@ class Filter {
   Status set_option(FilterOption option, const void* value);
 
   /**
-   * Serializes the filter metadata into a binary buffer for persisting.
+   * Serializes the filter metadata into a binary buffer.
    *
    * @param buff The buffer to serialize the data into.
    * @return Status
