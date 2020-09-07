@@ -40,12 +40,17 @@ set(ZLIB_PATHS ${TILEDB_EP_INSTALL_PREFIX})
 #  Built-in module only supports shared zlib, so using it
 #  w/in superbuild we end up linking zlib.dll.
 #  https://gitlab.kitware.com/cmake/cmake/issues/18029)
-if ((NOT TILEDB_FORCE_ALL_DEPS) AND (NOT TILEDB_ZLIB_EP_BUILT))
+if (NOT TILEDB_FORCE_ALL_DEPS OR TILEDB_ZLIB_EP_BUILT)
+  MESSAGE("TILEDB_DEPS_NO_DEFAULT_PATH=${TILEDB_DEPS_NO_DEFAULT_PATH}")
+  MESSAGE("TILEDB_ZLIB_EP_BUILT=${TILEDB_ZLIB_EP_BUILT}")
+  MESSAGE("TILEDB_FORCE_ALL_DEPS=${TILEDB_FORCE_ALL_DEPS}")
   find_package(ZLIB ${TILEDB_DEPS_NO_DEFAULT_PATH})
 endif()
 
 # Next try finding the superbuild external project
+MESSAGE("ZLIB_FOUND=${ZLIB_FOUND}")
 if (NOT ZLIB_FOUND)
+  MESSAGE("Finding zlib")
   find_path(ZLIB_INCLUDE_DIR
     NAMES zlib.h
     PATHS ${ZLIB_PATHS}
