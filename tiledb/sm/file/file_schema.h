@@ -35,12 +35,15 @@
 #define TILEDB_FILE_SCHEMA_H
 
 #include "tiledb/sm/array_schema/array_schema.h"
+#include "tiledb/sm/filter/compression_filter.h"
+#include "tiledb/sm/filter/filter_pipeline.h"
 
 using namespace tiledb::common;
 
 namespace tiledb {
 namespace sm {
 
+class CompressionFilter;
 // class Attribute;
 // class Buffer;
 // class ConstBuffer;
@@ -54,6 +57,15 @@ enum class ArrayType : uint8_t;
 
 /** Specifies the file array schema. */
 class FileSchema : public ArraySchema {
+  static const uint64_t default_extent = 1024;
+
+  //  static inline tdb_shared_ptr<CompressionFilter> zstd =
+  //  tdb_make_shared(CompressionFilter, CompressionFilter(
+  //      constants::cell_var_offsets_compression,
+  //      constants::cell_var_offsets_compression_level));
+  //  static inline const std::vector<Filter> fv = std::vector<Filter>({zstd});
+  //  static inline const FilterPipeline default_attribute_pipeline =
+  //  FilterPipeline(fv);
  public:
   /* ********************************* */
   /*     CONSTRUCTORS & DESTRUCTORS    */
@@ -79,12 +91,44 @@ class FileSchema : public ArraySchema {
   /*               API                 */
   /* ********************************* */
 
+  /**
+   * Set the array schema details based on heuristics from the files
+   *
+   * @param file_size size of the original file used to determine tile_extent
+   * size
+   * @param file_compressed bool for if the original file is compressed, sets
+   * noop for attribute if so
+   */
+  void set_schema_based_on_file_details(
+      const uint64_t file_size, const bool file_compressed);
+
  private:
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */
 
-  Domain create_default_domain();
+  /**
+   * Create domain to store position
+   * @param tile_extent
+   * @return Domain
+   */
+  static Domain create_domain(const uint64_t tile_extent = default_extent);
+
+  /**
+   * Create attribute to store file data
+   * @param fp
+   * @return attribute
+   */
+  static tiledb_shared_ptr<Attribute> create_attribute(
+      const FilterPipeline& fp);
+
+  /**
+   * Compute tile extents based on the size of the file
+   * @param file_size
+   * @return extent based on defined heuristics
+   */
+  static uint64_t compute_tile_extent_based_on_file_size(
+      const uint64_t file_size);
 
   /* ********************************* */
   /*           PRIVATE METHODS         */

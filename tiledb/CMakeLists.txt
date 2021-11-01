@@ -464,6 +464,7 @@ find_package(LZ4_EP REQUIRED)
 find_package(Spdlog_EP REQUIRED)
 find_package(Zlib_EP REQUIRED)
 find_package(Zstd_EP REQUIRED)
+find_package(Magic_EP REQUIRED)
 target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
   INTERFACE
     Bzip2::Bzip2
@@ -471,6 +472,7 @@ target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
     spdlog::spdlog
     Zlib::Zlib
     Zstd::Zstd
+    Magic::Magic
 )
 if (NOT WIN32)
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
@@ -737,6 +739,7 @@ if (TILEDB_STATIC)
   append_dep_lib(GCSSDK::google_cloud_cpp_common)
   append_dep_lib(GCSSDK::crc32c)
   append_dep_lib(spdlog::spdlog)
+  append_dep_lib(Magic::Magic)
 endif()
 
 ############################################################

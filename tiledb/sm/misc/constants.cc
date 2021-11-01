@@ -654,6 +654,8 @@ const std::array<std::string, 6> cert_files_linux = {
 #endif
 
 const std::string config_delimiter = ",";
+
+const std::string file_attribute_name = "contents";
 }  // namespace constants
 
 }  // namespace sm

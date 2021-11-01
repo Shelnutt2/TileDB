@@ -572,6 +572,9 @@ extern const std::array<std::string, 6> cert_files_linux;
 
 /** Delimiter for lists passed as config parameter */
 extern const std::string config_delimiter;
+
+/** Name of the single attribute used in tiledb_file_t objects. */
+extern const std::string file_attribute_name;
 }  // namespace constants
 
 }  // namespace sm

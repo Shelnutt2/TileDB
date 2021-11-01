@@ -35,7 +35,9 @@
 #include "tiledb/sm/array_schema/dimension.h"
 #include "tiledb/sm/array_schema/domain.h"
 #include "tiledb/sm/enums/array_type.h"
+#include "tiledb/sm/enums/filter_type.h"
 #include "tiledb/sm/enums/layout.h"
+#include "tiledb/sm/filter/bit_width_reduction_filter.h"
 
 using namespace tiledb::common;
 
@@ -58,7 +60,13 @@ FileSchema::FileSchema()
 
   // Set domain
   tdb_delete(domain_);
-  domain_ = tdb_new(Domain, create_default_domain());
+  domain_ = tdb_new(Domain, create_domain());
+
+  // Set single attribute
+  FilterPipeline attribute_filters;
+  attribute_filters.add_filter(CompressionFilter(FilterType::FILTER_ZSTD, -1));
+  tiledb_shared_ptr<Attribute> attribute = create_attribute(attribute_filters);
+  add_attribute(attribute.get());
 
   // Create dimension map
   dim_map_.clear();
@@ -66,46 +74,23 @@ FileSchema::FileSchema()
   for (unsigned d = 0; d < dim_num; ++d) {
     auto dim = dimension(d);
     dim_map_[dim->name()] = dim;
-
-    version_ = constants::format_version;
-    auto timestamp = utils::time::timestamp_now_ms();
-    timestamp_range_ = std::make_pair(timestamp, timestamp);
-
-    // Set up default filter pipelines for coords, offsets, and validity values.
-    coords_filters_.add_filter(CompressionFilter(
-        constants::coords_compression, constants::coords_compression_level));
-    cell_var_offsets_filters_.add_filter(CompressionFilter(
-        constants::cell_var_offsets_compression,
-        constants::cell_var_offsets_compression_level));
-    cell_validity_filters_.add_filter(CompressionFilter(
-        constants::cell_validity_compression,
-        constants::cell_validity_compression_level));
   }
+
+  version_ = constants::format_version;
+  auto timestamp = utils::time::timestamp_now_ms();
+  timestamp_range_ = std::make_pair(timestamp, timestamp);
+
+  // Set up default filter pipelines for coords, offsets, and validity values.
+  cell_var_offsets_filters_.add_filter(CompressionFilter(
+      constants::cell_var_offsets_compression,
+      constants::cell_var_offsets_compression_level));
+  cell_validity_filters_.add_filter(CompressionFilter(
+      constants::cell_validity_compression,
+      constants::cell_validity_compression_level));
 }
 
 FileSchema::FileSchema(const FileSchema* file_schema)
     : ArraySchema(file_schema) {
-  /*allows_dups_ = array_schema->allows_dups_;
-  array_uri_ = array_schema->array_uri_;
-  uri_ = array_schema->uri_;
-  name_ = array_schema->name_;
-  array_type_ = array_schema->array_type_;
-  domain_ = nullptr;
-  timestamp_range_ = array_schema->timestamp_range_;
-
-  capacity_ = array_schema->capacity_;
-  cell_order_ = array_schema->cell_order_;
-  cell_var_offsets_filters_ = array_schema->cell_var_offsets_filters_;
-  cell_validity_filters_ = array_schema->cell_validity_filters_;
-  coords_filters_ = array_schema->coords_filters_;
-  tile_order_ = array_schema->tile_order_;
-  version_ = array_schema->version_;
-
-  set_domain(array_schema->domain_);
-
-  attribute_map_.clear();
-  for (auto attr : array_schema->attributes_)
-    add_attribute(attr, false);*/
 }
 
 FileSchema::~FileSchema() {
@@ -116,16 +101,64 @@ FileSchema::~FileSchema() {
 /*               API              */
 /* ****************************** */
 
+void FileSchema::set_schema_based_on_file_details(
+    const uint64_t file_size, const bool file_compressed) {
+  Domain domain =
+      create_domain(compute_tile_extent_based_on_file_size(file_size));
+  set_domain(&domain);
+
+  // Set single attribute
+  FilterPipeline attribute_filters;
+  if (!file_compressed)
+    attribute_filters.add_filter(
+        CompressionFilter(FilterType::FILTER_ZSTD, -1));
+  tiledb_shared_ptr<Attribute> attribute = create_attribute(attribute_filters);
+
+  // Safety check, if the attribute exists from the default constructor we have
+  // to remove it else we leak This can be removed when we switch to shared_ptrs
+  if (is_attr(constants::file_attribute_name))
+    drop_attribute(constants::file_attribute_name);
+
+  add_attribute(attribute.get());
+}
+
 /* ****************************** */
 /*         PRIVATE METHODS        */
 /* ****************************** */
 
-Domain FileSchema::create_default_domain() {
+Domain FileSchema::create_domain(uint64_t tile_extent) {
   Domain domain;
-
-  domain.add_dimension();
-
+  Dimension dimension("position", Datatype::UINT64);
+  dimension.set_tile_extent(&tile_extent);
+  FilterPipeline fp;
+  fp.add_filter(BitWidthReductionFilter());
+  dimension.set_filter_pipeline(&fp);
+  domain.add_dimension(&dimension);
   return domain;
+}
+
+tdb_shared_ptr<Attribute> FileSchema::create_attribute(
+    const FilterPipeline& fp) {
+  tdb_shared_ptr<Attribute> attribute = tdb_make_shared(
+      Attribute, constants::file_attribute_name, Datatype::UINT8, false);
+  attribute->set_filter_pipeline(&fp);
+  attribute->set_cell_val_num(1);
+  return attribute;
+}
+
+uint64_t FileSchema::compute_tile_extent_based_on_file_size(
+    const uint64_t file_size) {
+  if (file_size > 1024UL * 1024 * 1024 * 1024) {       // 1TB
+    return 1024UL * 1024 * 1024;                       // 1GB
+  } else if (file_size > 1024UL * 1024 * 1024 * 10) {  // 10GB
+    return 1024UL * 1024 * 100;                        // 100MB
+  } else if (file_size > 1024UL * 1024 * 100) {        // 100MB
+    return 1024UL * 1024 * 1;                          // 1MB
+  } else if (file_size > 1024UL * 1024 * 1) {          // 1MB
+    return 1024UL * 256;                               // 1KB
+  } else {
+    return 1024UL;  // 1KB
+  }
 }
 
 }  // namespace sm
