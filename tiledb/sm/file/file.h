@@ -51,7 +51,12 @@ class Array;
 class File : public Array {
   File(const URI& array_uri, StorageManager* storage_manager);
 
+
+  void set_original_file_uri(const URI& original_file_uri);
+
  private:
+
+  URI original_file_uri_;
 };
 
 }  // namespace sm

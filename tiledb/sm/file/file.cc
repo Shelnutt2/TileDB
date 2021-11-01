@@ -48,5 +48,11 @@ File::File(const URI& array_uri, StorageManager* storage_manager)
 /*                API                */
 /* ********************************* */
 
+void File::set_original_file_uri(const URI& original_file_uri) {
+  original_file_uri_ = original_file_uri;
+}
+
+void File::get_magic()
+
 }  // namespace sm
 }  // namespace tiledb
