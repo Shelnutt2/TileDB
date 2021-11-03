@@ -49,6 +49,9 @@ extern "C" {
 /** A TileDB array schema. */
 typedef struct tiledb_array_schema_evolution_t tiledb_array_schema_evolution_t;
 
+/** TileDB file type. */
+typedef struct tiledb_file_t tiledb_file_t;
+
 /* ********************************* */
 /*      ARRAY SCHEMA EVOLUTION       */
 /* ********************************* */
@@ -169,7 +172,33 @@ TILEDB_EXPORT int32_t tiledb_array_evolve(
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_array_upgrade_version(
-    tiledb_ctx_t* ctx, const char* array_uri, tiledb_config_t* config);
+    tiledb_ctx_t* ctx, const char* array_uri, tiledb_config_t* config config);
+
+/* ********************************* */
+/*              FILE                 */
+/* ********************************* */
+
+TILEDB_EXPORT int32_t tiledb_file_alloc(tiledb_ctx_t* ctx, const char* array_uri, tiledb_file_t* file, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_open(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_query_type_t query_type);
+
+TILEDB_EXPORT int32_t tiledb_file_create_default(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_create_from_path(tiledb_ctx_t* ctx, tiledb_file_t* file,const char* input_uri, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_create_from_vfs_fh(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_vfs_fh_t* input, tiledb_config_t* config);
+    
+
+TILEDB_EXPORT int32_t tiledb_file_store_raw(tiledb_ctx_t* ctx, tiledb_file_t* file, void* bytes, uint64_t size);
+TILEDB_EXPORT int32_t tiledb_file_store_path(tiledb_ctx_t* ctx, tiledb_file_t* file, const char*, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_store_vfs_fh(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_vfs_fh_t*);
+
+
+TILEDB_EXPORT int32_t tiledb_file_get_mime(tiledb_ctx_t* ctx, tiledb_file_t* file, const char*);
+TILEDB_EXPORT int32_t tiledb_file_get_original_name(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+TILEDB_EXPORT int32_t tiledb_file_get_extension(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+TILEDB_EXPORT int32_t tiledb_file_get_schema( tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_array_schema_t** array_schema);
+
+TILEDB_EXPORT int32_t tiledb_file_export_raw(tiledb_ctx_t* ctx, tiledb_file_t* file, void* bytes);
+TILEDB_EXPORT int32_t tiledb_file_export_path(tiledb_ctx_t* ctx, tiledb_file_t* file, char*, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_export_vfs_fh(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_vfs_fh_t*);
 
 #ifdef __cplusplus
 }
