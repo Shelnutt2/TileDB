@@ -197,6 +197,8 @@ TILEDB_EXPORT int32_t tiledb_file_create_from_vfs_fh(
     tiledb_vfs_fh_t* input,
     tiledb_config_t* config);
 
+TILEDB_EXPORT int32_t tiledb_file_store_fh(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* in, tiledb_config_t* config);
 TILEDB_EXPORT int32_t tiledb_file_store_raw(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
@@ -225,12 +227,24 @@ TILEDB_EXPORT int32_t tiledb_file_get_schema(
     tiledb_file_t* file,
     tiledb_array_schema_t** array_schema);
 
-TILEDB_EXPORT int32_t
-tiledb_file_export_raw(tiledb_ctx_t* ctx, tiledb_file_t* file, void* bytes);
+TILEDB_EXPORT int32_t tiledb_file_export_fh(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* out, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_export_raw(
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    void* bytes,
+    uint64_t* size,
+    tiledb_config_t* config);
 TILEDB_EXPORT int32_t tiledb_file_export_uri(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, char*, tiledb_config_t* config);
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    const char* output_uri,
+    tiledb_config_t* config);
 TILEDB_EXPORT int32_t tiledb_file_export_vfs_fh(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_vfs_fh_t*);
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    tiledb_vfs_fh_t* output,
+    tiledb_config_t* config);
 
 /**
  * Sets the starting timestamp to use when opening (and reopening) the file.

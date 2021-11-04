@@ -98,6 +98,8 @@ int32_t tiledb_file_create_default(
                        &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_create_from_uri(
@@ -127,6 +129,8 @@ int32_t tiledb_file_create_from_uri(
                        &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_create_from_vfs_fh(
@@ -148,6 +152,25 @@ int32_t tiledb_file_create_from_vfs_fh(
                        &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_store_fh(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* in, tiledb_config_t* config) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          file->file_->save_from_file_handle(
+              in, config ? config->config_ : nullptr))) {
+    return TILEDB_ERR;
+  }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_store_raw(
@@ -167,6 +190,8 @@ int32_t tiledb_file_store_raw(
               bytes, size, config ? config->config_ : nullptr))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_store_uri(
@@ -193,6 +218,8 @@ int32_t tiledb_file_store_uri(
               uri, config ? config->config_ : nullptr))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_store_vfs_fh(
@@ -212,36 +239,141 @@ int32_t tiledb_file_store_vfs_fh(
               input->vfs_fh_, config ? config->config_ : nullptr))) {
     return TILEDB_ERR;
   }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_mime(
     tiledb_ctx_t* ctx, tiledb_file_t* file, const char*) {
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_original_name(
     tiledb_ctx_t* ctx, tiledb_file_t* file, const char**) {
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_extension(
     tiledb_ctx_t* ctx, tiledb_file_t* file, const char**) {
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_schema(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     tiledb_array_schema_t** array_schema) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  *array_schema = new (std::nothrow) tiledb_array_schema_t;
+  if (*array_schema == nullptr) {
+    auto st = Status::Error("Failed to allocate TileDB array schema");
+    LOG_STATUS(st);
+    save_error(ctx, st);
+    return TILEDB_OOM;
+  }
+
+  // Get schema
+  auto schema = (tiledb::sm::ArraySchema*)nullptr;
+  if (SAVE_ERROR_CATCH(ctx, file->file_->get_array_schema(&schema))) {
+    delete *array_schema;
+    *array_schema = nullptr;
+    return TILEDB_ERR;
+  }
+
+  (*array_schema)->array_schema_ =
+      new (std::nothrow) tiledb::sm::ArraySchema(schema);
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_export_fh(
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    FILE* out,
+    tiledb_config_t* config) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          file->file_->export_to_file_handle(
+              out, config ? config->config_ : nullptr))) {
+    return TILEDB_ERR;
+  }
+
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_export_raw(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, void* bytes) {
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    void* bytes,
+    uint64_t* size,
+    tiledb_config_t* config) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          file->file_->export_to_buffer(
+              bytes, size, config ? config->config_ : nullptr))) {
+    return TILEDB_ERR;
+  }
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_export_uri(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, char*, tiledb_config_t* config) {
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    const char* output_uri,
+    tiledb_config_t* config) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+  tiledb::sm::URI uri(output_uri);
+  if (uri.is_invalid()) {
+    auto st = Status::Error(
+        "Failed to create file from path; Invalid output file URI");
+    LOG_STATUS(st);
+    save_error(ctx, st);
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          file->file_->export_to_uri(
+              uri, config ? config->config_ : nullptr))) {
+    return TILEDB_ERR;
+  }
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_export_vfs_fh(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_vfs_fh_t*) {
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    tiledb_vfs_fh_t* output,
+    tiledb_config_t* config) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR ||
+      sanity_check(ctx, output) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(
+          ctx,
+          file->file_->export_to_vfs_fh(
+              output->vfs_fh_, config ? config->config_ : nullptr))) {
+    return TILEDB_ERR;
+  }
+  return TILEDB_OK;
 }
 
 int32_t tiledb_file_set_open_timestamp_start(

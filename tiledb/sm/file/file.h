@@ -54,6 +54,20 @@ class File : public Array {
  public:
   File(const URI& array_uri, StorageManager* storage_manager);
 
+  Status open(
+      QueryType query_type,
+      EncryptionType encryption_type,
+      const void* encryption_key,
+      uint32_t key_length) override;
+
+  Status open(
+      QueryType query_type,
+      uint64_t timestamp_start,
+      uint64_t timestamp_end,
+      EncryptionType encryption_type,
+      const void* encryption_key,
+      uint32_t key_length) override;
+
   void set_original_file_uri(const URI& original_file_uri);
 
   Status create(const Config* config);
@@ -62,11 +76,28 @@ class File : public Array {
 
   Status create_from_vfs_fh(const VFSFileHandle* file, const Config* config);
 
+  Status save_from_file_handle(FILE* in, const Config* config);
+
   Status save_from_uri(const URI& file, const Config* config);
 
   Status save_from_vfs_fh(VFSFileHandle* file, const Config* config);
 
   Status save_from_buffer(void* data, uint64_t size, const Config* config);
+
+  Status export_to_file_handle(FILE* out, const Config* config);
+
+  Status export_to_uri(const URI& file, const Config* config);
+
+  Status export_to_vfs_fh(VFSFileHandle* file, const Config* config);
+
+  Status export_to_buffer(void* data, uint64_t* size, const Config* config);
+
+  uint64_t size();
+
+  //  Status load_original_file_uri();
+  //  Status load__uri();
+  //  Status load_original_file_uri();
+  //  Status load_original_file_uri();
 
  private:
   //  std::optional<EncryptionKey> get_encryption_key_from_config(const Config&
@@ -77,6 +108,8 @@ class File : public Array {
   URI original_file_uri_;
 
   FileSchema file_schema_;
+
+  uint64_t offset_;
 };
 
 }  // namespace sm

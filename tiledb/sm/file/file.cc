@@ -31,7 +31,10 @@
  */
 
 #include "tiledb/sm/file/file.h"
+#include "tiledb/common/logger.h"
 #include "tiledb/sm/enums/encryption_type.h"
+#include "tiledb/sm/enums/query_status.h"
+#include "tiledb/sm/enums/query_type.h"
 #include "tiledb/sm/enums/vfs_mode.h"
 #include "tiledb/sm/filesystem/vfs.h"
 #include "tiledb/sm/global_state/unit_test_config.h"
@@ -47,7 +50,10 @@ namespace sm {
 /* ********************************* */
 
 File::File(const URI& array_uri, StorageManager* storage_manager)
-    : Array(array_uri, storage_manager) {
+    : Array(array_uri, storage_manager)
+    , original_file_uri_("")
+    , file_schema_()
+    , offset_(0) {
   // We want to default these incase the user doesn't set it.
   // This is required for writes to the query and the metadata get the same
   // timestamp
@@ -58,6 +64,41 @@ File::File(const URI& array_uri, StorageManager* storage_manager)
 /* ********************************* */
 /*                API                */
 /* ********************************* */
+
+Status File::open(
+    QueryType query_type,
+    EncryptionType encryption_type,
+    const void* encryption_key,
+    uint32_t key_length) {
+  //  Array::open(query_type, encryption_type, encryption_key, key_length);
+  return Array::open(
+      query_type,
+      timestamp_start_,
+      timestamp_end_,
+      encryption_type,
+      encryption_key,
+      key_length);
+}
+
+Status File::open(
+    QueryType query_type,
+    uint64_t timestamp_start,
+    uint64_t timestamp_end,
+    EncryptionType encryption_type,
+    const void* encryption_key,
+    uint32_t key_length) {
+  Array::open(
+      query_type,
+      timestamp_start,
+      timestamp_end,
+      encryption_type,
+      encryption_key,
+      key_length);
+
+  //  if (query_type == QueryType::READ) {
+  //    get_original_file_uri()
+  //  }
+}
 
 void File::set_original_file_uri(const URI& original_file_uri) {
   original_file_uri_ = original_file_uri;
@@ -103,23 +144,70 @@ Status File::create_from_vfs_fh(
   return Status::Ok();
 }
 
+Status File::save_from_file_handle(FILE* in, const Config* config) {
+  try {
+    if (query_type_ != QueryType::WRITE)
+      return Status::FileError(
+          "Can not save file; File opened in read mode not write mode");
+
+    fseek(in, 0L, SEEK_END);
+    uint64_t size = ftell(in);
+    rewind(in);
+    Buffer buffer;
+    buffer.realloc(size);
+    fread(buffer.data(), 1, size, in);
+
+    RETURN_NOT_OK(save_from_buffer(buffer.data(), size, config));
+
+    //    std::string uri_string = file->uri().to_string();
+    //    put_metadata(
+    //        constants::file_metadata_original_file_name_key.c_str(),
+    //        Datatype::STRING_ASCII,
+    //        uri_string.size(),
+    //        uri_string.c_str());
+    // TODO: add these
+    //    put_metadata(constants::file_metadata_ext_key.c_str(),
+    //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
+    //    put_metadata(constants::file_metadata_mime_key.c_str(),
+    //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+
+  return Status::Ok();
+}
+
 Status File::save_from_uri(const URI& file, const Config* config) {
-  VFS vfs;
-  // Initialize VFS object
-  auto stats = storage_manager_->stats();
-  auto compute_tp = storage_manager_->compute_tp();
-  auto io_tp = storage_manager_->io_tp();
-  auto vfs_config = config ? config : nullptr;
-  auto ctx_config = storage_manager_->config();
-  RETURN_NOT_OK(vfs.init(stats, compute_tp, io_tp, &ctx_config, vfs_config));
+  try {
+    if (query_type_ != QueryType::WRITE)
+      return Status::FileError(
+          "Can not save file; File opened in read mode; Reopen in write mode");
 
-  VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
+    VFS vfs;
+    // Initialize VFS object
+    auto stats = storage_manager_->stats();
+    auto compute_tp = storage_manager_->compute_tp();
+    auto io_tp = storage_manager_->io_tp();
+    auto vfs_config = config ? config : nullptr;
+    auto ctx_config = storage_manager_->config();
+    RETURN_NOT_OK(vfs.init(stats, compute_tp, io_tp, &ctx_config, vfs_config));
 
-  return save_from_vfs_fh(&vfsfh, config);
+    VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
+
+    return save_from_vfs_fh(&vfsfh, config);
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+
+  return Status::Ok();
 }
 
 Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
   try {
+    if (query_type_ != QueryType::WRITE)
+      return Status::FileError(
+          "Can not save file; File opened in read mode; Reopen in write mode");
+
     uint64_t size = file->size();
     Buffer buffer;
     buffer.realloc(size);
@@ -146,6 +234,10 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
 
 Status File::save_from_buffer(void* data, uint64_t size, const Config* config) {
   try {
+    if (query_type_ != QueryType::WRITE)
+      return Status::FileError(
+          "Can not save file; File opened in read mode; Reopen in write mode");
+
     Query query(storage_manager_, this);
 
     // Set write buffer
@@ -164,6 +256,139 @@ Status File::save_from_buffer(void* data, uint64_t size, const Config* config) {
     return Status::FileError(e.what());
   }
 
+  return Status::Ok();
+}
+
+Status File::export_to_file_handle(FILE* out, const Config* config) {
+  try {
+    if (query_type_ != QueryType::READ)
+      return Status::FileError(
+          "Can not export file; File opened in write mode; Reopen in read "
+          "mode");
+
+    uint64_t file_size = size();
+    uint64_t buffer_size = file_size;
+    Buffer data;
+    data.realloc(buffer_size);
+
+    Query query(storage_manager_, this);
+
+    // Set read buffer
+    RETURN_NOT_OK(query.set_buffer(
+        constants::file_attribute_name, data.data(), &buffer_size));
+    std::array<uint64_t, 2> subarray = {offset_, offset_ + file_size - 1};
+
+    do {
+      // Set subarray
+      RETURN_NOT_OK(query.set_subarray(&subarray));
+      RETURN_NOT_OK(query.submit());
+
+      // Check if query could not be completed
+      if (buffer_size == 0)
+        return Status::FileError(
+            "Unable to export entire file; Query not able to complete with "
+            "records");
+
+      uint64_t written_bytes = fwrite(data.data(), 1, buffer_size, out);
+      if (written_bytes != buffer_size)
+        global_logger().warn(
+            "File export wrote " + std::to_string(written_bytes) +
+            " but file size is " + std::to_string(file_size) +
+            ". The export likely is incomplete.");
+
+    } while (query.status() != QueryStatus::COMPLETED);
+
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+  return Status::Ok();
+}
+
+Status File::export_to_uri(const URI& file, const Config* config) {
+  try {
+    if (query_type_ != QueryType::READ)
+      return Status::FileError(
+          "Can not export file; File opened in write mode; Reopen in read "
+          "mode");
+    VFS vfs;
+    // Initialize VFS object
+    auto stats = storage_manager_->stats();
+    auto compute_tp = storage_manager_->compute_tp();
+    auto io_tp = storage_manager_->io_tp();
+    auto vfs_config = config ? config : nullptr;
+    auto ctx_config = storage_manager_->config();
+    RETURN_NOT_OK(vfs.init(stats, compute_tp, io_tp, &ctx_config, vfs_config));
+
+    VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_WRITE);
+
+    return export_to_vfs_fh(&vfsfh, config);
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+  return Status::Ok();
+}
+
+Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
+  try {
+    if (query_type_ != QueryType::READ)
+      return Status::FileError(
+          "Can not export file; File opened in write mode; Reopen in read "
+          "mode");
+
+    uint64_t file_size = size();
+    uint64_t buffer_size = file_size;
+    Buffer data;
+    data.realloc(buffer_size);
+
+    Query query(storage_manager_, this);
+
+    // Set read buffer
+    RETURN_NOT_OK(query.set_buffer(
+        constants::file_attribute_name, data.data(), &buffer_size));
+    std::array<uint64_t, 2> subarray = {offset_, offset_ + file_size - 1};
+
+    do {
+      // Set subarray
+      RETURN_NOT_OK(query.set_subarray(&subarray));
+      RETURN_NOT_OK(query.submit());
+
+      // Check if query could not be completed
+      if (buffer_size == 0)
+        return Status::FileError(
+            "Unable to export entire file; Query not able to complete with "
+            "records");
+
+      file->write(data.data(), buffer_size);
+
+    } while (query.status() != QueryStatus::COMPLETED);
+
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+  return Status::Ok();
+}
+
+Status File::export_to_buffer(
+    void* data, uint64_t* size, const Config* config) {
+  try {
+    if (query_type_ != QueryType::READ)
+      return Status::FileError(
+          "Can not export file; File opened in write mode; Reopen in read "
+          "mode");
+
+    Query query(storage_manager_, this);
+
+    // Set read buffer
+    RETURN_NOT_OK(query.set_buffer(constants::file_attribute_name, data, size));
+    std::array<uint64_t, 2> subarray = {offset_, offset_ + *size - 1};
+
+    // Set subarray
+    RETURN_NOT_OK(query.set_subarray(&subarray));
+    RETURN_NOT_OK(query.submit());
+
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
   return Status::Ok();
 }
 
@@ -210,6 +435,22 @@ const EncryptionKey& File::get_encryption_key_from_config(
       encryption_key.set_key(encryption_type, encryption_key_cstr, key_length));
 
   return std::move(encryption_key);
+}
+
+uint64_t File::size() {
+  const uint64_t* size = nullptr;
+  Datatype datatype = Datatype::UINT64;
+  uint32_t val_num = 1;
+  THROW_NOT_OK(get_metadata(
+      constants::file_metadata_size_key.c_str(),
+      &datatype,
+      &val_num,
+      reinterpret_cast<const void**>(&size)));
+
+  if (size == nullptr)
+    return 0;
+
+  return *size;
 }
 
 // void File::get_magic();
