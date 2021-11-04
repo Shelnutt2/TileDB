@@ -129,7 +129,7 @@ struct tiledb_fragment_info_t {
 };
 
 struct tiledb_file_t {
-  tiledb::sm::File* file_t = nullptr;
+  tiledb::sm::File* file_ = nullptr;
 };
 
 #endif

@@ -31,13 +31,13 @@
  * This file defines the C API of TileDB.
  */
 
-#include "tiledb/sm/c_api/tiledb_helpers.h"
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/common/heap_profiler.h"
 #include "tiledb/common/logger.h"
 #include "tiledb/sm/array/array.h"
 #include "tiledb/sm/array_schema/array_schema.h"
 #include "tiledb/sm/c_api/tiledb_experimental.h"
+#include "tiledb/sm/c_api/tiledb_helpers.h"
 #include "tiledb/sm/c_api/tiledb_serialization.h"
 #include "tiledb/sm/c_api/tiledb_struct_def.h"
 #include "tiledb/sm/config/config.h"

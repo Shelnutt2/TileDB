@@ -29,9 +29,9 @@
 #ifndef TILEDB_HELPERS_H
 #define TILEDB_HELPERS_H
 
-
 #include "tiledb/sm/c_api/tiledb.h"
 #include "tiledb/sm/c_api/tiledb_struct_def.h"
+#include "tiledb/sm/enums/filter_type.h"
 
 /* ********************************* */
 /*         AUXILIARY FUNCTIONS       */
@@ -290,6 +290,16 @@ inline int32_t sanity_check(
   return TILEDB_OK;
 }
 
+inline int32_t sanity_check(tiledb_ctx_t* ctx, const tiledb_file_t* file) {
+  if (file == nullptr || file->file_ == nullptr) {
+    auto st = Status::Error("Invalid TileDB file object");
+    LOG_STATUS(st);
+    save_error(ctx, st);
+    return TILEDB_ERR;
+  }
+  return TILEDB_OK;
+}
+
 inline int32_t check_filter_type(
     tiledb_ctx_t* ctx, tiledb_filter_t* filter, tiledb_filter_type_t type) {
   auto cpp_type = static_cast<tiledb::sm::FilterType>(type);
@@ -325,4 +335,4 @@ inline int32_t check_filter_type(
     return save_error(ctx, _s);                                            \
   }()
 
-#endif // TILEDB_HELPERS_H
+#endif  // TILEDB_HELPERS_H

@@ -656,6 +656,20 @@ const std::array<std::string, 6> cert_files_linux = {
 const std::string config_delimiter = ",";
 
 const std::string file_attribute_name = "contents";
+
+/** Name of the metadata key used in tiledb_file_t objects for current size. */
+const std::string file_metadata_size_key = "file_size";
+
+/** Name of the metadata key used in tiledb_file_t objects for mime type. */
+const std::string file_metadata_mime_key = "mime";
+
+/** Name of the metadata key used in tiledb_file_t objects for original file
+ * extension . */
+const std::string file_metadata_ext_key = "file_extension";
+
+/** Name of the metadata key used in tiledb_file_t objects for original file
+ * name. */
+const std::string file_metadata_original_file_name_key = "original_file_name";
 }  // namespace constants
 
 }  // namespace sm

@@ -575,6 +575,20 @@ extern const std::string config_delimiter;
 
 /** Name of the single attribute used in tiledb_file_t objects. */
 extern const std::string file_attribute_name;
+
+/** Name of the metadata key used in tiledb_file_t objects for current size. */
+extern const std::string file_metadata_size_key;
+
+/** Name of the metadata key used in tiledb_file_t objects for mime type. */
+extern const std::string file_metadata_mime_key;
+
+/** Name of the metadata key used in tiledb_file_t objects for original file
+ * extension . */
+extern const std::string file_metadata_ext_key;
+
+/** Name of the metadata key used in tiledb_file_t objects for original file
+ * name. */
+extern const std::string file_metadata_original_file_name_key;
 }  // namespace constants
 
 }  // namespace sm

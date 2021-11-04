@@ -35,6 +35,8 @@
 
 #include "tiledb/common/status.h"
 #include "tiledb/sm/array/array.h"
+#include "tiledb/sm/file/file_schema.h"
+#include "tiledb/sm/filesystem/vfs_file_handle.h"
 #include "tiledb/sm/misc/uri.h"
 #include "tiledb/sm/storage_manager/storage_manager.h"
 
@@ -49,14 +51,32 @@ class Array;
  * is associated with the timestamp it is opened at.
  */
 class File : public Array {
+ public:
   File(const URI& array_uri, StorageManager* storage_manager);
-
 
   void set_original_file_uri(const URI& original_file_uri);
 
+  Status create(const Config* config);
+
+  Status create_from_uri(const URI& file, const Config* config);
+
+  Status create_from_vfs_fh(const VFSFileHandle* file, const Config* config);
+
+  Status save_from_uri(const URI& file, const Config* config);
+
+  Status save_from_vfs_fh(VFSFileHandle* file, const Config* config);
+
+  Status save_from_buffer(void* data, uint64_t size, const Config* config);
+
  private:
+  //  std::optional<EncryptionKey> get_encryption_key_from_config(const Config&
+  //  config) const;
+  const EncryptionKey& get_encryption_key_from_config(
+      const Config& config) const;
 
   URI original_file_uri_;
+
+  FileSchema file_schema_;
 };
 
 }  // namespace sm

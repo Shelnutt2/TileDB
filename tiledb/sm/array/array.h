@@ -336,7 +336,7 @@ class Array {
   /** Returns the non-empty domain of the opened array. */
   void set_non_empty_domain(const NDRange& non_empty_domain);
 
- private:
+ protected:
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */
