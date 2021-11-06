@@ -178,68 +178,256 @@ TILEDB_EXPORT int32_t tiledb_array_upgrade_version(
 /*              FILE                 */
 /* ********************************* */
 
+/**
+ * Allocs the tiledb_file_t type
+ *
+ * @param ctx The TileDB context.
+ * @param array_uri the uri of the array.
+ * @param file The tiledb_file_t to be allocated.
+ * @param config Configuration parameters for the upgrade.
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_alloc(
     tiledb_ctx_t* ctx,
     const char* array_uri,
-    tiledb_file_t** file,
-    tiledb_config_t* config);
+    tiledb_file_t** file);
 
+
+/**
+ * Sets the file config.
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * // Set the config for the given file.
+ * tiledb_config_t* config;
+ * tiledb_file_set_config(ctx, file, config);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file to set the config for.
+ * @param config The config to be set.
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ *
+ * @note The file does not need to be opened via `tiledb_file_open` to use
+ *      this function.
+ * @note The config should be set before opening an file.
+ */
+TILEDB_EXPORT int32_t tiledb_file_set_config(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+
+/**
+ * Gets the file config.
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * // Retrieve the file for the given array.
+ * tiledb_config_t* config;
+ * tiledb_file_get_config(ctx, file, config);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file to set the config for.
+ * @param config Set to the retrieved config.
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ */
+TILEDB_EXPORT int32_t tiledb_file_get_config(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+
+/**
+ *
+ * Destroys an file object, freeing associated memory.
+*
+* **Example:**
+*
+* @code{.c}
+* tiledb_file_free(&file);
+* @endcode
+ * @param file The file object to destroy
+ */
+TILEDB_EXPORT void tiledb_file_free(tiledb_file_t** file);
+
+/**
+ *
+ * @param ctx The TileDB context.
+ * @param file The tiledb_file_t to be created.
+ * @param config Configuration parameters for the upgrade.
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_create_default(
     tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param input_uri
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_create_from_uri(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     const char* input_uri,
     tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param input
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_create_from_vfs_fh(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     tiledb_vfs_fh_t* input,
     tiledb_config_t* config);
 
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param in
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_store_fh(
     tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* in, tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param bytes
+ * @param size
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_store_raw(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     void* bytes,
     uint64_t size,
     tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_store_uri(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     const char*,
     tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_store_vfs_fh(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     tiledb_vfs_fh_t*,
     tiledb_config_t* config);
 
+/**
+ *
+ * @param ctx
+ * @param file
+ * @return
+ */
 TILEDB_EXPORT int32_t
 tiledb_file_get_mime(tiledb_ctx_t* ctx, tiledb_file_t* file, const char*);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_get_original_name(
     tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @return
+ */
 TILEDB_EXPORT int32_t
 tiledb_file_get_extension(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param array_schema
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_get_schema(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     tiledb_array_schema_t** array_schema);
 
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param out
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_export_fh(
     tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* out, tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param bytes
+ * @param size
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_export_raw(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     void* bytes,
     uint64_t* size,
     tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param output_uri
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_export_uri(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,
     const char* output_uri,
     tiledb_config_t* config);
+
+/**
+ *
+ * @param ctx
+ * @param file
+ * @param output
+ * @param config
+ * @return
+ */
 TILEDB_EXPORT int32_t tiledb_file_export_vfs_fh(
     tiledb_ctx_t* ctx,
     tiledb_file_t* file,

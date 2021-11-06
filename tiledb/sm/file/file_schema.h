@@ -59,6 +59,8 @@ enum class ArrayType : uint8_t;
 class FileSchema : public ArraySchema {
   static const uint64_t default_extent = 1024;
 
+  constexpr static const std::array<uint64_t, 2> default_domain = {0, std::numeric_limits<uint64_t>::max()-1};
+
   //  static inline tdb_shared_ptr<CompressionFilter> zstd =
   //  tdb_make_shared(CompressionFilter, CompressionFilter(
   //      constants::cell_var_offsets_compression,

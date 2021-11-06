@@ -106,8 +106,9 @@ void File::set_original_file_uri(const URI& original_file_uri) {
 
 Status File::create(const Config* config) {
   try {
+    auto encryption_key = get_encryption_key_from_config(config_);
     RETURN_NOT_OK(storage_manager_->array_create(
-        array_uri_, &file_schema_, get_encryption_key_from_config(config_)));
+        array_uri_, &file_schema_, *encryption_key));
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -127,16 +128,24 @@ Status File::create_from_uri(const URI& file, const Config* config) {
 
   VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
 
-  return create_from_vfs_fh(&vfsfh, config);
+  auto st = create_from_vfs_fh(&vfsfh, config);
+  auto vfs_st = vfs.terminate();
+  if(!vfs_st.ok())
+    LOG_STATUS(vfs_st);
+  return st;
 }
 
 Status File::create_from_vfs_fh(
     const VFSFileHandle* file, const Config* config) {
   try {
+    if (file->mode() != VFSMode::VFS_READ)
+      return Status::FileError("File must be open in READ mode");
+
     uint64_t size = file->size();
     file_schema_.set_schema_based_on_file_details(size, false);
+    auto encrpytion_key = get_encryption_key_from_config(config_);
     RETURN_NOT_OK(storage_manager_->array_create(
-        array_uri_, &file_schema_, get_encryption_key_from_config(config_)));
+        array_uri_, &file_schema_, *encrpytion_key));
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -150,9 +159,15 @@ Status File::save_from_file_handle(FILE* in, const Config* config) {
       return Status::FileError(
           "Can not save file; File opened in read mode not write mode");
 
+    // Get file size
     fseek(in, 0L, SEEK_END);
     uint64_t size = ftell(in);
     rewind(in);
+
+    // TODO: Add config option to let the user control how much of the file we
+    // we read
+    // We can support partial writes either global order (single fragment)
+    // or row-major with multiple fragment but same timestamp
     Buffer buffer;
     buffer.realloc(size);
     fread(buffer.data(), 1, size, in);
@@ -208,6 +223,13 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
       return Status::FileError(
           "Can not save file; File opened in read mode; Reopen in write mode");
 
+    if (file->mode() != VFSMode::VFS_READ)
+      return Status::FileError("File must be open in READ mode");
+
+    // TODO: Add config option to let the user control how much of the file we
+    // we read
+    // We can support partial writes either global order (single fragment)
+    // or row-major with multiple fragment but same timestamp
     uint64_t size = file->size();
     Buffer buffer;
     buffer.realloc(size);
@@ -274,6 +296,9 @@ Status File::export_to_file_handle(FILE* out, const Config* config) {
     Query query(storage_manager_, this);
 
     // Set read buffer
+    // TODO: Add config option to let the user control how much of the file we
+    // we read
+    // TODO: handle offset reading
     RETURN_NOT_OK(query.set_buffer(
         constants::file_attribute_name, data.data(), &buffer_size));
     std::array<uint64_t, 2> subarray = {offset_, offset_ + file_size - 1};
@@ -335,6 +360,9 @@ Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
           "Can not export file; File opened in write mode; Reopen in read "
           "mode");
 
+    if (file->mode() != VFSMode::VFS_WRITE && file->mode() != VFSMode::VFS_APPEND)
+      return Status::FileError("File must be open in WRITE OR APPEND mode");
+
     uint64_t file_size = size();
     uint64_t buffer_size = file_size;
     Buffer data;
@@ -343,6 +371,9 @@ Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
     Query query(storage_manager_, this);
 
     // Set read buffer
+    // TODO: Add config option to let the user control how much of the file we
+    // we read
+    // TODO: handle offset reading
     RETURN_NOT_OK(query.set_buffer(
         constants::file_attribute_name, data.data(), &buffer_size));
     std::array<uint64_t, 2> subarray = {offset_, offset_ + file_size - 1};
@@ -379,6 +410,7 @@ Status File::export_to_buffer(
     Query query(storage_manager_, this);
 
     // Set read buffer
+    // TODO: handle offset reading
     RETURN_NOT_OK(query.set_buffer(constants::file_attribute_name, data, size));
     std::array<uint64_t, 2> subarray = {offset_, offset_ + *size - 1};
 
@@ -394,12 +426,12 @@ Status File::export_to_buffer(
 
 // std::optional<EncryptionKey> File::get_encryption_key_from_config(const
 // Config& config) const {
-const EncryptionKey& File::get_encryption_key_from_config(
+tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
     const Config& config) const {
   std::string encryption_key_from_cfg;
-  const char* encryption_key_cstr;
-  EncryptionType encryption_type;
-  EncryptionKey encryption_key;
+  const char* encryption_key_cstr = nullptr;
+  EncryptionType encryption_type = EncryptionType::NO_ENCRYPTION;
+  tdb_unique_ptr<EncryptionKey> encryption_key = tdb_unique_ptr<EncryptionKey>(new EncryptionKey());
   uint64_t key_length = 0;
   bool found = false;
   encryption_key_from_cfg = config.get("sm.encryption_key", &found);
@@ -432,9 +464,9 @@ const EncryptionKey& File::get_encryption_key_from_config(
 
   // Copy the key bytes.
   THROW_NOT_OK(
-      encryption_key.set_key(encryption_type, encryption_key_cstr, key_length));
+      encryption_key->set_key(encryption_type, encryption_key_cstr, key_length));
 
-  return std::move(encryption_key);
+  return encryption_key;
 }
 
 uint64_t File::size() {

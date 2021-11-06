@@ -70,7 +70,7 @@ class Array {
   Array(const Array& rhs);
 
   /** Destructor. */
-  ~Array() = default;
+  virtual ~Array() = default;
 
   /* ********************************* */
   /*                API                */

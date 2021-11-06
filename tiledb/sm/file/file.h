@@ -102,7 +102,7 @@ class File : public Array {
  private:
   //  std::optional<EncryptionKey> get_encryption_key_from_config(const Config&
   //  config) const;
-  const EncryptionKey& get_encryption_key_from_config(
+  tdb_unique_ptr<EncryptionKey> get_encryption_key_from_config(
       const Config& config) const;
 
   URI original_file_uri_;

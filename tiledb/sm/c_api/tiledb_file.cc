@@ -38,8 +38,7 @@
 int32_t tiledb_file_alloc(
     tiledb_ctx_t* ctx,
     const char* array_uri,
-    tiledb_file_t** file,
-    tiledb_config_t* config) {
+    tiledb_file_t** file) {
   if (sanity_check(ctx) == TILEDB_ERR) {
     *file = nullptr;
     return TILEDB_ERR;
@@ -79,6 +78,53 @@ int32_t tiledb_file_alloc(
     save_error(ctx, st);
     return TILEDB_OOM;
   }
+
+  // Success
+  return TILEDB_OK;
+}
+
+void tiledb_file_free(tiledb_file_t** file) {
+  if (file != nullptr && *file != nullptr) {
+    delete (*file)->file_;
+    delete (*file);
+    *file = nullptr;
+  }
+}
+
+
+int32_t tiledb_file_set_config(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config) {
+  // Sanity check
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR ||
+      sanity_check(ctx, config) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  if (SAVE_ERROR_CATCH(ctx, file->file_->set_config(*(config->config_))))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_get_config(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t** config) {
+  if (sanity_check(ctx) == TILEDB_ERR || sanity_check(ctx, file) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  // Create a new config struct
+  *config = new (std::nothrow) tiledb_config_t;
+  if (*config == nullptr)
+    return TILEDB_OOM;
+
+  // Create storage manager
+  (*config)->config_ = new (std::nothrow) tiledb::sm::Config();
+  if ((*config)->config_ == nullptr) {
+    delete (*config);
+    *config = nullptr;
+    return TILEDB_OOM;
+  }
+
+  *((*config)->config_) = file->file_->config();
 
   // Success
   return TILEDB_OK;
