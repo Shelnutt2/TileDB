@@ -87,17 +87,13 @@ Status File::open(
     EncryptionType encryption_type,
     const void* encryption_key,
     uint32_t key_length) {
-  Array::open(
+  return Array::open(
       query_type,
       timestamp_start,
       timestamp_end,
       encryption_type,
       encryption_key,
       key_length);
-
-  //  if (query_type == QueryType::READ) {
-  //    get_original_file_uri()
-  //  }
 }
 
 void File::set_original_file_uri(const URI& original_file_uri) {
@@ -130,7 +126,7 @@ Status File::create_from_uri(const URI& file, const Config* config) {
 
   auto st = create_from_vfs_fh(&vfsfh, config);
   auto vfs_st = vfs.terminate();
-  if(!vfs_st.ok())
+  if (!vfs_st.ok())
     LOG_STATUS(vfs_st);
   return st;
 }
@@ -209,7 +205,11 @@ Status File::save_from_uri(const URI& file, const Config* config) {
 
     VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
 
-    return save_from_vfs_fh(&vfsfh, config);
+    auto st = save_from_vfs_fh(&vfsfh, config);
+    auto vfs_st = vfs.terminate();
+    if (!vfs_st.ok())
+      LOG_STATUS(vfs_st);
+    return st;
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -236,12 +236,12 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
     RETURN_NOT_OK(file->read(0, buffer.data(), size));
     RETURN_NOT_OK(save_from_buffer(buffer.data(), size, config));
 
-    std::string uri_string = file->uri().to_string();
+    std::string uri_basename = file->uri().last_path_part();
     put_metadata(
         constants::file_metadata_original_file_name_key.c_str(),
         Datatype::STRING_ASCII,
-        uri_string.size(),
-        uri_string.c_str());
+        uri_basename.size(),
+        uri_basename.c_str());
     // TODO: add these
     //    put_metadata(constants::file_metadata_ext_key.c_str(),
     //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
@@ -346,7 +346,11 @@ Status File::export_to_uri(const URI& file, const Config* config) {
 
     VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_WRITE);
 
-    return export_to_vfs_fh(&vfsfh, config);
+    auto st = export_to_vfs_fh(&vfsfh, config);
+    auto vfs_st = vfs.terminate();
+    if (!vfs_st.ok())
+      LOG_STATUS(vfs_st);
+    return st;
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -360,10 +364,15 @@ Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
           "Can not export file; File opened in write mode; Reopen in read "
           "mode");
 
-    if (file->mode() != VFSMode::VFS_WRITE && file->mode() != VFSMode::VFS_APPEND)
+    if (file->mode() != VFSMode::VFS_WRITE &&
+        file->mode() != VFSMode::VFS_APPEND)
       return Status::FileError("File must be open in WRITE OR APPEND mode");
 
     uint64_t file_size = size();
+    // Handle empty file
+    if (file_size == 0) {
+      return Status::Ok();
+    }
     uint64_t buffer_size = file_size;
     Buffer data;
     data.realloc(buffer_size);
@@ -431,7 +440,8 @@ tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
   std::string encryption_key_from_cfg;
   const char* encryption_key_cstr = nullptr;
   EncryptionType encryption_type = EncryptionType::NO_ENCRYPTION;
-  tdb_unique_ptr<EncryptionKey> encryption_key = tdb_unique_ptr<EncryptionKey>(new EncryptionKey());
+  tdb_unique_ptr<EncryptionKey> encryption_key =
+      tdb_unique_ptr<EncryptionKey>(new EncryptionKey());
   uint64_t key_length = 0;
   bool found = false;
   encryption_key_from_cfg = config.get("sm.encryption_key", &found);
@@ -463,8 +473,8 @@ tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
   }
 
   // Copy the key bytes.
-  THROW_NOT_OK(
-      encryption_key->set_key(encryption_type, encryption_key_cstr, key_length));
+  THROW_NOT_OK(encryption_key->set_key(
+      encryption_type, encryption_key_cstr, key_length));
 
   return encryption_key;
 }
@@ -483,6 +493,21 @@ uint64_t File::size() {
     return 0;
 
   return *size;
+}
+
+Status File::size(uint64_t* size) {
+  Datatype datatype = Datatype::UINT64;
+  uint32_t val_num = 1;
+  *size = 0;
+  const uint64_t *size_meta;
+  RETURN_NOT_OK(get_metadata(
+      constants::file_metadata_size_key.c_str(),
+      &datatype,
+      &val_num,
+      reinterpret_cast<const void**>(&size_meta)));
+  *size = *size_meta;
+
+  return Status::Ok();
 }
 
 // void File::get_magic();

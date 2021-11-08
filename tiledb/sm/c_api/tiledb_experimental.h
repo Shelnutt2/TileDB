@@ -188,10 +188,7 @@ TILEDB_EXPORT int32_t tiledb_array_upgrade_version(
  * @return
  */
 TILEDB_EXPORT int32_t tiledb_file_alloc(
-    tiledb_ctx_t* ctx,
-    const char* array_uri,
-    tiledb_file_t** file);
-
+    tiledb_ctx_t* ctx, const char* array_uri, tiledb_file_t** file);
 
 /**
  * Sets the file config.
@@ -216,7 +213,8 @@ TILEDB_EXPORT int32_t tiledb_file_alloc(
  *      this function.
  * @note The config should be set before opening an file.
  */
-TILEDB_EXPORT int32_t tiledb_file_set_config(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_set_config(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
 
 /**
  * Gets the file config.
@@ -234,17 +232,18 @@ TILEDB_EXPORT int32_t tiledb_file_set_config(tiledb_ctx_t* ctx, tiledb_file_t* f
  * @param config Set to the retrieved config.
  * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int32_t tiledb_file_get_config(tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
+TILEDB_EXPORT int32_t tiledb_file_get_config(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
 
 /**
  *
  * Destroys an file object, freeing associated memory.
-*
-* **Example:**
-*
-* @code{.c}
-* tiledb_file_free(&file);
-* @endcode
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_free(&file);
+ * @endcode
  * @param file The file object to destroy
  */
 TILEDB_EXPORT void tiledb_file_free(tiledb_file_t** file);
@@ -563,6 +562,47 @@ TILEDB_EXPORT int32_t tiledb_file_get_open_timestamp_end(
 TILEDB_EXPORT int32_t tiledb_file_open(
     tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_query_type_t query_type);
 
+/**
+ * Closes a TileDB file.
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "hdfs:///tiledb_files/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * tiledb_file_close(ctx, file);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object to be closed.
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ *
+ * @note If the file object has already been closed, the function has
+ *     no effect.
+ */
+TILEDB_EXPORT int32_t tiledb_file_close(tiledb_ctx_t* ctx, tiledb_file_t* file);
+
+/**
+ * Get the size of the opened file
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "hdfs:///tiledb_files/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * uint64_t size = 0;
+ * tiledb_file_get_size(ctx, file, &size);
+ * tiledb_file_close(ctx, file);
+ * @endcode
+ *
+ * @param ctx  The TileDB context.
+ * @param file The file object to be closed.
+ * @param size of the file
+ * @return `TILEDB_OK` for success and `TILEDB_ERR` for error.
+ */
+TILEDB_EXPORT int32_t
+tiledb_file_get_size(tiledb_ctx_t* ctx, tiledb_file_t* file, uint64_t* size);
 #ifdef __cplusplus
 }
 #endif

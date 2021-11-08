@@ -130,11 +130,13 @@ Domain FileSchema::create_domain(uint64_t tile_extent) {
   Domain domain;
   Dimension dimension("position", Datatype::UINT64);
   std::array<uint64_t, 2> dim_domain = default_domain;
-//  std::cout << "tile_extent=" << tile_extent << ", dim_domain=[" << dim_domain[0] << ", " << dim_domain[1] << "]" << std::endl;
-  dim_domain[1] = dim_domain[1] - tile_extent - 1 ;
-//  std::cout << "dim_domain=[" << dim_domain[0] << ", " << dim_domain[1] << "]" << std::endl;
+  //  std::cout << "tile_extent=" << tile_extent << ", dim_domain=[" <<
+  //  dim_domain[0] << ", " << dim_domain[1] << "]" << std::endl;
+  dim_domain[1] = dim_domain[1] - tile_extent - 1;
+  //  std::cout << "dim_domain=[" << dim_domain[0] << ", " << dim_domain[1] <<
+  //  "]" << std::endl;
   dimension.set_domain(&dim_domain);
-//  std::cout << "here" << std::endl;
+  //  std::cout << "here" << std::endl;
   dimension.set_tile_extent(&tile_extent);
   FilterPipeline fp;
   fp.add_filter(BitWidthReductionFilter());

@@ -36,9 +36,7 @@
 #include "tiledb/sm/file/file.h"
 
 int32_t tiledb_file_alloc(
-    tiledb_ctx_t* ctx,
-    const char* array_uri,
-    tiledb_file_t** file) {
+    tiledb_ctx_t* ctx, const char* array_uri, tiledb_file_t** file) {
   if (sanity_check(ctx) == TILEDB_ERR) {
     *file = nullptr;
     return TILEDB_ERR;
@@ -90,7 +88,6 @@ void tiledb_file_free(tiledb_file_t** file) {
     *file = nullptr;
   }
 }
-
 
 int32_t tiledb_file_set_config(
     tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config) {
@@ -386,8 +383,8 @@ int32_t tiledb_file_export_uri(
   }
   tiledb::sm::URI uri(output_uri);
   if (uri.is_invalid()) {
-    auto st = Status::Error(
-        "Failed to create file from path; Invalid output file URI");
+    auto st =
+        Status::Error("Failed to export file to path; Invalid output file URI");
     LOG_STATUS(st);
     save_error(ctx, st);
     return TILEDB_ERR;
@@ -477,6 +474,29 @@ int32_t tiledb_file_open(
               static_cast<tiledb::sm::EncryptionType>(TILEDB_NO_ENCRYPTION),
               nullptr,
               0)))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_close(tiledb_ctx_t* ctx, tiledb_file_t* file) {
+  if (sanity_check(ctx) == TILEDB_ERR || sanity_check(ctx, file) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  // Close file
+  if (SAVE_ERROR_CATCH(ctx, file->file_->close()))
+    return TILEDB_ERR;
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_get_size(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, uint64_t* size) {
+  if (sanity_check(ctx) == TILEDB_ERR || sanity_check(ctx, file) == TILEDB_ERR)
+    return TILEDB_ERR;
+
+  // Get file size
+  if (SAVE_ERROR_CATCH(ctx, file->file_->size(size)))
     return TILEDB_ERR;
 
   return TILEDB_OK;

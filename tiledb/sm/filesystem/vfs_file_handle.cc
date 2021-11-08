@@ -89,11 +89,9 @@ Status VFSFileHandle::open() {
   return vfs_->open_file(uri_, mode_);
 }
 
-
 VFSMode VFSFileHandle::mode() const {
   return mode_;
 }
-
 
 Status VFSFileHandle::read(uint64_t offset, void* buffer, uint64_t nbytes) {
   if (!is_open_) {

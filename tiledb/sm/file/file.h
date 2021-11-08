@@ -94,6 +94,8 @@ class File : public Array {
 
   uint64_t size();
 
+  Status size(uint64_t* size);
+
   //  Status load_original_file_uri();
   //  Status load__uri();
   //  Status load_original_file_uri();
