@@ -96,7 +96,7 @@ Status File::open(
       key_length);
 }
 
-Status File::create(const Config* config) {
+Status File::create([[maybe_unused]] const Config* config) {
   try {
     auto encryption_key = get_encryption_key_from_config(config_);
     RETURN_NOT_OK(storage_manager_->array_create(
@@ -128,7 +128,7 @@ Status File::create_from_uri(const URI& file, const Config* config) {
 }
 
 Status File::create_from_vfs_fh(
-    const VFSFileHandle* file, const Config* config) {
+    const VFSFileHandle* file, [[maybe_unused]] const Config* config) {
   try {
     if (file->mode() != VFSMode::VFS_READ)
       return Status::FileError("File must be open in READ mode");
@@ -181,13 +181,8 @@ Status File::save_from_file_handle(FILE* in, const Config* config) {
     uint64_t metadata_read_size = std::min<uint64_t>(1024, size);
     file_metadata.realloc(metadata_read_size);
     metadata_read_size = fread(file_metadata.data(), 1, metadata_read_size, in);
-    const std::string mime =
-        libmagic_get_mime(file_metadata.data(), metadata_read_size);
-    put_metadata(
-        constants::file_metadata_mime_key.c_str(),
-        Datatype::STRING_ASCII,
-        mime.size(),
-        mime.c_str());
+    store_mime_type(file_metadata, metadata_read_size);
+    store_mime_encoding(file_metadata, metadata_read_size);
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -244,26 +239,21 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
     RETURN_NOT_OK(save_from_buffer(buffer.data(), size, config));
 
     std::string uri_basename = file->uri().last_path_part();
-    put_metadata(
+    RETURN_NOT_OK(put_metadata(
         constants::file_metadata_original_file_name_key.c_str(),
         Datatype::STRING_ASCII,
         uri_basename.size(),
-        uri_basename.c_str());
+        uri_basename.c_str()));
 
     Buffer file_metadata;
     uint64_t metadata_read_size = std::min<uint64_t>(1024, size);
     file_metadata.realloc(metadata_read_size);
     RETURN_NOT_OK(file->read(0, file_metadata.data(), metadata_read_size));
-    const std::string mime =
-        libmagic_get_mime(file_metadata.data(), metadata_read_size);
     // TODO: add these
     //    put_metadata(constants::file_metadata_ext_key.c_str(),
     //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
-    put_metadata(
-        constants::file_metadata_mime_key.c_str(),
-        Datatype::STRING_ASCII,
-        mime.size(),
-        mime.c_str());
+    store_mime_type(file_metadata, metadata_read_size);
+    store_mime_encoding(file_metadata, metadata_read_size);
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -271,7 +261,8 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
   return Status::Ok();
 }
 
-Status File::save_from_buffer(void* data, uint64_t size, const Config* config) {
+Status File::save_from_buffer(
+    void* data, uint64_t size, [[maybe_unused]] const Config* config) {
   try {
     if (query_type_ != QueryType::WRITE)
       return Status::FileError(
@@ -298,7 +289,8 @@ Status File::save_from_buffer(void* data, uint64_t size, const Config* config) {
   return Status::Ok();
 }
 
-Status File::export_to_file_handle(FILE* out, const Config* config) {
+Status File::export_to_file_handle(
+    FILE* out, [[maybe_unused]] const Config* config) {
   try {
     if (query_type_ != QueryType::READ)
       return Status::FileError(
@@ -374,7 +366,8 @@ Status File::export_to_uri(const URI& file, const Config* config) {
   return Status::Ok();
 }
 
-Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
+Status File::export_to_vfs_fh(
+    VFSFileHandle* file, [[maybe_unused]] const Config* config) {
   try {
     if (query_type_ != QueryType::READ)
       return Status::FileError(
@@ -426,7 +419,7 @@ Status File::export_to_vfs_fh(VFSFileHandle* file, const Config* config) {
 }
 
 Status File::export_to_buffer(
-    void* data, uint64_t* size, const Config* config) {
+    void* data, uint64_t* size, [[maybe_unused]] const Config* config) {
   try {
     if (query_type_ != QueryType::READ)
       return Status::FileError(
@@ -458,7 +451,7 @@ tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
   const char* encryption_key_cstr = nullptr;
   EncryptionType encryption_type = EncryptionType::NO_ENCRYPTION;
   tdb_unique_ptr<EncryptionKey> encryption_key =
-      tdb_unique_ptr<EncryptionKey>(new EncryptionKey());
+      tdb_unique_ptr<EncryptionKey>(tdb_new(EncryptionKey));
   uint64_t key_length = 0;
   bool found = false;
   encryption_key_from_cfg = config.get("sm.encryption_key", &found);
@@ -527,12 +520,83 @@ Status File::size(uint64_t* size) {
   return Status::Ok();
 }
 
-std::string File::libmagic_get_mime(void* data, uint64_t size) {
-  magic_t magic = magic_open(MAGIC_MIME);
+Status File::mime_type(const char** mime_type, uint32_t* size) {
+  Datatype datatype = Datatype::STRING_ASCII;
+  *mime_type = nullptr;
+  *size = 0;
+  RETURN_NOT_OK(get_metadata(
+      constants::file_metadata_mime_encoding_key.c_str(),
+      &datatype,
+      size,
+      reinterpret_cast<const void**>(mime_type)));
+
+  return Status::Ok();
+}
+
+Status File::mime_encoding(const char** mime_encoding, uint32_t* size) {
+  Datatype datatype = Datatype::STRING_ASCII;
+  *mime_encoding = nullptr;
+  *size = 0;
+  RETURN_NOT_OK(get_metadata(
+      constants::file_metadata_mime_encoding_key.c_str(),
+      &datatype,
+      size,
+      reinterpret_cast<const void**>(mime_encoding)));
+
+  return Status::Ok();
+}
+
+const char* File::libmagic_get_mime(void* data, uint64_t size) {
+  magic_t magic = magic_open(MAGIC_MIME_TYPE);
+  if (magic_load(magic, nullptr) != 0) {
+    LOG_STATUS(Status::FileError(
+        std::string("cannot load magic database - ") + magic_error(magic)));
+    magic_close(magic);
+    return nullptr;
+  }
   return magic_buffer(magic, data, size);
 }
 
-// void File::get_magic();
+const char* File::libmagic_get_mime_encoding(void* data, uint64_t size) {
+  magic_t magic = magic_open(MAGIC_MIME_ENCODING);
+  if (magic_load(magic, nullptr) != 0) {
+    LOG_STATUS(Status::FileError(
+        std::string("cannot load magic database - ") + magic_error(magic)));
+    magic_close(magic);
+    return nullptr;
+  }
+  return magic_buffer(magic, data, size);
+}
+
+Status File::store_mime_type(
+    const Buffer& file_metadata, uint64_t metadata_read_size) {
+  const char* mime =
+      libmagic_get_mime(file_metadata.data(), metadata_read_size);
+  uint64_t mime_size = 0;
+  if (mime != nullptr) {
+    mime_size = strlen(mime);
+  }
+  return put_metadata(
+      constants::file_metadata_mime_type_key.c_str(),
+      Datatype::STRING_ASCII,
+      mime_size,
+      mime);
+}
+
+Status File::store_mime_encoding(
+    const Buffer& file_metadata, uint64_t metadata_read_size) {
+  const char* mime =
+      libmagic_get_mime_encoding(file_metadata.data(), metadata_read_size);
+  uint64_t mime_size = 0;
+  if (mime != nullptr) {
+    mime_size = strlen(mime);
+  }
+  return put_metadata(
+      constants::file_metadata_mime_encoding_key.c_str(),
+      Datatype::STRING_ASCII,
+      mime_size,
+      mime);
+}
 
 }  // namespace sm
 }  // namespace tiledb

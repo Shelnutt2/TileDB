@@ -580,7 +580,10 @@ extern const std::string file_attribute_name;
 extern const std::string file_metadata_size_key;
 
 /** Name of the metadata key used in tiledb_file_t objects for mime type. */
-extern const std::string file_metadata_mime_key;
+extern const std::string file_metadata_mime_type_key;
+
+/** Name of the metadata key used in tiledb_file_t objects for mime encoding. */
+extern const std::string file_metadata_mime_encoding_key;
 
 /** Name of the metadata key used in tiledb_file_t objects for original file
  * extension . */

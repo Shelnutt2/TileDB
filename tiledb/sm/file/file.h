@@ -104,7 +104,7 @@ class File : public Array {
    * @param config
    * @return
    */
-  Status create(const Config* config);
+  Status create([[maybe_unused]] const Config* config);
 
   /**
    * Create file array based on input file to heuristics
@@ -120,7 +120,8 @@ class File : public Array {
    * @param config TileDB Config object for settings.
    * @return Status
    */
-  Status create_from_vfs_fh(const VFSFileHandle* file, const Config* config);
+  Status create_from_vfs_fh(
+      const VFSFileHandle* file, [[maybe_unused]] const Config* config);
 
   /**
    * Read input file and store in file array
@@ -153,7 +154,8 @@ class File : public Array {
    * @param config TileDB Config object for settings.
    * @return Status
    */
-  Status save_from_buffer(void* data, uint64_t size, const Config* config);
+  Status save_from_buffer(
+      void* data, uint64_t size, [[maybe_unused]] const Config* config);
 
   /**
    * Export file array to FILE handle
@@ -161,7 +163,8 @@ class File : public Array {
    * @param config TileDB Config object for settings.
    * @return Status
    */
-  Status export_to_file_handle(FILE* out, const Config* config);
+  Status export_to_file_handle(
+      FILE* out, [[maybe_unused]] const Config* config);
 
   /**
    * Export file array to URI.
@@ -177,7 +180,8 @@ class File : public Array {
    * @param config TileDB Config object for settings.
    * @return Status
    */
-  Status export_to_vfs_fh(VFSFileHandle* file, const Config* config);
+  Status export_to_vfs_fh(
+      VFSFileHandle* file, [[maybe_unused]] const Config* config);
 
   /**
    * Export file array to buffer.
@@ -186,7 +190,8 @@ class File : public Array {
    * @param config TileDB Config object for settings.
    * @return Status
    */
-  Status export_to_buffer(void* data, uint64_t* size, const Config* config);
+  Status export_to_buffer(
+      void* data, uint64_t* size, [[maybe_unused]] const Config* config);
 
   /**
    * Get size based on current opened file
@@ -196,10 +201,26 @@ class File : public Array {
 
   /**
    * Get size based on current opened file
-   * @param size pointer to set to size
+   * @param size pointer to size
    * @return Status
    */
   Status size(uint64_t* size);
+
+  /**
+   * Get mime type based on current opened file
+   * @param mime pointer to mime_type from metadata
+   * @param size size of mime_type string
+   * @return Status
+   */
+  Status mime_type(const char** mime_type, uint32_t* size);
+
+  /**
+   * Get mime encoding based on current opened file
+   * @param mime pointer to mime_encoding from metadata
+   * @param size size of mime_encoding string
+   * @return Status
+   */
+  Status mime_encoding(const char** mime_encoding, uint32_t* size);
 
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
@@ -219,7 +240,41 @@ class File : public Array {
   tdb_unique_ptr<EncryptionKey> get_encryption_key_from_config(
       const Config& config) const;
 
-  std::string libmagic_get_mime(void* data, uint64_t size);
+  /**
+   * Get mime type from libmagic
+   * @param data void buffer with first part of file (up to 1kb) for magic
+   * detection
+   * @param size size of buffer
+   * @return mime type or nullptr if none detected
+   */
+  static const char* libmagic_get_mime(void* data, uint64_t size);
+
+  /**
+   * Get mime encoding from libmagic
+   * @param data void buffer with first part of file (up to 1kb) for magic
+   * detection
+   * @param size size of buffer
+   * @return mime encoding or nullptr if none detected
+   */
+  static const char* libmagic_get_mime_encoding(void* data, uint64_t size);
+
+  /**
+   * Store mime type in array metadata
+   * @param file_metadata buffer with first part of file for magic detection
+   * @param metadata_read_size size of buffer
+   * @return Status
+   */
+  Status store_mime_type(
+      const Buffer& file_metadata, uint64_t metadata_read_size);
+
+  /**
+   * Store mime encoding in array metadata
+   * @param file_metadata buffer with first part of file for magic detection
+   * @param metadata_read_size size of buffer
+   * @return Status
+   */
+  Status store_mime_encoding(
+      const Buffer& file_metadata, uint64_t metadata_read_size);
 };
 
 }  // namespace sm

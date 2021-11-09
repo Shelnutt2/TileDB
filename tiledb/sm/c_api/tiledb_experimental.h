@@ -185,7 +185,7 @@ TILEDB_EXPORT int32_t tiledb_array_upgrade_version(
  * @param array_uri the uri of the array.
  * @param file The tiledb_file_t to be allocated.
  * @param config Configuration parameters for the upgrade.
- * @return
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_alloc(
     tiledb_ctx_t* ctx, const char* array_uri, tiledb_file_t** file);
@@ -249,22 +249,40 @@ TILEDB_EXPORT int32_t tiledb_file_get_config(
 TILEDB_EXPORT void tiledb_file_free(tiledb_file_t** file);
 
 /**
+ * Create a file array with default schema
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_create_default(ctx, file);
+ * @endcode
  *
  * @param ctx The TileDB context.
  * @param file The tiledb_file_t to be created.
  * @param config Configuration parameters for the upgrade.
- * @return
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_create_default(
     tiledb_ctx_t* ctx, tiledb_file_t* file, tiledb_config_t* config);
 
 /**
+ * Create a file array using heuristics based on a file at provided URI
  *
- * @param ctx
- * @param file
- * @param input_uri
- * @param config
- * @return
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_create_from_uri(ctx, file, "input_file", NULL);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param input_uri URI to read file from
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_create_from_uri(
     tiledb_ctx_t* ctx,
@@ -273,12 +291,27 @@ TILEDB_EXPORT int32_t tiledb_file_create_from_uri(
     tiledb_config_t* config);
 
 /**
+ * Create a file array using heuristics based on a file from provided VFS
  *
- * @param ctx
- * @param file
- * @param input
- * @param config
- * @return
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ *
+ * tiledb_vfs_t vfs*;
+ * tiledb_vfs_alloc(ctx, &vfs);
+ * tiledb_vfs_fh_t *vfs_fh;
+ * tiledb_vfs_open(ctx, vfs, "some_file", TILEDB_VFS_READ, &fh);
+ * tiledb_file_create_from_vfs_fh(ctx, file, vfs_fh, NULL);
+ *
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param input vfs file handle to create from.
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_create_from_vfs_fh(
     tiledb_ctx_t* ctx,
@@ -287,24 +320,48 @@ TILEDB_EXPORT int32_t tiledb_file_create_from_vfs_fh(
     tiledb_config_t* config);
 
 /**
+ * Read a file into the file array from the given FILE handle
  *
- * @param ctx
- * @param file
- * @param in
- * @param config
- * @return
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * const char* mime_type;
+ * uint32_t size = 0;
+ * tiledb_file_get_mime_type(ctx, file, *mime_type, &size);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param in FILE handle to read from
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_store_fh(
     tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* in, tiledb_config_t* config);
 
 /**
+ * Store raw bytes from byte array into file array
  *
- * @param ctx
- * @param file
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * const char* mime_type;
+ * uint32_t size = 0;
+ * tiledb_file_get_mime_type(ctx, file, *mime_type, &size);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
  * @param bytes
  * @param size
- * @param config
- * @return
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_store_raw(
     tiledb_ctx_t* ctx,
@@ -314,11 +371,12 @@ TILEDB_EXPORT int32_t tiledb_file_store_raw(
     tiledb_config_t* config);
 
 /**
+ * Store file from URI into file array
  *
- * @param ctx
- * @param file
- * @param config
- * @return
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_store_uri(
     tiledb_ctx_t* ctx,
@@ -327,11 +385,22 @@ TILEDB_EXPORT int32_t tiledb_file_store_uri(
     tiledb_config_t* config);
 
 /**
+ * Store file from VFS File Handle into file array
+ * **Example:**
  *
- * @param ctx
- * @param file
- * @param config
- * @return
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * const char* mime_type;
+ * uint32_t size = 0;
+ * tiledb_file_get_mime_type(ctx, file, *mime_type, &size);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param config TileDB Config for setting to create.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_store_vfs_fh(
     tiledb_ctx_t* ctx,
@@ -340,38 +409,55 @@ TILEDB_EXPORT int32_t tiledb_file_store_vfs_fh(
     tiledb_config_t* config);
 
 /**
+ * Get the file MIME type
  *
- * @param ctx
- * @param file
- * @return
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * const char* mime_type;
+ * uint32_t size = 0;
+ * tiledb_file_get_mime_type(ctx, file, *mime_type, &size);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param mime_type char* to set to mime_type
+ * @param size length of mime string
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int32_t
-tiledb_file_get_mime(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+TILEDB_EXPORT int32_t tiledb_file_get_mime_type(
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    const char** mime_type,
+    uint32_t size);
 
 /**
  *
- * @param ctx
- * @param file
- * @return
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_get_original_name(
     tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
 
 /**
  *
- * @param ctx
- * @param file
- * @return
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t
 tiledb_file_get_extension(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
 
 /**
- *
- * @param ctx
- * @param file
+ * Retried
+ * @param ctx The TileDB context.
+ * @param file The file object.
  * @param array_schema
- * @return
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_get_schema(
     tiledb_ctx_t* ctx,
@@ -379,24 +465,51 @@ TILEDB_EXPORT int32_t tiledb_file_get_schema(
     tiledb_array_schema_t** array_schema);
 
 /**
+ * Export a file to a raw buffer
  *
- * @param ctx
- * @param file
- * @param out
- * @param config
- * @return
+ * * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * const char* file_uri = "some_file";
+ * FILE* file_out = fopen(file_uri, "w+");
+ * tiledb_file_export_fh(ctx, file, file_out, NULL);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param out FILE handle to write to
+ * @param config TileDB Config object for export settings
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_export_fh(
     tiledb_ctx_t* ctx, tiledb_file_t* file, FILE* out, tiledb_config_t* config);
 
 /**
+ * Export a file to a raw buffer
  *
- * @param ctx
- * @param file
- * @param bytes
- * @param size
- * @param config
- * @return
+ * * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * uint64_t size = 0;
+ * tiledb_file_get_size(ctx, file, &size);
+ * void* buffer = malloc(size);
+ * tiledb_file_export_raw(ctx, file, bytes, &size, NULL);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param bytes output buffer, alloc'ed by used.
+ * @param size size to read
+ * @param config TileDB Config object for export settings
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_export_raw(
     tiledb_ctx_t* ctx,
@@ -406,12 +519,24 @@ TILEDB_EXPORT int32_t tiledb_file_export_raw(
     tiledb_config_t* config);
 
 /**
+ * Export a file to the provided URI
  *
- * @param ctx
- * @param file
- * @param output_uri
- * @param config
- * @return
+ * * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * tiledb_file_export_uri(ctx, file, "s3://tiledb_bucket/some_output_file",
+ * NULL);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param output_uri output uri to save to
+ * @param config TileDB Config object for export settings
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_export_uri(
     tiledb_ctx_t* ctx,
@@ -420,12 +545,27 @@ TILEDB_EXPORT int32_t tiledb_file_export_uri(
     tiledb_config_t* config);
 
 /**
+ * Export a file to the opened VFS file handle
  *
- * @param ctx
- * @param file
- * @param output
- * @param config
- * @return
+ * * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * tiledb_vfs_t vfs*;
+ * tiledb_vfs_alloc(ctx, &vfs);
+ * tiledb_vfs_fh_t *vfs_fh;
+ * tiledb_vfs_open(ctx, vfs, "some_file", TILEDB_VFS_WRITE, &fh);
+ * tiledb_file_export_vfs_fh(ctx, file, output, NULL);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param output output vfs file handle
+ * @param config TileDB Config object for export settings
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_export_vfs_fh(
     tiledb_ctx_t* ctx,
@@ -447,7 +587,7 @@ TILEDB_EXPORT int32_t tiledb_file_export_vfs_fh(
  * @endcode
  *
  * @param ctx The TileDB context.
- * @param file The file to set the timestamp on.
+ * @param file The file object.
  * @param timestamp_start The epoch timestamp in milliseconds.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
@@ -470,7 +610,7 @@ TILEDB_EXPORT int32_t tiledb_file_set_open_timestamp_start(
  * @endcode
  *
  * @param ctx The TileDB context.
- * @param file The file to set the timestamp on.
+ * @param file The file object.
  * @param timestamp_end The epoch timestamp in milliseconds. Use UINT64_MAX for
  *   the current timestamp.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
@@ -496,7 +636,7 @@ TILEDB_EXPORT int32_t tiledb_file_set_open_timestamp_end(
  * @endcode
  *
  * @param ctx The TileDB context.
- * @param file The file to set the timestamp on.
+ * @param file The file object.
  * @param timestamp_start The output epoch timestamp in milliseconds.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
@@ -523,7 +663,7 @@ TILEDB_EXPORT int32_t tiledb_file_get_open_timestamp_start(
  * @endcode
  *
  * @param ctx The TileDB context.
- * @param file The file to set the timestamp on.
+ * @param file The file object.
  * @param timestamp_end The output epoch timestamp in milliseconds.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */

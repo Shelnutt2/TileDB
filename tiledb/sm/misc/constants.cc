@@ -661,7 +661,10 @@ const std::string file_attribute_name = "contents";
 const std::string file_metadata_size_key = "file_size";
 
 /** Name of the metadata key used in tiledb_file_t objects for mime type. */
-const std::string file_metadata_mime_key = "mime";
+const std::string file_metadata_mime_type_key = "mime";
+
+/** Name of the metadata key used in tiledb_file_t objects for mime encoding. */
+const std::string file_metadata_mime_encoding_key = "mime_encoding";
 
 /** Name of the metadata key used in tiledb_file_t objects for original file
  * extension . */

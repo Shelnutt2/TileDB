@@ -470,3 +470,113 @@ TEST_CASE_METHOD(
   remove_temp_dir(array_name);
   remove_temp_dir(output_path);
 }
+
+TEST_CASE_METHOD(
+    FileFx,
+    "C API: Test compressed file save and export from vfsfh",
+    "[capi][file][compress]") {
+  std::string temp_dir = fs_vec_[0]->temp_dir();
+
+  std::string array_name = temp_dir + "file_test_create";
+  std::string output_path = temp_dir + "out";
+  SECTION("- without encryption") {
+    encryption_type_ = TILEDB_NO_ENCRYPTION;
+    encryption_key_ = nullptr;
+  }
+
+  SECTION("- with encryption") {
+    encryption_type_ = TILEDB_AES_256_GCM;
+    encryption_key_ = "0123456789abcdeF0123456789abcdeF";
+  }
+
+  create_temp_dir(temp_dir);
+
+  tiledb_file_t* file;
+  CHECK(tiledb_file_alloc(ctx_, array_name.c_str(), &file) == TILEDB_OK);
+  tiledb_file_t* file_read;
+  CHECK(tiledb_file_alloc(ctx_, array_name.c_str(), &file_read) == TILEDB_OK);
+
+  if (encryption_type_ != TILEDB_NO_ENCRYPTION) {
+    tiledb_config_t* cfg;
+    tiledb_error_t* err = nullptr;
+    int32_t rc = tiledb_config_alloc(&cfg, &err);
+    CHECK(rc == TILEDB_OK);
+    REQUIRE(err == nullptr);
+    std::string encryption_type_string =
+        encryption_type_str((tiledb::sm::EncryptionType)encryption_type_);
+    rc = tiledb_config_set(
+        cfg, "sm.encryption_type", encryption_type_string.c_str(), &err);
+    CHECK(rc == TILEDB_OK);
+    REQUIRE(err == nullptr);
+    rc = tiledb_config_set(cfg, "sm.encryption_key", encryption_key_, &err);
+    CHECK(rc == TILEDB_OK);
+    REQUIRE(err == nullptr);
+    rc = tiledb_file_set_config(ctx_, file, cfg);
+    CHECK(rc == TILEDB_OK);
+    rc = tiledb_file_set_config(ctx_, file_read, cfg);
+    CHECK(rc == TILEDB_OK);
+    tiledb_config_free(&cfg);
+    uint32_t key_len = (uint32_t)strlen(encryption_key_);
+    tiledb::sm::UnitTestConfig::instance().array_encryption_key_length.set(
+        key_len);
+  }
+
+  const std::string csv_path = files_dir + "/" + "quickstart_dense.csv.gz";
+  tiledb_vfs_fh_t* fh;
+  tiledb_vfs_fh_t* output_fh;
+
+  int rc =
+      tiledb_vfs_open(ctx_, vfs_, csv_path.c_str(), TILEDB_VFS_APPEND, &fh);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_file_create_from_vfs_fh(ctx_, file, fh, nullptr);
+  REQUIRE(rc == TILEDB_ERR);
+
+  // Reopen in read mode
+  rc = tiledb_vfs_close(ctx_, fh);
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_vfs_open(ctx_, vfs_, csv_path.c_str(), TILEDB_VFS_READ, &fh);
+  REQUIRE(rc == TILEDB_OK);
+  CHECK(tiledb_file_create_from_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  // Open for writes
+  CHECK(tiledb_file_open(ctx_, file, TILEDB_WRITE) == TILEDB_OK);
+  CHECK(tiledb_file_store_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  CHECK(tiledb_file_close(ctx_, file) == TILEDB_OK);
+
+  REQUIRE(rc == TILEDB_OK);
+  rc = tiledb_vfs_open(
+      ctx_, vfs_, output_path.c_str(), TILEDB_VFS_WRITE, &output_fh);
+  REQUIRE(rc == TILEDB_OK);
+  CHECK(tiledb_file_open(ctx_, file_read, TILEDB_READ) == TILEDB_OK);
+  CHECK(
+      tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, nullptr) ==
+      TILEDB_OK);
+
+  // Check to verify imported and exported sizes match
+  uint64_t original_file_size = 0;
+  CHECK(
+      tiledb_vfs_file_size(ctx_, vfs_, csv_path.c_str(), &original_file_size) ==
+      TILEDB_OK);
+  uint64_t exported_file_size = 0;
+  CHECK(
+      tiledb_vfs_file_size(
+          ctx_, vfs_, output_path.c_str(), &exported_file_size) == TILEDB_OK);
+
+  uint64_t stored_file_size = 0;
+  CHECK(tiledb_file_get_size(ctx_, file_read, &stored_file_size) == TILEDB_OK);
+
+  REQUIRE(stored_file_size == original_file_size);
+  REQUIRE(exported_file_size == original_file_size);
+
+  // Clean up, ctx_/vfs_ are freed on test destructor
+  tiledb_file_free(&file);
+  tiledb_file_free(&file_read);
+  rc = tiledb_vfs_close(ctx_, fh);
+  REQUIRE(rc == TILEDB_OK);
+  tiledb_vfs_fh_free(&fh);
+  rc = tiledb_vfs_close(ctx_, output_fh);
+  REQUIRE(rc == TILEDB_OK);
+  tiledb_vfs_fh_free(&output_fh);
+
+  remove_temp_dir(array_name);
+  remove_temp_dir(output_path);
+}
