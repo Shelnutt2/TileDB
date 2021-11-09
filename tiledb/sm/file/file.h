@@ -52,14 +52,45 @@ class Array;
  */
 class File : public Array {
  public:
+  /* ********************************* */
+  /*     CONSTRUCTORS & DESTRUCTORS    */
+  /* ********************************* */
+
+  /** Constructor. */
   File(const URI& array_uri, StorageManager* storage_manager);
 
+  /* ********************************* */
+  /*                API                */
+  /* ********************************* */
+
+  /**
+   * Opens the file for reading at a timestamp retrieved from the config
+   * or for writing.
+   *
+   * @param query_type The mode in which the file is opened.
+   * @param encryption_type The encryption type of the file
+   * @param encryption_key If the file is encrypted, the private encryption
+   *    key. For unencrypted files, pass `nullptr`.
+   * @param key_length The length in bytes of the encryption key.
+   * @return Status
+   */
   Status open(
       QueryType query_type,
       EncryptionType encryption_type,
       const void* encryption_key,
       uint32_t key_length) override;
 
+  /**
+   * Opens the file for reading without fragments.
+   *
+   * @param encryption_type The encryption type of the file
+   * @param encryption_key If the file is encrypted, the private encryption
+   *    key. For unencrypted files, pass `nullptr`.
+   * @param key_length The length in bytes of the encryption key.
+   * @return Status
+   *
+   * @note Applicable only to reads.
+   */
   Status open(
       QueryType query_type,
       uint64_t timestamp_start,
@@ -68,38 +99,119 @@ class File : public Array {
       const void* encryption_key,
       uint32_t key_length) override;
 
-  void set_original_file_uri(const URI& original_file_uri);
-
+  /**
+   * Create file array on disk using default settings
+   * @param config
+   * @return
+   */
   Status create(const Config* config);
 
+  /**
+   * Create file array based on input file to heuristics
+   * @param file file uri
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status create_from_uri(const URI& file, const Config* config);
 
+  /**
+   * Create file array based on input file to heuristics
+   * @param file file uri
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status create_from_vfs_fh(const VFSFileHandle* file, const Config* config);
 
+  /**
+   * Read input file and store in file array
+   * @param in FILE* handle for input file
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status save_from_file_handle(FILE* in, const Config* config);
 
+  /**
+   * Read input file and store in file array
+   * @param file URI of file to store
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status save_from_uri(const URI& file, const Config* config);
 
+  /**
+   * Read input file and store in file array
+   * @param file VFSFileHandle of file to store
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status save_from_vfs_fh(VFSFileHandle* file, const Config* config);
 
+  /**
+   * Read input file and store in file array
+   * @param data void buffer of bytes to store
+   * @param size size of input buffer
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status save_from_buffer(void* data, uint64_t size, const Config* config);
 
+  /**
+   * Export file array to FILE handle
+   * @param out FILE* handle to write to
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status export_to_file_handle(FILE* out, const Config* config);
 
+  /**
+   * Export file array to URI.
+   * @param file URI to write to.
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status export_to_uri(const URI& file, const Config* config);
 
+  /**
+   * Export file array to VFSFileHandle.
+   * @param file VFSFileHandle to write to.
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status export_to_vfs_fh(VFSFileHandle* file, const Config* config);
 
+  /**
+   * Export file array to buffer.
+   * @param data buffer to write to.
+   * @param size size to write to buffer.
+   * @param config TileDB Config object for settings.
+   * @return Status
+   */
   Status export_to_buffer(void* data, uint64_t* size, const Config* config);
 
+  /**
+   * Get size based on current opened file
+   * @return size
+   */
   uint64_t size();
 
+  /**
+   * Get size based on current opened file
+   * @param size pointer to set to size
+   * @return Status
+   */
   Status size(uint64_t* size);
 
-  //  Status load_original_file_uri();
-  //  Status load__uri();
-  //  Status load_original_file_uri();
-  //  Status load_original_file_uri();
+  /* ********************************* */
+  /*         PRIVATE ATTRIBUTES        */
+  /* ********************************* */
+ private:
+  FileSchema file_schema_;
+
+  uint64_t offset_;
+
+  /* ********************************* */
+  /*          PRIVATE METHODS          */
+  /* ********************************* */
 
  private:
   //  std::optional<EncryptionKey> get_encryption_key_from_config(const Config&
@@ -107,11 +219,7 @@ class File : public Array {
   tdb_unique_ptr<EncryptionKey> get_encryption_key_from_config(
       const Config& config) const;
 
-  URI original_file_uri_;
-
-  FileSchema file_schema_;
-
-  uint64_t offset_;
+  std::string libmagic_get_mime(void* data, uint64_t size);
 };
 
 }  // namespace sm

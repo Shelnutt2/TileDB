@@ -44,16 +44,8 @@ namespace tiledb {
 namespace sm {
 
 class CompressionFilter;
-// class Attribute;
-// class Buffer;
-// class ConstBuffer;
-// class Dimension;
-// class Domain;
-//
+
 enum class ArrayType : uint8_t;
-// enum class Compressor : uint8_t;
-// enum class Datatype : uint8_t;
-// enum class Layout : uint8_t;
 
 /** Specifies the file array schema. */
 class FileSchema : public ArraySchema {
@@ -62,13 +54,6 @@ class FileSchema : public ArraySchema {
   constexpr static const std::array<uint64_t, 2> default_domain = {
       0, std::numeric_limits<uint64_t>::max() - 1};
 
-  //  static inline tdb_shared_ptr<CompressionFilter> zstd =
-  //  tdb_make_shared(CompressionFilter, CompressionFilter(
-  //      constants::cell_var_offsets_compression,
-  //      constants::cell_var_offsets_compression_level));
-  //  static inline const std::vector<Filter> fv = std::vector<Filter>({zstd});
-  //  static inline const FilterPipeline default_attribute_pipeline =
-  //  FilterPipeline(fv);
  public:
   /* ********************************* */
   /*     CONSTRUCTORS & DESTRUCTORS    */

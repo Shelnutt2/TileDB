@@ -31,6 +31,7 @@
  */
 
 #include "tiledb/sm/file/file.h"
+#include <magic.h>
 #include "tiledb/common/logger.h"
 #include "tiledb/sm/enums/encryption_type.h"
 #include "tiledb/sm/enums/query_status.h"
@@ -51,7 +52,6 @@ namespace sm {
 
 File::File(const URI& array_uri, StorageManager* storage_manager)
     : Array(array_uri, storage_manager)
-    , original_file_uri_("")
     , file_schema_()
     , offset_(0) {
   // We want to default these incase the user doesn't set it.
@@ -94,10 +94,6 @@ Status File::open(
       encryption_type,
       encryption_key,
       key_length);
-}
-
-void File::set_original_file_uri(const URI& original_file_uri) {
-  original_file_uri_ = original_file_uri;
 }
 
 Status File::create(const Config* config) {
@@ -166,7 +162,8 @@ Status File::save_from_file_handle(FILE* in, const Config* config) {
     // or row-major with multiple fragment but same timestamp
     Buffer buffer;
     buffer.realloc(size);
-    fread(buffer.data(), 1, size, in);
+    size = fread(buffer.data(), 1, size, in);
+    rewind(in);
 
     RETURN_NOT_OK(save_from_buffer(buffer.data(), size, config));
 
@@ -179,8 +176,18 @@ Status File::save_from_file_handle(FILE* in, const Config* config) {
     // TODO: add these
     //    put_metadata(constants::file_metadata_ext_key.c_str(),
     //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
-    //    put_metadata(constants::file_metadata_mime_key.c_str(),
-    //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
+
+    Buffer file_metadata;
+    uint64_t metadata_read_size = std::min<uint64_t>(1024, size);
+    file_metadata.realloc(metadata_read_size);
+    metadata_read_size = fread(file_metadata.data(), 1, metadata_read_size, in);
+    const std::string mime =
+        libmagic_get_mime(file_metadata.data(), metadata_read_size);
+    put_metadata(
+        constants::file_metadata_mime_key.c_str(),
+        Datatype::STRING_ASCII,
+        mime.size(),
+        mime.c_str());
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -242,11 +249,21 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
         Datatype::STRING_ASCII,
         uri_basename.size(),
         uri_basename.c_str());
+
+    Buffer file_metadata;
+    uint64_t metadata_read_size = std::min<uint64_t>(1024, size);
+    file_metadata.realloc(metadata_read_size);
+    RETURN_NOT_OK(file->read(0, file_metadata.data(), metadata_read_size));
+    const std::string mime =
+        libmagic_get_mime(file_metadata.data(), metadata_read_size);
     // TODO: add these
     //    put_metadata(constants::file_metadata_ext_key.c_str(),
     //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
-    //    put_metadata(constants::file_metadata_mime_key.c_str(),
-    //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
+    put_metadata(
+        constants::file_metadata_mime_key.c_str(),
+        Datatype::STRING_ASCII,
+        mime.size(),
+        mime.c_str());
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -499,7 +516,7 @@ Status File::size(uint64_t* size) {
   Datatype datatype = Datatype::UINT64;
   uint32_t val_num = 1;
   *size = 0;
-  const uint64_t *size_meta;
+  const uint64_t* size_meta;
   RETURN_NOT_OK(get_metadata(
       constants::file_metadata_size_key.c_str(),
       &datatype,
@@ -508,6 +525,11 @@ Status File::size(uint64_t* size) {
   *size = *size_meta;
 
   return Status::Ok();
+}
+
+std::string File::libmagic_get_mime(void* data, uint64_t size) {
+  magic_t magic = magic_open(MAGIC_MIME);
+  return magic_buffer(magic, data, size);
 }
 
 // void File::get_magic();

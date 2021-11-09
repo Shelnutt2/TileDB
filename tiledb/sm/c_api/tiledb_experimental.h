@@ -346,7 +346,7 @@ TILEDB_EXPORT int32_t tiledb_file_store_vfs_fh(
  * @return
  */
 TILEDB_EXPORT int32_t
-tiledb_file_get_mime(tiledb_ctx_t* ctx, tiledb_file_t* file, const char*);
+tiledb_file_get_mime(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
 
 /**
  *
