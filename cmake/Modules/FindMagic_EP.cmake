@@ -38,7 +38,7 @@ set(MAGIC_PATHS ${TILEDB_EP_INSTALL_PREFIX})
 
 # Try the builtin find module unless built w/ EP superbuild
 if ((NOT TILEDB_FORCE_ALL_DEPS) AND (NOT TILEDB_MAGIC_EP_BUILT))
-  find_package(magic ${TILEDB_DEPS_NO_DEFAULT_PATH})
+  find_package(magic ${TILEDB_DEPS_NO_DEFAULT_PATH} QUIET)
 endif()
 
 # Next try finding the superbuild external project
