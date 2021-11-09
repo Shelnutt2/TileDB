@@ -443,8 +443,6 @@ Status File::export_to_buffer(
   return Status::Ok();
 }
 
-// std::optional<EncryptionKey> File::get_encryption_key_from_config(const
-// Config& config) const {
 tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
     const Config& config) const {
   std::string encryption_key_from_cfg;
@@ -460,7 +458,7 @@ tdb_unique_ptr<EncryptionKey> File::get_encryption_key_from_config(
   if (!encryption_key_from_cfg.empty()) {
     encryption_key_cstr = encryption_key_from_cfg.c_str();
     std::string encryption_type_from_cfg;
-    bool found = false;
+    found = false;
     encryption_type_from_cfg = config_.get("sm.encryption_type", &found);
     assert(found);
     auto [st, et] = encryption_type_enum(encryption_type_from_cfg);
