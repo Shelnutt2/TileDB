@@ -211,7 +211,10 @@ Status File::save_from_uri(const URI& file, const Config* config) {
     auto vfs_st = vfs.terminate();
     if (!vfs_st.ok())
       LOG_STATUS(vfs_st);
-    return st;
+    if (!st.ok())
+      return st;
+
+    return vfsfh.close();
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -359,7 +362,11 @@ Status File::export_to_uri(const URI& file, const Config* config) {
     auto vfs_st = vfs.terminate();
     if (!vfs_st.ok())
       LOG_STATUS(vfs_st);
-    return st;
+
+    if (!st.ok())
+      return st;
+
+    return vfsfh.close();
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }

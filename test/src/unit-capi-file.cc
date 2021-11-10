@@ -445,6 +445,8 @@ TEST_CASE_METHOD(
   CHECK(
       tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, config_) ==
       TILEDB_OK);
+  rc = tiledb_vfs_close(ctx_, output_fh);
+  REQUIRE(rc == TILEDB_OK);
 
   // Check to verify imported and exported sizes match
   uint64_t original_file_size = 0;
@@ -468,8 +470,6 @@ TEST_CASE_METHOD(
   rc = tiledb_vfs_close(ctx_, fh);
   REQUIRE(rc == TILEDB_OK);
   tiledb_vfs_fh_free(&fh);
-  rc = tiledb_vfs_close(ctx_, output_fh);
-  REQUIRE(rc == TILEDB_OK);
   tiledb_vfs_fh_free(&output_fh);
 
   remove_temp_dir(array_name);
@@ -555,6 +555,8 @@ TEST_CASE_METHOD(
   CHECK(
       tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, config_) ==
       TILEDB_OK);
+  rc = tiledb_vfs_close(ctx_, output_fh);
+  REQUIRE(rc == TILEDB_OK);
 
   // Check to verify imported and exported sizes match
   uint64_t original_file_size = 0;
@@ -578,8 +580,6 @@ TEST_CASE_METHOD(
   rc = tiledb_vfs_close(ctx_, fh);
   REQUIRE(rc == TILEDB_OK);
   tiledb_vfs_fh_free(&fh);
-  rc = tiledb_vfs_close(ctx_, output_fh);
-  REQUIRE(rc == TILEDB_OK);
   tiledb_vfs_fh_free(&output_fh);
 
   remove_temp_dir(array_name);
