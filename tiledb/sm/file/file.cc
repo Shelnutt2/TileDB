@@ -111,22 +111,25 @@ Status File::create([[maybe_unused]] const Config* config) {
 }
 
 Status File::create_from_uri(const URI& file, const Config* config) {
-  VFS vfs;
-  // Initialize VFS object
-  auto stats = storage_manager_->stats();
-  auto compute_tp = storage_manager_->compute_tp();
-  auto io_tp = storage_manager_->io_tp();
-  auto vfs_config = config ? config : nullptr;
-  auto ctx_config = storage_manager_->config();
-  RETURN_NOT_OK(vfs.init(stats, compute_tp, io_tp, &ctx_config, vfs_config));
+  try {
+    VFS vfs;
+    // Initialize VFS object
+    auto stats = storage_manager_->stats();
+    auto compute_tp = storage_manager_->compute_tp();
+    auto io_tp = storage_manager_->io_tp();
+    auto vfs_config = config ? config : nullptr;
+    auto ctx_config = storage_manager_->config();
+    RETURN_NOT_OK(vfs.init(stats, compute_tp, io_tp, &ctx_config, vfs_config));
 
-  VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
+    VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
 
-  auto st = create_from_vfs_fh(&vfsfh, config);
-  auto vfs_st = vfs.terminate();
-  if (!vfs_st.ok())
-    LOG_STATUS(vfs_st);
-  return st;
+    RETURN_NOT_OK(create_from_vfs_fh(&vfsfh, config));
+    RETURN_NOT_OK(vfsfh.close());
+    RETURN_NOT_OK(vfs.terminate());
+  } catch (const std::exception& e) {
+    return Status::FileError(e.what());
+  }
+  return Status::Ok();
 }
 
 Status File::create_from_vfs_fh(
@@ -209,14 +212,9 @@ Status File::save_from_uri(const URI& file, const Config* config) {
 
     VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_READ);
 
-    auto st = save_from_vfs_fh(&vfsfh, config);
-    auto vfs_st = vfs.terminate();
-    if (!vfs_st.ok())
-      LOG_STATUS(vfs_st);
-    if (!st.ok())
-      return st;
-
-    return vfsfh.close();
+    RETURN_NOT_OK(save_from_vfs_fh(&vfsfh, config));
+    RETURN_NOT_OK(vfsfh.close());
+    RETURN_NOT_OK(vfs.terminate());
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
@@ -366,15 +364,9 @@ Status File::export_to_uri(const URI& file, const Config* config) {
 
     VFSFileHandle vfsfh(file, &vfs, VFSMode::VFS_WRITE);
 
-    auto st = export_to_vfs_fh(&vfsfh, config);
-    auto vfs_st = vfs.terminate();
-    if (!vfs_st.ok())
-      LOG_STATUS(vfs_st);
-
-    if (!st.ok())
-      return st;
-
-    return vfsfh.close();
+    RETURN_NOT_OK(export_to_vfs_fh(&vfsfh, config));
+    RETURN_NOT_OK(vfsfh.close());
+    RETURN_NOT_OK(vfs.terminate());
   } catch (const std::exception& e) {
     return Status::FileError(e.what());
   }
