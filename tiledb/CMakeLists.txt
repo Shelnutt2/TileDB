@@ -477,7 +477,8 @@ target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
 )
 
 # GCC <9 need to link against libc++fs for c++17 filesystem library
-target_link_libraries(TILEDB_CORE_OBJECTS_ILIB INTERFACE $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>)
+find_package(Filesystem REQUIRED)
+target_link_libraries(TILEDB_CORE_OBJECTS_ILIB INTERFACE std::filesystem)
 
 if (NOT WIN32)
   target_link_libraries(TILEDB_CORE_OBJECTS_ILIB
