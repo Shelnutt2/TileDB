@@ -435,25 +435,87 @@ TILEDB_EXPORT int32_t tiledb_file_get_mime_type(
     uint32_t size);
 
 /**
+ * Get the file MIME encoding
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ * const char* mime_encoding;
+ * uint32_t size = 0;
+ * tiledb_file_get_mime_encoding(ctx, file, *mime_type, &size);
+ * @endcode
+ *
+ * @param ctx The TileDB context.
+ * @param file The file object.
+ * @param mime_type char* to set to mime encoding
+ * @param size length of mime string
+ * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
+ */
+TILEDB_EXPORT int32_t tiledb_file_get_mime_encoding(
+    tiledb_ctx_t* ctx,
+    tiledb_file_t* file,
+    const char** mime_type,
+    uint32_t size);
+
+/**
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * const char* name;
+ * uint32_t size = 0;
+ * tiledb_file_get_original_name(ctx, file, &name, &size);
+ * @endcode
  *
  * @param ctx The TileDB context.
  * @param file The file object.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
 TILEDB_EXPORT int32_t tiledb_file_get_original_name(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** name, uint32_t* size);
 
 /**
+ *
+ *  * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * const char* ext;
+ * uint32_t size = 0;
+ * tiledb_file_get_extension(ctx, file, &name, &size);
+ * @endcode
  *
  * @param ctx The TileDB context.
  * @param file The file object.
  * @return `TILEDB_OK` for success or `TILEDB_ERR` for error.
  */
-TILEDB_EXPORT int32_t
-tiledb_file_get_extension(tiledb_ctx_t* ctx, tiledb_file_t* file, const char**);
+TILEDB_EXPORT int32_t tiledb_file_get_extension(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** ext, uint32_t* size);
 
 /**
- * Retried
+ * Get Array Schema from file
+ *
+ * **Example:**
+ *
+ * @code{.c}
+ * tiledb_file_t* file;
+ * tiledb_file_alloc(ctx, "s3://tiledb_bucket/my_file", &file);
+ * tiledb_file_open(ctx, file, TILEDB_READ);
+ *
+ * tiledb_array_schema_t* schema;
+ * tiledb_file_get_schema(ctx, file, &schema);
+ * @endcode
+ *
  * @param ctx The TileDB context.
  * @param file The file object.
  * @param array_schema

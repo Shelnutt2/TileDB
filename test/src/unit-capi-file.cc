@@ -328,7 +328,8 @@ TEST_CASE_METHOD(
         key_len);
   }
 
-  const std::string csv_path = files_dir + "/" + "quickstart_dense.csv";
+  const std::string csv_name = "quickstart_dense.csv";
+  const std::string csv_path = files_dir + "/" + csv_name;
   CHECK(
       tiledb_file_create_from_uri(ctx_, file, csv_path.c_str(), nullptr) ==
       TILEDB_OK);
@@ -358,6 +359,21 @@ TEST_CASE_METHOD(
 
   REQUIRE(stored_file_size == original_file_size);
   REQUIRE(exported_file_size == original_file_size);
+
+  // Check original name
+  const char* original_name;
+  uint32_t original_name_size = 0;
+  CHECK(
+      tiledb_file_get_original_name(
+          ctx_, file_read, &original_name, &original_name_size) == TILEDB_OK);
+  REQUIRE(std::string(original_name, original_name_size) == csv_name);
+
+  // Check extension
+  const char* ext;
+  uint32_t ext_size = 0;
+  CHECK(
+      tiledb_file_get_extension(ctx_, file_read, &ext, &ext_size) == TILEDB_OK);
+  REQUIRE(std::string(ext, ext_size) == ".csv");
 
   // Clean up, ctx_/vfs_ are freed on test destructor
   tiledb_file_free(&file);
@@ -416,7 +432,8 @@ TEST_CASE_METHOD(
         key_len);
   }
 
-  const std::string csv_path = files_dir + "/" + "quickstart_dense.csv";
+  const std::string csv_name = "quickstart_dense.csv";
+  const std::string csv_path = files_dir + "/" + csv_name;
   tiledb_vfs_fh_t* fh;
   tiledb_vfs_fh_t* output_fh;
 
@@ -463,6 +480,21 @@ TEST_CASE_METHOD(
 
   REQUIRE(stored_file_size == original_file_size);
   REQUIRE(exported_file_size == original_file_size);
+
+  // Check original name
+  const char* original_name;
+  uint32_t original_name_size = 0;
+  CHECK(
+      tiledb_file_get_original_name(
+          ctx_, file_read, &original_name, &original_name_size) == TILEDB_OK);
+  REQUIRE(std::string(original_name, original_name_size) == csv_name);
+
+  // Check extension
+  const char* ext;
+  uint32_t ext_size = 0;
+  CHECK(
+      tiledb_file_get_extension(ctx_, file_read, &ext, &ext_size) == TILEDB_OK);
+  REQUIRE(std::string(ext, ext_size) == ".csv");
 
   // Clean up, ctx_/vfs_ are freed on test destructor
   tiledb_file_free(&file);

@@ -222,6 +222,22 @@ class File : public Array {
    */
   Status mime_encoding(const char** mime_encoding, uint32_t* size);
 
+  /**
+   * Get original file name based on current opened file
+   * @param name original name from metadata
+   * @param size size of original_name string
+   * @return Status
+   */
+  Status original_name(const char** name, uint32_t* size);
+
+  /**
+   * Get original file extension based on current opened file
+   * @param ext pointer to extension from metadata
+   * @param size size of extension string
+   * @return Status
+   */
+  Status file_extension(const char** ext, uint32_t* size);
+
   /* ********************************* */
   /*         PRIVATE ATTRIBUTES        */
   /* ********************************* */

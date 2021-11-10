@@ -295,30 +295,59 @@ int32_t tiledb_file_store_vfs_fh(
   return TILEDB_OK;
 }
 
-int32_t tiledb_file_get_mime(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, const char**) {
+int32_t tiledb_file_get_mime_type(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** mime, uint32_t* size) {
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, file) == TILEDB_ERR) {
     return TILEDB_ERR;
   }
+
+  if (SAVE_ERROR_CATCH(ctx, file->file_->mime_type(mime, size))) {
+    return TILEDB_ERR;
+  }
+
+  return TILEDB_OK;
+}
+
+int32_t tiledb_file_get_mime_encoding(
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** mime, uint32_t* size) {
+  if (sanity_check(ctx) == TILEDB_ERR ||
+      sanity_check(ctx, file) == TILEDB_ERR) {
+    return TILEDB_ERR;
+  }
+
+  if (SAVE_ERROR_CATCH(ctx, file->file_->mime_encoding(mime, size))) {
+    return TILEDB_ERR;
+  }
+
   return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_original_name(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, const char**) {
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** name, uint32_t* size) {
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, file) == TILEDB_ERR) {
     return TILEDB_ERR;
   }
+
+  if (SAVE_ERROR_CATCH(ctx, file->file_->original_name(name, size))) {
+    return TILEDB_ERR;
+  }
+
   return TILEDB_OK;
 }
 
 int32_t tiledb_file_get_extension(
-    tiledb_ctx_t* ctx, tiledb_file_t* file, const char**) {
+    tiledb_ctx_t* ctx, tiledb_file_t* file, const char** ext, uint32_t* size) {
   if (sanity_check(ctx) == TILEDB_ERR ||
       sanity_check(ctx, file) == TILEDB_ERR) {
     return TILEDB_ERR;
   }
+
+  if (SAVE_ERROR_CATCH(ctx, file->file_->file_extension(ext, size))) {
+    return TILEDB_ERR;
+  }
+
   return TILEDB_OK;
 }
 

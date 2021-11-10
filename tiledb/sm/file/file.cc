@@ -41,6 +41,8 @@
 #include "tiledb/sm/global_state/unit_test_config.h"
 #include "tiledb/sm/query/query.h"
 
+#include <filesystem>
+
 using namespace tiledb::common;
 
 namespace tiledb {
@@ -252,9 +254,15 @@ Status File::save_from_vfs_fh(VFSFileHandle* file, const Config* config) {
     uint64_t metadata_read_size = std::min<uint64_t>(1024, size);
     file_metadata.realloc(metadata_read_size);
     RETURN_NOT_OK(file->read(0, file_metadata.data(), metadata_read_size));
-    // TODO: add these
-    //    put_metadata(constants::file_metadata_ext_key.c_str(),
-    //    Datatype::STRING_ASCII, uri_string.size(), uri_string.c_str());
+
+    // Save metadata
+    std::filesystem::path uri_string = file->uri().last_path_part();
+    const std::string extension = uri_string.extension().string();
+    RETURN_NOT_OK(put_metadata(
+        constants::file_metadata_ext_key.c_str(),
+        Datatype::STRING_ASCII,
+        extension.size(),
+        extension.c_str()));
     store_mime_type(file_metadata, metadata_read_size);
     store_mime_encoding(file_metadata, metadata_read_size);
   } catch (const std::exception& e) {
@@ -547,6 +555,32 @@ Status File::mime_encoding(const char** mime_encoding, uint32_t* size) {
       &datatype,
       size,
       reinterpret_cast<const void**>(mime_encoding)));
+
+  return Status::Ok();
+}
+
+Status File::original_name(const char** original_name, uint32_t* size) {
+  Datatype datatype = Datatype::STRING_ASCII;
+  *original_name = nullptr;
+  *size = 0;
+  RETURN_NOT_OK(get_metadata(
+      constants::file_metadata_original_file_name_key.c_str(),
+      &datatype,
+      size,
+      reinterpret_cast<const void**>(original_name)));
+
+  return Status::Ok();
+}
+
+Status File::file_extension(const char** ext, uint32_t* size) {
+  Datatype datatype = Datatype::STRING_ASCII;
+  *ext = nullptr;
+  *size = 0;
+  RETURN_NOT_OK(get_metadata(
+      constants::file_metadata_ext_key.c_str(),
+      &datatype,
+      size,
+      reinterpret_cast<const void**>(ext)));
 
   return Status::Ok();
 }
