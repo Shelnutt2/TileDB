@@ -209,7 +209,9 @@ int32_t tiledb_file_store_fh(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->save_from_file_handle(
-              in, config ? config->config_ : nullptr))) {
+              in,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
 
@@ -230,7 +232,10 @@ int32_t tiledb_file_store_raw(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->save_from_buffer(
-              bytes, size, config ? config->config_ : nullptr))) {
+              bytes,
+              size,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
 
@@ -258,7 +263,9 @@ int32_t tiledb_file_store_uri(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->save_from_uri(
-              uri, config ? config->config_ : nullptr))) {
+              uri,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
 
@@ -279,7 +286,9 @@ int32_t tiledb_file_store_vfs_fh(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->save_from_vfs_fh(
-              input->vfs_fh_, config ? config->config_ : nullptr))) {
+              input->vfs_fh_,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
 
@@ -357,7 +366,9 @@ int32_t tiledb_file_export_fh(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->export_to_file_handle(
-              out, config ? config->config_ : nullptr))) {
+              out,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
 
@@ -378,7 +389,10 @@ int32_t tiledb_file_export_raw(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->export_to_buffer(
-              bytes, size, config ? config->config_ : nullptr))) {
+              bytes,
+              size,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
   return TILEDB_OK;
@@ -405,7 +419,9 @@ int32_t tiledb_file_export_uri(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->export_to_uri(
-              uri, config ? config->config_ : nullptr))) {
+              uri,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
   return TILEDB_OK;
@@ -425,7 +441,9 @@ int32_t tiledb_file_export_vfs_fh(
   if (SAVE_ERROR_CATCH(
           ctx,
           file->file_->export_to_vfs_fh(
-              output->vfs_fh_, config ? config->config_ : nullptr))) {
+              output->vfs_fh_,
+              config ? config->config_ :
+                       &ctx->ctx_->storage_manager()->config()))) {
     return TILEDB_ERR;
   }
   return TILEDB_OK;

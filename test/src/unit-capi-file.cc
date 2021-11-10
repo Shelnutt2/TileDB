@@ -49,6 +49,7 @@ struct FileFx {
   // TileDB context
   tiledb_ctx_t* ctx_;
   tiledb_vfs_t* vfs_;
+  tiledb_config_t* config_;
 
   // Vector of supported filesystems
   const std::vector<std::unique_ptr<SupportedFs>> fs_vec_;
@@ -67,8 +68,11 @@ struct FileFx {
 
 FileFx::FileFx()
     : fs_vec_(vfs_test_get_fs_vec()) {
+  tiledb_error_t* error = nullptr;
+  REQUIRE(tiledb_config_alloc(&config_, &error) == TILEDB_OK);
+  REQUIRE(error == nullptr);
   // Initialize vfs test
-  REQUIRE(vfs_test_init(fs_vec_, &ctx_, &vfs_).ok());
+  REQUIRE(vfs_test_init(fs_vec_, &ctx_, &vfs_, config_).ok());
 }
 
 FileFx::~FileFx() {
@@ -76,6 +80,7 @@ FileFx::~FileFx() {
   REQUIRE(vfs_test_close(fs_vec_, ctx_, vfs_).ok());
   tiledb_vfs_free(&vfs_);
   tiledb_ctx_free(&ctx_);
+  tiledb_config_free(&config_);
 }
 
 void FileFx::create_temp_dir(const std::string& path) const {
@@ -336,7 +341,7 @@ TEST_CASE_METHOD(
 
   CHECK(tiledb_file_open(ctx_, file_read, TILEDB_READ) == TILEDB_OK);
   CHECK(
-      tiledb_file_export_uri(ctx_, file_read, output_path.c_str(), nullptr) ==
+      tiledb_file_export_uri(ctx_, file_read, output_path.c_str(), config_) ==
       TILEDB_OK);
 
   uint64_t original_file_size = 0;
@@ -426,10 +431,10 @@ TEST_CASE_METHOD(
   REQUIRE(rc == TILEDB_OK);
   rc = tiledb_vfs_open(ctx_, vfs_, csv_path.c_str(), TILEDB_VFS_READ, &fh);
   REQUIRE(rc == TILEDB_OK);
-  CHECK(tiledb_file_create_from_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  CHECK(tiledb_file_create_from_vfs_fh(ctx_, file, fh, config_) == TILEDB_OK);
   // Open for writes
   CHECK(tiledb_file_open(ctx_, file, TILEDB_WRITE) == TILEDB_OK);
-  CHECK(tiledb_file_store_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  CHECK(tiledb_file_store_vfs_fh(ctx_, file, fh, config_) == TILEDB_OK);
   CHECK(tiledb_file_close(ctx_, file) == TILEDB_OK);
 
   REQUIRE(rc == TILEDB_OK);
@@ -438,7 +443,7 @@ TEST_CASE_METHOD(
   REQUIRE(rc == TILEDB_OK);
   CHECK(tiledb_file_open(ctx_, file_read, TILEDB_READ) == TILEDB_OK);
   CHECK(
-      tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, nullptr) ==
+      tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, config_) ==
       TILEDB_OK);
 
   // Check to verify imported and exported sizes match
@@ -536,10 +541,10 @@ TEST_CASE_METHOD(
   REQUIRE(rc == TILEDB_OK);
   rc = tiledb_vfs_open(ctx_, vfs_, csv_path.c_str(), TILEDB_VFS_READ, &fh);
   REQUIRE(rc == TILEDB_OK);
-  CHECK(tiledb_file_create_from_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  CHECK(tiledb_file_create_from_vfs_fh(ctx_, file, fh, config_) == TILEDB_OK);
   // Open for writes
   CHECK(tiledb_file_open(ctx_, file, TILEDB_WRITE) == TILEDB_OK);
-  CHECK(tiledb_file_store_vfs_fh(ctx_, file, fh, nullptr) == TILEDB_OK);
+  CHECK(tiledb_file_store_vfs_fh(ctx_, file, fh, config_) == TILEDB_OK);
   CHECK(tiledb_file_close(ctx_, file) == TILEDB_OK);
 
   REQUIRE(rc == TILEDB_OK);
@@ -548,7 +553,7 @@ TEST_CASE_METHOD(
   REQUIRE(rc == TILEDB_OK);
   CHECK(tiledb_file_open(ctx_, file_read, TILEDB_READ) == TILEDB_OK);
   CHECK(
-      tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, nullptr) ==
+      tiledb_file_export_vfs_fh(ctx_, file_read, output_fh, config_) ==
       TILEDB_OK);
 
   // Check to verify imported and exported sizes match
