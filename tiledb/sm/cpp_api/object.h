@@ -181,7 +181,7 @@ class Object {
   /** The object type. */
   Type type_;
 
-  /** The obkect uri. */
+  /** The object uri. */
   std::string uri_;
 };
 

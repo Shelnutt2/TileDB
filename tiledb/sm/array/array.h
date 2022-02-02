@@ -184,7 +184,7 @@ class Array {
 
   /**
    * Returns `true` if the array is empty at the time it is opened.
-   * The funciton returns `false` if the array is not open.
+   * The function returns `false` if the array is not open.
    */
   bool is_empty() const;
 
