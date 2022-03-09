@@ -114,6 +114,29 @@ Status RestClient::set_header(
   return Status::Ok();
 }
 
+tuple<Status, std::optional<bool>>
+RestClient::check_array_exists_from_rest(const URI& uri) {
+  // Init curl and form the URL
+  Curl curlc;
+  std::string array_ns, array_uri;
+  RETURN_NOT_OK_TUPLE(uri.get_rest_components(&array_ns, &array_uri), nullopt);
+  const std::string cache_key = array_ns + ":" + array_uri;
+  RETURN_NOT_OK_TUPLE(
+      curlc.init(config_, extra_headers_, &redirect_meta_, &redirect_mtx_),
+      nullopt);
+  const std::string url = redirect_uri(cache_key) + "/v1/arrays/" + array_ns +
+                          "/" + curlc.url_escape(array_uri);
+
+  // Get the data
+  Buffer returned_data;
+  RETURN_NOT_OK_TUPLE(
+      curlc.get_data(
+          stats_, url, serialization_type_, &returned_data, cache_key),
+      nullopt);
+
+  return {Status::Ok(), false};
+}
+
 tuple<Status, optional<shared_ptr<ArraySchema>>>
 RestClient::get_array_schema_from_rest(const URI& uri) {
   // Init curl and form the URL

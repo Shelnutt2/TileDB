@@ -1325,19 +1325,26 @@ void StorageManager::increment_in_progress() {
 }
 
 Status StorageManager::is_array(const URI& uri, bool* is_array) const {
-  // Check if the schema directory exists or not
-  bool is_dir = false;
-  // Since is_dir could return NOT Ok status, we will not use RETURN_NOT_OK here
-  Status st =
-      vfs_->is_dir(uri.join_path(constants::array_schema_dir_name), &is_dir);
-  if (st.ok() && is_dir) {
-    *is_array = true;
-    return Status::Ok();
-  }
+  // Handle remote array
+  if (uri.is_tiledb()) {
+    auto&& [st, schema] = rest_client_->get_array_schema_from_rest(uri);
+    *is_array = schema.has_value();
+    RETURN_NOT_OK(st);
+  } else {
+    // Check if the schema directory exists or not
+    bool is_dir = false;
+    // Since is_dir could return NOT Ok status, we will not use RETURN_NOT_OK here
+    Status st =
+        vfs_->is_dir(uri.join_path(constants::array_schema_dir_name), &is_dir);
+    if (st.ok() && is_dir) {
+      *is_array = true;
+      return Status::Ok();
+    }
 
-  // If there is no schema directory, we check schema file
-  RETURN_NOT_OK(
-      vfs_->is_file(uri.join_path(constants::array_schema_filename), is_array));
+    // If there is no schema directory, we check schema file
+    RETURN_NOT_OK(vfs_->is_file(
+        uri.join_path(constants::array_schema_filename), is_array));
+  }
   return Status::Ok();
 }
 
