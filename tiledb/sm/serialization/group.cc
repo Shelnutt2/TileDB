@@ -50,6 +50,7 @@
 #include "tiledb/sm/enums/layout.h"
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/group/group_member_v1.h"
+#include "tiledb/sm/group/group_member_v2.h"
 #include "tiledb/sm/misc/constants.h"
 #include "tiledb/sm/serialization/array.h"
 #include "tiledb/sm/serialization/group.h"
@@ -98,6 +99,10 @@ Status group_member_to_capnp(
     group_member_builder->setName(name.value());
   }
 
+  group_member_builder->setVersion(group_member->version());
+
+  group_member_builder->setDeleted(group_member->deleted());
+
   return Status::Ok();
 }
 
@@ -128,8 +133,23 @@ group_member_from_capnp(capnp::GroupMember::Reader* group_member_reader) {
     name = group_member_reader->getName().cStr();
   }
 
-  tdb_shared_ptr<GroupMember> group_member =
-      tdb::make_shared<GroupMemberV1>(HERE(), URI(uri), type, relative, name);
+  tdb_shared_ptr<GroupMember> group_member;
+
+  const auto& version = group_member_reader->getVersion();
+  if (version) {
+    group_member =
+        tdb::make_shared<GroupMemberV1>(HERE(), URI(uri), type, relative, name);
+  } else if (version) {
+    const bool deleted = group_member_reader->getDeleted();
+
+    group_member = tdb::make_shared<GroupMemberV2>(
+        HERE(), URI(uri), type, relative, name, deleted);
+  } else {
+    return {
+        Status_SerializationError(
+            "Unsupported group member version: " + std::to_string(version)),
+        std::nullopt};
+  }
 
   return {Status::Ok(), group_member};
 }
@@ -142,6 +162,8 @@ Status group_details_to_capnp(
         Status_SerializationError("Error serializing group; group is null."));
 
   const auto& group_members = group->members();
+  std::unordered_map<std::string, tdb_shared_ptr<GroupMember>>
+      group_members_deleted_removed;
   if (!group_members.empty()) {
     auto group_members_builder =
         group_details_builder->initMembers(group_members.size());

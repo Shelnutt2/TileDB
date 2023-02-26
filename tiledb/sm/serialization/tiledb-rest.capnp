@@ -809,6 +809,12 @@ struct GroupMember {
 
   name @3 :Text;
   # name of member, optional
+
+  version @4 :UInt32 = 1;
+  # version of group member
+
+  deleted @5 :Bool = false;
+  # is group member deleted
 }
 
 struct Group {

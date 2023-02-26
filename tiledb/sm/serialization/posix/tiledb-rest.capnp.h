@@ -10130,6 +10130,10 @@ class GroupMember::Reader {
   inline bool hasName() const;
   inline ::capnp::Text::Reader getName() const;
 
+  inline ::uint32_t getVersion() const;
+
+  inline bool getDeleted() const;
+
  private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
@@ -10192,6 +10196,12 @@ class GroupMember::Builder {
   inline ::capnp::Text::Builder initName(unsigned int size);
   inline void adoptName(::capnp::Orphan<::capnp::Text>&& value);
   inline ::capnp::Orphan<::capnp::Text> disownName();
+
+  inline ::uint32_t getVersion();
+  inline void setVersion(::uint32_t value);
+
+  inline bool getDeleted();
+  inline void setDeleted(bool value);
 
  private:
   ::capnp::_::StructBuilder _builder;
@@ -23359,6 +23369,31 @@ inline void GroupMember::Builder::adoptName(
 inline ::capnp::Orphan<::capnp::Text> GroupMember::Builder::disownName() {
   return ::capnp::_::PointerHelpers<::capnp::Text>::disown(
       _builder.getPointerField(::capnp::bounded<2>() * ::capnp::POINTERS));
+}
+
+inline ::uint32_t GroupMember::Reader::getVersion() const {
+  return _reader.getDataField<::uint32_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 1u);
+}
+
+inline ::uint32_t GroupMember::Builder::getVersion() {
+  return _builder.getDataField<::uint32_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, 1u);
+}
+inline void GroupMember::Builder::setVersion(::uint32_t value) {
+  _builder.setDataField<::uint32_t>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value, 1u);
+}
+
+inline bool GroupMember::Reader::getDeleted() const {
+  return _reader.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+
+inline bool GroupMember::Builder::getDeleted() {
+  return _builder.getDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+inline void GroupMember::Builder::setDeleted(bool value) {
+  _builder.setDataField<bool>(::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool Group::Reader::hasConfig() const {
