@@ -34,6 +34,10 @@
 #include <vector>
 
 #include "tiledb/sm/misc/uuid.h"
+#ifndef UUID_TIME_GENERATOR
+#define UUID_TIME_GENERATOR
+#endif
+#include "external/include/stduuid/uuid.h"
 
 #ifdef _WIN32
 #include <Rpc.h>
@@ -148,6 +152,29 @@ Status generate_uuid_openssl(std::string* uuid_str) {
 #endif
 
 Status generate_uuid(std::string* uuid, bool hyphenate) {
+  if (uuid == nullptr)
+    return Status_UtilsError("Null UUID string argument");
+
+  uuids::uuid_time_generator gen;
+  auto id = gen();
+  assert(!id.is_nil());
+  assert(id.version() == uuids::uuid_version::time_based);
+  assert(id.variant() == uuids::uuid_variant::rfc);
+
+  const std::string& uuid_str = to_string(id);
+
+  uuid->clear();
+  for (unsigned i = 0; i < uuid_str.length(); i++) {
+    if (uuid_str[i] == '-' && !hyphenate)
+      continue;
+    uuid->push_back(uuid_str[i]);
+  }
+
+  return Status::Ok();
+}
+
+
+Status generate_uuid_old(std::string* uuid, bool hyphenate) {
   if (uuid == nullptr)
     return Status_UtilsError("Null UUID string argument");
 

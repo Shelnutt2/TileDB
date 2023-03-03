@@ -379,6 +379,13 @@ add_library(TILEDB_CORE_OBJECTS OBJECT
 target_link_libraries(TILEDB_CORE_OBJECTS PRIVATE $<BUILD_INTERFACE:common>)
 target_link_libraries(TILEDB_CORE_OBJECTS INTERFACE object_store_definitions)
 
+
+target_compile_definitions(TILEDB_CORE_OBJECTS
+        PRIVATE
+        -DUUID_SYSTEM_GENERATOR=1
+        -DUUID_TIME_GENERATOR=1
+        )
+
 ############################################################
 # provide actions/target for preparation of magic.mgc data for embedding/build
 
