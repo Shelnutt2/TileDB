@@ -165,7 +165,7 @@ stages:
          condition: succeeded() # only run this job if the build step succeeded
          displayName: 'Add artifacts to GitHub Release'
          inputs:
-           gitHubConnection: Shelnutt2
+           gitHubConnection: TileDB-Inc-Release
            repositoryName: $(Build.Repository.Name)
            addChangeLog: false
            action: edit
