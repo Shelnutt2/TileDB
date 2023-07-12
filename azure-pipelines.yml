@@ -149,9 +149,11 @@ stages:
      - job:
        steps:
         # First download artifacts
-       - task: DownloadBuildArtifacts@0
+       - task: DownloadBuildArtifacts@1
          inputs:
-          downloadType: 'specific'
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'built-libs'
        - script: |
            echo $sourceVersion
            commitHash=${sourceVersion:0:7}
