@@ -889,6 +889,9 @@ class Config {
    *    CAPNP traversal limit used in the deserialization of messages(bytes)
    * <br>
    *    **Default**: 536870912 (512MB)
+   * - `rest.payer_namespace` <br>
+   *    The namespace that should be charged for the request. <br>
+   *    **Default**: no default set
    * - `filestore.buffer_size` <br>
    *    Specifies the size in bytes of the internal buffers used in the
    *    filestore API. The size should be bigger than the minimum tile size
