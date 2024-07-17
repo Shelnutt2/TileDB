@@ -32,6 +32,8 @@
 
 #include "tiledb/sm/rest/curl.h"
 #include "tiledb/common/logger.h"
+#include "tiledb/sm/compressors/gzip_compressor.h"
+#include "tiledb/sm/compressors/zstd_compressor.h"
 #include "tiledb/sm/filesystem/ssl_config.h"
 #include "tiledb/sm/filesystem/uri.h"
 #include "tiledb/sm/misc/tdb_time.h"
@@ -758,6 +760,11 @@ Status Curl::post_data_common(
     return LOG_STATUS(
         Status_RestError("Error posting data; curl instance is null."));
 
+  auto data_maybe_compressed = maybe_compress(data, headers);
+  if (data_maybe_compressed != nullptr) {
+    data = data_maybe_compressed;
+  }
+
   // TODO: If you post more than 2GB, use CURLOPT_POSTFIELDSIZE_LARGE.
   const uint64_t post_size_limit = uint64_t(2) * 1024 * 1024 * 1024;
   if (data->total_size() > post_size_limit) {
@@ -785,6 +792,9 @@ Status Curl::post_data_common(
   /* set seek for handling redirects */
   curl_easy_setopt(curl, CURLOPT_SEEKFUNCTION, &buffer_list_seek_callback);
   curl_easy_setopt(curl, CURLOPT_SEEKDATA, data);
+
+  // TODO: Replace
+  delete data_maybe_compressed;
 
   return Status::Ok();
 }
@@ -997,6 +1007,11 @@ Status Curl::put_data_common(
     return LOG_STATUS(
         Status_RestError("Error putting data; curl instance is null."));
 
+  auto data_maybe_compressed = maybe_compress(data, headers);
+  if (data_maybe_compressed != nullptr) {
+    data = data_maybe_compressed;
+  }
+
   const uint64_t post_size_limit = uint64_t(2) * 1024 * 1024 * 1024;
   logger_->debug("putting {} bytes to", data->total_size());
   if (data->total_size() > post_size_limit) {
@@ -1028,7 +1043,90 @@ Status Curl::put_data_common(
   curl_easy_setopt(curl, CURLOPT_SEEKFUNCTION, &buffer_list_seek_callback);
   curl_easy_setopt(curl, CURLOPT_SEEKDATA, data);
 
+  // TODO: Replace
+  delete data_maybe_compressed;
+
   return Status::Ok();
 }
+
+BufferList* Curl::maybe_compress(
+    const BufferList* data,
+    struct curl_slist** headers
+) {
+  bool should_compress = false;
+  const char* compressor = nullptr;
+  throw_if_not_ok(config_->get("rest.http_compressor", &compressor));
+
+  if (compressor != nullptr) {
+    // curl expects lowecase strings so let's convert
+    std::string comp(compressor);
+    std::locale loc;
+    for (std::string::size_type j = 0; j < comp.length(); ++j)
+      comp[j] = std::tolower(comp[j], loc);
+
+    if (comp != "none") {
+      should_compress = true;
+      if (comp == "any") {
+        // Default to zstd
+        comp = "zstd";
+      }
+      *headers =
+          curl_slist_append(*headers, ("Content-Encoding: " + comp).c_str());
+      if (*headers == nullptr) {
+        throw_if_not_ok(
+            LOG_STATUS(Status_RestError("Cannot set content-encoding header; curl_slist_append returned null.")));
+        return nullptr;
+      }
+    }
+
+    // Ideally we could reuse input buffers. This will cause an increase in memory usage
+    if (should_compress) {
+      BufferList *compressed_buffer_list = new BufferList;
+      const Buffer* buffer;
+      if (comp == "gzip") {
+        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
+          throw_if_not_ok(data->get_buffer(i, &buffer));
+          Buffer compressed_buffer(buffer->size());
+          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
+          GZip::compress(&const_buffer, &compressed_buffer);
+          throw_if_not_ok(
+              compressed_buffer_list->add_buffer(std::move(compressed_buffer)));
+        }
+      } else if (comp == "zstd") {
+        // Get concurrency and setup zstd context
+        bool found = false;
+        uint64_t compute_concurrency_level{0};
+        if (!config_
+            ->get<uint64_t>(
+                "sm.compute_concurrency_level",
+                &compute_concurrency_level,
+                &found)
+            .ok()) {
+          throw std::logic_error("Cannot get compute concurrency level");
+        }
+        assert(found);
+
+        auto compress_ctx_pool =
+            make_shared<BlockingResourcePool<ZStd::ZSTD_Compress_Context>>(
+                HERE(), compute_concurrency_level);
+        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
+          throw_if_not_ok(data->get_buffer(i, &buffer));
+          Buffer compressed_buffer;
+          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
+
+          ZStd::compress(ZStd::default_level(), compress_ctx_pool, &const_buffer, &compressed_buffer);
+          throw_if_not_ok(
+              compressed_buffer_list->add_buffer(std::move(compressed_buffer)));
+        }
+      }
+      // Caller responsible for freeing
+      // TODO: Replace with real setup, this is just to keep the point semantics
+      return compressed_buffer_list;
+    }
+  }
+
+  return nullptr;
+}
+
 }  // namespace sm
 }  // namespace tiledb

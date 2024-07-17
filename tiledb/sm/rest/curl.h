@@ -340,6 +340,11 @@ class Curl {
   tuple<Status, optional<long>> last_http_status_code();
 
  private:
+  BufferList* maybe_compress(
+      const BufferList* data,
+      struct curl_slist** headers
+      );
+
   /**
    * A libcurl initializer instance. This should remain
    * the first member variable to ensure that libcurl is
