@@ -34,6 +34,7 @@
 #define TILEDB_GZIP_H
 
 #include "tiledb/common/common.h"
+#include "tiledb/sm/buffer/buffer_list.h"
 
 #include <cmath>
 
@@ -66,6 +67,24 @@ class GZip {
    * @param output_buffer Output buffer to write to the compressed data.
    */
   static void compress(ConstBuffer* input_buffer, Buffer* output_buffer);
+
+  /**
+   * Compression function.
+   *
+   * @param level Compression level.
+   * @param input_buffer Input bufferlist to read from.
+   * @param output_buffer Output buffer to write to the compressed data.
+   */
+  static void compress(
+      int level, BufferList* input_buffer, Buffer* output_buffer);
+
+  /**
+   * Overloaded compression function with default compression level.
+   *
+   * @param input_buffer Input bufferlist to read from.
+   * @param output_buffer Output buffer to write to the compressed data.
+   */
+  static void compress(BufferList* input_buffer, Buffer* output_buffer);
 
   /**
    * Decompression function.

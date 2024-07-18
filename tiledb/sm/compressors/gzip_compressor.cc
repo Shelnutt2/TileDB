@@ -101,6 +101,74 @@ void GZip::compress(ConstBuffer* input_buffer, Buffer* output_buffer) {
   return GZip::compress(GZip::default_level(), input_buffer, output_buffer);
 }
 
+void GZip::compress(
+    int level, BufferList* input_buffer, Buffer* output_buffer) {
+  // Sanity check
+  if (input_buffer->num_buffers() > 0 || output_buffer->data() == nullptr)
+    throw GZipException("Failed compressing with GZip; invalid buffer format");
+
+  if (level > GZip::maximum_level())
+    throw GZipException(
+        "Failed compressing with GZip; invalid compression level.");
+
+  int ret;
+  z_stream strm;
+
+  // Allocate deflate state
+  strm.zalloc = Z_NULL;
+  strm.zfree = Z_NULL;
+  strm.opaque = Z_NULL;
+  ret =
+      deflateInit(&strm, level < level_limit_ ? GZip::default_level() : level);
+
+  if (ret != Z_OK) {
+    if ((ret != Z_MEM_ERROR && ret != Z_STREAM_ERROR)) {
+      (void)deflateEnd(&strm);
+    }
+    throw GZipException("Cannot compress with GZIP");
+  }
+
+  // Compress
+  const Buffer *buffer;
+  int flush = Z_NO_FLUSH;
+  for (uint64_t i = 0; i < input_buffer->num_buffers(); ++i) {
+    throw_if_not_ok(input_buffer->get_buffer(i, &buffer));
+
+    strm.next_in = (unsigned char*)buffer->data();
+    strm.next_out = (unsigned char*)output_buffer->cur_data();
+    strm.avail_in = (uInt)buffer->size();
+    strm.avail_out = (uInt)output_buffer->free_space();
+
+
+    // Finish on last buffer
+    if (i == input_buffer->num_buffers() - 1) {
+      flush = Z_FINISH;
+    }
+    ret = deflate(&strm, flush);
+    // Check for error
+    if (ret == Z_STREAM_ERROR || strm.avail_in != 0) {
+      (void)deflateEnd(&strm);
+      throw GZipException("Cannot compress with GZIP");
+    }
+  }
+
+  // Clean up
+  (void)deflateEnd(&strm);
+
+  // Return
+  if (ret == Z_STREAM_ERROR || strm.avail_in != 0)
+    throw GZipException("Cannot compress with GZIP");
+
+  // Set size of compressed data
+  uint64_t compressed_size = output_buffer->free_space() - strm.avail_out;
+  output_buffer->advance_size(compressed_size);
+  output_buffer->advance_offset(compressed_size);
+}
+
+void GZip::compress(BufferList* input_buffer, Buffer* output_buffer) {
+  return GZip::compress(GZip::default_level(), input_buffer, output_buffer);
+}
+
 void GZip::decompress(
     ConstBuffer* input_buffer, PreallocatedBuffer* output_buffer) {
   // Sanity check

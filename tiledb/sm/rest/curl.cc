@@ -708,7 +708,7 @@ Status Curl::post_data(
     stats::Stats* const stats,
     const std::string& url,
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     Buffer* const returned_data,
     const std::string& res_uri) {
   struct curl_slist* headers;
@@ -732,7 +732,7 @@ Status Curl::post_data(
     stats::Stats* const stats,
     const std::string& url,
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     Buffer* const returned_data,
     PostResponseCb&& cb,
     const std::string& res_uri) {
@@ -753,13 +753,15 @@ Status Curl::post_data(
 
 Status Curl::post_data_common(
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     struct curl_slist** headers) {
   CURL* curl = curl_.get();
   if (curl == nullptr)
     return LOG_STATUS(
         Status_RestError("Error posting data; curl instance is null."));
 
+  std::cout << "Calling maybe_compress" << std::endl;
+  *headers = nullptr;
   auto data_maybe_compressed = maybe_compress(data, headers);
   if (data_maybe_compressed != nullptr) {
     data = data_maybe_compressed;
@@ -774,7 +776,6 @@ Status Curl::post_data_common(
   }
 
   // Set auth and content-type for request
-  *headers = nullptr;
   RETURN_NOT_OK_ELSE(set_headers(headers), curl_slist_free_all(*headers));
   RETURN_NOT_OK_ELSE(
       set_content_type(serialization_type, headers),
@@ -792,9 +793,6 @@ Status Curl::post_data_common(
   /* set seek for handling redirects */
   curl_easy_setopt(curl, CURLOPT_SEEKFUNCTION, &buffer_list_seek_callback);
   curl_easy_setopt(curl, CURLOPT_SEEKDATA, data);
-
-  // TODO: Replace
-  delete data_maybe_compressed;
 
   return Status::Ok();
 }
@@ -915,7 +913,7 @@ Status Curl::patch_data(
     stats::Stats* const stats,
     const std::string& url,
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     Buffer* const returned_data,
     const std::string& res_uri) {
   struct curl_slist* headers;
@@ -935,7 +933,7 @@ Status Curl::patch_data(
 
 Status Curl::patch_data_common(
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     struct curl_slist** headers) {
   CURL* curl = curl_.get();
   if (curl == nullptr)
@@ -980,7 +978,7 @@ Status Curl::put_data(
     stats::Stats* const stats,
     const std::string& url,
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     Buffer* const returned_data,
     const std::string& res_uri) {
   struct curl_slist* headers;
@@ -1000,13 +998,14 @@ Status Curl::put_data(
 
 Status Curl::put_data_common(
     const SerializationType serialization_type,
-    const BufferList* data,
+    BufferList* data,
     struct curl_slist** headers) {
   CURL* curl = curl_.get();
   if (curl == nullptr)
     return LOG_STATUS(
         Status_RestError("Error putting data; curl instance is null."));
 
+  *headers = nullptr;
   auto data_maybe_compressed = maybe_compress(data, headers);
   if (data_maybe_compressed != nullptr) {
     data = data_maybe_compressed;
@@ -1021,7 +1020,6 @@ Status Curl::put_data_common(
   }
 
   // Set auth and content-type for request
-  *headers = nullptr;
   RETURN_NOT_OK_ELSE(set_headers(headers), curl_slist_free_all(*headers));
   RETURN_NOT_OK_ELSE(
       set_content_type(serialization_type, headers),
@@ -1043,55 +1041,74 @@ Status Curl::put_data_common(
   curl_easy_setopt(curl, CURLOPT_SEEKFUNCTION, &buffer_list_seek_callback);
   curl_easy_setopt(curl, CURLOPT_SEEKDATA, data);
 
-  // TODO: Replace
-  delete data_maybe_compressed;
-
   return Status::Ok();
 }
 
 BufferList* Curl::maybe_compress(
-    const BufferList* data,
+    BufferList* data,
     struct curl_slist** headers
 ) {
+  // Exit early if we have no data
+  if (data->num_buffers() == 0) {
+    return nullptr;
+  }
   bool should_compress = false;
   const char* compressor = nullptr;
-  throw_if_not_ok(config_->get("rest.http_compressor", &compressor));
+  throw_if_not_ok(config_->get("rest.upload_http_compressor", &compressor));
 
   if (compressor != nullptr) {
+    std::cout << "compressor: " << compressor << std::endl;
     // curl expects lowecase strings so let's convert
     std::string comp(compressor);
     std::locale loc;
     for (std::string::size_type j = 0; j < comp.length(); ++j)
       comp[j] = std::tolower(comp[j], loc);
 
+    std::cout << "comp: " << comp << std::endl;
     if (comp != "none") {
       should_compress = true;
       if (comp == "any") {
         // Default to zstd
         comp = "zstd";
       }
+  
+      std::string comp_header_val = "Content-Encoding: " + comp;
+
       *headers =
-          curl_slist_append(*headers, ("Content-Encoding: " + comp).c_str());
+          curl_slist_append(*headers, comp_header_val.c_str());
       if (*headers == nullptr) {
         throw_if_not_ok(
             LOG_STATUS(Status_RestError("Cannot set content-encoding header; curl_slist_append returned null.")));
         return nullptr;
       }
     }
+    std::cout << "should_compress: " << should_compress << std::endl;
 
     // Ideally we could reuse input buffers. This will cause an increase in memory usage
     if (should_compress) {
-      BufferList *compressed_buffer_list = new BufferList;
-      const Buffer* buffer;
+      BufferList compressed_buffer_list;// = new BufferList;
+//      const Buffer* buffer;
+      Buffer compressed_buffer(data->total_size());
       if (comp == "gzip") {
-        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
-          throw_if_not_ok(data->get_buffer(i, &buffer));
-          Buffer compressed_buffer(buffer->size());
-          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
-          GZip::compress(&const_buffer, &compressed_buffer);
-          throw_if_not_ok(
-              compressed_buffer_list->add_buffer(std::move(compressed_buffer)));
-        }
+        GZip::compress(data, &compressed_buffer);
+//        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
+//          throw_if_not_ok(data->get_buffer(i, &buffer));
+//          Buffer compressed_buffer(buffer->size());
+//          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
+//          GZip::compress(&const_buffer, &compressed_buffer);
+//          throw_if_not_ok(
+//              compressed_buffer_list.add_buffer(std::move(compressed_buffer)));
+//        }
+      } else if (comp == "deflate") {
+        GZip::compress(data, &compressed_buffer);
+//          for (uint64_t i = 0; i < data->num_buffers(); ++i) {
+//            throw_if_not_ok(data->get_buffer(i, &buffer));
+//            Buffer compressed_buffer(buffer->size());
+//            ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
+//            GZip::compress(&const_buffer, &compressed_buffer);
+//            throw_if_not_ok(
+//                compressed_buffer_list.add_buffer(std::move(compressed_buffer)));
+//          }
       } else if (comp == "zstd") {
         // Get concurrency and setup zstd context
         bool found = false;
@@ -1109,19 +1126,19 @@ BufferList* Curl::maybe_compress(
         auto compress_ctx_pool =
             make_shared<BlockingResourcePool<ZStd::ZSTD_Compress_Context>>(
                 HERE(), compute_concurrency_level);
-        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
-          throw_if_not_ok(data->get_buffer(i, &buffer));
-          Buffer compressed_buffer;
-          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
-
-          ZStd::compress(ZStd::default_level(), compress_ctx_pool, &const_buffer, &compressed_buffer);
-          throw_if_not_ok(
-              compressed_buffer_list->add_buffer(std::move(compressed_buffer)));
-        }
+//        for (uint64_t i = 0; i < data->num_buffers(); ++i) {
+//          throw_if_not_ok(data->get_buffer(i, &buffer));
+//          Buffer compressed_buffer(buffer->size());
+//          ConstBuffer const_buffer(const_cast<Buffer*>(buffer));
+//
+//          ZStd::compress(ZStd::default_level(), compress_ctx_pool, &const_buffer, &compressed_buffer);
+//          throw_if_not_ok(
+//              compressed_buffer_list.add_buffer(std::move(compressed_buffer)));
+//        }
       }
       // Caller responsible for freeing
       // TODO: Replace with real setup, this is just to keep the point semantics
-      return compressed_buffer_list;
+      return nullptr;
     }
   }
 

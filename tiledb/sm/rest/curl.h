@@ -154,7 +154,7 @@ class Curl {
       stats::Stats* stats,
       const std::string& url,
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       Buffer* returned_data,
       const std::string& res_ns_uri);
 
@@ -174,7 +174,7 @@ class Curl {
       stats::Stats* stats,
       const std::string& url,
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       Buffer* returned_data,
       const std::string& res_ns_uri);
 
@@ -194,7 +194,7 @@ class Curl {
       stats::Stats* stats,
       const std::string& url,
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       Buffer* returned_data,
       const std::string& res_ns_uri);
 
@@ -247,7 +247,7 @@ class Curl {
       stats::Stats* stats,
       const std::string& url,
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       Buffer* returned_data,
       PostResponseCb&& write_cb,
       const std::string& res_ns_uri);
@@ -264,7 +264,7 @@ class Curl {
    */
   Status patch_data_common(
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       struct curl_slist** headers);
 
   /**
@@ -279,7 +279,7 @@ class Curl {
    */
   Status put_data_common(
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       struct curl_slist** headers);
 
   /**
@@ -294,7 +294,7 @@ class Curl {
    */
   Status post_data_common(
       SerializationType serialization_type,
-      const BufferList* data,
+      BufferList* data,
       struct curl_slist** headers);
 
   /**
@@ -341,7 +341,7 @@ class Curl {
 
  private:
   BufferList* maybe_compress(
-      const BufferList* data,
+      BufferList* data,
       struct curl_slist** headers
       );
 
