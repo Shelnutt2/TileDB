@@ -390,6 +390,9 @@ class Curl {
   /** Max curl buffer size for received data. */
   uint64_t curl_buffer_size_;
 
+  /** Retry curl errors. */
+  bool curl_error_retry_enabled_;
+
   /**
    * Populates the curl slist with authorization (token or username+password),
    * and any extra headers.
@@ -524,6 +527,14 @@ class Curl {
    * @return Status
    */
   Status should_retry_based_on_http_status(bool* retry) const;
+
+  /**
+   * Checks the curl return code to see if it matches a list of errors
+   * to retry
+   * @param code curl error code
+   * @return retry
+   */
+  static bool should_retry_based_on_curl_code(CURLcode code);
 };
 
 }  // namespace sm
