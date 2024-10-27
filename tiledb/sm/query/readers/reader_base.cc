@@ -718,7 +718,9 @@ std::list<FilteredData> ReaderBase::read_tiles(
         memory_tracker_);
 
     // Go through each tiles and create the attribute tiles.
+    uint64_t count = 0;
     for (auto tile : result_tiles) {
+      count++;
       auto const fragment{fragment_metadata_[tile->frag_idx()]};
       const auto& array_schema{fragment->array_schema()};
 

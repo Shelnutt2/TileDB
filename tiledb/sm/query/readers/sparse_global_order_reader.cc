@@ -154,7 +154,7 @@ Status SparseGlobalOrderReader<BitmapType>::dowork() {
     stats_->add_counter("internal_loop_num", 1);
 
     // Create the result tiles we are going to process.
-    auto created_tiles = create_result_tiles(result_tiles);
+    auto created_tiles = create_result_tiles_sorted(result_tiles);
 
     if (created_tiles.size() > 0) {
       // Read and unfilter coords.
@@ -311,7 +311,7 @@ bool SparseGlobalOrderReader<BitmapType>::add_result_tile(
   auto tiles_size = get_coord_tiles_size(dim_num, f, t);
 
   // Don't load more tiles than the memory budget.
-  if (memory_used_for_coords_[f] + tiles_size > memory_budget_coords_tiles) {
+  if (memory_used_for_coords_total_ + tiles_size > memory_budget_coords_tiles) {
     return true;
   }
 
@@ -475,6 +475,208 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles(
   for (uint64_t i = 0; i < result_tiles.size(); i++) {
     TileListIt it = result_tiles[i].begin();
     std::advance(it, rt_list_num_tiles[i]);
+    for (; it != result_tiles[i].end(); ++it) {
+      created_tiles.emplace_back(&*it);
+    }
+  }
+
+  return created_tiles;
+}
+
+template <class BitmapType>
+std::vector<ResultTile*>
+SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
+    std::vector<ResultTilesList>& result_tiles) {
+  auto timer_se = stats_->start_timer("create_result_tiles_sorted");
+
+  // For easy reference.
+  auto fragment_num = fragment_metadata_.size();
+  auto dim_num = array_schema_.dim_num();
+
+  // Get the number of fragments to process and compute per fragment memory.
+  uint64_t num_fragments_to_process =
+      tmp_read_state_.num_fragments_to_process();
+  per_fragment_memory_ = memory_budget_.total_budget() *
+                         memory_budget_.ratio_coords();
+
+  // Save which result tile list is empty.
+  std::vector<uint64_t> rt_list_num_tiles(result_tiles.size());
+  for (uint64_t i = 0; i < result_tiles.size(); i++) {
+    rt_list_num_tiles[i] = result_tiles[i].size();
+  }
+
+  // Create result tiles.
+  if (subarray_.is_set()) {
+    // Load as many tiles as the memory budget allows.
+    throw_if_not_ok(parallel_for(
+        &resources_.compute_tp(), 0, fragment_num, [&](uint64_t f) {
+          uint64_t t = 0;
+          auto& tile_ranges = tmp_read_state_.tile_ranges(f);
+          while (!tile_ranges.empty()) {
+            auto& range = tile_ranges.back();
+            for (t = range.first; t <= range.second; t++) {
+              auto budget_exceeded = add_result_tile(
+                  dim_num,
+                  per_fragment_memory_,
+                  f,
+                  t,
+                  *fragment_metadata_[f],
+                  result_tiles);
+
+              if (budget_exceeded) {
+                logger_->debug(
+                    "Budget exceeded adding result tiles, fragment {0}, tile "
+                    "{1}",
+                    f,
+                    t);
+
+                if (result_tiles[f].empty()) {
+                  auto tiles_size = get_coord_tiles_size(dim_num, f, t);
+                  throw SparseGlobalOrderReaderException(
+                      "Cannot load a single tile for fragment, increase "
+                      "memory "
+                      "budget, tile size : " +
+                      std::to_string(tiles_size) + ", per fragment memory " +
+                      std::to_string(per_fragment_memory_) + ", total budget " +
+                      std::to_string(memory_budget_.total_budget()) +
+                      ", num fragments to process " +
+                      std::to_string(num_fragments_to_process));
+                }
+                return Status::Ok();
+              }
+
+              range.first++;
+            }
+
+            tmp_read_state_.remove_tile_range(f);
+          }
+
+          tmp_read_state_.set_all_tiles_loaded(f);
+
+          return Status::Ok();
+        }));
+  } else {
+    // Load as many tiles as the memory budget allows.
+
+    // Determine global tile sort
+    // TODO: Do this way way way better
+    // A tile min heap, contains one GlobalOrderResultCoords per fragment.
+    std::vector<TileMBROrder> container;
+    container.reserve(result_tiles.size());
+    GlobalCmpTileOrder cmp(
+        array_schema_.domain(),
+        !array_schema_.allows_dups(),
+        true,
+        &fragment_metadata_);
+//    TileMinHeap<CompType> tile_queue(cmp, std::move(container));
+
+
+//    std::priority_queue<TileMBROrder, std::vector<TileMBROrder>, GlobalCmpTileOrder> sorted_tile_queue(cmp, std::move(container));
+    std::vector<TileMBROrder> sorted_tile_order;
+    std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
+    for(uint64_t f = 0; f < fragment_num; ++f) {
+      auto fragment_meta = fragment_metadata_[f];
+      // todo: do this better too, don't force load r-trees
+      // definitely check for memory budget
+      fragment_meta->loaded_metadata()->load_rtree(array_->get_encryption_key());
+      auto tile_num = fragment_meta->tile_num();
+      auto start = read_state_.frag_idx()[f].tile_idx_;
+      for (uint64_t t = start; t < tile_num; t++) {
+        auto& mbr = fragment_meta->mbr(t);
+//        sorted_tile_queue.emplace(TileMBROrder{f, t, mbr});
+        sorted_tile_order.emplace_back(f, t, mbr);
+      }
+    }
+
+    auto& compute_tp = resources_.compute_tp();
+    parallel_sort(&compute_tp, sorted_tile_order.begin(), sorted_tile_order.end(), cmp);
+
+//    std::cerr << "sorted_tile_queue.size()=" << sorted_tile_queue.size() << std::endl;
+    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
+
+//    throw_if_not_ok(parallel_for(
+//        &resources_.compute_tp(), 0, fragment_num, [&](uint64_t f) {
+//          uint64_t t = 0;
+//          auto tile_num = fragment_metadata_[f]->tile_num();
+
+    size_t global_tile_index = 0;
+    for (global_tile_index = 0; global_tile_index < sorted_tile_order.size(); ++global_tile_index) {
+//    while(!sorted_tile_queue.empty()) {
+
+//      TileMBROrder tmbro = sorted_tile_queue.top();
+      TileMBROrder tmbro = sorted_tile_order[global_tile_index];
+      uint64_t f = tmbro.frag_idx;
+      uint64_t t = tmbro.tile_idx;
+      // Figure out the start index.
+      auto start = read_state_.frag_idx()[f].tile_idx_;
+      if (!result_tiles[f].empty()) {
+        start = std::max(start, result_tiles[f].back().tile_idx() + 1);
+      }
+
+      //          for (t = start; t < tile_num; t++) {
+      auto budget_exceeded = add_result_tile(
+          dim_num,
+          per_fragment_memory_,
+          f,
+          t,
+          *fragment_metadata_[f],
+          result_tiles);
+
+      if (budget_exceeded) {
+        logger_->debug(
+            "Budget exceeded adding result tiles, fragment {0}, tile "
+            "{1}",
+            f,
+            t);
+
+        if (result_tiles[f].empty()) {
+          auto tiles_size = get_coord_tiles_size(dim_num, f, t);
+          logger_->error(
+              "Cannot load a single tile for fragment, increase memory "
+              "budget, tile size : " +
+              std::to_string(tiles_size) + ", per fragment memory " +
+              std::to_string(per_fragment_memory_) + ", total budget " +
+              std::to_string(memory_budget_.total_budget()) +
+              ", num fragments to process " +
+              std::to_string(num_fragments_to_process));
+        }
+
+        break;
+      }
+//      sorted_tile_queue.pop();
+      fragment_tiles_loaded[f]++;
+    }
+//          }
+
+    for(uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
+      if (fragment_tiles_loaded[f] == fragment_metadata_[f]->tile_num()) {
+        tmp_read_state_.set_all_tiles_loaded(f);
+      }
+    }
+
+//          return Status::Ok();
+//        }));
+  }
+
+  bool done_adding_result_tiles = tmp_read_state_.done_adding_result_tiles();
+  uint64_t num_rt = 0;
+  for (unsigned int f = 0; f < fragment_num; f++) {
+    num_rt += result_tiles[f].size();
+  }
+
+  logger_->debug("Done adding result tiles, num result tiles {0}", num_rt);
+
+  if (done_adding_result_tiles) {
+    logger_->debug("All result tiles loaded");
+  }
+
+  read_state_.set_done_adding_result_tiles(done_adding_result_tiles);
+
+  // Return the list of tiles added.
+  std::vector<ResultTile*> created_tiles;
+  for (uint64_t i = 0; i < result_tiles.size(); i++) {
+    TileListIt it = result_tiles[i].begin();
+//    std::advance(it, rt_list_num_tiles[i]);
     for (; it != result_tiles[i].end(); ++it) {
       created_tiles.emplace_back(&*it);
     }

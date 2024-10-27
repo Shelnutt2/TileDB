@@ -184,6 +184,12 @@ struct ChunkData {
   std::vector<DiskLayout> filtered_chunks_;
 };
 
+struct TileMBROrder {
+    uint64_t frag_idx;
+    uint64_t tile_idx;
+    NDRange mbr;
+};
+
 }  // namespace tiledb::sm
 
 #endif  // TILEDB_TYPES_H

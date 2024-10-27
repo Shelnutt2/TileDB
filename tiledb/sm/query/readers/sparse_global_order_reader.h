@@ -232,6 +232,15 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
       std::vector<ResultTilesList>& result_tiles);
 
   /**
+   * Create the result tiles, sorted.
+   *
+   * @param result_tiles Result tiles per fragment.
+   * @return Newly created tiles.
+   */
+  std::vector<ResultTile*> create_result_tiles_sorted(
+      std::vector<ResultTilesList>& result_tiles);
+
+  /**
    * Clean tiles that have 0 results from the tile lists.
    *
    * @param result_tiles Result tiles vector.

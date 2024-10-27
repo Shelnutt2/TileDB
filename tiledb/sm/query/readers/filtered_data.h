@@ -312,7 +312,21 @@ class FilteredData {
   DISABLE_MOVE_AND_MOVE_ASSIGN(FilteredData);
 
   /** Destructor. */
-  ~FilteredData() = default;
+  ~FilteredData() {
+      std::stringstream ss;
+      for (auto it : tile_idx_count_) {
+        for (auto it2 : it.second) {
+          for (auto it3 : it2.second) {
+            if (it3.second > 1) {
+              ss << it.first << ": " << it2.first << ": " << it3.first << ": "
+                 << it3.second << std::endl;
+            }
+          }
+        }
+      }
+      if (!ss.str().empty())
+        std::cerr << ss.str() << std::endl;
+  };
 
   /* ********************************* */
   /*                API                */
@@ -399,6 +413,23 @@ class FilteredData {
       return Status::Ok();
     });
     read_tasks_.push_back(std::move(task));
+  }
+
+  /** @return Data blocks corresponding to the tile type. */
+  inline void set_data_blocks(const TileType type, tdb::pmr::list<FilteredDataBlock>::iterator& current_block) {
+    switch (type) {
+      case TileType::FIXED:
+        current_fixed_data_block_ = current_block;
+        break;
+      case TileType::VAR:
+        current_var_data_block_ = current_block;
+        break;
+      case TileType::NULLABLE:
+        current_nullable_data_block_ = current_block;
+        break;
+      default:
+        throw std::logic_error("Unexpected");
+    }
   }
 
   /** @return Data blocks corresponding to the tile type. */
@@ -539,8 +570,30 @@ class FilteredData {
       const ResultTile* rt,
       const TileType type) {
     const auto tile_idx{rt->tile_idx()};
+//    std::cerr << "fragment=" << fragment->fragment_uri().to_string() << ", name=" << name_ << ", tiled_idx=" << tile_idx << std::endl;
+    if (tile_idx_count_.contains(fragment->fragment_uri().to_string())) {
+      if (tile_idx_count_[fragment->fragment_uri().to_string()].contains(
+              name_)) {
+        if (tile_idx_count_[fragment->fragment_uri().to_string()][name_]
+                .contains(tile_idx)) {
+          tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx]++;
+        } else {
+          tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx] = 1;
+        }
+      } else {
+        tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx] =
+            1;
+      }
+    } else {
+      tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx] =
+          1;
+    }
     storage_size_t offset{file_offset(fragment, type, tile_idx)};
     storage_size_t size{persisted_tile_size(fragment, type, tile_idx)};
+    storage_size_t end_position = offset + size;
+
+    storage_size_t current_end_position = current_block_offset + current_block_size;
+    storage_size_t possible_new_size = current_block_size + size;
 
     if (current_block_frag_idx == nullopt) {
       current_block_offset = offset;
@@ -548,13 +601,27 @@ class FilteredData {
       return;
     }
 
-    uint64_t new_size{(offset + size) - current_block_offset};
-    uint64_t gap{offset - (current_block_offset + current_block_size)};
-    if (current_block_frag_idx == rt->frag_idx() &&
-        new_size <= max_batch_size &&
-        (new_size <= min_batch_size || gap <= min_batch_gap)) {
-      // Extend current batch.
-      current_block_size = new_size;
+//    // Exit early if new fragment
+//    if (current_block_frag_idx != rt->frag_idx()) {
+//      // Push the old batch and start a new one.
+//      data_blocks(type).emplace_back(
+//          *current_block_frag_idx,
+//          current_block_offset,
+//          current_block_size,
+//          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
+//      queue_last_block_for_read(type);
+//      current_block_offset = offset;
+//      current_block_size = size;
+//    }
+
+    // Check if block is before since now we load tiles not simply just in fragment + tile order but in possibly Global Order
+    // If block is before, we extend the size but move the offset "backwards"
+    if (current_block_frag_idx == rt->frag_idx() && end_position < current_block_offset && (end_position - current_block_offset <= min_batch_gap || possible_new_size <= min_batch_size) && possible_new_size <= max_batch_size) {
+//      current_block_size += size;
+      current_block_size = current_end_position - offset;
+      current_block_offset = offset;
+    } else if (current_block_frag_idx == rt->frag_idx() && offset > current_end_position && (offset - current_end_position <= min_batch_gap || possible_new_size <= min_batch_size) && possible_new_size <= max_batch_size) { // Check if block is after
+      current_block_size = end_position - current_block_offset;
     } else {
       // Push the old batch and start a new one.
       data_blocks(type).emplace_back(
@@ -566,6 +633,27 @@ class FilteredData {
       current_block_offset = offset;
       current_block_size = size;
     }
+
+
+
+//    uint64_t new_size{(offset + size) - current_block_offset};
+//    uint64_t gap{offset - (current_block_offset + current_block_size)};
+//    if (current_block_frag_idx == rt->frag_idx() &&
+//        new_size <= max_batch_size &&
+//        (new_size <= min_batch_size || gap <= min_batch_gap)) {
+//      // Extend current batch.
+//      current_block_size = new_size;
+//    } else {
+//      // Push the old batch and start a new one.
+//      data_blocks(type).emplace_back(
+//          *current_block_frag_idx,
+//          current_block_offset,
+//          current_block_size,
+//          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
+//      queue_last_block_for_read(type);
+//      current_block_offset = offset;
+//      current_block_size = size;
+//    }
   }
 
   /**
@@ -585,14 +673,29 @@ class FilteredData {
     storage_size_t size{persisted_tile_size(fragment, type, rt->tile_idx())};
 
     auto& current_block{current_data_block(type)};
-    if (!current_block->contains(rt->frag_idx(), offset, size)) {
-      current_block++;
-
-      if (current_block == data_blocks(type).end() ||
-          !current_block->contains(rt->frag_idx(), offset, size)) {
-        throw std::logic_error("Unexpected data block");
-      }
+    if (current_block->contains(rt->frag_idx(), offset, size)) {
+      return;
     }
+    auto& data_block = data_blocks(type);
+    std::cerr << "data_block.size()=" << data_block.size() << std::endl;
+    tdb::pmr::list<FilteredDataBlock>::iterator it = data_block.begin();
+    while(it != data_block.end()) {
+      if (it->contains(rt->frag_idx(), offset, size)) {
+        set_data_blocks(type, it);
+        return;
+      }
+      it++;
+    }
+//    if (!current_block->contains(rt->frag_idx(), offset, size)) {
+//      current_block++;
+//
+//      if (current_block == data_blocks(type).end() ||
+//          !current_block->contains(rt->frag_idx(), offset, size)) {
+////        throw std::logic_error("Unexpected data block");
+//      }
+//    }
+    std::cerr << "rt->frag_idx()=" << rt->frag_idx() << ", rt->tile_idx()=" << rt->tile_idx() << ", offset=" << offset << ", size=" << size << std::endl;
+    throw std::logic_error("Unexpected data block");
   }
 
   /* ********************************* */
@@ -637,6 +740,8 @@ class FilteredData {
 
   /** Read tasks. */
   std::vector<ThreadPool::Task>& read_tasks_;
+
+  std::unordered_map<std::string, std::map<std::string, std::map<uint64_t, uint64_t>>> tile_idx_count_;
 };
 
 }  // namespace tiledb::sm
