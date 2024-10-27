@@ -677,7 +677,7 @@ class FilteredData {
       return;
     }
     auto& data_block = data_blocks(type);
-    std::cerr << "data_block.size()=" << data_block.size() << std::endl;
+//    std::cerr << "data_block.size()=" << data_block.size() << std::endl;
     tdb::pmr::list<FilteredDataBlock>::iterator it = data_block.begin();
     while(it != data_block.end()) {
       if (it->contains(rt->frag_idx(), offset, size)) {

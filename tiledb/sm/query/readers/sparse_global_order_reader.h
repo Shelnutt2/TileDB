@@ -170,6 +170,12 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
   /** Are tile offsets loaded? */
   bool tile_offsets_loaded_;
 
+  /** Tiles to load in sorted order **/
+  std::vector<TileMBROrder> sorted_tile_order_for_loading_;
+
+  /** Has tile loading order been calculated? **/
+  bool tile_order_for_loading_computed_;
+
   /* ********************************* */
   /*       PRIVATE DECLARATIONS        */
   /* ********************************* */
@@ -215,6 +221,26 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
    * @return buffers_full.
    */
   bool add_result_tile(
+      const unsigned dim_num,
+      const uint64_t memory_budget_coords_tiles,
+      const unsigned f,
+      const uint64_t t,
+      const FragmentMetadata& frag_md,
+      std::vector<ResultTilesList>& result_tiles);
+
+  /**
+   * Add a result tile to process, making sure maximum budget is respected globally not just per fragment.
+   *
+   * @param dim_num Number of dimensions.
+   * @param memory_budget_coords_tiles Memory budget for coordinate tiles.
+   * @param f Fragment index.
+   * @param t Tile index.
+   * @param frag_md Fragment metadata.
+   * @param result_tiles Result tiles per fragment.
+   *
+   * @return buffers_full.
+   */
+  bool add_result_tile_total_memory_tracking(
       const unsigned dim_num,
       const uint64_t memory_budget_coords_tiles,
       const unsigned f,
@@ -633,6 +659,18 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
    * @param result_tiles Result tiles per fragment.
    */
   void end_iteration(std::vector<ResultTilesList>& result_tiles);
+
+  /**
+   * Return tile loading order, compute if not computed.
+   *
+   * @return tile loading order
+   */
+  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size);
+
+  /**
+   * Compute tile loading order
+   */
+  void compute_tile_order_for_loading(size_t result_tiles_size);
 };
 
 }  // namespace tiledb::sm

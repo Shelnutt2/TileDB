@@ -154,7 +154,13 @@ Status SparseGlobalOrderReader<BitmapType>::dowork() {
     stats_->add_counter("internal_loop_num", 1);
 
     // Create the result tiles we are going to process.
-    auto created_tiles = create_result_tiles_sorted(result_tiles);
+    auto turbo = config_.get<bool>("turbo");
+    std::vector<ResultTile*> created_tiles;
+    if (turbo.has_value() && turbo.value()) {
+      created_tiles = create_result_tiles_sorted(result_tiles);
+    } else {
+      created_tiles = create_result_tiles(result_tiles);
+    }
 
     if (created_tiles.size() > 0) {
       // Read and unfilter coords.
@@ -297,6 +303,44 @@ uint64_t SparseGlobalOrderReader<BitmapType>::get_coord_tiles_size(
 
 template <class BitmapType>
 bool SparseGlobalOrderReader<BitmapType>::add_result_tile(
+    const unsigned dim_num,
+    const uint64_t memory_budget_coords_tiles,
+    const unsigned f,
+    const uint64_t t,
+    const FragmentMetadata& frag_md,
+    std::vector<ResultTilesList>& result_tiles) {
+  if (tmp_read_state_.is_ignored_tile(f, t)) {
+    return false;
+  }
+
+  // Calculate memory consumption for this tile.
+  auto tiles_size = get_coord_tiles_size(dim_num, f, t);
+
+  // Don't load more tiles than the memory budget.
+  if (memory_used_for_coords_[f] + tiles_size > memory_budget_coords_tiles) {
+    return true;
+  }
+
+  // Adjust total memory used.
+  memory_used_for_coords_total_ += tiles_size;
+
+  // Adjust per fragment memory used.
+  memory_used_for_coords_[f] += tiles_size;
+
+  // Add the tile.
+  result_tiles[f].emplace_back(
+      f,
+      t,
+      array_schema_.allows_dups(),
+      deletes_consolidation_no_purge_,
+      frag_md,
+      query_memory_tracker_);
+
+  return false;
+}
+
+template <class BitmapType>
+bool SparseGlobalOrderReader<BitmapType>::add_result_tile_total_memory_tracking(
     const unsigned dim_num,
     const uint64_t memory_budget_coords_tiles,
     const unsigned f,
@@ -515,7 +559,7 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
           while (!tile_ranges.empty()) {
             auto& range = tile_ranges.back();
             for (t = range.first; t <= range.second; t++) {
-              auto budget_exceeded = add_result_tile(
+              auto budget_exceeded = add_result_tile_total_memory_tracking(
                   dim_num,
                   per_fragment_memory_,
                   f,
@@ -561,38 +605,11 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
     // Determine global tile sort
     // TODO: Do this way way way better
     // A tile min heap, contains one GlobalOrderResultCoords per fragment.
-    std::vector<TileMBROrder> container;
-    container.reserve(result_tiles.size());
-    GlobalCmpTileOrder cmp(
-        array_schema_.domain(),
-        !array_schema_.allows_dups(),
-        true,
-        &fragment_metadata_);
-//    TileMinHeap<CompType> tile_queue(cmp, std::move(container));
-
-
-//    std::priority_queue<TileMBROrder, std::vector<TileMBROrder>, GlobalCmpTileOrder> sorted_tile_queue(cmp, std::move(container));
-    std::vector<TileMBROrder> sorted_tile_order;
     std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
-    for(uint64_t f = 0; f < fragment_num; ++f) {
-      auto fragment_meta = fragment_metadata_[f];
-      // todo: do this better too, don't force load r-trees
-      // definitely check for memory budget
-      fragment_meta->loaded_metadata()->load_rtree(array_->get_encryption_key());
-      auto tile_num = fragment_meta->tile_num();
-      auto start = read_state_.frag_idx()[f].tile_idx_;
-      for (uint64_t t = start; t < tile_num; t++) {
-        auto& mbr = fragment_meta->mbr(t);
-//        sorted_tile_queue.emplace(TileMBROrder{f, t, mbr});
-        sorted_tile_order.emplace_back(f, t, mbr);
-      }
-    }
-
-    auto& compute_tp = resources_.compute_tp();
-    parallel_sort(&compute_tp, sorted_tile_order.begin(), sorted_tile_order.end(), cmp);
+    auto sorted_tile_order = tile_order_for_loading(result_tiles.size());
 
 //    std::cerr << "sorted_tile_queue.size()=" << sorted_tile_queue.size() << std::endl;
-    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
+//    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
 
 //    throw_if_not_ok(parallel_for(
 //        &resources_.compute_tp(), 0, fragment_num, [&](uint64_t f) {
@@ -614,7 +631,7 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
       }
 
       //          for (t = start; t < tile_num; t++) {
-      auto budget_exceeded = add_result_tile(
+      auto budget_exceeded = add_result_tile_total_memory_tracking(
           dim_num,
           per_fragment_memory_,
           f,
@@ -2420,6 +2437,51 @@ void SparseGlobalOrderReader<BitmapType>::end_iteration(
   logger_->debug("Done with iteration, num result tiles {0}", num_rt);
 
   array_memory_tracker_->set_budget(std::numeric_limits<uint64_t>::max());
+}
+
+template <class BitmapType>
+std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_loading(size_t result_tile_sizes) {
+  if (!tile_order_for_loading_computed_) {
+    compute_tile_order_for_loading(result_tile_sizes);
+  }
+
+  return sorted_tile_order_for_loading_;
+}
+
+template <class BitmapType>
+void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const size_t result_tiles_size) {
+
+  std::vector<TileMBROrder> container;
+  container.reserve(result_tiles_size);
+  GlobalCmpTileOrder cmp(
+      array_schema_.domain(),
+      !array_schema_.allows_dups(),
+      true,
+      &fragment_metadata_);
+  //    TileMinHeap<CompType> tile_queue(cmp, std::move(container));
+
+
+  uint64_t fragment_num = fragment_metadata_.size();
+  //    std::priority_queue<TileMBROrder, std::vector<TileMBROrder>, GlobalCmpTileOrder> sorted_tile_queue(cmp, std::move(container));
+//  std::vector<TileMBROrder> sorted_tile_order;
+  // Ensure we start with a clear sorted_tile_order_for_loading_
+  sorted_tile_order_for_loading_.clear();
+  for(uint64_t f = 0; f < fragment_num; ++f) {
+    auto fragment_meta = fragment_metadata_[f];
+    // todo: do this better too, don't force load r-trees
+    // definitely check for memory budget
+    fragment_meta->loaded_metadata()->load_rtree(array_->get_encryption_key());
+    auto tile_num = fragment_meta->tile_num();
+    auto start = read_state_.frag_idx()[f].tile_idx_;
+    for (uint64_t t = start; t < tile_num; t++) {
+      auto& mbr = fragment_meta->mbr(t);
+      //        sorted_tile_queue.emplace(TileMBROrder{f, t, mbr});
+      sorted_tile_order_for_loading_.emplace_back(f, t, mbr);
+    }
+  }
+
+  auto& compute_tp = resources_.compute_tp();
+  parallel_sort(&compute_tp, sorted_tile_order_for_loading_.begin(), sorted_tile_order_for_loading_.end(), cmp);
 }
 
 // Explicit template instantiations
