@@ -622,13 +622,12 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
 
   // We only track if we have loaded all tiles when a subarray is not set
   // This is how it was before and how we leave it
-  if (!subarray_.is_set()) {
     for (uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
       if (fragment_tiles_loaded[f] == fragment_metadata_[f]->tile_num()) {
         tmp_read_state_.set_all_tiles_loaded(f);
       }
     }
-  }
+
 
 //          return Status::Ok();
 //        }));
@@ -2492,6 +2491,7 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
 //  for(uint64_t f = 0; f < fragment_num; ++f) {
 
   // First get the total count so we can reserve it
+  // TODO: this the maximum amount but we might use less if subarray is set
   size_t total_tile_count = 0;
   for (auto f : relevant_fragments) {
     total_tile_count += fragment_metadata_[f]->tile_num();
@@ -2500,6 +2500,10 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
   sorted_tile_order_for_loading_.reserve(total_tile_count);
   for (auto f : relevant_fragments) {
     auto fragment_meta = fragment_metadata_[f];
+    std::vector<std::pair<uint64_t, uint64_t>> tile_ranges;
+    if (subarray_.is_set()) {
+      tile_ranges = tmp_read_state_.tile_ranges(f);
+    }
 
     // todo: do this better too, don't force load r-trees
     // definitely check for memory budget
@@ -2507,9 +2511,31 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
     auto tile_num = fragment_meta->tile_num();
     auto start = read_state_.frag_idx()[f].tile_idx_;
     for (uint64_t t = start; t < tile_num; t++) {
-      auto& mbr = fragment_meta->mbr(t);
-      //        sorted_tile_queue.emplace(TileMBROrder{f, t, mbr});
-      sorted_tile_order_for_loading_.emplace_back(f, t, mbr);
+      // If there are tile ranges check to see if this tile is inside of them
+      bool add_tile = false;
+      if (!tile_ranges.empty()) {
+        for (auto& range : tile_ranges) {
+          if (range.first <= t && range.second >= t) {
+            add_tile = true;
+            break;
+          }
+        }
+      } else {
+        add_tile = true;
+      }
+
+      if (add_tile) {
+        auto& mbr = fragment_meta->mbr(t);
+        //        sorted_tile_queue.emplace(TileMBROrder{f, t, mbr});
+        sorted_tile_order_for_loading_.emplace_back(f, t, mbr);
+      }
+    }
+
+    if (subarray_.is_set()) {
+      // remove all ranges once added and sorted
+      for (uint64_t i = 0; i < tile_ranges.size(); i++) {
+        tmp_read_state_.remove_tile_range(f);
+      }
     }
   }
 

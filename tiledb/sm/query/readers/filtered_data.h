@@ -313,19 +313,19 @@ class FilteredData {
 
   /** Destructor. */
   ~FilteredData() {
-      std::stringstream ss;
-      for (auto it : tile_idx_count_) {
-        for (auto it2 : it.second) {
-          for (auto it3 : it2.second) {
-            if (it3.second > 1) {
-              ss << it.first << ": " << it2.first << ": " << it3.first << ": "
-                 << it3.second << std::endl;
-            }
-          }
-        }
-      }
-      if (!ss.str().empty())
-        std::cerr << ss.str() << std::endl;
+//      std::stringstream ss;
+//      for (auto it : tile_idx_count_) {
+//        for (auto it2 : it.second) {
+//          for (auto it3 : it2.second) {
+//            if (it3.second > 1) {
+//              ss << it.first << ": " << it2.first << ": " << it3.first << ": "
+//                 << it3.second << std::endl;
+//            }
+//          }
+//        }
+//      }
+//      if (!ss.str().empty())
+//        std::cerr << ss.str() << std::endl;
   };
 
   /* ********************************* */
