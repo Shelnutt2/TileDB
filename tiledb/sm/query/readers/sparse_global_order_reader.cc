@@ -1986,6 +1986,7 @@ template <class BitmapType>
 std::vector<ResultTile*>
 SparseGlobalOrderReader<BitmapType>::result_tiles_to_load(
     std::vector<ResultCellSlab>& result_cell_slabs, bool aggregate_only) {
+  auto timer_se = stats_->start_timer("process_slabs.result_tiles_to_load");
   std::vector<ResultTile*> result_tiles;
   {
     std::unordered_set<ResultTile*> found_tiles;
@@ -2000,7 +2001,76 @@ SparseGlobalOrderReader<BitmapType>::result_tiles_to_load(
       }
     }
   }
-  std::sort(result_tiles.begin(), result_tiles.end(), result_tile_cmp);
+
+
+  // Create the result tiles we are going to process.
+  auto turbo_result_tiles = config_.get<bool>("turbo_result_tiles");
+  // TODO: not sure if this sort is worth it
+  if (turbo_result_tiles.has_value() && turbo_result_tiles.value()) {
+    // If we are in the old path, then mbrs aren't loaded so let's load them when using the old path with new result tile sort
+    auto turbo = config_.get<bool>("turbo");
+    if (!turbo.has_value() || !turbo.value()) {
+      auto& compute_tp = resources_.compute_tp();
+      subarray_.load_relevant_fragment_rtrees(&compute_tp);
+    }
+    //  auto& compute_tp = resources_.compute_tp();
+    if (array_schema_.cell_order() == Layout::HILBERT) {
+      HilbertCmpTileOrder cmp(
+          array_schema_.domain(),
+          !array_schema_.allows_dups(),
+          true,
+          &fragment_metadata_);
+      std::sort(
+          result_tiles.begin(),
+          result_tiles.end(),
+          [&cmp, this](ResultTile* a, const ResultTile* b) {
+            TileMBROrder aOrder{
+                a->frag_idx(),
+                a->tile_idx(),
+                fragment_metadata_[a->frag_idx()]->mbr(a->tile_idx())};
+            TileMBROrder bOrder{
+                b->frag_idx(),
+                b->tile_idx(),
+                fragment_metadata_[b->frag_idx()]->mbr(b->tile_idx())};
+            return cmp.operator()(aOrder, bOrder);
+            //                return cmp.operator()(a->TileMBROrder(), b->TileMBROrder()); return a.TileMBROrder() < b.TileMBROrder();
+          });
+      //    parallel_sort(
+      //        &compute_tp,
+      //        sorted_tile_order_for_loading_.begin(),
+      //        sorted_tile_order_for_loading_.end(),
+      //        cmp);
+    } else {
+      GlobalCmpTileOrder cmp(
+          array_schema_.domain(),
+          !array_schema_.allows_dups(),
+          true,
+          &fragment_metadata_);
+      std::sort(
+          result_tiles.begin(),
+          result_tiles.end(),
+          [&cmp, this](ResultTile* a, const ResultTile* b) {
+            TileMBROrder aOrder{
+                a->frag_idx(),
+                a->tile_idx(),
+                fragment_metadata_[a->frag_idx()]->mbr(a->tile_idx())};
+            TileMBROrder bOrder{
+                b->frag_idx(),
+                b->tile_idx(),
+                fragment_metadata_[b->frag_idx()]->mbr(b->tile_idx())};
+            return cmp.operator()(aOrder, bOrder);
+            //                return a.TileMBROrder() < b.TileMBROrder();
+          });
+      //    std::sort(result_tiles.begin(), result_tiles.end(), cmp);
+      //    parallel_sort(
+      //        &compute_tp,
+      //        sorted_tile_order_for_loading_.begin(),
+      //        sorted_tile_order_for_loading_.end(),
+      //        cmp);
+    }
+  } else {
+    std::sort(result_tiles.begin(), result_tiles.end(), result_tile_cmp);
+  }
   return result_tiles;
 }
 
@@ -2042,7 +2112,7 @@ void SparseGlobalOrderReader<BitmapType>::process_slabs(
     return;
   }
 
-  // Read a few attributes a a time.
+  // Read a few attributes at a time.
   std::vector<ResultTile*> result_tiles =
       result_tiles_to_load(result_cell_slabs, false);
   std::optional<std::string> last_field_to_overflow{std::nullopt};

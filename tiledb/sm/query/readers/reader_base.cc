@@ -693,81 +693,83 @@ std::list<FilteredData> ReaderBase::read_tiles(
   std::vector<ThreadPool::Task> read_tasks;
 
   // Run all attributes independently.
-  for (auto n : names) {
-    auto& name = n.name();
-    auto val_only = n.validity_only();
+  {
+    auto timer_build_tasks_se = stats_->start_timer("read_tiles.build_tasks");
+    for (auto n : names) {
+      auto timer_names_se = stats_->start_timer("read_tiles.names");
+      auto& name = n.name();
+      auto val_only = n.validity_only();
 
-    // Create the filtered data blocks. This will also kick off the read for the
-    // data blocks right after the memory is allocated so that we can optimize
-    // read and memory allocations.
-    const bool var_sized{array_schema_.var_size(name)};
-    const bool nullable{array_schema_.is_nullable(name)};
-    filtered_data.emplace_back(
-        resources_,
-        *this,
-        min_batch_size_,
-        max_batch_size_,
-        min_batch_gap_,
-        fragment_metadata_,
-        result_tiles,
-        name,
-        var_sized,
-        nullable,
-        val_only,
-        read_tasks,
-        memory_tracker_);
+      // Create the filtered data blocks. This will also kick off the read for the data blocks right after the memory is allocated so that we can optimize read and memory allocations.
+      const bool var_sized{array_schema_.var_size(name)};
+      const bool nullable{array_schema_.is_nullable(name)};
+      filtered_data.emplace_back(
+          resources_,
+          *this,
+          min_batch_size_,
+          max_batch_size_,
+          min_batch_gap_,
+          fragment_metadata_,
+          result_tiles,
+          name,
+          var_sized,
+          nullable,
+          val_only,
+          read_tasks,
+          memory_tracker_);
 
-    // Go through each tiles and create the attribute tiles.
-    uint64_t count = 0;
-    for (auto tile : result_tiles) {
-      count++;
-      auto const fragment{fragment_metadata_[tile->frag_idx()]};
-      const auto& array_schema{fragment->array_schema()};
+      // Go through each tiles and create the attribute tiles.
+      uint64_t count = 0;
+      for (auto tile : result_tiles) {
+        auto timer_result_tiles_se = stats_->start_timer("read_tiles.result_tiles");
+        count++;
+        auto const fragment{fragment_metadata_[tile->frag_idx()]};
+        const auto& array_schema{fragment->array_schema()};
 
-      if (skip_field(tile->frag_idx(), name)) {
-        continue;
-      }
-
-      num_tiles_read++;
-      const auto tile_idx{tile->tile_idx()};
-
-      // Construct a TileSizes class.
-      ResultTile::TileSizes tile_sizes{
-          fragment, name, var_sized, nullable, val_only, tile_idx};
-
-      // Construct a tile data class.
-      // See the explanation in 'read_and_unfilter_attribute_tiles' for more
-      // lifetime details. The tile data class is used to transmit the location
-      // of the fixed/var/nullable filtered data to the created 'TileTuple'
-      // object inside of each 'ResultTile'. The filter pipeline currently uses
-      // the 'ResultTile' object to access the data. Eventually, these
-      // 'TileData' objects should be returned by this function and passed into
-      // 'unfilter_tiles' so that the filter pipeline can stop using the
-      // 'ResultTile' object to get access to the filtered data.
-      ResultTile::TileData tile_data{
-          val_only ?
-              nullptr :
-              filtered_data.back().fixed_filtered_data(fragment.get(), tile),
-          val_only ?
-              nullptr :
-              filtered_data.back().var_filtered_data(fragment.get(), tile),
-          filtered_data.back().nullable_filtered_data(fragment.get(), tile)};
-
-      // Initialize the tile(s)
-      const format_version_t format_version{fragment->format_version()};
-      const auto is_dim{array_schema->is_dim(name)};
-      if (is_dim) {
-        const uint64_t dim_num{array_schema->dim_num()};
-        for (uint64_t d = 0; d < dim_num; ++d) {
-          if (array_schema->dimension_ptr(d)->name() == name) {
-            tile->init_coord_tile(
-                format_version, array_schema_, name, tile_sizes, tile_data, d);
-            break;
-          }
+        if (skip_field(tile->frag_idx(), name)) {
+          continue;
         }
-      } else {
-        tile->init_attr_tile(
-            format_version, array_schema_, name, tile_sizes, tile_data);
+
+        num_tiles_read++;
+        const auto tile_idx{tile->tile_idx()};
+
+        // Construct a TileSizes class.
+        ResultTile::TileSizes tile_sizes{
+            fragment, name, var_sized, nullable, val_only, tile_idx};
+
+        // Construct a tile data class.
+        // See the explanation in 'read_and_unfilter_attribute_tiles' for more
+        // lifetime details. The tile data class is used to transmit the location of the fixed/var/nullable filtered data to the created 'TileTuple' object inside of each 'ResultTile'. The filter pipeline currently uses the 'ResultTile' object to access the data. Eventually, these 'TileData' objects should be returned by this function and passed into 'unfilter_tiles' so that the filter pipeline can stop using the 'ResultTile' object to get access to the filtered data.
+        ResultTile::TileData tile_data{
+            val_only ?
+                nullptr :
+                filtered_data.back().fixed_filtered_data(fragment.get(), tile),
+            val_only ?
+                nullptr :
+                filtered_data.back().var_filtered_data(fragment.get(), tile),
+            filtered_data.back().nullable_filtered_data(fragment.get(), tile)};
+
+        // Initialize the tile(s)
+        const format_version_t format_version{fragment->format_version()};
+        const auto is_dim{array_schema->is_dim(name)};
+        if (is_dim) {
+          const uint64_t dim_num{array_schema->dim_num()};
+          for (uint64_t d = 0; d < dim_num; ++d) {
+            if (array_schema->dimension_ptr(d)->name() == name) {
+              tile->init_coord_tile(
+                  format_version,
+                  array_schema_,
+                  name,
+                  tile_sizes,
+                  tile_data,
+                  d);
+              break;
+            }
+          }
+        } else {
+          tile->init_attr_tile(
+              format_version, array_schema_, name, tile_sizes, tile_data);
+        }
       }
     }
   }
@@ -775,9 +777,12 @@ std::list<FilteredData> ReaderBase::read_tiles(
   stats_->add_counter("num_tiles_read", num_tiles_read);
 
   // Wait for the read tasks to finish.
-  auto statuses{resources_.io_tp().wait_all_status(read_tasks)};
-  for (const auto& st : statuses) {
-    throw_if_not_ok(st);
+  {
+    auto timer_build_tasks_se = stats_->start_timer("read_tiles.wait_all_status");
+    auto statuses{resources_.io_tp().wait_all_status(read_tasks)};
+    for (const auto& st : statuses) {
+      throw_if_not_ok(st);
+    }
   }
 
   return filtered_data;
