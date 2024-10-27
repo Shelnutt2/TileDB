@@ -670,7 +670,7 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
   /**
    * Compute tile loading order
    */
-  void compute_tile_order_for_loading(size_t result_tiles_size, RelevantFragments relevant_fragments);
+  void compute_tile_order_for_loading(size_t result_tiles_size, const RelevantFragments& relevant_fragments);
 };
 
 }  // namespace tiledb::sm

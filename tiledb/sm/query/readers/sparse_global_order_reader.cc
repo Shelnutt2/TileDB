@@ -2445,7 +2445,7 @@ void SparseGlobalOrderReader<BitmapType>::end_iteration(
 }
 
 template <class BitmapType>
-std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_loading(size_t result_tile_sizes, RelevantFragments relevant_fragments) {
+std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_loading(size_t result_tile_sizes, const RelevantFragments& relevant_fragments) {
   if (!tile_order_for_loading_computed_) {
     compute_tile_order_for_loading(result_tile_sizes, relevant_fragments);
   }
@@ -2454,7 +2454,7 @@ std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_lo
 }
 
 template <class BitmapType>
-void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const size_t result_tiles_size, RelevantFragments relevant_fragments) {
+void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const size_t result_tiles_size, const RelevantFragments& relevant_fragments) {
   auto timer_se = stats_->start_timer("create_result_tiles_sorted.compute_tile_order_for_loading");
   std::vector<TileMBROrder> container;
   container.reserve(result_tiles_size);
