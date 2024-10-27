@@ -555,63 +555,13 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
   // Create result tiles.
   auto& compute_tp = resources_.compute_tp();
   subarray_.load_relevant_fragment_rtrees(&compute_tp);
-  if (subarray_.is_set()) {
-    // Load as many tiles as the memory budget allows.
-    throw_if_not_ok(parallel_for(
-        &resources_.compute_tp(), 0, fragment_num, [&](uint64_t f) {
-          uint64_t t = 0;
-          auto& tile_ranges = tmp_read_state_.tile_ranges(f);
-          while (!tile_ranges.empty()) {
-            auto& range = tile_ranges.back();
-            for (t = range.first; t <= range.second; t++) {
-              auto budget_exceeded = add_result_tile_total_memory_tracking(
-                  dim_num,
-                  per_fragment_memory_,
-                  f,
-                  t,
-                  *fragment_metadata_[f],
-                  result_tiles);
+  auto sorted_tile_order = tile_order_for_loading(result_tiles.size(), relevant_fragments);
+  // Load as many tiles as the memory budget allows.
 
-              if (budget_exceeded) {
-                logger_->debug(
-                    "Budget exceeded adding result tiles, fragment {0}, tile "
-                    "{1}",
-                    f,
-                    t);
-
-                if (result_tiles[f].empty()) {
-                  auto tiles_size = get_coord_tiles_size(dim_num, f, t);
-                  throw SparseGlobalOrderReaderException(
-                      "Cannot load a single tile for fragment, increase "
-                      "memory "
-                      "budget, tile size : " +
-                      std::to_string(tiles_size) + ", per fragment memory " +
-                      std::to_string(per_fragment_memory_) + ", total budget " +
-                      std::to_string(memory_budget_.total_budget()) +
-                      ", num fragments to process " +
-                      std::to_string(num_fragments_to_process));
-                }
-                return Status::Ok();
-              }
-
-              range.first++;
-            }
-
-            tmp_read_state_.remove_tile_range(f);
-          }
-
-          tmp_read_state_.set_all_tiles_loaded(f);
-
-          return Status::Ok();
-        }));
-  } else {
-    // Load as many tiles as the memory budget allows.
-
-    // Determine global tile sort
-    // TODO: Do this way way way better
-    // A tile min heap, contains one GlobalOrderResultCoords per fragment.
-    std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
-    auto sorted_tile_order = tile_order_for_loading(result_tiles.size(), relevant_fragments);
+  // Determine global tile sort
+  // TODO: Do this way way way better
+  // A tile min heap, contains one GlobalOrderResultCoords per fragment.
+  std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
 
 //    std::cerr << "sorted_tile_queue.size()=" << sorted_tile_queue.size() << std::endl;
 //    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
@@ -621,64 +571,67 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
 //          uint64_t t = 0;
 //          auto tile_num = fragment_metadata_[f]->tile_num();
 
-    size_t global_tile_index = 0;
-    for (global_tile_index = 0; global_tile_index < sorted_tile_order.size(); ++global_tile_index) {
+  size_t global_tile_index = 0;
+  for (global_tile_index = 0; global_tile_index < sorted_tile_order.size(); ++global_tile_index) {
 //    while(!sorted_tile_queue.empty()) {
 
 //      TileMBROrder tmbro = sorted_tile_queue.top();
-      TileMBROrder tmbro = sorted_tile_order[global_tile_index];
-      uint64_t f = tmbro.frag_idx;
-      uint64_t t = tmbro.tile_idx;
-      // Figure out the start index.
-      auto start = read_state_.frag_idx()[f].tile_idx_;
-      if (!result_tiles[f].empty()) {
-        start = std::max(start, result_tiles[f].back().tile_idx() + 1);
-      }
-
-      //          for (t = start; t < tile_num; t++) {
-      auto budget_exceeded = add_result_tile_total_memory_tracking(
-          dim_num,
-          per_fragment_memory_,
-          f,
-          t,
-          *fragment_metadata_[f],
-          result_tiles);
-
-      if (budget_exceeded) {
-        logger_->debug(
-            "Budget exceeded adding result tiles, fragment {0}, tile "
-            "{1}",
-            f,
-            t);
-
-        if (result_tiles[f].empty()) {
-          auto tiles_size = get_coord_tiles_size(dim_num, f, t);
-          logger_->error(
-              "Cannot load a single tile for fragment, increase memory "
-              "budget, tile size : " +
-              std::to_string(tiles_size) + ", per fragment memory " +
-              std::to_string(per_fragment_memory_) + ", total budget " +
-              std::to_string(memory_budget_.total_budget()) +
-              ", num fragments to process " +
-              std::to_string(num_fragments_to_process));
-        }
-
-        break;
-      }
-//      sorted_tile_queue.pop();
-      fragment_tiles_loaded[f]++;
+    TileMBROrder tmbro = sorted_tile_order[global_tile_index];
+    uint64_t f = tmbro.frag_idx;
+    uint64_t t = tmbro.tile_idx;
+    // Figure out the start index.
+    auto start = read_state_.frag_idx()[f].tile_idx_;
+    if (!result_tiles[f].empty()) {
+      start = std::max(start, result_tiles[f].back().tile_idx() + 1);
     }
+
+    //          for (t = start; t < tile_num; t++) {
+    auto budget_exceeded = add_result_tile_total_memory_tracking(
+        dim_num,
+        per_fragment_memory_,
+        f,
+        t,
+        *fragment_metadata_[f],
+        result_tiles);
+
+    if (budget_exceeded) {
+      logger_->debug(
+          "Budget exceeded adding result tiles, fragment {0}, tile "
+          "{1}",
+          f,
+          t);
+
+      if (result_tiles[f].empty()) {
+        auto tiles_size = get_coord_tiles_size(dim_num, f, t);
+        logger_->error(
+            "Cannot load a single tile for fragment, increase memory "
+            "budget, tile size : " +
+            std::to_string(tiles_size) + ", per fragment memory " +
+            std::to_string(per_fragment_memory_) + ", total budget " +
+            std::to_string(memory_budget_.total_budget()) +
+            ", num fragments to process " +
+            std::to_string(num_fragments_to_process));
+      }
+
+      break;
+    }
+//      sorted_tile_queue.pop();
+    fragment_tiles_loaded[f]++;
+  }
 //          }
 
-    for(uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
+  // We only track if we have loaded all tiles when a subarray is not set
+  // This is how it was before and how we leave it
+  if (!subarray_.is_set()) {
+    for (uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
       if (fragment_tiles_loaded[f] == fragment_metadata_[f]->tile_num()) {
         tmp_read_state_.set_all_tiles_loaded(f);
       }
     }
+  }
 
 //          return Status::Ok();
 //        }));
-  }
 
   bool done_adding_result_tiles = tmp_read_state_.done_adding_result_tiles();
   uint64_t num_rt = 0;
