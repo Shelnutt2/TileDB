@@ -2458,11 +2458,6 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
   auto timer_se = stats_->start_timer("create_result_tiles_sorted.compute_tile_order_for_loading");
   std::vector<TileMBROrder> container;
   container.reserve(result_tiles_size);
-  GlobalCmpTileOrder cmp(
-      array_schema_.domain(),
-      !array_schema_.allows_dups(),
-      true,
-      &fragment_metadata_);
   //    TileMinHeap<CompType> tile_queue(cmp, std::move(container));
 
 
@@ -2472,6 +2467,14 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
   // Ensure we start with a clear sorted_tile_order_for_loading_
   sorted_tile_order_for_loading_.clear();
 //  for(uint64_t f = 0; f < fragment_num; ++f) {
+
+  // First get the total count so we can reserve it
+  size_t total_tile_count = 0;
+  for (auto f : relevant_fragments) {
+    total_tile_count += fragment_metadata_[f]->tile_num();
+  }
+
+  sorted_tile_order_for_loading_.reserve(total_tile_count);
   for (auto f : relevant_fragments) {
     auto fragment_meta = fragment_metadata_[f];
 
@@ -2487,8 +2490,33 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
     }
   }
 
-  auto& compute_tp = resources_.compute_tp();
-  parallel_sort(&compute_tp, sorted_tile_order_for_loading_.begin(), sorted_tile_order_for_loading_.end(), cmp);
+  {
+    auto timer_sort_se = stats_->start_timer("create_result_tiles_sorted.compute_tile_order_for_loading.sort");
+    auto& compute_tp = resources_.compute_tp();
+    if (array_schema_.cell_order() == Layout::HILBERT) {
+      HilbertCmpTileOrder cmp(
+          array_schema_.domain(),
+          !array_schema_.allows_dups(),
+          true,
+          &fragment_metadata_);
+      parallel_sort(
+          &compute_tp,
+          sorted_tile_order_for_loading_.begin(),
+          sorted_tile_order_for_loading_.end(),
+          cmp);
+    } else {
+      GlobalCmpTileOrder cmp(
+          array_schema_.domain(),
+          !array_schema_.allows_dups(),
+          true,
+          &fragment_metadata_);
+      parallel_sort(
+          &compute_tp,
+          sorted_tile_order_for_loading_.begin(),
+          sorted_tile_order_for_loading_.end(),
+          cmp);
+    }
+  }
 }
 
 // Explicit template instantiations

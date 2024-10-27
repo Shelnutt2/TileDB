@@ -665,7 +665,7 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
    *
    * @return tile loading order
    */
-  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size, RelevantFragments relevant_fragments);
+  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size, const RelevantFragments& relevant_fragments);
 
   /**
    * Compute tile loading order

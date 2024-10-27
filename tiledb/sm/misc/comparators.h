@@ -336,6 +336,57 @@ class HilbertCmpRCI : protected CellCmpBase {
   }
 };
 
+/** Wrapper of comparison function for sorting coords on Hilbert values. */
+class HilbertCmpTileOrder : public HilbertCmp {
+ public:
+  /** Constructor. */
+  HilbertCmpTileOrder(
+      const Domain& domain,
+      const bool use_timestamps = false,
+      const bool strict_ordering = false,
+      const std::vector<shared_ptr<FragmentMetadata>>* frag_md = nullptr)
+      : HilbertCmp(domain, use_timestamps, strict_ordering, frag_md) {
+  }
+
+  /**
+   * Positional comparison operator.
+   *
+   * @param a The first coordinate.
+   * @param b The second coordinate.
+   * @return `true` if `a` precedes `b` and `false` otherwise.
+   */
+  bool operator()(const TileMBROrder& a, const TileMBROrder& b) const {
+    // Compare cell order on row-major to break the tie
+    for (unsigned d = 0; d < dim_num_; ++d) {
+      auto res = cell_order_cmp_NDRange(d, a.mbr, b.mbr);
+      if (res == -1) {
+        return true;
+      }
+
+      if (res == 1) {
+        return false;
+      }
+      // else same tile on dimension d --> continue
+    }
+
+    if (use_timestamps_) {
+      return get_timestamp_tmbro(a) > get_timestamp_tmbro(b);
+    } else if (strict_ordering_) {
+      if (a.frag_idx == b.frag_idx) {
+        if (a.tile_idx == b.tile_idx) {
+          return false;
+        }
+
+        return a.tile_idx > b.tile_idx;
+      }
+
+      return a.frag_idx > b.frag_idx;
+    }
+
+    return false;
+  }
+};
+
 /**
  * Wrapper of comparison function for sorting coords on the global order
  * of some domain.
