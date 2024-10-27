@@ -323,6 +323,7 @@ class LoadedFragmentMetadata {
 
   /** Loads the R-tree from storage. */
   virtual void load_rtree(const EncryptionKey& encryption_key) = 0;
+  virtual void load_rtree_with_timer(const EncryptionKey& encryption_key, stats::Stats* stats) = 0;
 
   /**
    * Loads the min max sum null count values for the fragment.

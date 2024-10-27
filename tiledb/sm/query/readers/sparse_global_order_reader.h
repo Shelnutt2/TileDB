@@ -665,12 +665,12 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
    *
    * @return tile loading order
    */
-  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size);
+  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size, RelevantFragments relevant_fragments);
 
   /**
    * Compute tile loading order
    */
-  void compute_tile_order_for_loading(size_t result_tiles_size);
+  void compute_tile_order_for_loading(size_t result_tiles_size, RelevantFragments relevant_fragments);
 };
 
 }  // namespace tiledb::sm

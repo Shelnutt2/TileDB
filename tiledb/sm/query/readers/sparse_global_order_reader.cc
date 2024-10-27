@@ -347,6 +347,7 @@ bool SparseGlobalOrderReader<BitmapType>::add_result_tile_total_memory_tracking(
     const uint64_t t,
     const FragmentMetadata& frag_md,
     std::vector<ResultTilesList>& result_tiles) {
+  auto timer_se = stats_->start_timer("create_result_tiles_sorted.add_result_tile_total_memory_tracking");
   if (tmp_read_state_.is_ignored_tile(f, t)) {
     return false;
   }
@@ -534,7 +535,9 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
   auto timer_se = stats_->start_timer("create_result_tiles_sorted");
 
   // For easy reference.
-  auto fragment_num = fragment_metadata_.size();
+  auto relevant_fragments = subarray_.relevant_fragments();
+  auto fragment_num = relevant_fragments.size();
+//  auto fragment_num = fragment_metadata_.size();
   auto dim_num = array_schema_.dim_num();
 
   // Get the number of fragments to process and compute per fragment memory.
@@ -550,6 +553,8 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
   }
 
   // Create result tiles.
+  auto& compute_tp = resources_.compute_tp();
+  subarray_.load_relevant_fragment_rtrees(&compute_tp);
   if (subarray_.is_set()) {
     // Load as many tiles as the memory budget allows.
     throw_if_not_ok(parallel_for(
@@ -606,7 +611,7 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
     // TODO: Do this way way way better
     // A tile min heap, contains one GlobalOrderResultCoords per fragment.
     std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
-    auto sorted_tile_order = tile_order_for_loading(result_tiles.size());
+    auto sorted_tile_order = tile_order_for_loading(result_tiles.size(), relevant_fragments);
 
 //    std::cerr << "sorted_tile_queue.size()=" << sorted_tile_queue.size() << std::endl;
 //    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
@@ -2440,17 +2445,17 @@ void SparseGlobalOrderReader<BitmapType>::end_iteration(
 }
 
 template <class BitmapType>
-std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_loading(size_t result_tile_sizes) {
+std::vector<TileMBROrder> SparseGlobalOrderReader<BitmapType>::tile_order_for_loading(size_t result_tile_sizes, RelevantFragments relevant_fragments) {
   if (!tile_order_for_loading_computed_) {
-    compute_tile_order_for_loading(result_tile_sizes);
+    compute_tile_order_for_loading(result_tile_sizes, relevant_fragments);
   }
 
   return sorted_tile_order_for_loading_;
 }
 
 template <class BitmapType>
-void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const size_t result_tiles_size) {
-
+void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const size_t result_tiles_size, RelevantFragments relevant_fragments) {
+  auto timer_se = stats_->start_timer("create_result_tiles_sorted.compute_tile_order_for_loading");
   std::vector<TileMBROrder> container;
   container.reserve(result_tiles_size);
   GlobalCmpTileOrder cmp(
@@ -2461,16 +2466,18 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
   //    TileMinHeap<CompType> tile_queue(cmp, std::move(container));
 
 
-  uint64_t fragment_num = fragment_metadata_.size();
+//  uint64_t fragment_num = relevant_fragments.size();
   //    std::priority_queue<TileMBROrder, std::vector<TileMBROrder>, GlobalCmpTileOrder> sorted_tile_queue(cmp, std::move(container));
 //  std::vector<TileMBROrder> sorted_tile_order;
   // Ensure we start with a clear sorted_tile_order_for_loading_
   sorted_tile_order_for_loading_.clear();
-  for(uint64_t f = 0; f < fragment_num; ++f) {
+//  for(uint64_t f = 0; f < fragment_num; ++f) {
+  for (auto f : relevant_fragments) {
     auto fragment_meta = fragment_metadata_[f];
+
     // todo: do this better too, don't force load r-trees
     // definitely check for memory budget
-    fragment_meta->loaded_metadata()->load_rtree(array_->get_encryption_key());
+//    fragment_meta->loaded_metadata()->load_rtree_with_timer(array_->get_encryption_key(), stats_);
     auto tile_num = fragment_meta->tile_num();
     auto start = read_state_.frag_idx()[f].tile_idx_;
     for (uint64_t t = start; t < tile_num; t++) {

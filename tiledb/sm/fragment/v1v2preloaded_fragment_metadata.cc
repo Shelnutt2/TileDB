@@ -159,6 +159,11 @@ void V1V2PreloadedFragmentMetadata::load_rtree(const EncryptionKey&) {
   return;
 }
 
+void V1V2PreloadedFragmentMetadata::load_rtree_with_timer(const EncryptionKey&, stats::Stats*) {
+  // N/A for v1_v2 preloaded meta
+  return;
+}
+
 void V1V2PreloadedFragmentMetadata::load_fragment_min_max_sum_null_count(
     const EncryptionKey&) {
   // N/A for v1_v2 preloaded meta
