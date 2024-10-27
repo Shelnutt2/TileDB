@@ -88,38 +88,6 @@ void OndemandFragmentMetadata::load_rtree(const EncryptionKey& encryption_key) {
   loaded_metadata_.rtree_ = true;
 }
 
-void OndemandFragmentMetadata::load_rtree_with_timer(const EncryptionKey& encryption_key, stats::Stats* stats) {
-  std::lock_guard<std::mutex> lock(parent_fragment_.mtx_);
-
-  if (loaded_metadata_.rtree_) {
-    return;
-  }
-  auto timer_se = stats->start_timer("load_rtree");
-
-  auto tile = parent_fragment_.read_generic_tile_from_file(
-      encryption_key, parent_fragment_.gt_offsets_.rtree_);
-  parent_fragment_.resources_->stats().add_counter(
-      "read_rtree_size", tile->size());
-
-  // Use the serialized buffer size to approximate memory usage of the rtree.
-  if (memory_tracker_ != nullptr &&
-      !memory_tracker_->take_memory(tile->size(), MemoryType::RTREE)) {
-    throw FragmentMetadataStatusException(
-        "Cannot load R-tree; Insufficient memory budget; Needed " +
-        std::to_string(tile->size()) + " but only had " +
-        std::to_string(memory_tracker_->get_memory_available()) +
-        " from budget " + std::to_string(memory_tracker_->get_memory_budget()));
-  }
-
-  Deserializer deserializer(tile->data(), tile->size());
-  rtree_.deserialize(
-      deserializer,
-      &parent_fragment_.array_schema_->domain(),
-      parent_fragment_.version_);
-
-  loaded_metadata_.rtree_ = true;
-}
-
 void OndemandFragmentMetadata::load_fragment_min_max_sum_null_count(
     const EncryptionKey& encryption_key) {
   if (loaded_metadata_.fragment_min_max_sum_null_count_) {

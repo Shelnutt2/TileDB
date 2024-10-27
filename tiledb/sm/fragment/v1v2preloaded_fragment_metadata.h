@@ -96,7 +96,6 @@ class V1V2PreloadedFragmentMetadata : public LoadedFragmentMetadata {
    * @param deserializer A deserializer to read data from
    */
   virtual void load_rtree(const EncryptionKey& encryption_key) override;
-  virtual void load_rtree_with_timer(const EncryptionKey& encryption_key, stats::Stats* stats) override;
 
   /**
    * Loads the min max sum null count values for the fragment.
