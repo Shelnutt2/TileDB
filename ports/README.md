@@ -36,3 +36,4 @@ After copying the port, add an entry to the table below. You should also contrib
 | `libfaketime`              | Port does not yet exist upstream                                                                        |
 | `vcpkg-cmake-config`       | Patching to fix build issues with CMake 3.29.1. (https://github.com/microsoft/vcpkg/pull/38017)         |
 | `google-cloud-cpp`         | Patching to remove dependency on GMock. (https://github.com/microsoft/vcpkg/pull/39802)                 |
+| `openssl`                  | Patch to support intel compiler which was updated in openssl 3.1.6 but upstream vcpkg is on 3.1.4       |
