@@ -2248,6 +2248,7 @@ bool SparseGlobalOrderReader<BitmapType>::copy_tiles(
     std::vector<uint64_t>& cell_offsets,
     std::vector<ResultCellSlab>& result_cell_slabs,
     std::optional<std::string>& last_field_to_overflow) {
+  auto timer_se = stats_->start_timer("copy_tiles");
   const auto var_sized = array_schema_.var_size(name);
   const auto nullable = array_schema_.is_nullable(name);
   const auto cell_size = array_schema_.cell_size(name);
