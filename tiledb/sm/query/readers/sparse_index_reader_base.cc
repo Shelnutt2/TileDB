@@ -517,7 +517,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
             fragment_metadata_[rt->frag_idx()]->mbr(rt->tile_idx());
 
         // Compute bitmaps one dimension at a time.
-        for (unsigned d = 0; d < dim_num; d++) {
+        throw_if_not_ok(parallel_for(&resources_.compute_tp(), 0, dim_num, [&mbr, &cell_order, &dim_num, &domain, &cell_num, &num_range_threads, &range_thread_idx, &rt, this](uint64_t d){
+//        for (unsigned d = 0; d < dim_num; d++) {
           // For col-major cell ordering, iterate the dimensions
           // in reverse.
           const unsigned dim_idx =
@@ -525,7 +526,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
 
           // No need to compute bitmaps for default dimensions.
           if (subarray_.is_default(dim_idx))
-            continue;
+            return Status::Ok();
 
           auto& ranges_for_dim = subarray_.ranges_for_dim(dim_idx);
 
@@ -548,7 +549,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
                 covered_bitmap.begin(), covered_bitmap.end(), 0);
 
             if (count != 0)
-              continue;
+              return Status::Ok();
           }
 
           // Compute the cells to process.
@@ -571,7 +572,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
                 min,
                 max));
           }
-        }
+        return Status::Ok();
+        }));
 
         // Only compute bitmap cells here if we are processing a single cell
         // range. If not, it will be done below.
