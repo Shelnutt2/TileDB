@@ -492,6 +492,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
       0,
       num_range_threads,
       [&](uint64_t t, uint64_t range_thread_idx) {
+        auto timer_compute_results_count_sparse =
+            stats_->start_timer("compute_tile_bitmaps.result_tile_processing");
         // For easy reference.
         auto rt = (ResultTileWithBitmap<BitmapType>*)result_tiles[t];
         auto cell_num =
@@ -562,7 +564,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
           // Compute the bitmap for the cells.
           {
             auto timer_compute_results_count_sparse =
-                stats_->start_timer("compute_results_count_sparse");
+                stats_->start_timer("compute_tile_bitmaps.compute_results_count_sparse");
             throw_if_not_ok(rt->compute_results_count_sparse(
                 dim_idx,
                 ranges_for_dim,
