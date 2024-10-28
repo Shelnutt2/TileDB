@@ -581,6 +581,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
           auto timer_count_cells = stats_->start_timer("compute_tile_bitmaps.count_cells");
           rt->count_cells();
         }
+        stats_->add_counter("tiles_with_empty_results", (rt->result_num() == 0));
 
         return Status::Ok();
       }));
