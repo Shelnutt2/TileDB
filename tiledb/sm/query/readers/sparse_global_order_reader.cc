@@ -157,6 +157,10 @@ Status SparseGlobalOrderReader<BitmapType>::dowork() {
     auto turbo = config_.get<bool>("turbo");
     std::vector<ResultTile*> created_tiles;
     if (turbo.has_value() && turbo.value()) {
+      // Reset for every internal loop
+      // TODO: Probably should remove tile_order_for_loading_computed_, its got little value?
+      // TODO: Better to recompute or store global index value for internal looping?
+      tile_order_for_loading_computed_ = false;
       created_tiles = create_result_tiles_sorted(result_tiles);
     } else {
       created_tiles = create_result_tiles(result_tiles);
@@ -561,7 +565,7 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
   // Determine global tile sort
   // TODO: Do this way way way better
   // A tile min heap, contains one GlobalOrderResultCoords per fragment.
-  std::vector<uint64_t> fragment_tiles_loaded(fragment_num, 0);
+  std::vector<uint64_t> fragment_tiles_loaded(fragment_metadata_.size(), 0);
 
 //    std::cerr << "sorted_tile_queue.size()=" << sorted_tile_queue.size() << std::endl;
 //    std::cerr << "sorted_tile_order.size()=" << sorted_tile_order.size() << std::endl;
@@ -572,6 +576,7 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
 //          auto tile_num = fragment_metadata_[f]->tile_num();
 
   size_t global_tile_index = 0;
+  std::vector<ResultTile*> created_tiles;
   for (global_tile_index = 0; global_tile_index < sorted_tile_order.size(); ++global_tile_index) {
 //    while(!sorted_tile_queue.empty()) {
 
@@ -622,11 +627,33 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
 
   // We only track if we have loaded all tiles when a subarray is not set
   // This is how it was before and how we leave it
-    for (uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
-      if (fragment_tiles_loaded[f] == fragment_metadata_[f]->tile_num()) {
-        tmp_read_state_.set_all_tiles_loaded(f);
+  // First we get the expected tile count per fragment
+  std::vector<uint64_t> expected_tiles_per_fragment(fragment_metadata_.size(), 0);
+  for (uint64_t i = 0;  i < sorted_tile_order.size(); i++) {
+    TileMBROrder tmbro = sorted_tile_order[i];
+    expected_tiles_per_fragment[tmbro.frag_idx]++;
+  }
+  // Next compare what we loaded
+  for (uint64_t f = 0; f < fragment_tiles_loaded.size(); ++f) {
+    if (fragment_tiles_loaded[f] == expected_tiles_per_fragment[f]) {
+      tmp_read_state_.set_all_tiles_loaded(f);
+    }
+  }
+
+  // It is important to mark all non-relevant fragments as done loading
+  // Incomplete state checks to see if there are pending fragments that aren't finished being processed
+  for (size_t f = 0; f < fragment_metadata_.size(); f++) {
+    bool is_fragment_relevant = false;
+    for (size_t relevant_f : relevant_fragments) {
+      if (relevant_f == f) {
+        is_fragment_relevant = true;
+        break;
       }
     }
+    if (!is_fragment_relevant) {
+      tmp_read_state_.set_all_tiles_loaded(f);
+    }
+  }
 
 
 //          return Status::Ok();
@@ -646,8 +673,16 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles_sorted(
 
   read_state_.set_done_adding_result_tiles(done_adding_result_tiles);
 
+  // Create the tiles to return
+//  for (global_tile_index = 0; global_tile_index < sorted_tile_order.size(); ++global_tile_index) {
+//    TileMBROrder tmbro = sorted_tile_order[global_tile_index];
+//    uint64_t f = tmbro.frag_idx;
+//    uint64_t t = tmbro.tile_idx;
+//    TileListIt it = result_tiles[f].begin();
+//    std::advance(it, t);
+//    created_tiles.emplace_back(&*it);
+//  }
   // Return the list of tiles added.
-  std::vector<ResultTile*> created_tiles;
   for (uint64_t i = 0; i < result_tiles.size(); i++) {
     TileListIt it = result_tiles[i].begin();
 //    std::advance(it, rt_list_num_tiles[i]);
@@ -2520,7 +2555,7 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
             break;
           }
         }
-      } else {
+      } else if(!subarray_.is_set()) {
         add_tile = true;
       }
 
@@ -2566,6 +2601,8 @@ void SparseGlobalOrderReader<BitmapType>::compute_tile_order_for_loading(const s
           cmp);
     }
   }
+
+  tile_order_for_loading_computed_ = true;
 }
 
 // Explicit template instantiations

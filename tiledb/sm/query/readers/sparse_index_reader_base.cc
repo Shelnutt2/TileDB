@@ -475,8 +475,11 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
     // Resize bitmaps to process for each tiles in parallel.
     throw_if_not_ok(parallel_for(
         &resources_.compute_tp(), 0, result_tiles.size(), [&](uint64_t t) {
-          static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t])
-              ->alloc_bitmap();
+          auto rt = static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t]);
+          // Make a bitmap, if required.
+          if (!rt->has_bmp()) {
+            rt->alloc_bitmap();
+          }
           return Status::Ok();
         }));
   }
@@ -497,7 +500,10 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
 
         // Allocate the bitmap if not preallocated.
         if (num_range_threads == 1) {
-          rt->alloc_bitmap();
+          // Make a bitmap, if required.
+          if (!rt->has_bmp()) {
+            rt->alloc_bitmap();
+          }
         }
 
         // Prevent processing past the end of the cells in case there are more
