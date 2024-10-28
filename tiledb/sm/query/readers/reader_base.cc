@@ -285,6 +285,7 @@ void ReaderBase::clear_tiles(
     const std::string& name,
     const std::vector<ResultTile*>& result_tiles,
     const uint64_t min_result_tile) const {
+  auto timer_se = stats_->start_timer("clear_tiles");
   for (uint64_t i = min_result_tile; i < result_tiles.size(); i++) {
     result_tiles[i]->erase_tile(name);
   }
