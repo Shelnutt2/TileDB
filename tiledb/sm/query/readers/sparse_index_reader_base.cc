@@ -492,7 +492,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
       0,
       num_range_threads,
       [&](uint64_t t, uint64_t range_thread_idx) {
-        auto timer_compute_results_count_sparse =
+        auto timer_result_tile_processing =
             stats_->start_timer("compute_tile_bitmaps.result_tile_processing");
         // For easy reference.
         auto rt = (ResultTileWithBitmap<BitmapType>*)result_tiles[t];
@@ -519,8 +519,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
             fragment_metadata_[rt->frag_idx()]->mbr(rt->tile_idx());
 
         // Compute bitmaps one dimension at a time.
-        throw_if_not_ok(parallel_for(&resources_.compute_tp(), 0, dim_num, [&mbr, &cell_order, &dim_num, &domain, &cell_num, &num_range_threads, &range_thread_idx, &rt, this](uint64_t d){
-//        for (unsigned d = 0; d < dim_num; d++) {
+        for (unsigned d = 0; d < dim_num; d++) {
           // For col-major cell ordering, iterate the dimensions
           // in reverse.
           const unsigned dim_idx =
@@ -528,7 +527,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
 
           // No need to compute bitmaps for default dimensions.
           if (subarray_.is_default(dim_idx))
-            return Status::Ok();
+            continue;
 
           auto& ranges_for_dim = subarray_.ranges_for_dim(dim_idx);
 
@@ -551,7 +550,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
                 covered_bitmap.begin(), covered_bitmap.end(), 0);
 
             if (count != 0)
-              return Status::Ok();
+              continue;
           }
 
           // Compute the cells to process.
@@ -574,12 +573,12 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
                 min,
                 max));
           }
-        return Status::Ok();
-        }));
+        }
 
         // Only compute bitmap cells here if we are processing a single cell
         // range. If not, it will be done below.
         if (num_range_threads == 1) {
+          auto timer_count_cells = stats_->start_timer("compute_tile_bitmaps.count_cells");
           rt->count_cells();
         }
 
@@ -592,6 +591,7 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
     // Compute number of cells in each bitmaps in parallel.
     throw_if_not_ok(parallel_for(
         &resources_.compute_tp(), 0, result_tiles.size(), [&](uint64_t t) {
+          auto timer_count_cells = stats_->start_timer("compute_tile_bitmaps.count_cells");
           static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t])
               ->count_cells();
           return Status::Ok();
