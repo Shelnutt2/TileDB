@@ -1055,6 +1055,8 @@ void ResultTile::compute_results_count_sparse(
   if (!stores_zipped_coords) {
     const auto& coord_tile = result_tile->coord_tile(dim_idx).fixed_tile();
     const T* const coords = coord_tile.data_as<const T>();
+    uint64_t start_range_idx = 0;
+    uint64_t end_range_idx = 0;
     {
       // Iterate over all cells.
       for (uint64_t pos = min_cell; pos < max_cell; ++pos) {
@@ -1063,8 +1065,14 @@ void ResultTile::compute_results_count_sparse(
           const T& c = coords[pos];
 
           // Binary search to find the first range containing the cell.
+          auto begin = range_indexes.begin();
+          // Check previous cell
+          if (start_range_idx > 0 &&
+              (((const T*)ranges[*(begin+start_range_idx-1)].start_fixed())[1] < c)) {
+            std::advance(begin, start_range_idx);
+          }
           auto it = std::lower_bound(
-              range_indexes.begin(),
+              begin,
               range_indexes.end(),
               c,
               [&](const uint64_t& index, const T& value) {
@@ -1076,7 +1084,7 @@ void ResultTile::compute_results_count_sparse(
             result_count[pos] = 0;
             continue;
           }
-          uint64_t start_range_idx = std::distance(range_indexes.begin(), it);
+          start_range_idx = std::distance(range_indexes.begin(), it);
 
           // Binary search to find the last range containing the cell.
           auto it2 = std::lower_bound(
@@ -1087,7 +1095,7 @@ void ResultTile::compute_results_count_sparse(
                 return ((const T*)ranges[index].start_fixed())[0] <= value;
               });
 
-          uint64_t end_range_idx = std::distance(it, it2) + start_range_idx;
+          end_range_idx = std::distance(it, it2) + start_range_idx;
 
           // Iterate through all relevant ranges and compute the count for this
           // dim.
