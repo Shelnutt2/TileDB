@@ -700,7 +700,9 @@ std::list<FilteredData> ReaderBase::read_tiles(
       auto& name = n.name();
       auto val_only = n.validity_only();
 
-      // Create the filtered data blocks. This will also kick off the read for the data blocks right after the memory is allocated so that we can optimize read and memory allocations.
+      // Create the filtered data blocks. This will also kick off the read for
+      // the data blocks right after the memory is allocated so that we can
+      // optimize read and memory allocations.
       const bool var_sized{array_schema_.var_size(name)};
       const bool nullable{array_schema_.is_nullable(name)};
       filtered_data.emplace_back(
@@ -720,7 +722,8 @@ std::list<FilteredData> ReaderBase::read_tiles(
       // Go through each tiles and create the attribute tiles.
       uint64_t count = 0;
       for (auto tile : result_tiles) {
-        auto timer_result_tiles_se = stats_->start_timer("read_tiles.result_tiles");
+        auto timer_result_tiles_se =
+            stats_->start_timer("read_tiles.result_tiles");
         count++;
         auto const fragment{fragment_metadata_[tile->frag_idx()]};
         const auto& array_schema{fragment->array_schema()};
@@ -738,55 +741,64 @@ std::list<FilteredData> ReaderBase::read_tiles(
 
         // Construct a tile data class.
         // See the explanation in 'read_and_unfilter_attribute_tiles' for more
-        // lifetime details. The tile data class is used to transmit the location of the fixed/var/nullable filtered data to the created 'TileTuple' object inside of each 'ResultTile'. The filter pipeline currently uses the 'ResultTile' object to access the data. Eventually, these 'TileData' objects should be returned by this function and passed into 'unfilter_tiles' so that the filter pipeline can stop using the 'ResultTile' object to get access to the filtered data.
-//        void* fixed_filtered_data = nullptr;
-//        shared_ptr<ThreadPool::Task> fixed_filtered_data_task = nullptr;
-//        if (!val_only) {
-//              auto r = filtered_data.back().fixed_filtered_data(fragment.get(), tile);
-//              fixed_filtered_data = std::get<0>(r);
-//              if (std::get<1>(r).has_value()) {
-//                fixed_filtered_data_task = std::get<1>(r).value();
-//              }
-//        }
-//
-//        void* var_filtered_data = nullptr;
-//        shared_ptr<ThreadPool::Task> var_filtered_data_task = nullptr;
-//        if (!val_only) {
-//          auto r = filtered_data.back().var_filtered_data(fragment.get(), tile);
-//          var_filtered_data = std::get<0>(r);
-//          if (std::get<1>(r).has_value()) {
-//            var_filtered_data_task = std::get<1>(r).value();
-//          }
-//        }
-//
-//        void* nullable_filtered_data = nullptr;
-//        shared_ptr<ThreadPool::Task> nullable_filtered_data_task = nullptr;
-//        if (!val_only) {
-//          auto r = filtered_data.back().nullable_filtered_data(fragment.get(), tile);
-//          nullable_filtered_data = std::get<0>(r);
-//          if (std::get<1>(r).has_value()) {
-//            nullable_filtered_data_task = std::get<1>(r).value();
-//          }
-//        }
-//
-//        ResultTile::TileData tile_data{
-//            val_only ?
-//                nullptr :
-//                fixed_filtered_data,
-//            val_only ?
-//                nullptr :
-//                var_filtered_data,
-//            nullable_filtered_data};
+        // lifetime details. The tile data class is used to transmit the
+        // location of the fixed/var/nullable filtered data to the created
+        // 'TileTuple' object inside of each 'ResultTile'. The filter pipeline
+        // currently uses the 'ResultTile' object to access the data.
+        // Eventually, these 'TileData' objects should be returned by this
+        // function and passed into 'unfilter_tiles' so that the filter pipeline
+        // can stop using the 'ResultTile' object to get access to the filtered
+        // data.
+        //        void* fixed_filtered_data = nullptr;
+        //        shared_ptr<ThreadPool::Task> fixed_filtered_data_task =
+        //        nullptr; if (!val_only) {
+        //              auto r =
+        //              filtered_data.back().fixed_filtered_data(fragment.get(),
+        //              tile); fixed_filtered_data = std::get<0>(r); if
+        //              (std::get<1>(r).has_value()) {
+        //                fixed_filtered_data_task = std::get<1>(r).value();
+        //              }
+        //        }
+        //
+        //        void* var_filtered_data = nullptr;
+        //        shared_ptr<ThreadPool::Task> var_filtered_data_task = nullptr;
+        //        if (!val_only) {
+        //          auto r =
+        //          filtered_data.back().var_filtered_data(fragment.get(),
+        //          tile); var_filtered_data = std::get<0>(r); if
+        //          (std::get<1>(r).has_value()) {
+        //            var_filtered_data_task = std::get<1>(r).value();
+        //          }
+        //        }
+        //
+        //        void* nullable_filtered_data = nullptr;
+        //        shared_ptr<ThreadPool::Task> nullable_filtered_data_task =
+        //        nullptr; if (!val_only) {
+        //          auto r =
+        //          filtered_data.back().nullable_filtered_data(fragment.get(),
+        //          tile); nullable_filtered_data = std::get<0>(r); if
+        //          (std::get<1>(r).has_value()) {
+        //            nullable_filtered_data_task = std::get<1>(r).value();
+        //          }
+        //        }
+        //
+        //        ResultTile::TileData tile_data{
+        //            val_only ?
+        //                nullptr :
+        //                fixed_filtered_data,
+        //            val_only ?
+        //                nullptr :
+        //                var_filtered_data,
+        //            nullable_filtered_data};
         std::tuple<void*, shared_ptr<ThreadPool::Task>> n = {nullptr, nullptr};
         ResultTile::TileData tile_data{
-                val_only ?
-                        n :
-                        filtered_data.back().fixed_filtered_data(fragment.get(), tile),
-                val_only ?
-                        n :
-                        filtered_data.back().var_filtered_data(fragment.get(), tile),
-                filtered_data.back().nullable_filtered_data(fragment.get(), tile)};
-
+            val_only ?
+                n :
+                filtered_data.back().fixed_filtered_data(fragment.get(), tile),
+            val_only ?
+                n :
+                filtered_data.back().var_filtered_data(fragment.get(), tile),
+            filtered_data.back().nullable_filtered_data(fragment.get(), tile)};
 
         // Initialize the tile(s)
         const format_version_t format_version{fragment->format_version()};
@@ -815,14 +827,15 @@ std::list<FilteredData> ReaderBase::read_tiles(
 
   stats_->add_counter("num_tiles_read", num_tiles_read);
 
-//  // Wait for the read tasks to finish.
-//  {
-//    auto timer_build_tasks_se = stats_->start_timer("read_tiles.wait_all_status");
-//    auto statuses{resources_.io_tp().wait_all_status(read_tasks)};
-//    for (const auto& st : statuses) {
-//      throw_if_not_ok(st);
-//    }
-//  }
+  //  // Wait for the read tasks to finish.
+  //  {
+  //    auto timer_build_tasks_se =
+  //    stats_->start_timer("read_tiles.wait_all_status"); auto
+  //    statuses{resources_.io_tp().wait_all_status(read_tasks)}; for (const
+  //    auto& st : statuses) {
+  //      throw_if_not_ok(st);
+  //    }
+  //  }
 
   return filtered_data;
 }

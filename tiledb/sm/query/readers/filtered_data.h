@@ -339,7 +339,9 @@ class FilteredData {
     auto offset{
         fragment->loaded_metadata()->file_offset(name_, rt->tile_idx())};
     ensure_data_block_current(TileType::FIXED, fragment, rt, offset);
-    return {current_data_block(TileType::FIXED)->data_at(offset), current_data_block(TileType::FIXED)->io_task()};
+    return {
+        current_data_block(TileType::FIXED)->data_at(offset),
+        current_data_block(TileType::FIXED)->io_task()};
   }
 
   /**
@@ -358,7 +360,9 @@ class FilteredData {
     auto offset{
         fragment->loaded_metadata()->file_var_offset(name_, rt->tile_idx())};
     ensure_data_block_current(TileType::VAR, fragment, rt, offset);
-    return {current_data_block(TileType::VAR)->data_at(offset), current_data_block(TileType::VAR)->io_task()};
+    return {
+        current_data_block(TileType::VAR)->data_at(offset),
+        current_data_block(TileType::VAR)->io_task()};
   }
 
   /**
@@ -368,7 +372,8 @@ class FilteredData {
    * @param rt Result tile.
    * @return Nullable filtered data pointer.
    */
-  inline std::tuple<void*, std::shared_ptr<ThreadPool::Task>> nullable_filtered_data(
+  inline std::tuple<void*, std::shared_ptr<ThreadPool::Task>>
+  nullable_filtered_data(
       const FragmentMetadata* fragment, const ResultTile* rt) {
     if (!nullable_) {
       return {nullptr, nullptr};
@@ -377,7 +382,9 @@ class FilteredData {
     auto offset{fragment->loaded_metadata()->file_validity_offset(
         name_, rt->tile_idx())};
     ensure_data_block_current(TileType::NULLABLE, fragment, rt, offset);
-    return {current_data_block(TileType::NULLABLE)->data_at(offset), current_data_block(TileType::NULLABLE)->io_task()};
+    return {
+        current_data_block(TileType::NULLABLE)->data_at(offset),
+        current_data_block(TileType::NULLABLE)->io_task()};
   }
 
  private:
@@ -409,12 +416,15 @@ class FilteredData {
     });
     // Store as a shared_ptr so we can move lifetimes around
     // This should be changes once we use taskgraphs for modeling the data flow
-    shared_ptr<ThreadPool::Task> task_ptr = make_shared<ThreadPool::Task>(std::move(task));
+    shared_ptr<ThreadPool::Task> task_ptr =
+        make_shared<ThreadPool::Task>(std::move(task));
     block.set_io_task(task_ptr);
   }
 
   /** @return Data blocks corresponding to the tile type. */
-  inline void set_data_blocks(const TileType type, tdb::pmr::list<FilteredDataBlock>::iterator& current_block) {
+  inline void set_data_blocks(
+      const TileType type,
+      tdb::pmr::list<FilteredDataBlock>::iterator& current_block) {
     switch (type) {
       case TileType::FIXED:
         current_fixed_data_block_ = current_block;
@@ -568,15 +578,18 @@ class FilteredData {
       const ResultTile* rt,
       const TileType type) {
     const auto tile_idx{rt->tile_idx()};
-//    std::cerr << "fragment=" << fragment->fragment_uri().to_string() << ", name=" << name_ << ", tiled_idx=" << tile_idx << std::endl;
+    //    std::cerr << "fragment=" << fragment->fragment_uri().to_string() << ",
+    //    name=" << name_ << ", tiled_idx=" << tile_idx << std::endl;
     if (tile_idx_count_.contains(fragment->fragment_uri().to_string())) {
       if (tile_idx_count_[fragment->fragment_uri().to_string()].contains(
               name_)) {
         if (tile_idx_count_[fragment->fragment_uri().to_string()][name_]
                 .contains(tile_idx)) {
-          tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx]++;
+          tile_idx_count_[fragment->fragment_uri().to_string()][name_]
+                         [tile_idx]++;
         } else {
-          tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx] = 1;
+          tile_idx_count_[fragment->fragment_uri().to_string()][name_]
+                         [tile_idx] = 1;
         }
       } else {
         tile_idx_count_[fragment->fragment_uri().to_string()][name_][tile_idx] =
@@ -590,7 +603,8 @@ class FilteredData {
     storage_size_t size{persisted_tile_size(fragment, type, tile_idx)};
     storage_size_t end_position = offset + size;
 
-    storage_size_t current_end_position = current_block_offset + current_block_size;
+    storage_size_t current_end_position =
+        current_block_offset + current_block_size;
     storage_size_t possible_new_size = current_block_size + size;
 
     if (current_block_frag_idx == nullopt) {
@@ -599,26 +613,36 @@ class FilteredData {
       return;
     }
 
-//    // Exit early if new fragment
-//    if (current_block_frag_idx != rt->frag_idx()) {
-//      // Push the old batch and start a new one.
-//      data_blocks(type).emplace_back(
-//          *current_block_frag_idx,
-//          current_block_offset,
-//          current_block_size,
-//          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
-//      queue_last_block_for_read(type);
-//      current_block_offset = offset;
-//      current_block_size = size;
-//    }
+    //    // Exit early if new fragment
+    //    if (current_block_frag_idx != rt->frag_idx()) {
+    //      // Push the old batch and start a new one.
+    //      data_blocks(type).emplace_back(
+    //          *current_block_frag_idx,
+    //          current_block_offset,
+    //          current_block_size,
+    //          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
+    //      queue_last_block_for_read(type);
+    //      current_block_offset = offset;
+    //      current_block_size = size;
+    //    }
 
-    // Check if block is before since now we load tiles not simply just in fragment + tile order but in possibly Global Order
-    // If block is before, we extend the size but move the offset "backwards"
-    if (current_block_frag_idx == rt->frag_idx() && end_position < current_block_offset && (end_position - current_block_offset <= min_batch_gap || possible_new_size <= min_batch_size) && possible_new_size <= max_batch_size) {
-//      current_block_size += size;
+    // Check if block is before since now we load tiles not simply just in
+    // fragment + tile order but in possibly Global Order If block is before, we
+    // extend the size but move the offset "backwards"
+    if (current_block_frag_idx == rt->frag_idx() &&
+        end_position < current_block_offset &&
+        (end_position - current_block_offset <= min_batch_gap ||
+         possible_new_size <= min_batch_size) &&
+        possible_new_size <= max_batch_size) {
+      //      current_block_size += size;
       current_block_size = current_end_position - offset;
       current_block_offset = offset;
-    } else if (current_block_frag_idx == rt->frag_idx() && offset > current_end_position && (offset - current_end_position <= min_batch_gap || possible_new_size <= min_batch_size) && possible_new_size <= max_batch_size) { // Check if block is after
+    } else if (
+        current_block_frag_idx == rt->frag_idx() &&
+        offset > current_end_position &&
+        (offset - current_end_position <= min_batch_gap ||
+         possible_new_size <= min_batch_size) &&
+        possible_new_size <= max_batch_size) {  // Check if block is after
       current_block_size = end_position - current_block_offset;
     } else {
       // Push the old batch and start a new one.
@@ -632,26 +656,24 @@ class FilteredData {
       current_block_size = size;
     }
 
-
-
-//    uint64_t new_size{(offset + size) - current_block_offset};
-//    uint64_t gap{offset - (current_block_offset + current_block_size)};
-//    if (current_block_frag_idx == rt->frag_idx() &&
-//        new_size <= max_batch_size &&
-//        (new_size <= min_batch_size || gap <= min_batch_gap)) {
-//      // Extend current batch.
-//      current_block_size = new_size;
-//    } else {
-//      // Push the old batch and start a new one.
-//      data_blocks(type).emplace_back(
-//          *current_block_frag_idx,
-//          current_block_offset,
-//          current_block_size,
-//          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
-//      queue_last_block_for_read(type);
-//      current_block_offset = offset;
-//      current_block_size = size;
-//    }
+    //    uint64_t new_size{(offset + size) - current_block_offset};
+    //    uint64_t gap{offset - (current_block_offset + current_block_size)};
+    //    if (current_block_frag_idx == rt->frag_idx() &&
+    //        new_size <= max_batch_size &&
+    //        (new_size <= min_batch_size || gap <= min_batch_gap)) {
+    //      // Extend current batch.
+    //      current_block_size = new_size;
+    //    } else {
+    //      // Push the old batch and start a new one.
+    //      data_blocks(type).emplace_back(
+    //          *current_block_frag_idx,
+    //          current_block_offset,
+    //          current_block_size,
+    //          memory_tracker_->get_resource(MemoryType::FILTERED_DATA_BLOCK));
+    //      queue_last_block_for_read(type);
+    //      current_block_offset = offset;
+    //      current_block_size = size;
+    //    }
   }
 
   /**
@@ -675,24 +697,26 @@ class FilteredData {
       return;
     }
     auto& data_block = data_blocks(type);
-//    std::cerr << "data_block.size()=" << data_block.size() << std::endl;
+    //    std::cerr << "data_block.size()=" << data_block.size() << std::endl;
     tdb::pmr::list<FilteredDataBlock>::iterator it = data_block.begin();
-    while(it != data_block.end()) {
+    while (it != data_block.end()) {
       if (it->contains(rt->frag_idx(), offset, size)) {
         set_data_blocks(type, it);
         return;
       }
       it++;
     }
-//    if (!current_block->contains(rt->frag_idx(), offset, size)) {
-//      current_block++;
-//
-//      if (current_block == data_blocks(type).end() ||
-//          !current_block->contains(rt->frag_idx(), offset, size)) {
-////        throw std::logic_error("Unexpected data block");
-//      }
-//    }
-    std::cerr << "rt->frag_idx()=" << rt->frag_idx() << ", rt->tile_idx()=" << rt->tile_idx() << ", offset=" << offset << ", size=" << size << std::endl;
+    //    if (!current_block->contains(rt->frag_idx(), offset, size)) {
+    //      current_block++;
+    //
+    //      if (current_block == data_blocks(type).end() ||
+    //          !current_block->contains(rt->frag_idx(), offset, size)) {
+    ////        throw std::logic_error("Unexpected data block");
+    //      }
+    //    }
+    std::cerr << "rt->frag_idx()=" << rt->frag_idx()
+              << ", rt->tile_idx()=" << rt->tile_idx() << ", offset=" << offset
+              << ", size=" << size << std::endl;
     throw std::logic_error("Unexpected data block");
   }
 
@@ -737,9 +761,12 @@ class FilteredData {
   const bool nullable_;
 
   /** Read tasks. */
-//  std::vector<ThreadPool::Task> read_tasks_;
+  //  std::vector<ThreadPool::Task> read_tasks_;
 
-  std::unordered_map<std::string, std::map<std::string, std::map<uint64_t, uint64_t>>> tile_idx_count_;
+  std::unordered_map<
+      std::string,
+      std::map<std::string, std::map<uint64_t, uint64_t>>>
+      tile_idx_count_;
 };
 
 }  // namespace tiledb::sm

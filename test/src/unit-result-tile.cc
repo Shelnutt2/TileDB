@@ -213,89 +213,91 @@ TEST_CASE_METHOD(
         0,
         std::nullopt,
         std::nullopt);
-    ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {nullptr, nullptr}};
-    rt.init_coord_tile(
-        constants::format_version,
-        array_schema,
-        "d1",
-        tile_sizes,
-        tile_data,
-        0);
-  }
-
-  ResultTile::TileSizes tile_sizes(
-      (num_cells + 1) * constants::cell_var_offset_size,
-      0,
-      num_cells,
-      0,
-      std::nullopt,
-      std::nullopt);
-  ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {nullptr, nullptr}};
+    ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {
+      nullptr, nullptr
+    }
+  };
   rt.init_coord_tile(
-      constants::format_version,
-      array_schema,
-      dim_name,
-      tile_sizes,
-      tile_data,
-      dim_idx);
-  auto tile_tuple = rt.tile_tuple(dim_name);
-  Tile* const t = &tile_tuple->fixed_tile();
-  Tile* const t_var = &tile_tuple->var_tile();
+      constants::format_version, array_schema, "d1", tile_sizes, tile_data, 0);
+}
 
-  // Initialize offsets, use 1 character strings.
-  offsets_t* offsets = t->data_as<offsets_t>();
-  for (uint64_t i = 0; i < num_cells + 1; i++) {
-    offsets[i] = i;
-  }
+ResultTile::TileSizes tile_sizes(
+    (num_cells + 1) * constants::cell_var_offset_size,
+    0,
+    num_cells,
+    0,
+    std::nullopt,
+    std::nullopt);
+ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {
+  nullptr, nullptr
+}
+}
+;
+rt.init_coord_tile(
+    constants::format_version,
+    array_schema,
+    dim_name,
+    tile_sizes,
+    tile_data,
+    dim_idx);
+auto tile_tuple = rt.tile_tuple(dim_name);
+Tile* const t = &tile_tuple->fixed_tile();
+Tile* const t_var = &tile_tuple->var_tile();
 
-  // Initialize data, use incrementing single string values starting with 'a'.
-  char* var = t_var->data_as<char>();
-  for (uint64_t i = 0; i < num_cells; i++) {
-    var[i] = 'a' + i;
-  }
+// Initialize offsets, use 1 character strings.
+offsets_t* offsets = t->data_as<offsets_t>();
+for (uint64_t i = 0; i < num_cells + 1; i++) {
+  offsets[i] = i;
+}
 
-  // Initialize ranges.
-  NDRange ranges;
-  char temp[2];
-  std::vector<uint8_t> exp_result_count;
-  SECTION("- First and last cell included") {
-    ranges.resize(2);
-    temp[0] = temp[1] = 'a';
-    ranges[0] = Range(temp, 2, 1);
+// Initialize data, use incrementing single string values starting with 'a'.
+char* var = t_var->data_as<char>();
+for (uint64_t i = 0; i < num_cells; i++) {
+  var[i] = 'a' + i;
+}
 
-    temp[0] = temp[1] = 'h';
-    ranges[1] = Range(temp, 2, 1);
+// Initialize ranges.
+NDRange ranges;
+char temp[2];
+std::vector<uint8_t> exp_result_count;
+SECTION("- First and last cell included") {
+  ranges.resize(2);
+  temp[0] = temp[1] = 'a';
+  ranges[0] = Range(temp, 2, 1);
 
-    exp_result_count = {1, 0, 0, 0, 0, 0, 0, 1};
-  }
+  temp[0] = temp[1] = 'h';
+  ranges[1] = Range(temp, 2, 1);
 
-  SECTION("- Middle cells included") {
-    ranges.resize(1);
-    temp[0] = 'b';
-    temp[1] = 'g';
-    ranges[0] = Range(temp, 2, 1);
+  exp_result_count = {1, 0, 0, 0, 0, 0, 0, 1};
+}
 
-    exp_result_count = {0, 1, 1, 1, 1, 1, 1, 0};
-  }
+SECTION("- Middle cells included") {
+  ranges.resize(1);
+  temp[0] = 'b';
+  temp[1] = 'g';
+  ranges[0] = Range(temp, 2, 1);
 
-  tdb::pmr::vector<uint64_t> range_indexes(
-      ranges.size(), memory_tracker_->get_resource(MemoryType::DIMENSIONS));
-  std::iota(range_indexes.begin(), range_indexes.end(), 0);
+  exp_result_count = {0, 1, 1, 1, 1, 1, 1, 0};
+}
 
-  auto resource = tiledb::test::get_test_memory_tracker()->get_resource(
-      MemoryType::RESULT_TILE_BITMAP);
-  tdb::pmr::vector<uint8_t> result_count(num_cells, 1, resource);
-  ResultTile::compute_results_count_sparse_string(
-      &rt,
-      dim_idx,
-      ranges,
-      range_indexes,
-      result_count,
-      Layout::ROW_MAJOR,
-      0,
-      num_cells);
+tdb::pmr::vector<uint64_t> range_indexes(
+    ranges.size(), memory_tracker_->get_resource(MemoryType::DIMENSIONS));
+std::iota(range_indexes.begin(), range_indexes.end(), 0);
 
-  CHECK(memcmp(result_count.data(), exp_result_count.data(), num_cells) == 0);
+auto resource = tiledb::test::get_test_memory_tracker()
+    -> get_resource(MemoryType::RESULT_TILE_BITMAP);
+tdb::pmr::vector<uint8_t> result_count(num_cells, 1, resource);
+ResultTile::compute_results_count_sparse_string(
+    &rt,
+    dim_idx,
+    ranges,
+    range_indexes,
+    result_count,
+    Layout::ROW_MAJOR,
+    0,
+    num_cells);
+
+CHECK(memcmp(result_count.data(), exp_result_count.data(), num_cells) == 0);
 }
 
 TEST_CASE_METHOD(
@@ -326,117 +328,119 @@ TEST_CASE_METHOD(
         0,
         std::nullopt,
         std::nullopt);
-    ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {nullptr, nullptr}};
-    rt.init_coord_tile(
-        constants::format_version,
-        array_schema,
-        "d1",
-        tile_sizes,
-        tile_data,
-        0);
-  }
-
-  ResultTile::TileSizes tile_sizes(
-      (num_cells + 1) * constants::cell_var_offset_size,
-      0,
-      num_cells,
-      0,
-      std::nullopt,
-      std::nullopt);
-  ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {nullptr, nullptr}};
+    ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {
+      nullptr, nullptr
+    }
+  };
   rt.init_coord_tile(
-      constants::format_version,
-      array_schema,
-      dim_name,
-      tile_sizes,
-      tile_data,
-      dim_idx);
-  auto tile_tuple = rt.tile_tuple(dim_name);
-  Tile* const t = &tile_tuple->fixed_tile();
-  Tile* const t_var = &tile_tuple->var_tile();
+      constants::format_version, array_schema, "d1", tile_sizes, tile_data, 0);
+}
 
-  // Initialize offsets, use 1 character strings.
-  offsets_t* offsets = t->data_as<offsets_t>();
-  for (uint64_t i = 0; i < num_cells + 1; i++) {
-    offsets[i] = i;
-  }
+ResultTile::TileSizes tile_sizes(
+    (num_cells + 1) * constants::cell_var_offset_size,
+    0,
+    num_cells,
+    0,
+    std::nullopt,
+    std::nullopt);
+ResultTile::TileData tile_data{nullptr, nullptr}, {nullptr, nullptr}, {
+  nullptr, nullptr
+}
+}
+;
+rt.init_coord_tile(
+    constants::format_version,
+    array_schema,
+    dim_name,
+    tile_sizes,
+    tile_data,
+    dim_idx);
+auto tile_tuple = rt.tile_tuple(dim_name);
+Tile* const t = &tile_tuple->fixed_tile();
+Tile* const t_var = &tile_tuple->var_tile();
 
-  // Initialize data, use incrementing single string values starting with 'a'.
-  char* var = t_var->data_as<char>();
-  for (uint64_t i = 0; i < num_cells; i++) {
-    var[i] = 'a' + i;
-  }
+// Initialize offsets, use 1 character strings.
+offsets_t* offsets = t->data_as<offsets_t>();
+for (uint64_t i = 0; i < num_cells + 1; i++) {
+  offsets[i] = i;
+}
 
-  // Initialize ranges.
-  NDRange ranges;
-  char temp[2];
-  std::vector<uint64_t> exp_result_count{8};
-  SECTION("- First and last cell included multiple times") {
-    ranges.resize(5);
-    temp[0] = temp[1] = 'a';
-    ranges[0] = Range(temp, 2, 1);
-    ranges[1] = Range(temp, 2, 1);
-    ranges[2] = Range(temp, 2, 1);
+// Initialize data, use incrementing single string values starting with 'a'.
+char* var = t_var->data_as<char>();
+for (uint64_t i = 0; i < num_cells; i++) {
+  var[i] = 'a' + i;
+}
 
-    temp[0] = temp[1] = 'h';
-    ranges[3] = Range(temp, 2, 1);
-    ranges[4] = Range(temp, 2, 1);
+// Initialize ranges.
+NDRange ranges;
+char temp[2];
+std::vector<uint64_t> exp_result_count{8};
+SECTION("- First and last cell included multiple times") {
+  ranges.resize(5);
+  temp[0] = temp[1] = 'a';
+  ranges[0] = Range(temp, 2, 1);
+  ranges[1] = Range(temp, 2, 1);
+  ranges[2] = Range(temp, 2, 1);
 
-    exp_result_count = {3, 0, 0, 0, 0, 0, 0, 2};
-  }
+  temp[0] = temp[1] = 'h';
+  ranges[3] = Range(temp, 2, 1);
+  ranges[4] = Range(temp, 2, 1);
 
-  SECTION("- Middle cells included multiple times") {
-    ranges.resize(2);
-    temp[0] = 'b';
-    temp[1] = 'g';
-    ranges[0] = Range(temp, 2, 1);
+  exp_result_count = {3, 0, 0, 0, 0, 0, 0, 2};
+}
 
-    temp[0] = 'c';
-    temp[1] = 'f';
-    ranges[1] = Range(temp, 2, 1);
+SECTION("- Middle cells included multiple times") {
+  ranges.resize(2);
+  temp[0] = 'b';
+  temp[1] = 'g';
+  ranges[0] = Range(temp, 2, 1);
 
-    exp_result_count = {0, 1, 2, 2, 2, 2, 1, 0};
-  }
+  temp[0] = 'c';
+  temp[1] = 'f';
+  ranges[1] = Range(temp, 2, 1);
 
-  SECTION("- Complex ranges") {
-    ranges.resize(6);
-    temp[0] = 'b';
-    temp[1] = 'd';
-    ranges[0] = Range(temp, 2, 1);
+  exp_result_count = {0, 1, 2, 2, 2, 2, 1, 0};
+}
 
-    temp[0] = temp[1] = 'c';
-    ranges[1] = Range(temp, 2, 1);
+SECTION("- Complex ranges") {
+  ranges.resize(6);
+  temp[0] = 'b';
+  temp[1] = 'd';
+  ranges[0] = Range(temp, 2, 1);
 
-    temp[0] = 'f';
-    temp[1] = 'h';
-    ranges[2] = Range(temp, 2, 1);
+  temp[0] = temp[1] = 'c';
+  ranges[1] = Range(temp, 2, 1);
 
-    temp[0] = temp[1] = 'g';
-    ranges[3] = Range(temp, 2, 1);
-    ranges[4] = Range(temp, 2, 1);
+  temp[0] = 'f';
+  temp[1] = 'h';
+  ranges[2] = Range(temp, 2, 1);
 
-    temp[0] = temp[1] = 'h';
-    ranges[5] = Range(temp, 2, 1);
+  temp[0] = temp[1] = 'g';
+  ranges[3] = Range(temp, 2, 1);
+  ranges[4] = Range(temp, 2, 1);
 
-    exp_result_count = {0, 1, 2, 1, 0, 1, 3, 2};
-  }
+  temp[0] = temp[1] = 'h';
+  ranges[5] = Range(temp, 2, 1);
 
-  tdb::pmr::vector<uint64_t> range_indexes(
-      ranges.size(), memory_tracker_->get_resource(MemoryType::DIMENSIONS));
-  std::iota(range_indexes.begin(), range_indexes.end(), 0);
+  exp_result_count = {0, 1, 2, 1, 0, 1, 3, 2};
+}
 
-  auto resource = tiledb::test::get_test_memory_tracker()->get_resource(
-      MemoryType::RESULT_TILE_BITMAP);
-  tdb::pmr::vector<uint64_t> result_count(num_cells, 1, resource);
-  ResultTile::compute_results_count_sparse_string(
-      &rt,
-      dim_idx,
-      ranges,
-      range_indexes,
-      result_count,
-      Layout::ROW_MAJOR,
-      0,
-      num_cells);
+tdb::pmr::vector<uint64_t> range_indexes(
+    ranges.size(), memory_tracker_->get_resource(MemoryType::DIMENSIONS));
+std::iota(range_indexes.begin(), range_indexes.end(), 0);
 
-  CHECK(memcmp(result_count.data(), exp_result_count.data(), num_cells) == 0);
+auto resource = tiledb::test::get_test_memory_tracker()
+    -> get_resource(MemoryType::RESULT_TILE_BITMAP);
+tdb::pmr::vector<uint64_t> result_count(num_cells, 1, resource);
+ResultTile::compute_results_count_sparse_string(
+    &rt,
+    dim_idx,
+    ranges,
+    range_indexes,
+    result_count,
+    Layout::ROW_MAJOR,
+    0,
+    num_cells);
+
+CHECK(memcmp(result_count.data(), exp_result_count.data(), num_cells) == 0);
 }

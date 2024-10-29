@@ -287,7 +287,7 @@ uint64_t Tile::load_chunk_data(
     ChunkData& unfiltered_tile, uint64_t expected_original_size) {
   assert(filtered());
 
-  if(filtered_data_io_task_ != nullptr && filtered_data_io_task_->valid()) {
+  if (filtered_data_io_task_ != nullptr && filtered_data_io_task_->valid()) {
     filtered_data_io_task_->wait();
     throw_if_not_ok(filtered_data_io_task_->get());
   }

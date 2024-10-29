@@ -229,7 +229,8 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
       std::vector<ResultTilesList>& result_tiles);
 
   /**
-   * Add a result tile to process, making sure maximum budget is respected globally not just per fragment.
+   * Add a result tile to process, making sure maximum budget is respected
+   * globally not just per fragment.
    *
    * @param dim_num Number of dimensions.
    * @param memory_budget_coords_tiles Memory budget for coordinate tiles.
@@ -665,12 +666,14 @@ class SparseGlobalOrderReader : public SparseIndexReaderBase,
    *
    * @return tile loading order
    */
-  std::vector<TileMBROrder> tile_order_for_loading(size_t result_tiles_size, const RelevantFragments& relevant_fragments);
+  std::vector<TileMBROrder> tile_order_for_loading(
+      size_t result_tiles_size, const RelevantFragments& relevant_fragments);
 
   /**
    * Compute tile loading order
    */
-  void compute_tile_order_for_loading(size_t result_tiles_size, const RelevantFragments& relevant_fragments);
+  void compute_tile_order_for_loading(
+      size_t result_tiles_size, const RelevantFragments& relevant_fragments);
 };
 
 }  // namespace tiledb::sm

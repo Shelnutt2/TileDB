@@ -475,7 +475,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
     // Resize bitmaps to process for each tiles in parallel.
     throw_if_not_ok(parallel_for(
         &resources_.compute_tp(), 0, result_tiles.size(), [&](uint64_t t) {
-          auto rt = static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t]);
+          auto rt =
+              static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t]);
           // Make a bitmap, if required.
           if (!rt->has_bmp()) {
             rt->alloc_bitmap();
@@ -562,8 +563,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
 
           // Compute the bitmap for the cells.
           {
-            auto timer_compute_results_count_sparse =
-                stats_->start_timer("compute_tile_bitmaps.compute_results_count_sparse");
+            auto timer_compute_results_count_sparse = stats_->start_timer(
+                "compute_tile_bitmaps.compute_results_count_sparse");
             throw_if_not_ok(rt->compute_results_count_sparse(
                 dim_idx,
                 ranges_for_dim,
@@ -578,10 +579,12 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
         // Only compute bitmap cells here if we are processing a single cell
         // range. If not, it will be done below.
         if (num_range_threads == 1) {
-          auto timer_count_cells = stats_->start_timer("compute_tile_bitmaps.count_cells");
+          auto timer_count_cells =
+              stats_->start_timer("compute_tile_bitmaps.count_cells");
           rt->count_cells();
         }
-        stats_->add_counter("tiles_with_empty_results", (rt->result_num() == 0));
+        stats_->add_counter(
+            "tiles_with_empty_results", (rt->result_num() == 0));
 
         return Status::Ok();
       }));
@@ -592,7 +595,8 @@ void SparseIndexReaderBase::compute_tile_bitmaps(
     // Compute number of cells in each bitmaps in parallel.
     throw_if_not_ok(parallel_for(
         &resources_.compute_tp(), 0, result_tiles.size(), [&](uint64_t t) {
-          auto timer_count_cells = stats_->start_timer("compute_tile_bitmaps.count_cells");
+          auto timer_count_cells =
+              stats_->start_timer("compute_tile_bitmaps.count_cells");
           static_cast<ResultTileWithBitmap<BitmapType>*>(result_tiles[t])
               ->count_cells();
           return Status::Ok();

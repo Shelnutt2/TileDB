@@ -494,7 +494,7 @@ class GlobalCmp : public CellCmpBase {
     return false;
   }
 
-  protected:
+ protected:
   /** The tile order. */
   Layout tile_order_;
   /** The cell order. */
@@ -541,7 +541,6 @@ class GlobalCmpReverse {
   GlobalCmp cmp_;
 };
 
-
 /**
  * Wrapper of comparison function for sorting coords on the global order
  * of some domain for tiles mbrs of ndranges.
@@ -573,78 +572,78 @@ class GlobalCmpTileOrder : GlobalCmp {
    * @return `true` if `a` precedes `b` and `false` otherwise.
    */
   bool operator()(const TileMBROrder& a, const TileMBROrder& b) const {
-      if (tile_order_ == Layout::ROW_MAJOR) {
-        for (unsigned d = 0; d < dim_num_; ++d) {
-          // Not applicable to var-sized dimensions
-          if (domain_.dimension_ptr(d)->var_size())
-            continue;
+    if (tile_order_ == Layout::ROW_MAJOR) {
+      for (unsigned d = 0; d < dim_num_; ++d) {
+        // Not applicable to var-sized dimensions
+        if (domain_.dimension_ptr(d)->var_size())
+          continue;
 
-          auto res = domain_.tile_order_cmp(d, a.mbr[d].data(), b.mbr[d].data());
+        auto res = domain_.tile_order_cmp(d, a.mbr[d].data(), b.mbr[d].data());
 
-          if (res == -1)
-            return true;
-          if (res == 1)
-            return false;
-          // else same tile on dimension d --> continue
-        }
-      } else {  // COL_MAJOR
-        assert(tile_order_ == Layout::COL_MAJOR);
-        for (int32_t d = static_cast<int32_t>(dim_num_) - 1; d >= 0; d--) {
-          // Not applicable to var-sized dimensions
-          if (domain_.dimension_ptr(d)->var_size())
-            continue;
-
-          auto res = domain_.tile_order_cmp(d, a.mbr[d].data(), b.mbr[d].data());
-
-          if (res == -1)
-            return true;
-          if (res == 1)
-            return false;
-          // else same tile on dimension d --> continue
-        }
+        if (res == -1)
+          return true;
+        if (res == 1)
+          return false;
+        // else same tile on dimension d --> continue
       }
+    } else {  // COL_MAJOR
+      assert(tile_order_ == Layout::COL_MAJOR);
+      for (int32_t d = static_cast<int32_t>(dim_num_) - 1; d >= 0; d--) {
+        // Not applicable to var-sized dimensions
+        if (domain_.dimension_ptr(d)->var_size())
+          continue;
 
-      // Compare cell order
-      if (cell_order_ == Layout::ROW_MAJOR) {
-        for (unsigned d = 0; d < dim_num_; ++d) {
-          auto res = cell_order_cmp_NDRange(d, a.mbr, b.mbr);
+        auto res = domain_.tile_order_cmp(d, a.mbr[d].data(), b.mbr[d].data());
 
-          if (res == -1)
-            return true;
-          if (res == 1)
-            return false;
-          // else same tile on dimension d --> continue
-        }
-      } else {  // COL_MAJOR
-        assert(cell_order_ == Layout::COL_MAJOR);
-        for (int32_t d = static_cast<int32_t>(dim_num_) - 1; d >= 0; d--) {
-          auto res = cell_order_cmp_NDRange(d, a.mbr, b.mbr);
-
-          if (res == -1)
-            return true;
-          if (res == 1)
-            return false;
-          // else same tile on dimension d --> continue
-        }
+        if (res == -1)
+          return true;
+        if (res == 1)
+          return false;
+        // else same tile on dimension d --> continue
       }
-
-      // Compare timestamps
-      if (use_timestamps_) {
-        return get_timestamp_tmbro(a) > get_timestamp_tmbro(b);
-      } else if (strict_ordering_) {
-        if (a.frag_idx == b.frag_idx) {
-          if (a.tile_idx == b.tile_idx) {
-            return false;
-          }
-
-          return a.tile_idx > b.tile_idx;
-        }
-
-        return a.frag_idx > b.frag_idx;
-      }
-
-      return false;
     }
+
+    // Compare cell order
+    if (cell_order_ == Layout::ROW_MAJOR) {
+      for (unsigned d = 0; d < dim_num_; ++d) {
+        auto res = cell_order_cmp_NDRange(d, a.mbr, b.mbr);
+
+        if (res == -1)
+          return true;
+        if (res == 1)
+          return false;
+        // else same tile on dimension d --> continue
+      }
+    } else {  // COL_MAJOR
+      assert(cell_order_ == Layout::COL_MAJOR);
+      for (int32_t d = static_cast<int32_t>(dim_num_) - 1; d >= 0; d--) {
+        auto res = cell_order_cmp_NDRange(d, a.mbr, b.mbr);
+
+        if (res == -1)
+          return true;
+        if (res == 1)
+          return false;
+        // else same tile on dimension d --> continue
+      }
+    }
+
+    // Compare timestamps
+    if (use_timestamps_) {
+      return get_timestamp_tmbro(a) > get_timestamp_tmbro(b);
+    } else if (strict_ordering_) {
+      if (a.frag_idx == b.frag_idx) {
+        if (a.tile_idx == b.tile_idx) {
+          return false;
+        }
+
+        return a.tile_idx > b.tile_idx;
+      }
+
+      return a.frag_idx > b.frag_idx;
+    }
+
+    return false;
+  }
 };
 
 /**

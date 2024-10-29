@@ -185,9 +185,9 @@ struct ChunkData {
 };
 
 struct TileMBROrder {
-    uint64_t frag_idx;
-    uint64_t tile_idx;
-    NDRange mbr;
+  uint64_t frag_idx;
+  uint64_t tile_idx;
+  NDRange mbr;
 };
 
 }  // namespace tiledb::sm

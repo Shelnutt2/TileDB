@@ -279,12 +279,12 @@ class ResultTile {
     shared_ptr<ThreadPool::Task> var_filtered_data_task_;
 
     /** Stores the validity filtered data I/O task. */
-  shared_ptr<ThreadPool::Task> validity_filtered_data_task_;
-};
+    shared_ptr<ThreadPool::Task> validity_filtered_data_task_;
+  };
 
-/**
-* Class definition for the tile tuple.
-*/
+  /**
+   * Class definition for the tile tuple.
+   */
   class TileTuple {
    public:
     /* ********************************* */
