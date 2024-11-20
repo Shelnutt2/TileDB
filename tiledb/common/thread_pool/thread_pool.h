@@ -82,11 +82,11 @@ class ThreadPool {
     //      return *this;
     //    }
 
-//    ~TaskBase() {
-//      if (tp_ != nullptr && this->valid()) {
-//        std::ignore = tp_->wait(*this);
-//      }
-//    };
+    //    ~TaskBase() {
+    //      if (tp_ != nullptr && this->valid()) {
+    //        std::ignore = tp_->wait(*this);
+    //      }
+    //    };
 
     void wait() {
       if (tp_ != nullptr) {
@@ -159,11 +159,11 @@ class ThreadPool {
       return *this;
     }
 
-//    ~SharedTaskBase() {
-//      if (tp_ != nullptr && this->valid()) {
-//        std::ignore = tp_->wait(*this);
-//      }
-//    };
+    //    ~SharedTaskBase() {
+    //      if (tp_ != nullptr && this->valid()) {
+    //        std::ignore = tp_->wait(*this);
+    //      }
+    //    };
 
     void wait() {
       if (tp_ != nullptr) {
