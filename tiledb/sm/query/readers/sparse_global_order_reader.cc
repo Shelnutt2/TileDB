@@ -1869,7 +1869,7 @@ void SparseGlobalOrderReader<BitmapType>::process_slabs(
     return;
   }
 
-  // Read a few attributes a a time.
+  // Read a few attributes at a time.
   std::vector<ResultTile*> result_tiles =
       result_tiles_to_load(result_cell_slabs, false);
   std::optional<std::string> last_field_to_overflow{std::nullopt};
@@ -1933,7 +1933,35 @@ void SparseGlobalOrderReader<BitmapType>::process_slabs(
       if (!is_dim && qc_loaded_attr_names_set_.count(name) == 0 &&
           name != constants::timestamps &&
           name != constants::delete_timestamps) {
-        clear_tiles(name, result_tiles);
+        // If the user buffer isn't full, this means we copied all tiles and
+        // everything can be purged/
+        if (!user_buffers_full) {
+          clear_tiles(name, result_tiles);
+        } else {
+          // In the case the user buffers were full, lets purge all but the
+          // tiles that didn't get copied The tiles that weren't fully copied
+          // will be the last ones in the read state where the copying stopped.
+          std::vector<ResultTile*> result_tiles_to_clear;
+          const auto& frag_idx = read_state_.frag_idx();
+          for (size_t f = 0; f < frag_idx.size(); f++) {
+            for (auto& rt : result_tiles) {
+              // The read state is per fragment, so if this tile is a different
+              // fragment skip it. This tile will be checked when the outer for
+              // loop reaches the appropriate fragment.
+              if (rt->frag_idx() != f) {
+                break;
+              }
+
+              // If the tile isn't the one in the read state its okay to erase
+              // it
+              if (rt->tile_idx() != frag_idx[f].tile_idx_) {
+                result_tiles_to_clear.emplace_back(rt);
+              }
+            }
+          }
+
+          clear_tiles(name, result_tiles_to_clear);
+        }
       }
     }
   }

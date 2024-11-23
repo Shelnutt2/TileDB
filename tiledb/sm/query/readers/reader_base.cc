@@ -649,10 +649,15 @@ Status ReaderBase::read_and_unfilter_attribute_tiles(
   // eventually get rid of it altogether so that we can clarify the data flow.
   // At the end of this function call, all memory inside of 'filtered_data' has
   // been used and the tiles are unfiltered so the data can be deleted.
-  auto filtered_data{read_attribute_tiles(names, result_tiles)};
+
+  auto result_tiles_to_load_and_unfilter{
+      filter_tiles_for_loading_and_unfiltering(result_tiles, names)};
+
+  auto filtered_data{
+      read_attribute_tiles(names, result_tiles_to_load_and_unfilter)};
   for (auto& name : names) {
-    RETURN_NOT_OK(
-        unfilter_tiles(name.name(), name.validity_only(), result_tiles));
+    RETURN_NOT_OK(unfilter_tiles(
+        name.name(), name.validity_only(), result_tiles_to_load_and_unfilter));
   }
 
   return Status::Ok();
@@ -663,9 +668,14 @@ Status ReaderBase::read_and_unfilter_coordinate_tiles(
     const std::vector<ResultTile*>& result_tiles) {
   // See the comment in 'read_and_unfilter_attribute_tiles' to get more
   // information about the lifetime of this object.
-  auto filtered_data{read_coordinate_tiles(names, result_tiles)};
+
+  auto result_tiles_to_load_and_unfilter{
+      filter_tiles_for_loading_and_unfiltering(result_tiles, names)};
+  auto filtered_data{
+      read_coordinate_tiles(names, result_tiles_to_load_and_unfilter)};
   for (auto& name : names) {
-    RETURN_NOT_OK(unfilter_tiles(name, false, result_tiles));
+    RETURN_NOT_OK(
+        unfilter_tiles(name, false, result_tiles_to_load_and_unfilter));
   }
 
   return Status::Ok();

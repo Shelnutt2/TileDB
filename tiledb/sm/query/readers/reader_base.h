@@ -208,6 +208,54 @@ class ReaderBase : public StrategyBase {
     return {t_min, t_max};
   }
 
+  /**
+   * Filter a vector of result tiles to those that need to be loaded and
+   * unfiltered
+   *
+   * @param result_tiles Vector of result tiles that need to be filtered
+   * @param names Vector of attribute/dimension names to be checked
+   *
+   * @return vector of result tiles to load
+   */
+  static std::vector<ResultTile*> filter_tiles_for_loading_and_unfiltering(
+      const std::vector<ResultTile*>& result_tiles,
+      const std::vector<NameToLoad>& names) {
+    std::vector<std::string> names_vector;
+    names_vector.reserve(names.size());
+    for (const auto& n : names) {
+      names_vector.emplace_back(n.name());
+    }
+    return filter_tiles_for_loading_and_unfiltering(result_tiles, names_vector);
+  }
+
+  /**
+   * Filter a vector of result tiles to those that need to be loaded and
+   * unfiltered
+   *
+   * @param result_tiles Vector of result tiles that need to be filtered
+   * @param names Vector of attribute/dimension names to be checked
+   *
+   * @return vector of result tiles to load
+   */
+  static std::vector<ResultTile*> filter_tiles_for_loading_and_unfiltering(
+      const std::vector<ResultTile*>& result_tiles,
+      const std::vector<std::string>& names) {
+    std::vector<ResultTile*> result_tiles_to_load_and_unfilter;
+    // Only load tiles which has not yte been loaded and unfiltered.
+    for (auto& rt : result_tiles) {
+      for (const auto& name : names) {
+        // If the tile tuple has not yet been created then the tile needs to be
+        // loaded and unfiltered
+        if (rt->tile_tuple(name) == nullptr) {
+          result_tiles_to_load_and_unfilter.emplace_back(rt);
+          break;
+        }
+      }
+    }
+
+    return result_tiles_to_load_and_unfilter;
+  }
+
   /* ********************************* */
   /*          PUBLIC METHODS           */
   /* ********************************* */
