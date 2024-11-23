@@ -361,7 +361,12 @@ SparseGlobalOrderReader<BitmapType>::create_result_tiles(
     // Load as many tiles as the memory budget allows.
     throw_if_not_ok(parallel_for(
         &resources_.compute_tp(), 0, fragment_num, [&](uint64_t f) {
-          uint64_t t = 0;
+          //uint64_t t = 0;
+          // Figure out the start index.
+          auto t = read_state_.frag_idx()[f].tile_idx_;
+          if (!result_tiles[f].empty()) {
+            t = std::max(t, result_tiles[f].back().tile_idx() + 1);
+          }
           auto& tile_ranges = tmp_read_state_.tile_ranges(f);
           while (!tile_ranges.empty()) {
             auto& range = tile_ranges.back();
