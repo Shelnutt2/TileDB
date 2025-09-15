@@ -56,6 +56,8 @@ class Serializer {
       , size_(size) {
   }
 
+  virtual ~Serializer() = default;
+
   DISABLE_COPY_AND_COPY_ASSIGN(Serializer);
   DISABLE_MOVE_AND_MOVE_ASSIGN(Serializer);
 
@@ -76,7 +78,7 @@ class Serializer {
    * @param data data to write.
    * @param size size of the data.
    */
-  void write(const void* data, storage_size_t size) {
+  virtual void write(const void* data, storage_size_t size) {
     // Size compute mode.
     if (!ptr_) {
       size_ += size;

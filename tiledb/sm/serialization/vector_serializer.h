@@ -22,7 +22,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * OUT of OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
  * @section DESCRIPTION
@@ -34,11 +34,11 @@
 #define TILEDB_VECTOR_SERIALIZER_H
 
 #include <vector>
-#include "tiledb/common/status.h"
+#include "tiledb/storage_format/serialization/serializers.h"
 
 namespace tiledb::sm {
 
-class VectorSerializer {
+class VectorSerializer : public Serializer {
  public:
   /**
    * Constructor.
@@ -46,7 +46,8 @@ class VectorSerializer {
    * @param buffer The vector to serialize to.
    */
   VectorSerializer(std::vector<uint8_t>& buffer)
-      : buffer_(buffer) {
+      : Serializer(nullptr, 0)
+      , buffer_(buffer) {
   }
 
   /**
@@ -54,16 +55,14 @@ class VectorSerializer {
    *
    * @param data The data to write.
    * @param size The size of the data to write.
-   * @return Status
    */
-  Status write(const void* data, const size_t size) {
+  void write(const void* data, const storage_size_t size) override {
     if (size == 0) {
-      return Status::Ok();
+      return;
     }
     const auto old_size = buffer_.size();
     buffer_.resize(old_size + size);
     std::memcpy(buffer_.data() + old_size, data, size);
-    return Status::Ok();
   }
 
  private:
