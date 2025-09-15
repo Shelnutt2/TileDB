@@ -495,44 +495,59 @@ void fragment_meta_sizes_offsets_to_capnp(
     capnp::FragmentMetadata::Builder* frag_meta_builder) {
   auto& tile_offsets = frag_meta.loaded_metadata()->tile_offsets();
   if (!tile_offsets.empty()) {
-    auto builder = frag_meta_builder->initTileOffsets(tile_offsets.size());
+    auto list_builder = frag_meta_builder->initTileOffsets(tile_offsets.size());
     for (uint64_t i = 0; i < tile_offsets.size(); ++i) {
-      builder.init(i, tile_offsets[i].size());
-      for (uint64_t j = 0; j < tile_offsets[i].size(); ++j) {
-        builder[i].set(j, tile_offsets[i][j]);
+      auto inner_list_builder = list_builder.init(i, tile_offsets[i].size());
+      if (!tile_offsets[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_offsets[i].data(),
+            tile_offsets[i].size() * sizeof(uint64_t));
       }
     }
   }
   auto& tile_var_offsets = frag_meta.loaded_metadata()->tile_var_offsets();
   if (!tile_var_offsets.empty()) {
-    auto builder =
+    auto list_builder =
         frag_meta_builder->initTileVarOffsets(tile_var_offsets.size());
     for (uint64_t i = 0; i < tile_var_offsets.size(); ++i) {
-      builder.init(i, tile_var_offsets[i].size());
-      for (uint64_t j = 0; j < tile_var_offsets[i].size(); ++j) {
-        builder[i].set(j, tile_var_offsets[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_var_offsets[i].size());
+      if (!tile_var_offsets[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_var_offsets[i].data(),
+            tile_var_offsets[i].size() * sizeof(uint64_t));
       }
     }
   }
   auto& tile_var_sizes = frag_meta.loaded_metadata()->tile_var_sizes();
   if (!tile_var_sizes.empty()) {
-    auto builder = frag_meta_builder->initTileVarSizes(tile_var_sizes.size());
+    auto list_builder =
+        frag_meta_builder->initTileVarSizes(tile_var_sizes.size());
     for (uint64_t i = 0; i < tile_var_sizes.size(); ++i) {
-      builder.init(i, tile_var_sizes[i].size());
-      for (uint64_t j = 0; j < tile_var_sizes[i].size(); ++j) {
-        builder[i].set(j, tile_var_sizes[i][j]);
+      auto inner_list_builder = list_builder.init(i, tile_var_sizes[i].size());
+      if (!tile_var_sizes[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_var_sizes[i].data(),
+            tile_var_sizes[i].size() * sizeof(uint64_t));
       }
     }
   }
   auto& tile_validity_offsets =
       frag_meta.loaded_metadata()->tile_validity_offsets();
   if (!tile_validity_offsets.empty()) {
-    auto builder = frag_meta_builder->initTileValidityOffsets(
-        tile_validity_offsets.size());
+    auto list_builder =
+        frag_meta_builder->initTileValidityOffsets(tile_validity_offsets.size());
     for (uint64_t i = 0; i < tile_validity_offsets.size(); ++i) {
-      builder.init(i, tile_validity_offsets[i].size());
-      for (uint64_t j = 0; j < tile_validity_offsets[i].size(); ++j) {
-        builder[i].set(j, tile_validity_offsets[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_validity_offsets[i].size());
+      if (!tile_validity_offsets[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_validity_offsets[i].data(),
+            tile_validity_offsets[i].size() * sizeof(uint64_t));
       }
     }
   }
@@ -576,86 +591,119 @@ Status fragment_metadata_to_capnp(
 
   auto& tile_min_buffer = frag_meta.loaded_metadata()->tile_min_buffer();
   if (!tile_min_buffer.empty()) {
-    auto builder = frag_meta_builder->initTileMinBuffer(tile_min_buffer.size());
+    auto list_builder =
+        frag_meta_builder->initTileMinBuffer(tile_min_buffer.size());
     for (uint64_t i = 0; i < tile_min_buffer.size(); ++i) {
-      builder.init(i, tile_min_buffer[i].size());
-      for (uint64_t j = 0; j < tile_min_buffer[i].size(); ++j) {
-        builder[i].set(j, tile_min_buffer[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_min_buffer[i].size());
+      if (!tile_min_buffer[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_min_buffer[i].data(),
+            tile_min_buffer[i].size());
       }
     }
   }
   auto& tile_min_var_buffer =
       frag_meta.loaded_metadata()->tile_min_var_buffer();
   if (!tile_min_var_buffer.empty()) {
-    auto builder =
+    auto list_builder =
         frag_meta_builder->initTileMinVarBuffer(tile_min_var_buffer.size());
     for (uint64_t i = 0; i < tile_min_var_buffer.size(); ++i) {
-      builder.init(i, tile_min_var_buffer[i].size());
-      for (uint64_t j = 0; j < tile_min_var_buffer[i].size(); ++j) {
-        builder[i].set(j, tile_min_var_buffer[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_min_var_buffer[i].size());
+      if (!tile_min_var_buffer[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_min_var_buffer[i].data(),
+            tile_min_var_buffer[i].size());
       }
     }
   }
   auto& tile_max_buffer = frag_meta.loaded_metadata()->tile_max_buffer();
   if (!tile_max_buffer.empty()) {
-    auto builder = frag_meta_builder->initTileMaxBuffer(tile_max_buffer.size());
+    auto list_builder =
+        frag_meta_builder->initTileMaxBuffer(tile_max_buffer.size());
     for (uint64_t i = 0; i < tile_max_buffer.size(); ++i) {
-      builder.init(i, tile_max_buffer[i].size());
-      for (uint64_t j = 0; j < tile_max_buffer[i].size(); ++j) {
-        builder[i].set(j, tile_max_buffer[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_max_buffer[i].size());
+      if (!tile_max_buffer[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_max_buffer[i].data(),
+            tile_max_buffer[i].size());
       }
     }
   }
   auto& tile_max_var_buffer =
       frag_meta.loaded_metadata()->tile_max_var_buffer();
   if (!tile_max_var_buffer.empty()) {
-    auto builder =
+    auto list_builder =
         frag_meta_builder->initTileMaxVarBuffer(tile_max_var_buffer.size());
     for (uint64_t i = 0; i < tile_max_var_buffer.size(); ++i) {
-      builder.init(i, tile_max_var_buffer[i].size());
-      for (uint64_t j = 0; j < tile_max_var_buffer[i].size(); ++j) {
-        builder[i].set(j, tile_max_var_buffer[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_max_var_buffer[i].size());
+      if (!tile_max_var_buffer[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_max_var_buffer[i].data(),
+            tile_max_var_buffer[i].size());
       }
     }
   }
   auto& tile_sums = frag_meta.loaded_metadata()->tile_sums();
   if (!tile_sums.empty()) {
-    auto builder = frag_meta_builder->initTileSums(tile_sums.size());
+    auto list_builder = frag_meta_builder->initTileSums(tile_sums.size());
     for (uint64_t i = 0; i < tile_sums.size(); ++i) {
-      builder.init(i, tile_sums[i].size());
-      for (uint64_t j = 0; j < tile_sums[i].size(); ++j) {
-        builder[i].set(j, tile_sums[i][j]);
+      auto inner_list_builder = list_builder.init(i, tile_sums[i].size());
+      if (!tile_sums[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_sums[i].data(),
+            tile_sums[i].size());
       }
     }
   }
   auto& tile_null_counts = frag_meta.loaded_metadata()->tile_null_counts();
   if (!tile_null_counts.empty()) {
-    auto builder =
+    auto list_builder =
         frag_meta_builder->initTileNullCounts(tile_null_counts.size());
     for (uint64_t i = 0; i < tile_null_counts.size(); ++i) {
-      builder.init(i, tile_null_counts[i].size());
-      for (uint64_t j = 0; j < tile_null_counts[i].size(); ++j) {
-        builder[i].set(j, tile_null_counts[i][j]);
+      auto inner_list_builder =
+          list_builder.init(i, tile_null_counts[i].size());
+      if (!tile_null_counts[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            tile_null_counts[i].data(),
+            tile_null_counts[i].size() * sizeof(uint64_t));
       }
     }
   }
   auto& fragment_mins = frag_meta.loaded_metadata()->fragment_mins();
   if (!fragment_mins.empty()) {
-    auto builder = frag_meta_builder->initFragmentMins(fragment_mins.size());
+    auto list_builder =
+        frag_meta_builder->initFragmentMins(fragment_mins.size());
     for (uint64_t i = 0; i < fragment_mins.size(); ++i) {
-      builder.init(i, fragment_mins[i].size());
-      for (uint64_t j = 0; j < fragment_mins[i].size(); ++j) {
-        builder[i].set(j, fragment_mins[i][j]);
+      auto inner_list_builder = list_builder.init(i, fragment_mins[i].size());
+      if (!fragment_mins[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            fragment_mins[i].data(),
+            fragment_mins[i].size());
       }
     }
   }
   auto& fragment_maxs = frag_meta.loaded_metadata()->fragment_maxs();
   if (!fragment_maxs.empty()) {
-    auto builder = frag_meta_builder->initFragmentMaxs(fragment_maxs.size());
+    auto list_builder =
+        frag_meta_builder->initFragmentMaxs(fragment_maxs.size());
     for (uint64_t i = 0; i < fragment_maxs.size(); ++i) {
-      builder.init(i, fragment_maxs[i].size());
-      for (uint64_t j = 0; j < fragment_maxs[i].size(); ++j) {
-        builder[i].set(j, fragment_maxs[i][j]);
+      auto inner_list_builder = list_builder.init(i, fragment_maxs[i].size());
+      if (!fragment_maxs[i].empty()) {
+        memcpy(
+            inner_list_builder.begin(),
+            fragment_maxs[i].data(),
+            fragment_maxs[i].size());
       }
     }
   }
