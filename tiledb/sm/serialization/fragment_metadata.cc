@@ -44,6 +44,7 @@
 #include "tiledb/common/common.h"
 #include "tiledb/sm/enums/serialization_type.h"
 #include "tiledb/sm/serialization/fragment_metadata.h"
+#include "tiledb/sm/serialization/vector_serializer.h"
 
 using namespace tiledb::common;
 using namespace tiledb::sm::stats;
@@ -689,18 +690,10 @@ Status fragment_metadata_to_capnp(
       frag_meta.non_empty_domain(),
       frag_meta.array_schema()->dim_num()));
 
-  // TODO: Can this be done better? Does this make a lot of copies?
-  SizeComputationSerializer size_computation_serializer;
-  frag_meta.loaded_metadata()->rtree().serialize(size_computation_serializer);
-
-  std::vector<uint8_t> buff(size_computation_serializer.size());
-  Serializer serializer(buff.data(), buff.size());
+  std::vector<uint8_t> buff;
+  VectorSerializer serializer(buff);
   frag_meta.loaded_metadata()->rtree().serialize(serializer);
-
-  auto vec = kj::Vector<uint8_t>();
-  vec.addAll(
-      kj::ArrayPtr<uint8_t>(static_cast<uint8_t*>(buff.data()), buff.size()));
-  frag_meta_builder->setRtree(vec.asPtr());
+  frag_meta_builder->setRtree(kj::arrayPtr(buff.data(), buff.size()));
 
   auto gt_offsets_builder = frag_meta_builder->initGtOffsets();
   generic_tile_offsets_to_capnp(
