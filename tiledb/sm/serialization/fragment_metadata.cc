@@ -500,7 +500,7 @@ void fragment_meta_sizes_offsets_to_capnp(
       auto inner_list_builder = list_builder.init(i, tile_offsets[i].size());
       if (!tile_offsets[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_offsets[i].data(),
             tile_offsets[i].size() * sizeof(uint64_t));
       }
@@ -515,7 +515,7 @@ void fragment_meta_sizes_offsets_to_capnp(
           list_builder.init(i, tile_var_offsets[i].size());
       if (!tile_var_offsets[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_var_offsets[i].data(),
             tile_var_offsets[i].size() * sizeof(uint64_t));
       }
@@ -529,7 +529,7 @@ void fragment_meta_sizes_offsets_to_capnp(
       auto inner_list_builder = list_builder.init(i, tile_var_sizes[i].size());
       if (!tile_var_sizes[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_var_sizes[i].data(),
             tile_var_sizes[i].size() * sizeof(uint64_t));
       }
@@ -545,7 +545,7 @@ void fragment_meta_sizes_offsets_to_capnp(
           list_builder.init(i, tile_validity_offsets[i].size());
       if (!tile_validity_offsets[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_validity_offsets[i].data(),
             tile_validity_offsets[i].size() * sizeof(uint64_t));
       }
@@ -598,7 +598,7 @@ Status fragment_metadata_to_capnp(
           list_builder.init(i, tile_min_buffer[i].size());
       if (!tile_min_buffer[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_min_buffer[i].data(),
             tile_min_buffer[i].size());
       }
@@ -614,7 +614,7 @@ Status fragment_metadata_to_capnp(
           list_builder.init(i, tile_min_var_buffer[i].size());
       if (!tile_min_var_buffer[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_min_var_buffer[i].data(),
             tile_min_var_buffer[i].size());
       }
@@ -629,7 +629,7 @@ Status fragment_metadata_to_capnp(
           list_builder.init(i, tile_max_buffer[i].size());
       if (!tile_max_buffer[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_max_buffer[i].data(),
             tile_max_buffer[i].size());
       }
@@ -645,7 +645,7 @@ Status fragment_metadata_to_capnp(
           list_builder.init(i, tile_max_var_buffer[i].size());
       if (!tile_max_var_buffer[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_max_var_buffer[i].data(),
             tile_max_var_buffer[i].size());
       }
@@ -658,7 +658,7 @@ Status fragment_metadata_to_capnp(
       auto inner_list_builder = list_builder.init(i, tile_sums[i].size());
       if (!tile_sums[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_sums[i].data(),
             tile_sums[i].size());
       }
@@ -673,7 +673,7 @@ Status fragment_metadata_to_capnp(
           list_builder.init(i, tile_null_counts[i].size());
       if (!tile_null_counts[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             tile_null_counts[i].data(),
             tile_null_counts[i].size() * sizeof(uint64_t));
       }
@@ -687,7 +687,7 @@ Status fragment_metadata_to_capnp(
       auto inner_list_builder = list_builder.init(i, fragment_mins[i].size());
       if (!fragment_mins[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             fragment_mins[i].data(),
             fragment_mins[i].size());
       }
@@ -701,7 +701,7 @@ Status fragment_metadata_to_capnp(
       auto inner_list_builder = list_builder.init(i, fragment_maxs[i].size());
       if (!fragment_maxs[i].empty()) {
         memcpy(
-            inner_list_builder.begin(),
+            &inner_list_builder[0],
             fragment_maxs[i].data(),
             fragment_maxs[i].size());
       }
