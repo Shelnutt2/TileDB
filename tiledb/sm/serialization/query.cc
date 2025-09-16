@@ -1356,7 +1356,8 @@ Status query_to_capnp(
   // Serialize array
   if (query.array() != nullptr) {
     auto builder = query_builder->initArray();
-    RETURN_NOT_OK(array_to_capnp(array, &builder, client_side));
+    RETURN_NOT_OK(array_to_capnp(
+        array, &builder, client_side, &query.resources().compute_tp()));
   }
 
   // Serialize attribute buffer metadata

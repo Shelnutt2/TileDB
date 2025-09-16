@@ -51,6 +51,10 @@ class Dimension;
 class SerializationBuffer;
 enum class SerializationType : uint8_t;
 
+namespace common {
+class ThreadPool;
+}
+
 namespace serialization {
 
 #ifdef TILEDB_SERIALIZATION
@@ -61,10 +65,14 @@ namespace serialization {
  * @param client_side Allows to specify different behavior depending on who is
  * serializing, the client (1) or the Cloud server (0). This is sometimes needed
  * since they are both using the same Core library APIs for serialization.
+ * @param compute_tp The thread pool for compute-bound tasks.
  * @return Status
  */
 Status array_to_capnp(
-    Array* array, capnp::Array::Builder* array_builder, const bool client_side);
+    Array* array,
+    capnp::Array::Builder* array_builder,
+    const bool client_side,
+    ThreadPool* compute_tp);
 
 /**
  * Deserialize an Array from Cap'n proto

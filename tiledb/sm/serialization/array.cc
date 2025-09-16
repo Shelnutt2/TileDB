@@ -50,6 +50,9 @@
 #include "tiledb/sm/serialization/array_directory.h"
 #include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/fragment_metadata.h"
+#include "tiledb/common/thread_pool.h"
+#include <mutex>
+#include <vector>
 
 using namespace tiledb::common;
 using namespace tiledb::sm::stats;
@@ -133,7 +136,8 @@ Status metadata_from_capnp(
 Status array_to_capnp(
     Array* array,
     capnp::Array::Builder* array_builder,
-    const bool client_side) {
+    const bool client_side,
+    ThreadPool* compute_tp) {
   // The serialized URI is set if it exists
   // this is used for backwards compatibility with pre TileDB 2.5 clients that
   // want to serialized a query object TileDB >= 2.5 no longer needs to send the
@@ -180,21 +184,49 @@ Status array_to_capnp(
     if (array->get_query_type() == QueryType::READ) {
       auto fragment_metadata_all = array->fragment_metadata();
       if (!fragment_metadata_all.empty()) {
+        const size_t num_fragments = fragment_metadata_all.size();
         auto fragment_metadata_all_builder =
-            array_builder->initFragmentMetadataAll(
-                fragment_metadata_all.size());
-        for (size_t i = 0; i < fragment_metadata_all.size(); i++) {
-          auto fragment_metadata_builder = fragment_metadata_all_builder[i];
+            array_builder->initFragmentMetadataAll(num_fragments);
 
-          // Old fragment with zipped coordinates didn't have a format that
-          // allow to dynamically load tile offsets and sizes and since they all
-          // get loaded at array open, we need to serialize them here.
-          if (fragment_metadata_all[i]->version() <= 2) {
-            fragment_meta_sizes_offsets_to_capnp(
-                *fragment_metadata_all[i], &fragment_metadata_builder);
+        if (compute_tp) {
+          std::vector<ThreadPool::Task> tasks;
+          tasks.reserve(num_fragments);
+          std::vector<capnp::Orphan<capnp::FragmentMetadata>> orphans(
+              num_fragments);
+
+          for (size_t i = 0; i < num_fragments; ++i) {
+            tasks.emplace_back(compute_tp->async(
+                [&orphans, &fragment_metadata_all, i]() {
+                  capnp::MallocMessageBuilder message;
+                  auto builder = message.initRoot<capnp::FragmentMetadata>();
+                  const auto& meta = fragment_metadata_all[i];
+
+                  if (meta->version() <= 2) {
+                    fragment_meta_sizes_offsets_to_capnp(*meta, &builder);
+                  }
+                  RETURN_NOT_OK(fragment_metadata_to_capnp(*meta, &builder));
+
+                  orphans[i] = message.getOrphanage().getOrphan(builder);
+                  return Status::Ok();
+                }));
           }
-          RETURN_NOT_OK(fragment_metadata_to_capnp(
-              *fragment_metadata_all[i], &fragment_metadata_builder));
+
+          RETURN_NOT_OK(compute_tp->wait_all(tasks));
+
+          for (size_t i = 0; i < num_fragments; ++i) {
+            fragment_metadata_all_builder.adopt(i, std::move(orphans[i]));
+          }
+        } else {
+          for (size_t i = 0; i < fragment_metadata_all.size(); i++) {
+            auto fragment_metadata_builder = fragment_metadata_all_builder[i];
+
+            if (fragment_metadata_all[i]->version() <= 2) {
+              fragment_meta_sizes_offsets_to_capnp(
+                  *fragment_metadata_all[i], &fragment_metadata_builder);
+            }
+            RETURN_NOT_OK(fragment_metadata_to_capnp(
+                *fragment_metadata_all[i], &fragment_metadata_builder));
+          }
         }
       }
     }
@@ -506,7 +538,8 @@ Status array_serialize(
   try {
     ::capnp::MallocMessageBuilder message;
     capnp::Array::Builder ArrayBuilder = message.initRoot<capnp::Array>();
-    RETURN_NOT_OK(array_to_capnp(array, &ArrayBuilder, client_side));
+    RETURN_NOT_OK(array_to_capnp(
+        array, &ArrayBuilder, client_side, &array->resources().compute_tp()));
 
     switch (serialize_type) {
       case SerializationType::JSON: {
