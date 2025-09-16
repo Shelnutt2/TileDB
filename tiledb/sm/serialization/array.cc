@@ -51,6 +51,7 @@
 #include "tiledb/sm/serialization/array_schema.h"
 #include "tiledb/sm/serialization/fragment_metadata.h"
 #include "tiledb/common/thread_pool.h"
+#include "tiledb/sm/misc/parallel_functions.h"
 #include <mutex>
 #include <vector>
 
@@ -189,29 +190,23 @@ Status array_to_capnp(
             array_builder->initFragmentMetadataAll(num_fragments);
 
         if (compute_tp) {
-          std::vector<ThreadPool::Task> tasks;
-          tasks.reserve(num_fragments);
           std::vector<capnp::Orphan<capnp::FragmentMetadata>> orphans(
               num_fragments);
+          auto st = parallel_for(
+              compute_tp, 0, num_fragments, [&](size_t i) {
+                capnp::MallocMessageBuilder message;
+                auto builder = message.initRoot<capnp::FragmentMetadata>();
+                const auto& meta = fragment_metadata_all[i];
 
-          for (size_t i = 0; i < num_fragments; ++i) {
-            tasks.emplace_back(compute_tp->async(
-                [&orphans, &fragment_metadata_all, i]() {
-                  capnp::MallocMessageBuilder message;
-                  auto builder = message.initRoot<capnp::FragmentMetadata>();
-                  const auto& meta = fragment_metadata_all[i];
+                if (meta->version() <= 2) {
+                  fragment_meta_sizes_offsets_to_capnp(*meta, &builder);
+                }
+                RETURN_NOT_OK(fragment_metadata_to_capnp(*meta, &builder));
 
-                  if (meta->version() <= 2) {
-                    fragment_meta_sizes_offsets_to_capnp(*meta, &builder);
-                  }
-                  RETURN_NOT_OK(fragment_metadata_to_capnp(*meta, &builder));
-
-                  orphans[i] = message.getOrphanage().getOrphan(builder);
-                  return Status::Ok();
-                }));
-          }
-
-          RETURN_NOT_OK(compute_tp->wait_all(tasks));
+                orphans[i] = message.getOrphanage().own(builder);
+                return Status::Ok();
+              });
+          RETURN_NOT_OK(st);
 
           for (size_t i = 0; i < num_fragments; ++i) {
             fragment_metadata_all_builder.adopt(i, std::move(orphans[i]));
